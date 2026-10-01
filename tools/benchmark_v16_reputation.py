@@ -424,6 +424,13 @@ def predict(stage1, feat, gate):
 
 
 def choose_gate(rows, stage1, feat, safe):
+    """Fast deterministic reputation gate search.
+
+    The original v16 searched the full Cartesian product of eight thresholds.
+    This version anchors gates to real validation spam examples, small groups
+    of them, and a compact quantile sweep. The same safe/balanced FP
+    constraints remain enforced.
+    """
     y = np.asarray([r["y"] for r in rows], dtype=bool)
     ham = ~y
     hard = np.asarray([
@@ -438,112 +445,167 @@ def choose_gate(rows, stage1, feat, safe):
     base_a = int((ham & stage1 & half_a).sum())
     base_b = int((ham & stage1 & half_b).sum())
 
-    score_grid = grid(
-        feat["score"],
-        [.40,.45,.50,.55,.60,.65,.70,.75,.80,.85,.90,.93,.95,.97,.98,.99,.995,1.000001],
-    )
-    consensus_grid = grid(
-        feat["consensus"],
-        [.08,.10,.12,.15,.20,.25,.30,.35,.40,.45,.50,.55,.60,.70,.80,.90],
-        0.15,
-        18,
-    )
-    median_grid = np.asarray([.40,.45,.50,.55,.60,.65,.70,.75,.80,.85,.90])
-    rep_grid = np.asarray([.35,.40,.45,.50,.55,.60,.65,.70,.75,.80,.85,.90,.93,.95])
-    text_grid = np.asarray([.35,.40,.45,.50,.55,.60,.65,.70,.75,.80,.85,.90])
-    ctx_grid = np.asarray([.35,.40,.45,.50,.55,.60,.65,.70,.75,.80,.85,.90])
-    ham_grid = np.asarray([.03,.05,.08,.10,.12,.15,.20,.25,.30,.35,.40])
-    disagreement_grid = np.asarray([.05,.10,.15,.20,.30,.40,.60,1.0])
-
+    residual_spam = np.where((~stage1) & y)[0]
     best = None
+    seen = set()
 
-    for st in score_grid:
-        m1 = feat["score"] >= st
+    def consider(gate):
+        nonlocal best
 
-        for ct in consensus_grid:
-            m2 = m1 & (feat["consensus"] >= ct)
-            if not np.any(m2 & (~stage1)):
-                continue
+        gate_key = (
+            round(gate["scoreThreshold"], 7),
+            round(gate["consensusThreshold"], 7),
+            round(gate["medianThreshold"], 7),
+            round(gate["reputationThreshold"], 7),
+            round(gate["textThreshold"], 7),
+            round(gate["contextThreshold"], 7),
+            round(gate["hamVetoThreshold"], 7),
+            round(gate["maxReputationDisagreement"], 7),
+        )
+        if gate_key in seen:
+            return
+        seen.add(gate_key)
 
-            for mt in median_grid:
-                m3 = m2 & (feat["median"] >= mt)
-                if not np.any(m3 & (~stage1)):
-                    continue
+        pred = predict(stage1, feat, gate)
 
-                for rt in rep_grid:
-                    m4 = m3 & (feat["rep"] >= rt)
-                    if not np.any(m4 & (~stage1)):
-                        continue
+        fp = int((ham & pred).sum())
+        hard_fp = int((hard & pred).sum())
+        a_fp = int((ham & pred & half_a).sum())
+        b_fp = int((ham & pred & half_b).sum())
 
-                    for tt in text_grid:
-                        m5 = m4 & (feat["text"] >= tt)
-                        if not np.any(m5 & (~stage1)):
-                            continue
+        if hard_fp > base_hard:
+            return
 
-                        for xt in ctx_grid:
-                            m6 = m5 & (feat["ctx"] >= xt)
-                            if not np.any(m6 & (~stage1)):
-                                continue
+        if safe:
+            if a_fp > base_a or b_fp > base_b:
+                return
+        else:
+            if fp - base_fp > 1:
+                return
+            if a_fp - base_a > 1 or b_fp - base_b > 1:
+                return
 
-                            for hv in ham_grid:
-                                m7 = m6 & (feat["ham"] <= hv)
-                                if not np.any(m7 & (~stage1)):
-                                    continue
+        cur = stats(rows, pred, stage1)
+        point = {
+            **cur,
+            **gate,
+            "hardHamFalsePositives": hard_fp,
+            "validationHalfAAddedFp": a_fp - base_a,
+            "validationHalfBAddedFp": b_fp - base_b,
+        }
 
-                                for dd in disagreement_grid:
-                                    rescue = (
-                                        (~stage1)
-                                        & m7
-                                        & (feat["repDisagreement"] <= dd)
-                                    )
-                                    pred = stage1 | rescue
+        rank = (
+            point["rescuedOverStage1"],
+            -point["addedFalsePositivesOverStage1"],
+            point["scoreThreshold"],
+            point["reputationThreshold"],
+            point["consensusThreshold"],
+            point["medianThreshold"],
+            -point["hamVetoThreshold"],
+            -point["maxReputationDisagreement"],
+        )
 
-                                    fp = int((ham & pred).sum())
-                                    hard_fp = int((hard & pred).sum())
-                                    a_fp = int((ham & pred & half_a).sum())
-                                    b_fp = int((ham & pred & half_b).sum())
+        if best is None or rank > best[0]:
+            best = (rank, point)
 
-                                    if hard_fp > base_hard:
-                                        continue
+    relaxations = (1.0, 0.97, 0.92, 0.85)
 
-                                    if safe:
-                                        if a_fp > base_a or b_fp > base_b:
-                                            continue
-                                    else:
-                                        if fp - base_fp > 1:
-                                            continue
-                                        if a_fp - base_a > 1 or b_fp - base_b > 1:
-                                            continue
+    # Exact and slightly relaxed gates induced by each missed validation spam.
+    for idx in residual_spam:
+        for relax in relaxations:
+            consider({
+                "scoreThreshold": float(feat["score"][idx] * relax),
+                "consensusThreshold": float(feat["consensus"][idx] * relax),
+                "medianThreshold": float(feat["median"][idx] * relax),
+                "reputationThreshold": float(feat["rep"][idx] * relax),
+                "textThreshold": float(feat["text"][idx] * relax),
+                "contextThreshold": float(feat["ctx"][idx] * relax),
+                "hamVetoThreshold": float(
+                    min(1.0, feat["ham"][idx] / max(relax, 1e-6))
+                ),
+                "maxReputationDisagreement": float(
+                    min(
+                        1.0,
+                        feat["repDisagreement"][idx] / max(relax, 1e-6),
+                    )
+                ),
+            })
 
-                                    cur = stats(rows, pred, stage1)
-                                    point = {
-                                        **cur,
-                                        "scoreThreshold": float(st),
-                                        "consensusThreshold": float(ct),
-                                        "medianThreshold": float(mt),
-                                        "reputationThreshold": float(rt),
-                                        "textThreshold": float(tt),
-                                        "contextThreshold": float(xt),
-                                        "hamVetoThreshold": float(hv),
-                                        "maxReputationDisagreement": float(dd),
-                                        "hardHamFalsePositives": hard_fp,
-                                        "validationHalfAAddedFp": a_fp - base_a,
-                                        "validationHalfBAddedFp": b_fp - base_b,
-                                    }
+    # Search gates capable of rescuing small groups together.
+    rnd = np.random.default_rng(SEED + (16 if safe else 116))
+    if len(residual_spam):
+        for _ in range(22000):
+            size = int(rnd.choice([2, 3, 4], p=[0.52, 0.34, 0.14]))
+            chosen = rnd.choice(
+                residual_spam,
+                size=min(size, len(residual_spam)),
+                replace=False,
+            )
+            relax = float(rnd.choice([1.0, 0.97, 0.93, 0.88]))
 
-                                    key = (
-                                        point["rescuedOverStage1"],
-                                        -point["addedFalsePositivesOverStage1"],
-                                        point["scoreThreshold"],
-                                        point["reputationThreshold"],
-                                        point["consensusThreshold"],
-                                        point["medianThreshold"],
-                                        -point["hamVetoThreshold"],
-                                        -point["maxReputationDisagreement"],
-                                    )
+            consider({
+                "scoreThreshold": float(np.min(feat["score"][chosen]) * relax),
+                "consensusThreshold": float(
+                    np.min(feat["consensus"][chosen]) * relax
+                ),
+                "medianThreshold": float(np.min(feat["median"][chosen]) * relax),
+                "reputationThreshold": float(np.min(feat["rep"][chosen]) * relax),
+                "textThreshold": float(np.min(feat["text"][chosen]) * relax),
+                "contextThreshold": float(np.min(feat["ctx"][chosen]) * relax),
+                "hamVetoThreshold": float(
+                    min(
+                        1.0,
+                        np.max(feat["ham"][chosen]) / max(relax, 1e-6),
+                    )
+                ),
+                "maxReputationDisagreement": float(
+                    min(
+                        1.0,
+                        np.max(feat["repDisagreement"][chosen])
+                        / max(relax, 1e-6),
+                    )
+                ),
+            })
 
-                                    if best is None or key > best[0]:
-                                        best = (key, point)
+    # Compact quantile sweep for gates not neatly anchored to one example.
+    if len(residual_spam):
+        for q in np.linspace(0.05, 0.95, 19):
+            consider({
+                "scoreThreshold": float(
+                    np.quantile(feat["score"][residual_spam], q)
+                ),
+                "consensusThreshold": float(
+                    np.quantile(feat["consensus"][residual_spam], q)
+                ),
+                "medianThreshold": float(
+                    np.quantile(feat["median"][residual_spam], q)
+                ),
+                "reputationThreshold": float(
+                    np.quantile(feat["rep"][residual_spam], q)
+                ),
+                "textThreshold": float(
+                    np.quantile(feat["text"][residual_spam], q)
+                ),
+                "contextThreshold": float(
+                    np.quantile(feat["ctx"][residual_spam], q)
+                ),
+                "hamVetoThreshold": float(
+                    np.quantile(feat["ham"][residual_spam], 1.0 - q * 0.8)
+                ),
+                "maxReputationDisagreement": float(
+                    np.quantile(
+                        feat["repDisagreement"][residual_spam],
+                        1.0 - q * 0.8,
+                    )
+                ),
+            })
+
+    print(
+        f"fast reputation gate safe={safe} "
+        f"candidates={len(seen)} "
+        f"best_rescues={0 if best is None else best[1]['rescuedOverStage1']}",
+        flush=True,
+    )
 
     if best is not None:
         return best[1]
@@ -563,7 +625,6 @@ def choose_gate(rows, stage1, feat, safe):
         "validationHalfAAddedFp": 0,
         "validationHalfBAddedFp": 0,
     }
-
 
 def review(rows, stage1, feat):
     residual = [i for i in range(len(rows)) if not stage1[i]]
