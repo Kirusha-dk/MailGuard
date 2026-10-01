@@ -159,7 +159,8 @@ def weighted_loss(logits, labels, weights):
     return (raw * weights).sum() / torch.clamp(weights.sum(), min=1.0)
 
 
-def train_one(train_ds, val_ds, seed, label="model"):\n    print(f"[{label}] start", flush=True)
+def train_one(train_ds, val_ds, seed, label="model"):
+    print(f"[{label}] start", flush=True)
     set_seed(seed)
     model = MailTransformer()
     optimizer = torch.optim.AdamW(
@@ -453,9 +454,12 @@ def main():
     b.reset_bayes()
     b.learn(train)
 
-    print("[1/6] scanning train", flush=True)\n    tr = b.scan_many(train, "v12.1-train")
-    print("[2/6] scanning validation", flush=True)\n    va = b.scan_many(val, "v12.1-val")
-    print("[3/6] scanning test", flush=True)\n    te = b.scan_many(test, "v12.1-test")
+    print("[1/6] scanning train", flush=True)
+    tr = b.scan_many(train, "v12.1-train")
+    print("[2/6] scanning validation", flush=True)
+    va = b.scan_many(val, "v12.1-val")
+    print("[3/6] scanning test", flush=True)
+    te = b.scan_many(test, "v12.1-test")
     base = b.base_metrics(te)
 
     xt, xv, xe, ctx_t, ctx_v, ctx_e = v3.matrices(tr, va, te)
