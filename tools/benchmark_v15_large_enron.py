@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import csv
+import sys
 import io
 import json
 import math
@@ -14,6 +15,8 @@ import benchmark_improved as b
 import benchmark_v3 as v3
 import benchmark_v5 as v5
 import benchmark_v15_hard_mining as v15
+
+csv.field_size_limit(min(sys.maxsize, 2**31 - 1))
 
 REPORTS = Path("reports")
 CACHE = Path(".cache/enron-spam-large")
