@@ -1,0 +1,62 @@
+name: MailGuard v8 neural ham-veto benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'tools/benchmark_v8_nn_veto.py'
+      - 'tools/benchmark_v7_nn.py'
+      - 'tools/benchmark_v3.py'
+      - 'tools/benchmark_improved.py'
+      - '.github/workflows/v8-neural-benchmark.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install benchmark dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy scipy scikit-learn
+          python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Start Rspamd and Redis
+        run: |
+          docker compose down -v --remove-orphans || true
+          docker compose up -d redis rspamd
+          docker compose ps
+
+      - name: Cache public corpus
+        uses: actions/cache@v4
+        with:
+          path: .cache/spamassassin-improved
+          key: spamassassin-public-improved-v1
+
+      - name: Run MailGuard v8 benchmark
+        run: python3 tools/benchmark_v8_nn_veto.py
+
+      - name: Show result
+        if: always()
+        run: |
+          if [ -f reports/v8-benchmark.md ]; then
+            cat reports/v8-benchmark.md
+            cat reports/v8-benchmark.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Benchmark report missing" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Save evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v8-neural-benchmark
+          retention-days: 30
+          if-no-files-found: warn
+          path: reports/
