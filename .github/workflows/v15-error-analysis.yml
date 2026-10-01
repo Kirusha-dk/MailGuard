@@ -1,0 +1,60 @@
+name: MailGuard v15 error analysis
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'tools/analyze_v15_errors.py'
+      - '.github/workflows/v15-error-analysis.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy scipy scikit-learn
+
+      - name: Start Rspamd and Redis
+        run: |
+          docker compose down -v --remove-orphans || true
+          docker compose up -d redis rspamd
+
+      - name: Cache public corpus
+        uses: actions/cache@v4
+        with:
+          path: .cache/spamassassin-improved
+          key: spamassassin-public-improved-v1
+
+      - name: Analyze v15 errors
+        run: python3 -u tools/analyze_v15_errors.py
+
+      - name: Show analysis
+        if: always()
+        run: |
+          if [ -f reports/v15-error-analysis.md ]; then
+            cat reports/v15-error-analysis.md
+            cat reports/v15-error-analysis.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "Analysis report missing" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Save analysis
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v15-error-analysis
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            reports/v15-error-analysis.json
+            reports/v15-error-analysis.md
