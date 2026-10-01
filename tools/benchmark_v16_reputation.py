@@ -100,7 +100,7 @@ def simhash_bucket(text):
 def parse_mail(row):
     raw = row["raw"]
     try:
-        msg = BytesParser(policy=policy.default).parsebytes(raw)
+        msg = BytesParser(policy=policy.compat32).parsebytes(raw)
     except Exception:
         msg = None
 
