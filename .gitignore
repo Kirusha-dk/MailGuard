@@ -1,0 +1,14 @@
+**/bin/
+**/obj/
+.vs/
+.idea/
+.DS_Store
+
+models/*.mg
+data/
+reports/
+.cache/
+review-selection.csv
+
+rspamd-data/
+redis-data/

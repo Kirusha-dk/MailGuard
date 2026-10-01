@@ -1,0 +1,92 @@
+name: mailguard
+
+services:
+  redis:
+    image: redis:7-alpine
+    container_name: mailguard-redis
+    command: ["redis-server", "--appendonly", "yes"]
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  rspamd:
+    image: rspamd/rspamd:4.2.0
+    container_name: mailguard-rspamd
+    ports:
+      - "127.0.0.1:11332:11332"
+      - "127.0.0.1:11333:11333"
+      - "127.0.0.1:11334:11334"
+    volumes:
+      - ./rspamd/local.d:/etc/rspamd/local.d:ro
+      - rspamd-data:/var/lib/rspamd
+    depends_on:
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mailguard-cli:
+    profiles: ["tools"]
+    build:
+      context: .
+      target: cli
+    image: mailguard/cli:0.4.5
+    environment:
+      RSPAMD_URL: http://rspamd:11333/
+      RSPAMD_CONTROLLER_URL: http://rspamd:11334/
+    volumes:
+      - ./data:/workspace/data
+      - ./models:/workspace/models
+      - ./reports:/workspace/reports
+      - ./.cache:/workspace/.cache
+    depends_on:
+      - rspamd
+
+  mailguard-selftest:
+    profiles: ["tools"]
+    build:
+      context: .
+      target: selftest
+    image: mailguard/selftest:0.4.5
+
+  mailguard-api:
+    profiles: ["api"]
+    build:
+      context: .
+      target: api
+    image: mailguard/api:0.4.5
+    environment:
+      MAILGUARD_MODEL: /app/models/mailguard.mg
+      RSPAMD_URL: http://rspamd:11333/
+    volumes:
+      - ./models:/app/models:ro
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      - rspamd
+    restart: unless-stopped
+
+  mailguard-benchmark:
+    profiles: ["benchmark"]
+    build:
+      context: .
+      target: benchmark
+    image: mailguard/benchmark:0.4.5
+    environment:
+      RSPAMD_URL: http://rspamd:11333/
+      RSPAMD_CONTROLLER_URL: http://rspamd:11334/
+    volumes:
+      - ./data:/workspace/data
+      - ./models:/workspace/models
+      - ./reports:/workspace/reports
+      - ./.cache:/workspace/.cache
+    depends_on:
+      - rspamd
+
+volumes:
+  rspamd-data:
+  redis-data:

@@ -1,0 +1,14 @@
+.git
+.github
+**/bin
+**/obj
+.vs
+.idea
+.DS_Store
+
+data
+models
+reports
+.cache
+
+*.zip

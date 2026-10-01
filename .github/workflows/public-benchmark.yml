@@ -1,0 +1,92 @@
+name: MailGuard public benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'src/**'
+      - 'rspamd/**'
+      - 'tools/**'
+      - 'Dockerfile'
+      - 'docker-compose.yml'
+      - 'global.json'
+      - 'MailGuard.sln'
+      - '.github/workflows/public-benchmark.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mailguard-public-benchmark-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show runner environment
+        run: |
+          set -euxo pipefail
+          docker --version
+          docker compose version
+          uname -a
+
+      - name: Validate Docker Compose
+        run: docker compose --profile benchmark config >/dev/null
+
+      - name: Cache SpamAssassin source archives
+        uses: actions/cache@v4
+        with:
+          path: .cache/spamassassin
+          key: spamassassin-public-corpus-v1
+
+      - name: Run Bayes vs Bayes + MailGuard benchmark
+        id: benchmark
+        run: bash tools/run_public_benchmark_docker.sh
+
+      - name: Publish benchmark in job summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo '# MailGuard benchmark result'
+            echo
+            if [[ -f reports/benchmark.md ]]; then
+              cat reports/benchmark.md
+            else
+              echo 'Benchmark report was not produced. See uploaded logs.'
+            fi
+            echo
+            if [[ -f reports/review-benchmark.json ]]; then
+              echo '## Human-review 1% experiment'
+              echo
+              echo 'Full JSON is included in the artifact.'
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload complete benchmark evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v0.4.5-public-benchmark
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            reports/
+            data/public/manifest.csv
+            models/mailguard-public.mg
+
+      - name: Fail clearly if benchmark report is missing
+        if: always()
+        shell: bash
+        run: |
+          test -f reports/benchmark-summary.json || {
+            echo 'benchmark-summary.json is missing; benchmark did not finish successfully.' >&2
+            exit 1
+          }
