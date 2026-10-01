@@ -5,6 +5,7 @@
 .DS_Store
 
 models/*.mg
+models/*.pt
 data/
 reports/
 .cache/

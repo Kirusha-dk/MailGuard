@@ -1,0 +1,34 @@
+name: MailGuard neural code smoke test
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'ml/**'
+      - '.github/workflows/ml-smoke.yml'
+      - 'docker-compose.yml'
+      - '.gitignore'
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Python dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install "numpy>=2.0,<3"
+          python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Compile neural code
+        run: python3 -m py_compile ml/*.py
+
+      - name: Run neural smoke test
+        working-directory: ml
+        run: python3 smoke_test.py

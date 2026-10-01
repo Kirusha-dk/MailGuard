@@ -87,6 +87,75 @@ services:
     depends_on:
       - rspamd
 
+  mailguard-train:
+    profiles: ["ml"]
+    build:
+      context: .
+      dockerfile: ml/Dockerfile
+    image: mailguard/neural:v7.1
+    command:
+      - python
+      - train.py
+      - --train-spam
+      - /workspace/data/train/spam
+      - --train-ham
+      - /workspace/data/train/ham
+      - --val-spam
+      - /workspace/data/val/spam
+      - --val-ham
+      - /workspace/data/val/ham
+      - --model
+      - /workspace/models/mailguard-v7.pt
+      - --report
+      - /workspace/reports/train-v7.json
+      - --rspamd-url
+      - http://rspamd:11333/
+    volumes:
+      - ./data:/workspace/data:ro
+      - ./models:/workspace/models
+      - ./reports:/workspace/reports
+    depends_on:
+      - rspamd
+
+  mailguard-evaluate:
+    profiles: ["ml"]
+    build:
+      context: .
+      dockerfile: ml/Dockerfile
+    image: mailguard/neural:v7.1
+    command:
+      - python
+      - evaluate.py
+      - --spam
+      - /workspace/data/test/spam
+      - --ham
+      - /workspace/data/test/ham
+      - --model
+      - /workspace/models/mailguard-v7.pt
+      - --report
+      - /workspace/reports/evaluate-v7.json
+      - --rspamd-url
+      - http://rspamd:11333/
+    volumes:
+      - ./data:/workspace/data:ro
+      - ./models:/workspace/models:ro
+      - ./reports:/workspace/reports
+    depends_on:
+      - rspamd
+
+  mailguard-predict:
+    profiles: ["ml"]
+    build:
+      context: .
+      dockerfile: ml/Dockerfile
+    image: mailguard/neural:v7.1
+    entrypoint: ["python", "predict.py"]
+    volumes:
+      - ./data:/workspace/data:ro
+      - ./models:/workspace/models:ro
+    depends_on:
+      - rspamd
+
 volumes:
   rspamd-data:
   redis-data:
