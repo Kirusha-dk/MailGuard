@@ -306,9 +306,9 @@ def main():
 
     def split_with_diversity(rows):
         enron_train, enron_val, _old_test = original_split(rows)
-        train = list(enron_train) + [r["path"] for r in parts["trecTrain"]]
-        val = list(enron_val) + [r["path"] for r in parts["trecVal"]]
-        test = [r["path"] for r in parts["freshTest"]]
+        train = list(enron_train) + list(parts["trecTrain"])
+        val = list(enron_val) + list(parts["trecVal"])
+        test = list(parts["freshTest"])
         print(
             "v27 split",
             "train before SpamAssassin", len(train),
