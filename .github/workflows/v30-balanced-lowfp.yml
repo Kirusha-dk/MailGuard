@@ -1,0 +1,79 @@
+name: MailGuard v30 balanced low-FP 50k
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'tools/benchmark_v30_balanced_lowfp.py'
+      - '.github/workflows/v30-balanced-lowfp.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    env:
+      OMP_NUM_THREADS: 6
+      MKL_NUM_THREADS: 6
+      HF_HOME: .cache/huggingface
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy scipy scikit-learn datasets pyarrow
+          python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Start Rspamd and Redis
+        run: |
+          docker compose down -v --remove-orphans || true
+          docker compose up -d redis rspamd
+
+      - name: Cache public corpora
+        uses: actions/cache@v4
+        with:
+          path: |
+            .cache/huggingface
+            .cache/spamassassin-improved
+            .cache/enron-spam-large
+          key: v30-public-corpora-v1
+          restore-keys: |
+            v29-public-corpora-v1
+            v28-public-corpora-v1
+            v27-public-corpora-v1
+
+      - name: Cache v28 rendered split
+        uses: actions/cache@v4
+        with:
+          path: .cache/v28-crosssource
+          key: v28-crosssource-rendered-v1
+
+      - name: Run v30 balanced low-FP 50k benchmark
+        run: python3 -u tools/benchmark_v30_balanced_lowfp.py
+
+      - name: Show result
+        if: always()
+        run: |
+          if [ -f reports/v30-balanced-lowfp-50k.md ]; then
+            cat reports/v30-balanced-lowfp-50k.md
+            cat reports/v30-balanced-lowfp-50k.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "v30 report missing" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Save evidence and model
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v30-balanced-lowfp-50k
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            reports/v30-balanced-lowfp-50k.json
+            reports/v30-balanced-lowfp-50k.md
+            models/v30/
