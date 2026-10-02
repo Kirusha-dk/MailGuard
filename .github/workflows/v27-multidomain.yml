@@ -1,0 +1,79 @@
+name: MailGuard v27 multidomain fresh 50k
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'tools/benchmark_v27_multidomain.py'
+      - '.github/workflows/v27-multidomain.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    env:
+      OMP_NUM_THREADS: 6
+      MKL_NUM_THREADS: 6
+      HF_HOME: .cache/huggingface
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy scipy scikit-learn datasets pyarrow
+          python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Start Rspamd and Redis
+        run: |
+          docker compose down -v --remove-orphans || true
+          docker compose up -d redis rspamd
+
+      - name: Restore public corpus caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            .cache/huggingface
+            .cache/spamassassin-improved
+            .cache/enron-spam-large
+          key: v27-public-corpora-v1
+          restore-keys: |
+            trec07-hf-fresh50k-v1
+            spamassassin-public-improved-v1
+            enron-spam-large-v1
+
+      - name: Cache v27 rendered multidomain corpus
+        uses: actions/cache@v4
+        with:
+          path: .cache/v27-multidomain
+          key: v27-multidomain-rendered-v1
+
+      - name: Run v27 multidomain benchmark
+        run: python3 -u tools/benchmark_v27_multidomain.py
+
+      - name: Show result
+        if: always()
+        run: |
+          if [ -f reports/v27-multidomain-50k.md ]; then
+            cat reports/v27-multidomain-50k.md
+            cat reports/v27-multidomain-50k.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "v27 report missing" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Save evidence and model
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v27-multidomain-50k
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            reports/v27-multidomain-50k.json
+            reports/v27-multidomain-50k.md
+            models/v27/
