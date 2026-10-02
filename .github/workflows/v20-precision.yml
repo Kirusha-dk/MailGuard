@@ -1,0 +1,71 @@
+name: MailGuard v20 precision 10k
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'tools/benchmark_v20_precision.py'
+      - '.github/workflows/v20-precision.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OMP_NUM_THREADS: 6
+      MKL_NUM_THREADS: 6
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy scipy scikit-learn
+          python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Start Rspamd and Redis
+        run: |
+          docker compose down -v --remove-orphans || true
+          docker compose up -d redis rspamd
+
+      - name: Cache SpamAssassin corpus
+        uses: actions/cache@v4
+        with:
+          path: .cache/spamassassin-improved
+          key: spamassassin-public-improved-v1
+
+      - name: Cache Enron-Spam corpus
+        uses: actions/cache@v4
+        with:
+          path: .cache/enron-spam-large
+          key: enron-spam-large-v1
+
+      - name: Run v20 precision benchmark
+        run: python3 -u tools/benchmark_v20_precision.py
+
+      - name: Show result
+        if: always()
+        run: |
+          if [ -f reports/v20-precision.md ]; then
+            cat reports/v20-precision.md
+            cat reports/v20-precision.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "v20 report missing" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Save evidence and guard
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v20-precision-10k
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            reports/v20-precision.json
+            reports/v20-precision.md
+            models/v20/
