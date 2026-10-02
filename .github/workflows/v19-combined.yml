@@ -1,0 +1,73 @@
+name: MailGuard v19 combined 10k
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'tools/benchmark_v19_combined.py'
+      - 'tools/benchmark_v16_reputation.py'
+      - 'tools/benchmark_v18_overnight.py'
+      - '.github/workflows/v19-combined.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OMP_NUM_THREADS: 6
+      MKL_NUM_THREADS: 6
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy scipy scikit-learn
+          python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Start Rspamd and Redis
+        run: |
+          docker compose down -v --remove-orphans || true
+          docker compose up -d redis rspamd
+
+      - name: Cache SpamAssassin corpus
+        uses: actions/cache@v4
+        with:
+          path: .cache/spamassassin-improved
+          key: spamassassin-public-improved-v1
+
+      - name: Cache Enron-Spam corpus
+        uses: actions/cache@v4
+        with:
+          path: .cache/enron-spam-large
+          key: enron-spam-large-v1
+
+      - name: Run v19 combined 10k benchmark
+        run: python3 -u tools/benchmark_v19_combined.py
+
+      - name: Show result
+        if: always()
+        run: |
+          if [ -f reports/v19-combined.md ]; then
+            cat reports/v19-combined.md
+            cat reports/v19-combined.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "v19 report missing" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Save evidence and model
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v19-combined-10k
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            reports/v19-combined.json
+            reports/v19-combined.md
+            models/v19/
