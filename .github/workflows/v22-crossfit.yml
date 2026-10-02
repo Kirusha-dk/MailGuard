@@ -1,0 +1,71 @@
+name: MailGuard v22 crossfit stack 10k
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'tools/benchmark_v22_crossfit.py'
+      - '.github/workflows/v22-crossfit.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OMP_NUM_THREADS: 6
+      MKL_NUM_THREADS: 6
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy scipy scikit-learn
+          python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Start Rspamd and Redis
+        run: |
+          docker compose down -v --remove-orphans || true
+          docker compose up -d redis rspamd
+
+      - name: Cache SpamAssassin corpus
+        uses: actions/cache@v4
+        with:
+          path: .cache/spamassassin-improved
+          key: spamassassin-public-improved-v1
+
+      - name: Cache Enron-Spam corpus
+        uses: actions/cache@v4
+        with:
+          path: .cache/enron-spam-large
+          key: enron-spam-large-v1
+
+      - name: Run v22 crossfit benchmark
+        run: python3 -u tools/benchmark_v22_crossfit.py
+
+      - name: Show result
+        if: always()
+        run: |
+          if [ -f reports/v22-crossfit.md ]; then
+            cat reports/v22-crossfit.md
+            cat reports/v22-crossfit.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "v22 report missing" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Save evidence and model
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v22-crossfit-10k
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            reports/v22-crossfit.json
+            reports/v22-crossfit.md
+            models/v22/
