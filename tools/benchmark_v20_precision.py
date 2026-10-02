@@ -26,15 +26,23 @@ SEED = 20261002
 
 
 def ordered_halves(rows):
-    idx = sorted(
-        range(len(rows)),
-        key=lambda i: (v18.original_date(rows[i]["path"]), str(rows[i]["path"])),
-    )
-    cut = len(idx) // 2
+    # Chronological split inside each class. A global time split can accidentally
+    # place only ham or only spam in one half because class date ranges differ.
     a = np.zeros(len(rows), dtype=bool)
     bmask = np.zeros(len(rows), dtype=bool)
-    a[idx[:cut]] = True
-    bmask[idx[cut:]] = True
+
+    for label in (0, 1):
+        idx = sorted(
+            [i for i, row in enumerate(rows) if int(bool(row["y"])) == label],
+            key=lambda i: (
+                v18.original_date(rows[i]["path"]),
+                str(rows[i]["path"]),
+            ),
+        )
+        cut = len(idx) // 2
+        a[idx[:cut]] = True
+        bmask[idx[cut:]] = True
+
     return a, bmask
 
 
