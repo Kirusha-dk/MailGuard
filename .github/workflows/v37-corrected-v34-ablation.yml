@@ -1,0 +1,79 @@
+name: MailGuard v37 corrected v34 ablation 50k
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'tools/benchmark_v37_corrected_v34_ablation.py'
+      - '.github/workflows/v37-corrected-v34-ablation.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    env:
+      OMP_NUM_THREADS: 6
+      MKL_NUM_THREADS: 6
+      HF_HOME: .cache/huggingface
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy scipy scikit-learn datasets pyarrow
+          python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Start Rspamd and Redis
+        run: |
+          docker compose down -v --remove-orphans || true
+          docker compose up -d redis rspamd
+
+      - name: Cache public corpora
+        uses: actions/cache@v4
+        with:
+          path: |
+            .cache/huggingface
+            .cache/spamassassin-improved
+            .cache/enron-spam-large
+          key: v37-public-corpora-v1
+          restore-keys: |
+            v36-public-corpora-v1
+            v35-public-corpora-v1
+            v34-public-corpora-v1
+
+      - name: Cache corrected rendered split
+        uses: actions/cache@v4
+        with:
+          path: .cache/v36-corrected-crosssource
+          key: v36-corrected-crosssource-v1
+
+      - name: Run v37 corrected-data v34 ablation
+        run: python3 -u tools/benchmark_v37_corrected_v34_ablation.py
+
+      - name: Show result
+        if: always()
+        run: |
+          if [ -f reports/v37-corrected-v34-50k.md ]; then
+            cat reports/v37-corrected-v34-50k.md
+            cat reports/v37-corrected-v34-50k.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "v37 report missing" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Save evidence and model
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v37-corrected-v34-ablation-50k
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            reports/v37-corrected-v34-50k.json
+            reports/v37-corrected-v34-50k.md
+            models/v37/
