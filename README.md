@@ -1,3 +1,9 @@
+> Текущая инженерная итерация: **v41, исправление проверки на тех же 50k письмах**.
+> Код и ограничения: [docs/V41.md](docs/V41.md).
+> [Запуски v41](https://github.com/Kirusha-dk/MailGuard/actions/workflows/v41-audited.yml).
+> Старые команды public benchmark ниже относятся к прежнему прототипу; его shell-скрипты
+> отсутствуют в этой версии репозитория. Для текущей проверки используйте workflow v41.
+
 # MailGuard v0.4.5
 
 Local C# prototype that adds a trainable risk model and human-review prioritization on top of Rspamd.
