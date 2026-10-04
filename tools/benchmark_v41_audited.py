@@ -54,11 +54,25 @@ def audited_learn(items):
             try:
                 reply = json.loads(text_reply)
             except json.JSONDecodeError:
-                # The controller may return UCL even for a successful HTTP 2xx learn.
-                # Do not treat arbitrary text as success: require an explicit
-                # success = true field and reject any explicit error field.
+                # Rspamd controller can return UCL for a successful HTTP 2xx learn.
+                # Require an explicit success=true and reject explicit error fields.
                 success = re.search(
-                    r'(?im)^\\s*["\\\']?success["\\\']?\\s*=\\s*true\\s*;?\\s*        except HTTPError as exc:
+                    r"(?im)^\\s*[\"']?success[\"']?\\s*=\\s*true\\s*;?\\s*$",
+                    text_reply,
+                )
+                error_match = re.search(
+                    r"(?im)^\\s*[\"']?error[\"']?\\s*=",
+                    text_reply,
+                )
+                if not success or error_match:
+                    raise RuntimeError(
+                        'Bayes learning returned neither successful JSON nor successful UCL'
+                    )
+                reply = {'success': True, '_format': 'ucl'}
+            else:
+                check_learning_reply(reply)
+                reply['_format'] = 'json'
+        except HTTPError as exc:
             # Short messages and duplicate Bayes token sequences may be unlearnable.
             # Count these explicitly; all other failures stop the benchmark.
             error = exc.read().decode('utf-8', 'replace').lower()
@@ -72,18 +86,25 @@ def audited_learn(items):
         else:
             counts[label + 'Learned'] += 1
             counts['replyFormat:' + reply.get('_format', 'unknown')] += 1
-        total = sum(counts.values())
-        if total % 500 == 0:
+
+        total = (
+            counts['hamLearned'] + counts['hamSkipped']
+            + counts['spamLearned'] + counts['spamSkipped']
+        )
+        if total and total % 500 == 0:
             HEALTH['learning'] = dict(counts)
             save_health()
             print('v41 verified learning', total, dict(counts), flush=True)
+
     HEALTH['learning'] = dict(counts)
     HEALTH['statAfterLearning'] = json.loads(b.get(b.CTRL + 'stat'))
     save_health()
     for label in ('ham', 'spam'):
         learned = counts[label + 'Learned']
-        if learned < 200 or learned < .8 * (learned + counts[label + 'Skipped']):
+        skipped = counts[label + 'Skipped']
+        if learned < 200 or learned < .8 * (learned + skipped):
             raise RuntimeError(f'Insufficient verified {label} learning')
+
     # Fail before the expensive neural fit if scanning is still incomplete.
     probe = []
     for label in (0, 1):
@@ -92,7 +113,6 @@ def audited_learn(items):
     rows = ORIGINAL_SCAN_MANY(probe, 'v41-baseline-probe', workers=8)
     HEALTH['probe'] = scan_health(rows)
     save_health()
-
 
 def capture_guard(base_rspamd, score, ham_risk, agreement, gate):
     primary = ((score >= gate['primaryThreshold'])
