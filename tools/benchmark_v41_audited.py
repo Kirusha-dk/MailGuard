@@ -54,21 +54,30 @@ def audited_learn(items):
             try:
                 reply = json.loads(text_reply)
             except json.JSONDecodeError:
-                # Rspamd controller can return UCL for a successful HTTP 2xx learn.
-                # Require an explicit success=true and reject explicit error fields.
-                success = re.search(
-                    r'(?im)\\bsuccess\\s*=\\s*true\\b',
-                    text_reply,
-                )
-                error_match = re.search(
-                    r'(?im)\\berror\\s*=',
-                    text_reply,
-                )
-                if not success or error_match:
-                    raise RuntimeError(
-                        'Bayes learning returned neither successful JSON nor successful UCL'
+                lower_reply = text_reply.lower()
+                if any(marker in lower_reply for marker in (
+                        'not enough tokens',
+                        'less tokens than required',
+                        'contains less tokens',
+                        'skip learning')):
+                    counts[label + 'Skipped'] += 1
+                    reply = {'success': False, '_format': 'skip'}
+                else:
+                    # Rspamd controller can return UCL for a successful HTTP 2xx learn.
+                    # Require an explicit success=true and reject explicit error fields.
+                    success = re.search(
+                        r'(?im)\\bsuccess\\s*=\\s*true\\b',
+                        text_reply,
                     )
-                reply = {'success': True, '_format': 'ucl'}
+                    error_match = re.search(
+                        r'(?im)\\berror\\s*=',
+                        text_reply,
+                    )
+                    if not success or error_match:
+                        raise RuntimeError(
+                            'Bayes learning returned neither successful JSON nor successful UCL'
+                        )
+                    reply = {'success': True, '_format': 'ucl'}
             else:
                 check_learning_reply(reply)
                 reply['_format'] = 'json'
@@ -84,7 +93,8 @@ def audited_learn(items):
                 save_health()
                 raise RuntimeError(f'Bayes learning failed (HTTP {exc.code})') from exc
         else:
-            counts[label + 'Learned'] += 1
+            if reply.get('_format') != 'skip':
+                counts[label + 'Learned'] += 1
             counts['replyFormat:' + reply.get('_format', 'unknown')] += 1
 
         total = (
