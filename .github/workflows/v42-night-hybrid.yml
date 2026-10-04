@@ -1,0 +1,65 @@
+name: MailGuard v42 overnight hybrid neural
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/train_v42_night_hybrid.py'
+      - '.github/workflows/v42-night-hybrid.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mailguard-v42-night-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 355
+    env:
+      OMP_NUM_THREADS: 6
+      MKL_NUM_THREADS: 6
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Restore EXACT frozen v40 corpus
+        uses: actions/cache/restore@v4
+        with:
+          path: .cache/v40-fresh50k
+          key: v40-fresh50k-v1
+          fail-on-cache-miss: true
+
+      - name: Install ML dependencies
+        run: |
+          python3 -m pip install --upgrade pip
+          python3 -m pip install numpy scikit-learn
+          python3 -m pip install torch --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Train v42 experimental byte hybrid overnight
+        run: python3 -u tools/train_v42_night_hybrid.py
+
+      - name: Publish summary
+        if: always()
+        run: |
+          if [ -f reports/v42-night-experimental.md ]; then
+            cat reports/v42-night-experimental.md
+            cat reports/v42-night-experimental.md >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "v42 night training did not reach the final report; inspect logs/checkpoint." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Save overnight checkpoint and report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v42-night-hybrid
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            models/v42-night/
+            reports/v42-night-experimental.json
+            reports/v42-night-experimental.md
