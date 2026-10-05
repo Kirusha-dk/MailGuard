@@ -46,56 +46,91 @@ def audited_scan_many(items, label, workers=8):
 
 def audited_learn(items):
     counts = Counter()
+    skip_markers = (
+        'not enough tokens',
+        'less tokens than required',
+        'contains less tokens',
+        'skip learning',
+        'already learned',
+        'already learnt',
+    )
+    failure_markers = (
+        'success = false',
+        '"success": false',
+        "'success': false",
+        'error =',
+        '"error":',
+    )
+
     for item in items:
         label = 'spam' if item['y'] else 'ham'
         try:
-            raw_reply = b.post(b.CTRL + 'learn' + label, item['path'].read_bytes(), 30)
-            text_reply = raw_reply.decode('utf-8', 'replace').strip()
-            try:
-                reply = json.loads(text_reply)
-            except json.JSONDecodeError:
-                lower_reply = text_reply.lower()
-                if any(marker in lower_reply for marker in (
-                        'not enough tokens',
-                        'less tokens than required',
-                        'contains less tokens',
-                        'skip learning')):
-                    counts[label + 'Skipped'] += 1
-                    reply = {'success': False, '_format': 'skip'}
-                else:
-                    # Rspamd controller can return UCL for a successful HTTP 2xx learn.
-                    # Require an explicit success=true and reject explicit error fields.
-                    success = re.search(
-                        r'(?im)\\bsuccess\\s*=\\s*true\\b',
-                        text_reply,
-                    )
-                    error_match = re.search(
-                        r'(?im)\\berror\\s*=',
-                        text_reply,
-                    )
-                    if not success or error_match:
-                        raise RuntimeError(
-                            'Bayes learning returned neither successful JSON nor successful UCL'
-                        )
-                    reply = {'success': True, '_format': 'ucl'}
-            else:
-                check_learning_reply(reply)
-                reply['_format'] = 'json'
+            raw_reply = b.post(
+                b.CTRL + 'learn' + label,
+                item['path'].read_bytes(),
+                30,
+            )
         except HTTPError as exc:
-            # Short messages and duplicate Bayes token sequences may be unlearnable.
-            # Count these explicitly; all other failures stop the benchmark.
-            error = exc.read().decode('utf-8', 'replace').lower()
-            if exc.code in (400, 404) and any(x in error for x in (
-                    'not enough tokens', 'already learned', 'already learnt')):
+            body = exc.read().decode('utf-8', 'replace').lower()
+            if exc.code in (400, 404) and any(x in body for x in skip_markers):
                 counts[label + 'Skipped'] += 1
+                counts['replyFormat:httpSkip'] += 1
             else:
                 HEALTH['learning'] = dict(counts)
+                HEALTH['learningFailure'] = {
+                    'httpCode': int(exc.code),
+                    'bodyPrefix': body[:500],
+                }
                 save_health()
-                raise RuntimeError(f'Bayes learning failed (HTTP {exc.code})') from exc
+                raise RuntimeError(
+                    f'Bayes learning failed (HTTP {exc.code})'
+                ) from exc
         else:
-            if reply.get('_format') != 'skip':
+            text_reply = raw_reply.decode('utf-8', 'replace').strip()
+            lower_reply = text_reply.lower()
+
+            if any(x in lower_reply for x in skip_markers):
+                counts[label + 'Skipped'] += 1
+                counts['replyFormat:bodySkip'] += 1
+            else:
+                if any(x in lower_reply for x in failure_markers):
+                    HEALTH['learning'] = dict(counts)
+                    HEALTH['learningFailure'] = {
+                        'httpCode': 200,
+                        'bodyPrefix': text_reply[:500],
+                    }
+                    save_health()
+                    raise RuntimeError(
+                        'Bayes learning returned an explicit failure'
+                    )
+
+                # A 2xx controller reply is accepted even if Rspamd serializes it
+                # as plain text/UCL instead of JSON. The real proof of learning is
+                # the post-training stat + Bayes-symbol probe below.
+                reply_format = 'empty2xx'
+                if text_reply:
+                    try:
+                        reply = json.loads(text_reply)
+                    except json.JSONDecodeError:
+                        reply_format = 'plain2xx'
+                    else:
+                        if not isinstance(reply, dict):
+                            raise RuntimeError(
+                                'Bayes learning returned unexpected JSON type'
+                            )
+                        if reply.get('success') is False or reply.get('error'):
+                            HEALTH['learningFailure'] = {
+                                'httpCode': 200,
+                                'bodyPrefix': text_reply[:500],
+                            }
+                            save_health()
+                            raise RuntimeError(
+                                'Bayes learning JSON reported failure'
+                            )
+                        reply_format = 'json2xx'
+
                 counts[label + 'Learned'] += 1
-            counts['replyFormat:' + reply.get('_format', 'unknown')] += 1
+                counts['replyFormat:' + reply_format] += 1
 
         total = (
             counts['hamLearned'] + counts['hamSkipped']
@@ -104,25 +139,61 @@ def audited_learn(items):
         if total and total % 500 == 0:
             HEALTH['learning'] = dict(counts)
             save_health()
-            print('v41 verified learning', total, dict(counts), flush=True)
+            print('v41 accepted learning', total, dict(counts), flush=True)
 
     HEALTH['learning'] = dict(counts)
-    HEALTH['statAfterLearning'] = json.loads(b.get(b.CTRL + 'stat'))
-    save_health()
+
+    stat_raw = b.get(b.CTRL + 'stat')
+    try:
+        HEALTH['statAfterLearning'] = json.loads(stat_raw)
+    except (json.JSONDecodeError, TypeError):
+        if isinstance(stat_raw, bytes):
+            stat_text = stat_raw.decode('utf-8', 'replace')
+        else:
+            stat_text = str(stat_raw)
+        HEALTH['statAfterLearningRaw'] = stat_text[:10000]
+
     for label in ('ham', 'spam'):
         learned = counts[label + 'Learned']
         skipped = counts[label + 'Skipped']
-        if learned < 200 or learned < .8 * (learned + skipped):
-            raise RuntimeError(f'Insufficient verified {label} learning')
+        attempted = learned + skipped
+        if learned < 200 or learned < .8 * max(1, attempted):
+            save_health()
+            raise RuntimeError(
+                f'Insufficient accepted {label} learning: '
+                f'learned={learned} skipped={skipped}'
+            )
 
-    # Fail before the expensive neural fit if scanning is still incomplete.
+    # Strong end-to-end proof: after learning, a balanced probe must produce
+    # both BAYES_HAM and BAYES_SPAM symbols. This verifies usable Bayes state
+    # regardless of how /learnham and /learnspam serialize successful replies.
     probe = []
     for label in (0, 1):
         candidates = [x for x in items if x['y'] == label]
-        probe.extend(candidates[::max(1, len(candidates) // 100)][:100])
-    rows = ORIGINAL_SCAN_MANY(probe, 'v41-baseline-probe', workers=8)
+        probe.extend(
+            candidates[::max(1, len(candidates) // 150)][:150]
+        )
+
+    rows = ORIGINAL_SCAN_MANY(
+        probe,
+        'v41-baseline-probe',
+        workers=8,
+    )
     HEALTH['probe'] = scan_health(rows)
+
+    symbol_counts = Counter(
+        name for row in rows for name, _ in row['symbols']
+    )
+    HEALTH['probe']['bayesHamHits'] = int(symbol_counts['BAYES_HAM'])
+    HEALTH['probe']['bayesSpamHits'] = int(symbol_counts['BAYES_SPAM'])
     save_health()
+
+    if not symbol_counts['BAYES_HAM'] or not symbol_counts['BAYES_SPAM']:
+        raise RuntimeError(
+            'Bayes learning was not usable: balanced probe lacks '
+            'BAYES_HAM or BAYES_SPAM'
+        )
+
 
 def capture_guard(base_rspamd, score, ham_risk, agreement, gate):
     primary = ((score >= gate['primaryThreshold'])
