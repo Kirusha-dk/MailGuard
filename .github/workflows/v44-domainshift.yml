@@ -1,0 +1,35 @@
+name: MailGuard v44 domain-shift engineering
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'tools/benchmark_v44_domainshift.py'
+      - '.github/workflows/v44-domainshift.yml'
+permissions: read-all
+jobs:
+  analyze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download frozen v43 evidence
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p .cache/v43-artifact reports
+          gh run download 37349697653 --repo Kirusha-dk/MailGuard --name mailguard-v43-newsource-v41-v42 --dir .cache/v43-artifact
+          cp .cache/v43-artifact/reports/v43-newsource-predictions.jsonl reports/
+      - name: Run v44 domain-shift analysis
+        run: python3 -u tools/benchmark_v44_domainshift.py
+      - name: Publish summary
+        if: always()
+        run: |
+          if [ -f reports/v44-domainshift.md ]; then cat reports/v44-domainshift.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - name: Save v44 evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v44-domainshift
+          retention-days: 30
+          path: reports/v44-domainshift.*
