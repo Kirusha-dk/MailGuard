@@ -29,8 +29,12 @@ def parse_scan(reply):
     if not isinstance(action, str) or not action:
         raise ValueError('Rspamd missing action')
     action = action.lower()
-    if action in {'soft reject', 'greylist'}:
-        raise ValueError('Deferred scan is not a completed binary classification')
+    # With Flags: pass_all Rspamd can still report the score-band action
+    # "greylist" even when the greylisting module is disabled. The scan is
+    # nevertheless complete and includes all symbols, so keep it as a
+    # non-spam baseline decision. A real soft reject remains invalid here.
+    if action == 'soft reject':
+        raise ValueError('Soft-rejected scan is not a completed binary classification')
     symbols = reply.get('symbols')
     if not isinstance(symbols, dict):
         raise ValueError('Rspamd missing symbols')
