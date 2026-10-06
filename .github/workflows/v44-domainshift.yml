@@ -20,6 +20,8 @@ jobs:
           mkdir -p .cache/v43-artifact reports
           gh run download 37349697653 --repo Kirusha-dk/MailGuard --name mailguard-v43-newsource-v41-v42 --dir .cache/v43-artifact
           cp .cache/v43-artifact/reports/v43-newsource-predictions.jsonl reports/
+      - name: Install analysis dependency
+        run: python3 -m pip install numpy
       - name: Run v44 domain-shift analysis
         run: python3 -u tools/benchmark_v44_domainshift.py
       - name: Publish summary
