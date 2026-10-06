@@ -15,7 +15,6 @@ from pathlib import Path
 
 import numpy as np
 
-import benchmark_v43_newsource_v41_v42 as v43
 
 REPORTS = Path("reports")
 PRED = REPORTS / "v43-newsource-predictions.jsonl"
