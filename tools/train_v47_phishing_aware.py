@@ -36,18 +36,18 @@ AI_DATASET_NAME = "premsaidhulipala/ai-phishing-dataset"
 
 PHISHING_CUES = [
     re.compile(p, re.I) for p in [
-        r"\\b(?:verify|confirm|validate)\\s+(?:your\\s+)?(?:account|identity|password|email|payment)\\b",
-        r"\\b(?:account|mailbox|password|access)\\s+(?:has\\s+been\\s+)?(?:suspend|lock|disable|expire)",
-        r"\\b(?:unusual|suspicious|unauthorized)\\s+(?:activity|login|sign[- ]?in|transaction)",
-        r"\\b(?:click|tap|follow)\\s+(?:here|the\\s+link|below)\\b",
-        r"\\b(?:within|in)\\s+(?:the\\s+next\\s+)?(?:24\\s+hours|one\\s+hour|today|immediately)\\b",
-        r"\\b(?:reset|update|restore|unlock)\\s+(?:your\\s+)?(?:password|account|access|payment|billing)\\b",
-        r"\\b(?:bank|credit\\s+card|wire\\s+transfer|gift\\s+card|crypto(?:currency)?)\\b",
-        r"\\b(?:invoice|payment|refund|tax\\s+return|delivery|tracking\\s+number)\\b",
-        r"\\b(?:microsoft\\s+365|office\\s+365|paypal|apple\\s+id|google\\s+account|docusign)\\b",
-        r"\\b(?:confidential|urgent|immediate action|required action|final warning)\\b",
-        r"\\b(?:login|sign\\s+in|authenticate|credentials|security code|one[- ]time code)\\b",
-        r"\\b(?:beneficiary|payroll|direct deposit|purchase order|bank details)\\b",
+        r"\b(?:verify|confirm|validate)\s+(?:your\s+)?(?:account|identity|password|email|payment)\b",
+        r"\b(?:account|mailbox|password|access)\s+(?:has\s+been\s+)?(?:suspend|lock|disable|expire)",
+        r"\b(?:unusual|suspicious|unauthorized)\s+(?:activity|login|sign[- ]?in|transaction)",
+        r"\b(?:click|tap|follow)\s+(?:here|the\s+link|below)\b",
+        r"\b(?:within|in)\s+(?:the\s+next\s+)?(?:24\s+hours|one\s+hour|today|immediately)\b",
+        r"\b(?:reset|update|restore|unlock)\s+(?:your\s+)?(?:password|account|access|payment|billing)\b",
+        r"\b(?:bank|credit\s+card|wire\s+transfer|gift\s+card|crypto(?:currency)?)\b",
+        r"\b(?:invoice|payment|refund|tax\s+return|delivery|tracking\s+number)\b",
+        r"\b(?:microsoft\s+365|office\s+365|paypal|apple\s+id|google\s+account|docusign)\b",
+        r"\b(?:confidential|urgent|immediate action|required action|final warning)\b",
+        r"\b(?:login|sign\s+in|authenticate|credentials|security code|one[- ]time code)\b",
+        r"\b(?:beneficiary|payroll|direct deposit|purchase order|bank details)\b",
     ]
 ]
 
@@ -411,7 +411,7 @@ def main():
             "auc": float(roc_auc_score(y, p)),
         })
         candidates.append((m, p))
-        print("v46", name, m["recall"], m["fp"], m["fpr"], m["worstSpamSourceRecall"], flush=True)
+        print("v47", name, m["recall"], m["fp"], m["fpr"], m["worstSpamSourceRecall"], flush=True)
 
     # Blend logits; every component is OOF for each row.
     for alpha in np.linspace(0.0, 1.0, 21):
@@ -461,7 +461,7 @@ def main():
         "targetFpr": TARGET_FPR,
         "note": "Fast source-held-out engineering candidate; not final lockbox evidence.",
     }
-    joblib.dump(artifact, MODELS / "v46-hybrid.joblib", compress=3)
+    joblib.dump(artifact, MODELS / "v47-hybrid.joblib", compress=3)
 
     report = {
         "version": "v47-phishing-aware-hybrid",
@@ -484,7 +484,7 @@ def main():
         "bestOof": best,
         "topCandidates": [m for m, _ in candidates[:8]],
     }
-    (REPORTS / "v46-semantic-hybrid.json").write_text(json.dumps(report, indent=2))
+    (REPORTS / "v47-phishing-aware-hybrid.json").write_text(json.dumps(report, indent=2))
 
     b = best
     lines = [
@@ -502,7 +502,7 @@ def main():
         f"| AUC | {b['auc']:.5f} |", "",
         "Final target remains >=90% recall with <=100 FP / 25k ham.",
     ]
-    (REPORTS / "v46-semantic-hybrid.md").write_text("\n".join(lines) + "\n")
+    (REPORTS / "v47-phishing-aware-hybrid.md").write_text("\n".join(lines) + "\n")
     print("\n".join(lines), flush=True)
 
 
