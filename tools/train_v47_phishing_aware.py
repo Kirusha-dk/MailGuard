@@ -32,7 +32,7 @@ DEV_FPR = 0.0024
 TARGET_FPR = 0.004
 MAX_PER_SOURCE_CLASS = 1400
 MODEL_NAME = "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-AI_DATASET_NAME = "premsaidhulipala/ai-phishing-dataset"
+AI_DATASET_NAME = "David-Egea/phishing-texts"
 
 PHISHING_CUES = [
     re.compile(p, re.I) for p in [
@@ -210,34 +210,26 @@ def load_rows():
             add_row(rows, seen, "TurkishMail", int(r.get("labels") or 0),
                     "", r.get("text") or "")
 
-    # Add a second independent phishing corpus. It gives the model examples
-    # beyond old bulk-spam corpora when evaluating a held-out phishing source.
-    try:
-        ai_ds = load_dataset(AI_DATASET_NAME)
-    except Exception as first_error:
-        print("primary AI phishing dataset unavailable:", repr(first_error), flush=True)
-        ai_ds = load_dataset("premsaid/phish-detector")
-    ai_rows = ai_ds["train"] if hasattr(ai_ds, "keys") and "train" in ai_ds else ai_ds
+    # Add phishing examples from an accessible dataset. Source may overlap
+    # earlier corpora; exact canonical dedup is applied, but this is not an
+    # independent final test set.
+    ai_ds = load_dataset(AI_DATASET_NAME, split="train")
     ai_added = 0
-    for row in ai_rows:
-        text_value = row.get("Email Text") or row.get("email_text") or row.get("text") or row.get("body") or ""
-        raw_label = row.get("label")
+    for row in ai_ds:
+        text_value = row.get("text") or ""
+        raw_label = row.get("phishing")
         if raw_label not in (0, 1):
-            label_text = str(row.get("Email Type") or row.get("label_str") or "").lower()
-            if "phish" in label_text:
-                raw_label = 1
-            elif "safe" in label_text or "legitimate" in label_text or "benign" in label_text:
-                raw_label = 0
-            else:
-                continue
+            continue
         c = canonical_fields("", text_value)
         if len(c["ngram_text"]) < 40 or c["identity"] in seen:
             continue
         seen.add(c["identity"])
-        c.update({"source": "AIPhishing-2025", "y": int(raw_label)})
+        c.update({"source": "PhishingTexts-2024", "y": int(raw_label)})
         rows.append(c)
         ai_added += 1
-    print("v47 independent phishing rows added", ai_added, flush=True)
+    if ai_added < 100:
+        raise RuntimeError(f"Expected phishing training data, got {ai_added} usable rows")
+    print("v47 phishing training rows added", ai_added, flush=True)
 
     # Deterministic source x class cap for a fast semantic smoke run.
     buckets = defaultdict(list)
@@ -257,7 +249,7 @@ def source_fold(source):
         "TREC-05": 0, "JoePhishing-2021": 0,
         "CEAS-08": 1, "BusinessSynthetic-2025": 1,
         "TREC-07": 2, "TurkishMail": 2,
-        "Enron": 3, "AIPhishing-2025": 3,
+        "Enron": 3, "PhishingTexts-2024": 3,
         "TREC-06": 4, "Assassin": 4, "Ling": 4,
     }
     return table.get(source, int(hashlib.sha256(source.encode()).hexdigest()[:8], 16) % 5)
