@@ -17,8 +17,13 @@ from train_v47_phishing_aware import canonical_fields, from_eml, metrics_at
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--artifact-root', default='.cache/v48-artifact')
+    parser.add_argument('--count', type=int, default=50000)
+    parser.add_argument('--max-fp', type=int, default=100)
+    parser.add_argument('--output', default='reports/v48-fresh')
     args = parser.parse_args()
-    out = Path('reports/v48-fresh')
+    if args.count <= 0 or args.max_fp < 0:
+        parser.error('Invalid count or FP budget')
+    out = Path(args.output)
     out.mkdir(parents=True, exist_ok=True)
     files = list(Path(args.artifact_root).rglob('v48-full/model.joblib'))
     if len(files) != 1:
@@ -67,7 +72,7 @@ def main():
     pool = [r for k, r in candidates.items() if k not in conflicts]
     # Selection uses only a seeded content hash; labels and model scores do not rank rows.
     pool.sort(key=lambda r: hashlib.sha256(('v48-fresh-20261010:' + r['identity']).encode()).hexdigest())
-    rows = pool[:50000]
+    rows = pool[:args.count]
     manifest = dict(modelSha256=model_hash, threshold=float(artifact['threshold']),
                     oldFingerprint=audit, datasetFingerprints=revisions,
                     available=len(pool), selected=len(rows), exclusions=dict(excluded),
@@ -89,8 +94,8 @@ def main():
     p = np.asarray(scores)
     metrics = metrics_at(y, p, artifact['threshold'], sources)
     smoke = metrics_at(y[:1000], p[:1000], artifact['threshold'], sources[:1000])
-    passed = len(rows) == 50000 and metrics['recall'] >= .90 and metrics['fp'] <= 100
-    report = dict(count=len(rows), available=len(pool), modelSha256=model_hash,
+    passed = len(rows) == args.count and metrics['recall'] >= .90 and metrics['fp'] <= args.max_fp
+    report = dict(requestedCount=args.count, maxFp=args.max_fp, count=len(rows), available=len(pool), modelSha256=model_hash,
                   thresholdUnchanged=True, modelRefit=False, testLabelsUsedForTuning=False,
                   smoke1000=smoke, metrics=metrics, goalPassed=passed,
                   warning=manifest['warning'])
@@ -103,9 +108,9 @@ def main():
     text = ('# Frozen v48 on unused public mail\n\n' + manifest['warning'] + '\n\n'
             '| N | Recall | FP | FN |\n|---:|---:|---:|---:|\n'
             f"| {len(rows)} | {metrics['recall']:.2%} | {metrics['fp']} | {metrics['fn']} |\n\n"
-            f'50k quality goal passed: {passed}\n')
-    if len(rows) < 50000:
-        text += f'Insufficient unique unseen mail: short by {50000-len(rows)}. No duplicated refill.\n'
+            f'{args.count}-message quality goal passed: {passed}\n')
+    if len(rows) < args.count:
+        text += f'Insufficient unique unseen mail: short by {args.count-len(rows)}. No duplicated refill.\n'
     (out / 'report.md').write_text(text)
     print(text, flush=True)
 
