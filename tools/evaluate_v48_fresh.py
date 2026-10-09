@@ -1,0 +1,114 @@
+#!/usr/bin/env python3
+"""Evaluate the exact v48 artifact without fitting or threshold adjustment."""
+import argparse
+import csv
+import hashlib
+import json
+from collections import Counter
+from pathlib import Path
+import joblib
+import numpy as np
+from datasets import load_dataset
+from benchmark_v48_calibrated import features
+from rspamd_benchmark_audit import load_frozen_v40
+from train_v47_phishing_aware import canonical_fields, from_eml, metrics_at
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--artifact-root', default='.cache/v48-artifact')
+    args = parser.parse_args()
+    out = Path('reports/v48-fresh')
+    out.mkdir(parents=True, exist_ok=True)
+    files = list(Path(args.artifact_root).rglob('v48-full/model.joblib'))
+    if len(files) != 1:
+        raise RuntimeError(f'Expected one frozen full v48 model, found {files}')
+    model_path = files[0]
+    artifact = joblib.load(model_path)
+    model_hash = hashlib.sha256(model_path.read_bytes()).hexdigest()
+    frozen, audit = load_frozen_v40('.cache/v40-fresh50k')
+    blocked = set()
+    for split in ('train', 'val', 'test'):
+        for r in frozen[split]:
+            blocked.add(from_eml(r['path'].read_bytes())['identity'])
+    candidates, conflicts = {}, set()
+    excluded = Counter()
+
+    def add(subject, body, sender, label, source):
+        if type(label) is not int or label not in (0, 1):
+            raise ValueError(f'Invalid label in {source}')
+        c = canonical_fields(subject, body, sender)
+        key = c['identity']
+        if key in blocked:
+            excluded['oldContent'] += 1
+            return
+        if len(str(body or '').strip()) < 20:
+            excluded['shortContent'] += 1
+            return
+        if key in candidates:
+            excluded['duplicateCandidate'] += 1
+            if candidates[key]['y'] != label:
+                conflicts.add(key)
+            return
+        candidates[key] = dict(c, y=label, source=source)
+
+    ds = load_dataset('JinqiangDing/seven-phishing-email-datasets', split='train')
+    revisions = {'seven': str(ds._fingerprint)}
+    for r in ds:
+        # Match the neutral fallback used in frozen v40's sanitized renderer.
+        add(r.get('subject') or '', r.get('text') or '',
+            r.get('sender') or 'unknown@example.invalid', int(r['label']),
+            str(r.get('dataset_name') or 'unknown'))
+    extra = load_dataset('SetFit/enron_spam')
+    for split, rows in extra.items():
+        revisions['SetFit/' + split] = str(rows._fingerprint)
+        for r in rows:
+            add('', r['text'], 'unknown@example.invalid', int(r['label']), 'SetFit-Enron')
+    pool = [r for k, r in candidates.items() if k not in conflicts]
+    # Selection uses only a seeded content hash; labels and model scores do not rank rows.
+    pool.sort(key=lambda r: hashlib.sha256(('v48-fresh-20261010:' + r['identity']).encode()).hexdigest())
+    rows = pool[:50000]
+    manifest = dict(modelSha256=model_hash, threshold=float(artifact['threshold']),
+                    oldFingerprint=audit, datasetFingerprints=revisions,
+                    available=len(pool), selected=len(rows), exclusions=dict(excluded),
+                    conflictingCandidates=len(conflicts),
+                    selection='seeded content hash; no score-based or class-based selection',
+                    warning='Unseen by v48 after exact-content exclusion; historical sources, not proof of production stability. Near-duplicates may remain.',
+                    rows=[{'identity':r['identity'], 'source':r['source'], 'label':r['y']} for r in rows])
+    (out / 'manifest.json').write_text(json.dumps(manifest, indent=2))
+    if not rows or len(set(r['y'] for r in rows)) != 2:
+        raise RuntimeError('Fresh evaluation lacks usable rows of both classes')
+    scores = []
+    for start in range(0, len(rows), 1000):
+        batch = rows[start:start + 1000]
+        x = artifact['tfidf'].transform(features([r['ngram_text'] for r in batch]))
+        scores.extend(artifact['model'].predict_proba(x)[:, 1].tolist())
+        print('fresh v48 scored', start + len(batch), flush=True)
+    y = np.asarray([r['y'] for r in rows])
+    sources = [r['source'] for r in rows]
+    p = np.asarray(scores)
+    metrics = metrics_at(y, p, artifact['threshold'], sources)
+    smoke = metrics_at(y[:1000], p[:1000], artifact['threshold'], sources[:1000])
+    passed = len(rows) == 50000 and metrics['recall'] >= .90 and metrics['fp'] <= 100
+    report = dict(count=len(rows), available=len(pool), modelSha256=model_hash,
+                  thresholdUnchanged=True, modelRefit=False, testLabelsUsedForTuning=False,
+                  smoke1000=smoke, metrics=metrics, goalPassed=passed,
+                  warning=manifest['warning'])
+    (out / 'report.json').write_text(json.dumps(report, indent=2))
+    with (out / 'predictions.csv').open('w') as f:
+        w = csv.writer(f)
+        w.writerow(['identity', 'source', 'label', 'score', 'predictedSpam'])
+        for r, score in zip(rows, p):
+            w.writerow([r['identity'], r['source'], r['y'], float(score), int(score >= artifact['threshold'])])
+    text = ('# Frozen v48 on unused public mail\n\n' + manifest['warning'] + '\n\n'
+            '| N | Recall | FP | FN |\n|---:|---:|---:|---:|\n'
+            f"| {len(rows)} | {metrics['recall']:.2%} | {metrics['fp']} | {metrics['fn']} |\n\n"
+            f'50k quality goal passed: {passed}\n')
+    if len(rows) < 50000:
+        text += f'Insufficient unique unseen mail: short by {50000-len(rows)}. No duplicated refill.\n'
+    (out / 'report.md').write_text(text)
+    print(text, flush=True)
+
+
+if __name__ == '__main__':
+    main()
