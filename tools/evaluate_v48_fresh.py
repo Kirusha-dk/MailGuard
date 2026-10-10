@@ -85,13 +85,25 @@ def main():
     (out / 'manifest.json').write_text(json.dumps(manifest, indent=2))
     if not rows or len(set(r['y'] for r in rows)) != 2:
         raise RuntimeError('Fresh evaluation lacks usable rows of both classes')
+    neural = None
+    if artifact.get('neuralWeight', 0) > 0:
+        import torch
+        from train_v50_neural import ByteCNN, predict_neural, mix
+        torch.set_num_threads(4)
+        neural = ByteCNN()
+        checkpoint = torch.load(model_path.parent / artifact['neuralCheckpoint'], map_location='cpu', weights_only=True)
+        neural.load_state_dict(checkpoint['state'])
     scores = []
     for start in range(0, len(rows), 1000):
         batch = rows[start:start + 1000]
         x = artifact['tfidf'].transform(features([r['ngram_text'] for r in batch]))
         if artifact.get('nbRatio') is not None:
             x = x.multiply(artifact['nbRatio']).tocsr()
-        scores.extend(artifact['model'].predict_proba(x)[:, 1].tolist())
+        prediction = artifact['model'].predict_proba(x)[:, 1]
+        if neural is not None:
+            npred = predict_neural(neural, [r['ngram_text'] for r in batch])
+            prediction = mix(prediction, npred, artifact['neuralWeight'])
+        scores.extend(prediction.tolist())
         print('fresh v48 scored', start + len(batch), flush=True)
     y = np.asarray([r['y'] for r in rows])
     sources = [r['source'] for r in rows]
