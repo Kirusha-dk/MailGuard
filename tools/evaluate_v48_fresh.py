@@ -102,7 +102,11 @@ def main():
         prediction = artifact['model'].predict_proba(x)[:, 1]
         if neural is not None:
             npred = predict_neural(neural, [r['ngram_text'] for r in batch])
-            prediction = mix(prediction, npred, artifact['neuralWeight'])
+            if artifact.get('version') == 'v51-residual-neural':
+                from train_v51_residual import predict_scores
+                prediction = predict_scores(artifact, prediction, npred)
+            else:
+                prediction = mix(prediction, npred, artifact['neuralWeight'])
         scores.extend(prediction.tolist())
         print('fresh v48 scored', start + len(batch), flush=True)
     y = np.asarray([r['y'] for r in rows])
