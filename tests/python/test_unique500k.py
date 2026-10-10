@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools'))
-from evaluate_v54_unique500k import Pool, content_keys, csdmc_label
+from evaluate_v54_unique500k import Pool, content_keys, csdmc_label, has_mail_headers
 from train_v47_phishing_aware import canonical_fields
 
 
@@ -47,6 +47,10 @@ class UniqueMailTests(unittest.TestCase):
         self.pool.add(self.row('The meeting will cover annual staffing plans.'), 0, 'one', '1')
         self.pool.add(self.row('Congratulations you won an unexpected luxury yacht.'), 1, 'two', '2')
         self.assertEqual(self.pool.count(), 2)
+
+    def test_non_email_archive_files_are_rejected(self):
+        self.assertFalse(has_mail_headers(b"Some long README about the email collection."))
+        self.assertTrue(has_mail_headers(b"From: bait@example.org\nSubject: Sample mail\n\nActual mail content"))
 
     def test_original_csdmc_mapping_is_reversed(self):
         self.assertEqual(csdmc_label('1'), 0)  # original ham=1

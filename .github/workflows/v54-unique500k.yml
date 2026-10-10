@@ -9,7 +9,7 @@ permissions:
   actions: read
 concurrency:
   group: v54-unique500k-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   evaluate:
     runs-on: ubuntu-24.04

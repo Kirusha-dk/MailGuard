@@ -14,6 +14,8 @@ import tempfile
 import unicodedata
 import zipfile
 from collections import Counter
+from email import policy
+from email.parser import BytesParser
 from pathlib import Path, PurePosixPath
 from urllib.request import Request, urlopen
 
@@ -131,6 +133,14 @@ def collect_csdmc(pool, work):
     return provenance
 
 
+def has_mail_headers(raw):
+    try:
+        message = BytesParser(policy=policy.default).parsebytes(raw, headersonly=True)
+        return bool(message.get("from") and any(message.get(k) for k in ("date", "subject", "received")))
+    except Exception:
+        return False
+
+
 def collect_archive(pool, year, work):
     path = work / f'{year}.7z'
     provenance = download(f'https://untroubled.org/spam/{year}.7z', path)
@@ -157,7 +167,11 @@ def collect_archive(pool, year, work):
         if file.stat().st_size > 8 * 1024 * 1024:
             pool.stats['largeFile'] += 1
             continue
-        row = from_eml(file.read_bytes())
+        raw = file.read_bytes()
+        if not has_mail_headers(raw):
+            pool.stats['notRfc822Mail'] += 1
+            continue
+        row = from_eml(raw)
         pool.add(row, 1, f'SpamArchive-{year}', str(file.relative_to(dest)))
         read += 1
         if read % 10000 == 0:
