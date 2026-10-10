@@ -92,8 +92,14 @@ def main():
         from train_v51_residual import scored_union
         torch.set_num_threads(4)
         complement = load_components(model_path.parent)
+    margin = None
+    if artifact.get('version') == 'v54-margin-rescue':
+        import torch
+        from train_v54_margin import load_components as load_margin, predict_margin_union
+        torch.set_num_threads(4)
+        margin = load_margin(model_path.parent)
     neural = None
-    if complement is None and artifact.get('neuralWeight', 0) > 0:
+    if complement is None and margin is None and artifact.get('neuralWeight', 0) > 0:
         import torch
         from train_v50_neural import ByteCNN, predict_neural, mix
         torch.set_num_threads(4)
@@ -122,6 +128,8 @@ def main():
         if complement is not None:
             protected, lexical = component_scores(*complement, [r['ngram_text'] for r in batch])
             prediction = scored_union(protected, lexical, artifact['threshold'])
+        if margin is not None:
+            prediction = predict_margin_union(*margin, [r['ngram_text'] for r in batch])
         scores.extend(prediction.tolist())
         print('fresh v48 scored', start + len(batch), flush=True)
     y = np.asarray([r['y'] for r in rows])
