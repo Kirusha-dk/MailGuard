@@ -90,7 +90,12 @@ def main():
         import torch
         from train_v50_neural import ByteCNN, predict_neural, mix
         torch.set_num_threads(4)
-        neural = ByteCNN()
+        if artifact.get('neuralArchitecture') == 'word-hash-v52':
+            from train_v52_wordnet import WordNet, predict_words
+            neural = WordNet()
+            predict_neural = predict_words
+        else:
+            neural = ByteCNN()
         checkpoint = torch.load(model_path.parent / artifact['neuralCheckpoint'], map_location='cpu', weights_only=True)
         neural.load_state_dict(checkpoint['state'])
     scores = []
