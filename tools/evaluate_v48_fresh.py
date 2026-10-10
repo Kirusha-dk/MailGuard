@@ -85,8 +85,15 @@ def main():
     (out / 'manifest.json').write_text(json.dumps(manifest, indent=2))
     if not rows or len(set(r['y'] for r in rows)) != 2:
         raise RuntimeError('Fresh evaluation lacks usable rows of both classes')
+    complement = None
+    if artifact.get('version') == 'v53-complement':
+        import torch
+        from train_v53_complement import load_components, component_scores
+        from train_v51_residual import scored_union
+        torch.set_num_threads(4)
+        complement = load_components(model_path.parent)
     neural = None
-    if artifact.get('neuralWeight', 0) > 0:
+    if complement is None and artifact.get('neuralWeight', 0) > 0:
         import torch
         from train_v50_neural import ByteCNN, predict_neural, mix
         torch.set_num_threads(4)
@@ -112,6 +119,9 @@ def main():
                 prediction = predict_scores(artifact, prediction, npred)
             else:
                 prediction = mix(prediction, npred, artifact['neuralWeight'])
+        if complement is not None:
+            protected, lexical = component_scores(*complement, [r['ngram_text'] for r in batch])
+            prediction = scored_union(protected, lexical, artifact['threshold'])
         scores.extend(prediction.tolist())
         print('fresh v48 scored', start + len(batch), flush=True)
     y = np.asarray([r['y'] for r in rows])
