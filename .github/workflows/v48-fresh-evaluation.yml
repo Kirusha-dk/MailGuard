@@ -1,0 +1,47 @@
+name: MailGuard frozen v48 100k evaluation
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/evaluate_v48_fresh.py', '.github/workflows/v48-fresh-evaluation.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: v48-fresh-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  evaluate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v40-fresh50k
+          key: v40-fresh50k-v1
+          fail-on-cache-miss: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v48-evidence
+          run-id: 37990866495
+          github-token: ${{ github.token }}
+          path: .cache/v48-artifact
+      - run: python3 -m pip install numpy scipy scikit-learn joblib datasets
+      - run: python3 -m py_compile tools/evaluate_v48_fresh.py
+      - run: python3 -u tools/evaluate_v48_fresh.py --count 100000 --max-fp 100 --output reports/v48-fresh100k
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/v48-fresh100k/report.md ]; then
+            cat reports/v48-fresh100k/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v48-fresh100k-evidence
+          path: reports/v48-fresh100k/
+          retention-days: 30

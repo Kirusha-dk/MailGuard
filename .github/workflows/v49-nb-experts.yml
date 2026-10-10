@@ -1,0 +1,72 @@
+name: MailGuard v49 NB experts toward 98 percent
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/benchmark_v49_nbsvm.py', '.github/workflows/v49-nb-experts.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: v49-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v40-fresh50k
+          key: v40-fresh50k-v1
+          fail-on-cache-miss: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v48-evidence
+          run-id: 37990866495
+          github-token: ${{ github.token }}
+          path: .cache/v48-artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v48-fresh100k-evidence
+          run-id: 38000388880
+          github-token: ${{ github.token }}
+          path: .cache/v48-errors
+      - run: python3 -m pip install numpy scipy scikit-learn joblib datasets
+      - run: python3 -m unittest discover -s tests/python -p 'test_v*.py'
+      - name: Summarize old errors without training on them
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(next(Path('.cache/v48-errors').rglob('report.json')).read_text())
+          lines = ['# v48 error distribution', '', '| Source | Spam | Recall | FP |', '|---|---:|---:|---:|']
+          for src, m in report['metrics']['bySource'].items():
+              recall = 'n/a' if m['recall'] is None else format(m['recall'], '.2%')
+              lines.append(f"| {src} | {m['spam']} | {recall} | {m['fp']} |")
+          Path('reports').mkdir(exist_ok=True)
+          Path('reports/v48-error-distribution.md').write_text('\n'.join(lines))
+          print('\n'.join(lines))
+          PY
+      - name: Fast 1000-row experiment
+        run: python3 -u tools/benchmark_v49_nbsvm.py --limit 1000
+      - name: Full training and independent calibration
+        run: python3 -u tools/benchmark_v49_nbsvm.py --limit 0 --output reports/v49-full
+      - name: Fixed-model engineering comparison
+        run: python3 -u tools/evaluate_v48_fresh.py --artifact-root reports --model-subdir v49-full --count 100000 --min-recall .98 --max-fp 100 --output reports/v49-engineering
+      - name: Summary
+        if: always()
+        run: |
+          for report in reports/v48-error-distribution.md reports/v49-full/report.md reports/v49-engineering/report.md; do
+            if [ -f "$report" ]; then cat "$report" >> "$GITHUB_STEP_SUMMARY"; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v49-evidence
+          path: reports/
+          retention-days: 30
