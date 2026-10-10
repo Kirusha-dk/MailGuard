@@ -20,12 +20,14 @@ def main():
     parser.add_argument('--count', type=int, default=50000)
     parser.add_argument('--max-fp', type=int, default=100)
     parser.add_argument('--output', default='reports/v48-fresh')
+    parser.add_argument('--model-subdir', default='v48-full')
+    parser.add_argument('--min-recall', type=float, default=.90)
     args = parser.parse_args()
     if args.count <= 0 or args.max_fp < 0:
         parser.error('Invalid count or FP budget')
     out = Path(args.output)
     out.mkdir(parents=True, exist_ok=True)
-    files = list(Path(args.artifact_root).rglob('v48-full/model.joblib'))
+    files = list(Path(args.artifact_root).rglob(args.model_subdir + '/model.joblib'))
     if len(files) != 1:
         raise RuntimeError(f'Expected one frozen full v48 model, found {files}')
     model_path = files[0]
@@ -87,6 +89,8 @@ def main():
     for start in range(0, len(rows), 1000):
         batch = rows[start:start + 1000]
         x = artifact['tfidf'].transform(features([r['ngram_text'] for r in batch]))
+        if artifact.get('nbRatio') is not None:
+            x = x.multiply(artifact['nbRatio']).tocsr()
         scores.extend(artifact['model'].predict_proba(x)[:, 1].tolist())
         print('fresh v48 scored', start + len(batch), flush=True)
     y = np.asarray([r['y'] for r in rows])
@@ -94,8 +98,8 @@ def main():
     p = np.asarray(scores)
     metrics = metrics_at(y, p, artifact['threshold'], sources)
     smoke = metrics_at(y[:1000], p[:1000], artifact['threshold'], sources[:1000])
-    passed = len(rows) == args.count and metrics['recall'] >= .90 and metrics['fp'] <= args.max_fp
-    report = dict(requestedCount=args.count, maxFp=args.max_fp, count=len(rows), available=len(pool), modelSha256=model_hash,
+    passed = len(rows) == args.count and metrics['recall'] >= args.min_recall and metrics['fp'] <= args.max_fp
+    report = dict(minRecall=args.min_recall, requestedCount=args.count, maxFp=args.max_fp, count=len(rows), available=len(pool), modelSha256=model_hash,
                   thresholdUnchanged=True, modelRefit=False, testLabelsUsedForTuning=False,
                   smoke1000=smoke, metrics=metrics, goalPassed=passed,
                   warning=manifest['warning'])
