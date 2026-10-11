@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline evaluation of frozen v51 on locally labelled .eml files."""
+"""Offline evaluation of a frozen MailGuard bundle on locally labelled .eml files."""
 import argparse
 import csv
 import hashlib
@@ -21,6 +21,7 @@ def main():
     parser.add_argument('--ham', required=True)
     parser.add_argument('--output', required=True)
     parser.add_argument('--batch-size', type=int, default=128)
+    parser.add_argument('--profile', choices=('conservative', 'high-recall'), default='conservative')
     args = parser.parse_args()
     if args.batch_size < 1:
         parser.error('--batch-size must be positive')
@@ -44,12 +45,28 @@ def main():
     modeldir = Path(args.model_dir)
     modelpath, checkpoint = modeldir / 'model.joblib', modeldir / 'neural.pt'
     artifact = joblib.load(modelpath)
-    if artifact.get('version') != 'v51-residual-neural':
-        parser.error('This checker requires the frozen v51 model')
     torch.set_num_threads(4)
-    neural = ByteCNN()
-    neural.load_state_dict(torch.load(checkpoint, map_location='cpu', weights_only=True)['state'])
-    threshold = artifact['threshold']
+    if artifact.get('version') == 'v56-consensus':
+        from train_v56_consensus import load_bundle, predict_texts
+        bundle = load_bundle(modeldir)
+        threshold = artifact['profiles'][args.profile]['threshold']
+        version, profile = 56, args.profile
+        checkpoint = modeldir / 'v54/neural.pt'
+        component_hashes = artifact['components']
+        def score_texts(texts):
+            return predict_texts(bundle, texts, profile)
+    elif artifact.get('version') == 'v51-residual-neural':
+        if args.profile != 'conservative':
+            parser.error('--profile high-recall is available only for v56')
+        neural = ByteCNN()
+        neural.load_state_dict(torch.load(checkpoint, map_location='cpu', weights_only=True)['state'])
+        threshold = artifact['threshold']
+        version, profile, component_hashes = 51, None, None
+        def score_texts(texts):
+            sparse = artifact['model'].predict_proba(artifact['tfidf'].transform(features(texts)))[:, 1]
+            return predict_scores(artifact, sparse, predict_neural(neural, texts))
+    else:
+        parser.error('This checker requires a frozen v51 or v56 bundle')
     counts = dict(tp=0, fn=0, fp=0, tn=0)
     failures = 0
     seen, duplicates, conflicting = {}, 0, 0
@@ -79,8 +96,7 @@ def main():
                 batch.append((row, label, relative))
             if batch:
                 texts = [r['ngram_text'] for r, _, _ in batch]
-                sparse = artifact['model'].predict_proba(artifact['tfidf'].transform(features(texts)))[:, 1]
-                scores = predict_scores(artifact, sparse, predict_neural(neural, texts))
+                scores = np.asarray(score_texts(texts), dtype=np.float64)
                 for (row, label, relative), score in zip(batch, scores):
                     predicted = int(score >= threshold)
                     key = ('tp' if predicted else 'fn') if label else ('fp' if predicted else 'tn')
@@ -91,18 +107,19 @@ def main():
                         errors.writerow([folder, relative, key])
             print(f'Processed {min(start + args.batch_size, len(files))}/{len(files)}', flush=True)
     spam, ham = counts['tp'] + counts['fn'], counts['tn'] + counts['fp']
-    summary = dict(version=51, found=len(files), scored=spam + ham, failed=failures,
+    summary = dict(version=version, profile=profile, found=len(files), scored=spam + ham, failed=failures,
                    spam=spam, ham=ham, **counts,
                    spamRecall=counts['tp'] / spam if spam else None,
                    falsePositiveRate=counts['fp'] / ham if ham else None,
                    duplicateContent=duplicates, conflictingDuplicateLabels=conflicting,
                    threshold=float(threshold), thresholdChanged=False,
                    modelSha256=hashlib.sha256(modelpath.read_bytes()).hexdigest(),
-                   checkpointSha256=hashlib.sha256(checkpoint.read_bytes()).hexdigest())
+                   checkpointSha256=hashlib.sha256(checkpoint.read_bytes()).hexdigest(),
+                   componentHashes=component_hashes)
     (out / 'summary.json').write_text(json.dumps(summary, indent=2), encoding='utf-8')
     recall = f"{summary['spamRecall']:.2%}" if spam else 'n/a'
     fpr = f"{summary['falsePositiveRate']:.4%}" if ham else 'n/a'
-    text = (f'MailGuard v51\nScored: {spam + ham}/{len(files)}; failed: {failures}\n'
+    text = (f'MailGuard v{version}' + (f' / {profile}' if profile else '') + f'\nScored: {spam + ham}/{len(files)}; failed: {failures}\n'
             f'Spam: {spam}; ham: {ham}\nSpam recall: {recall}\n'
             f"FP: {counts['fp']}; FPR (FP/ham): {fpr}\nFN: {counts['fn']}\n"
             f'Duplicate content: {duplicates}; conflicting labels: {conflicting}\n'
