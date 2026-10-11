@@ -21,7 +21,7 @@ def main():
     args = parser.parse_args()
     modeldir = Path(args.model_dir).resolve()
     model_version = joblib.load(modeldir / 'model.joblib')['version']
-    expected_version = 57 if model_version == 'v57-preserved-consensus' else 56
+    expected_version = {'v56-consensus':56,'v57-preserved-consensus':57,'v58-calibrated-protected-consensus':58}[model_version]
     checker = Path(__file__).with_name('check_customer_mail.py')
     before = {str(p.relative_to(modeldir)): hashlib.sha256(p.read_bytes()).hexdigest()
               for p in modeldir.rglob('*') if p.is_file() and p.suffix in ('.joblib', '.pt')}

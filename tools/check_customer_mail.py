@@ -46,14 +46,16 @@ def main():
     modelpath, checkpoint = modeldir / 'model.joblib', modeldir / 'neural.pt'
     artifact = joblib.load(modelpath)
     torch.set_num_threads(4)
-    if artifact.get('version') in ('v56-consensus', 'v57-preserved-consensus'):
-        if artifact['version'] == 'v57-preserved-consensus':
+    if artifact.get('version') in ('v56-consensus', 'v57-preserved-consensus', 'v58-calibrated-protected-consensus'):
+        if artifact['version'] == 'v58-calibrated-protected-consensus':
+            from v58_runtime import load_bundle, predict_texts
+        elif artifact['version'] == 'v57-preserved-consensus':
             from v57_runtime import load_bundle, predict_texts
         else:
             from train_v56_consensus import load_bundle, predict_texts
         bundle = load_bundle(modeldir)
         threshold = artifact['profiles'][args.profile]['threshold']
-        version, profile = (57 if artifact['version'] == 'v57-preserved-consensus' else 56), args.profile
+        version, profile = ({'v56-consensus':56,'v57-preserved-consensus':57,'v58-calibrated-protected-consensus':58}[artifact['version']]), args.profile
         checkpoint = modeldir / 'v54/neural.pt'
         component_hashes = artifact['components']
         def score_texts(texts):
@@ -69,7 +71,7 @@ def main():
             sparse = artifact['model'].predict_proba(artifact['tfidf'].transform(features(texts)))[:, 1]
             return predict_scores(artifact, sparse, predict_neural(neural, texts))
     else:
-        parser.error('This checker requires a frozen v51, v56 or v57 bundle')
+        parser.error('This checker requires a frozen v51, v56, v57 or v58 bundle')
     counts = dict(tp=0, fn=0, fp=0, tn=0)
     failures = 0
     seen, duplicates, conflicting = {}, 0, 0
