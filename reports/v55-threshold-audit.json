@@ -7,6 +7,12 @@
   "calibrationThreshold": 0.987662971019745,
   "requestedCalibrationFpBudget": 0,
   "observedCalibrationFp": 1,
+  "testHamLanguageAudit": {
+    "ham": 24017,
+    "dominantCjkHam": 0,
+    "dominantNonAsciiLettersHam": 2,
+    "definition": "More than 25% of alphabetic characters in the first 1800 characters of the v55 normalized context view; CJK means Japanese, Chinese or Korean Unicode blocks. Descriptive test audit, not a fitting feature or a verified language detector."
+  },
   "boundaryBug": "A float64 nextafter boundary rounds back to a float32 score during NumPy array comparison. v56 steps in the original score dtype and uses float64 gate comparisons.",
   "diagnosticThresholds": [
     {"threshold": 0.5, "newRecall": 0.9978286267916678, "newFp": 5, "legacyRecall": 0.9591224359289685, "legacyFp": 313},
