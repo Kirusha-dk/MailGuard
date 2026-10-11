@@ -1,0 +1,72 @@
+name: MailGuard v54 on 500000 distinct emails
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/evaluate_v54_unique500k.py', 'tests/python/test_unique500k.py', '.github/workflows/v54-unique500k.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: v54-unique500k-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  evaluate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+      HF_HUB_DISABLE_XET: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v40-fresh50k
+          key: v40-fresh50k-v1
+          fail-on-cache-miss: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v54-evidence
+          run-id: 38088653342
+          github-token: ${{ github.token }}
+          path: .cache/v54-artifact
+      - name: Dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y p7zip-full
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 datasets
+      - name: Verify deduplication and original label mapping
+        run: python -m unittest discover -s tests/python -p 'test_unique500k.py'
+      - name: Collect distinct labelled public emails; freeze selection before scoring
+        run: python -u tools/evaluate_v54_unique500k.py --phase collect --count 500000
+      - name: Save frozen corpus and source hashes before the long evaluation
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v54-unique500k-corpus
+          path: |
+            reports/v54-unique500k/selected.jsonl.gz
+            reports/v54-unique500k/manifest.csv
+            reports/v54-unique500k/manifest.json
+          retention-days: 30
+      - name: First 1000 check then full fixed-model evaluation
+        run: python -u tools/evaluate_v54_unique500k.py --phase score --count 500000 --min-recall .95 --max-fp 50
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/v54-unique500k/report.md ]; then
+            cat reports/v54-unique500k/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v54-unique500k-evidence
+          path: |
+            reports/v54-unique500k/*.json
+            reports/v54-unique500k/*.csv
+            reports/v54-unique500k/*.md
+          retention-days: 30

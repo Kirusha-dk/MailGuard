@@ -1,0 +1,62 @@
+{
+  "scope": "First 20000 rows in frozen v54 corpus order; exploratory error analysis, not a full language audit",
+  "run": "https://github.com/Kirusha-dk/MailGuard/actions/runs/38092976048",
+  "groups": {
+    "ALL": {
+      "FN": 317255,
+      "TP": 181970,
+      "HAM": 775
+    },
+    "bodyUnder150": {
+      "FN": 33038,
+      "TP": 38880,
+      "HAM": 5
+    },
+    "nonLatin": {
+      "FN": 209942,
+      "TP": 73237,
+      "HAM": 1
+    },
+    "replacementChars": {
+      "TP": 5969,
+      "FN": 3958,
+      "HAM": 13
+    },
+    "quotedPrintableLiteral": {
+      "FN": 442,
+      "TP": 267,
+      "HAM": 4
+    },
+    "encodedRuns": {
+      "FN": 146,
+      "TP": 66
+    },
+    "htmlLiteral": {
+      "TP": 9,
+      "FN": 10
+    }
+  },
+  "fnScoreBins": {
+    ">=.5": 293265,
+    "<.5": 23586,
+    "<.3": 404
+  },
+  "observations": [
+    "8346 of 12619 sampled false negatives contain more than 25% non-ASCII letters; many sampled examples are Japanese.",
+    "Sampled misses include punctuation-obfuscated Japanese, short link-only bodies, and ads padded with unrelated reference text.",
+    "Some CJK-adjacent URLs did not appear in the existing URL_HOSTS field.",
+    "HTML-derived bodies can retain CSS declarations after tag removal.",
+    "Some inspected CSDMC subjects contain pre-existing [SPAM] annotations."
+  ],
+  "v55Changes": [
+    "Unicode char 2-5 features for subject and head; separate compact body channel.",
+    "CJK punctuation normalization, inline URL detection, removal of CSS and variable tracking paths/recipients.",
+    "New archive families partitioned into TRAIN, selection, calibration and engineering test.",
+    "FP budget uses ham count; evaluation excludes TRAIN families and compares v54 on the identical new holdout.",
+    "Remove [SPAM]/[JUNK] and ***SPAM*** subject annotations from model inputs."
+  ],
+  "limitations": [
+    "The 500k corpus was already examined in v54; reuse is an engineering comparison, not new independent evidence.",
+    "Legitimate multilingual messages remain underrepresented."
+  ]
+}

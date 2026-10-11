@@ -1,0 +1,100 @@
+name: MailGuard v57 protected decisions and offline package
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/v57_runtime.py', 'tools/evaluate_v57_preserved.py', 'tools/verify_customer_bundle.py', 'tests/python/test_v57_preserved.py', '.github/workflows/v57-preserved.yml']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: v57-preserved-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v56-evidence
+          run-id: 38171539756
+          github-token: ${{ github.token }}
+          path: .cache/v56-artifact
+      - name: Frozen gate dependencies
+        run: python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Protected vote checks
+        run: python -m unittest discover -s tests/python -p 'test_v57_preserved.py'
+      - name: First 1000-row fixed-decision check
+        run: python -u tools/evaluate_v57_preserved.py --limit 1000 --output reports/v57-smoke
+      - name: All matched held-out decisions; no fitting or retuning
+        run: python -u tools/evaluate_v57_preserved.py --limit 0 --output reports/v57-full
+      - name: Build customer Docker image
+        run: docker build -f Dockerfile.customer -t mailguard-v57-check .
+      - name: Run both customer profiles with networking disabled
+        run: |
+          mkdir -p checks
+          docker run --rm --network none --entrypoint python \
+            -v "$PWD/reports/v57-full:/model:ro" \
+            -v "$PWD/checks:/checks" \
+            mailguard-v57-check /app/tools/verify_customer_bundle.py --model-dir /model --report /checks/offline-check.json
+      - name: Assemble model checkpoint and provenance
+        env:
+          CODE_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, shutil, tarfile
+          from pathlib import Path
+          source = Path('reports/v57-full')
+          target = Path('package/model/v57-full')
+          target.mkdir(parents=True)
+          files = ['model.joblib', 'v54/model.joblib', 'v54/neural.pt', 'v55/model.joblib', 'report.json', 'report.md']
+          for name in files:
+              dest = target / name
+              dest.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copyfile(source / name, dest)
+          metadata = {'version': 57, 'sourceV56Run': 38171539756, 'v57Run': '${{ github.run_id }}',
+                      'codeCommit': os.environ['CODE_SHA'], 'dockerOfflineCustomerCheckPassed': True,
+                      'productionGoalValidated': False,
+                      'files': {name: hashlib.sha256((target / name).read_bytes()).hexdigest() for name in files}}
+          Path('package/provenance.json').write_text(json.dumps(metadata, indent=2))
+          shutil.copyfile('docs/v57-check.md', 'package/INSTRUCTIONS.md')
+          shutil.copyfile('checks/offline-check.json', 'package/offline-check.json')
+          with tarfile.open('mailguard-v57-model.tar.gz', 'w:gz') as archive:
+              for name in ('model', 'provenance.json', 'INSTRUCTIONS.md', 'offline-check.json'):
+                  archive.add(Path('package') / name, arcname=name)
+          Path('mailguard-v57-model.sha256').write_text(hashlib.sha256(Path('mailguard-v57-model.tar.gz').read_bytes()).hexdigest() + '  mailguard-v57-model.tar.gz\n')
+          PY
+      - name: Summary
+        if: always()
+        run: |
+          for report in reports/v57-smoke/report.md reports/v57-full/report.md; do
+            if [ -f "$report" ]; then cat "$report" >> "$GITHUB_STEP_SUMMARY"; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v57-evidence
+          path: reports/v57-*/
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v57-model-package
+          path: |
+            mailguard-v57-model.tar.gz
+            mailguard-v57-model.sha256
+            checks/offline-check.json
+          retention-days: 90
+      - name: Save a permanent draft checkpoint on GitHub
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CODE_SHA: ${{ github.sha }}
+        run: |
+          gh release create "mailguard-v57-checkpoint-${{ github.run_id }}" \
+            --draft --target "$CODE_SHA" --title "MailGuard v57 — engineering checkpoint" \
+            --notes-file reports/v57-full/report.md \
+            mailguard-v57-model.tar.gz mailguard-v57-model.sha256

@@ -1,0 +1,41 @@
+name: MailGuard v48 calibrated sparse baseline
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/benchmark_v48_calibrated.py', '.github/workflows/v48-calibrated.yml']
+permissions:
+  contents: read
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v40-fresh50k
+          key: v40-fresh50k-v1
+          fail-on-cache-miss: true
+      - run: python3 -m pip install numpy scipy scikit-learn joblib
+      - run: python3 -m py_compile tools/benchmark_v48_calibrated.py
+      - run: python3 -m unittest discover -s tests/python -p test_v48_calibration.py
+      - name: Fast 1000-message iteration
+        run: python3 -u tools/benchmark_v48_calibrated.py --limit 1000 --output reports/v48-smoke
+      - name: Full engineering evaluation
+        run: python3 -u tools/benchmark_v48_calibrated.py --limit 0 --output reports/v48-full
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/v48-full/report.md ]; then
+            cat reports/v48-full/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v48-evidence
+          path: reports/v48-*/
+          retention-days: 30

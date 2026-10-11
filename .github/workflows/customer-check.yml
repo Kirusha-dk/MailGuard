@@ -1,0 +1,50 @@
+name: MailGuard customer offline checker
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/check_customer_mail.py', 'Dockerfile.customer', '.github/workflows/customer-check.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  offline-smoke:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v51-evidence
+          run-id: 38056209730
+          github-token: ${{ github.token }}
+          path: model
+      - name: Make synthetic transport fixtures
+        run: |
+          mkdir -p mail/spam mail/ham results
+          python - <<'PY'
+          from pathlib import Path
+          for folder, body in [('spam', 'Claim your prize now. Click here to verify your payment account.'), ('ham', 'Hello, our meeting is tomorrow at ten. Please bring the project notes.')]:
+              for i in range(3):
+                  Path(f'mail/{folder}/{i}.eml').write_text(f'From: test@example.org\nSubject: Example {i}\nContent-Type: text/plain; charset=utf-8\n\n{body}\n')
+          PY
+      - run: docker build -f Dockerfile.customer -t mailguard-v51-check .
+      - name: Offline inference with real frozen checkpoint
+        run: |
+          docker run --rm --network none -v "$PWD/model:/model:ro" -v "$PWD/mail:/mail:ro" -v "$PWD/results:/results" mailguard-v51-check --model-dir /model/v51-full --spam /mail/spam --ham /mail/ham --output /results/check-01
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('results/check-01/summary.json').read_text())
+          assert report['scored'] == 6 and report['failed'] == 0
+          assert report['spam'] == 3 and report['ham'] == 3
+          assert report['thresholdChanged'] is False
+          assert report['tp'] + report['fn'] == 3
+          assert report['tn'] + report['fp'] == 3
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: customer-check-smoke
+          path: results/
+          retention-days: 30

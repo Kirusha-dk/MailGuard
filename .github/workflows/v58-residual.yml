@@ -1,0 +1,125 @@
+name: MailGuard v58 residual calibration and offline package
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/v58_runtime.py', 'tools/calibrate_v58_residual.py', 'tools/verify_customer_bundle.py', 'tests/python/test_v58_calibration.py', '.github/workflows/v58-residual.yml']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: v58-residual-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  package:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v57-evidence
+          run-id: 38172763308
+          github-token: ${{ github.token }}
+          path: .cache/v57-artifact
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v40-fresh50k
+          key: v40-fresh50k-v1
+          fail-on-cache-miss: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v55-evidence
+          run-id: 38137477063
+          github-token: ${{ github.token }}
+          path: .cache/v55-artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v54-unique500k-corpus
+          run-id: 38092976048
+          github-token: ${{ github.token }}
+          path: .cache/v54-corpus
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v54-unique500k-evidence
+          run-id: 38092976048
+          github-token: ${{ github.token }}
+          path: .cache/v54-evidence
+      - name: Frozen gate dependencies
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Protected vote checks
+        run: python -m unittest discover -s tests/python -p 'test_v58_calibration.py'
+      - name: First 1000-row fixed-decision check
+        run: python -u tools/calibrate_v58_residual.py --limit 1000 --output reports/v58-smoke
+      - name: Calibrate on residual HAM; freeze threshold before matched holdouts
+        run: python -u tools/calibrate_v58_residual.py --limit 0 --output reports/v58-full
+      - name: Build customer Docker image
+        run: docker build -f Dockerfile.customer -t mailguard-v58-check .
+      - name: Run both customer profiles with networking disabled
+        run: |
+          mkdir -p checks
+          docker run --rm --network none --entrypoint python \
+            -v "$PWD/reports/v58-full:/model:ro" \
+            -v "$PWD/checks:/checks" \
+            mailguard-v58-check /app/tools/verify_customer_bundle.py --model-dir /model --report /checks/offline-check.json
+      - name: Assemble model checkpoint and provenance
+        env:
+          CODE_SHA: ${{ github.sha }}
+        run: |
+          python - <<'PY'
+          import hashlib, json, os, shutil, tarfile
+          from pathlib import Path
+          source = Path('reports/v58-full')
+          target = Path('package/model/v58-full')
+          target.mkdir(parents=True)
+          files = ['model.joblib', 'v54/model.joblib', 'v54/neural.pt', 'v55/model.joblib', 'report.json', 'report.md']
+          for name in files:
+              dest = target / name
+              dest.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copyfile(source / name, dest)
+          metadata = {'version': 58, 'sourceV56Run': 38171539756, 'v58Run': '${{ github.run_id }}', 'sourceV57Run': 38172763308,
+                      'codeCommit': os.environ['CODE_SHA'], 'dockerOfflineCustomerCheckPassed': True,
+                      'productionGoalValidated': False,
+                      'files': {name: hashlib.sha256((target / name).read_bytes()).hexdigest() for name in files}}
+          Path('package/provenance.json').write_text(json.dumps(metadata, indent=2))
+          shutil.copyfile('docs/v58-check.md', 'package/INSTRUCTIONS.md')
+          shutil.copyfile('checks/offline-check.json', 'package/offline-check.json')
+          with tarfile.open('mailguard-v58-model.tar.gz', 'w:gz') as archive:
+              for name in ('model', 'provenance.json', 'INSTRUCTIONS.md', 'offline-check.json'):
+                  archive.add(Path('package') / name, arcname=name)
+          Path('mailguard-v58-model.sha256').write_text(hashlib.sha256(Path('mailguard-v58-model.tar.gz').read_bytes()).hexdigest() + '  mailguard-v58-model.tar.gz\n')
+          PY
+      - name: Summary
+        if: always()
+        run: |
+          for report in reports/v58-smoke/report.md reports/v58-full/report.md; do
+            if [ -f "$report" ]; then cat "$report" >> "$GITHUB_STEP_SUMMARY"; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v58-evidence
+          path: reports/v58-*/
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v58-model-package
+          path: |
+            mailguard-v58-model.tar.gz
+            mailguard-v58-model.sha256
+            checks/offline-check.json
+          retention-days: 90
+      - name: Save a permanent draft checkpoint on GitHub
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CODE_SHA: ${{ github.sha }}
+        run: |
+          gh release create "mailguard-v58-checkpoint-${{ github.run_id }}" \
+            --draft --target "$CODE_SHA" --title "MailGuard v58 — engineering checkpoint" \
+            --notes-file reports/v58-full/report.md \
+            mailguard-v58-model.tar.gz mailguard-v58-model.sha256
