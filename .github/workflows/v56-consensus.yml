@@ -1,0 +1,77 @@
+name: MailGuard v56 frozen consensus
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/train_v56_consensus.py', 'tests/python/test_v56_consensus.py', '.github/workflows/v56-consensus.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: v56-consensus-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v40-fresh50k
+          key: v40-fresh50k-v1
+          fail-on-cache-miss: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v55-evidence
+          run-id: 38137477063
+          github-token: ${{ github.token }}
+          path: .cache/v55-artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v54-evidence
+          run-id: 38088653342
+          github-token: ${{ github.token }}
+          path: .cache/v54-artifact
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v54-unique500k-corpus
+          run-id: 38092976048
+          github-token: ${{ github.token }}
+          path: .cache/v54-corpus
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v54-unique500k-evidence
+          run-id: 38092976048
+          github-token: ${{ github.token }}
+          path: .cache/v54-evidence
+      - name: Frozen inference dependencies
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Threshold and consensus checks
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v48_calibration.py'
+          python -m unittest discover -s tests/python -p 'test_v56_consensus.py'
+      - name: First 1000-row gate and packaged inference check
+        run: python -u tools/train_v56_consensus.py --limit 1000 --output reports/v56-smoke
+      - name: Full matched holdouts; fixed gate and threshold
+        run: python -u tools/train_v56_consensus.py --limit 0 --output reports/v56-full
+      - name: Summary
+        if: always()
+        run: |
+          for report in reports/v56-smoke/report.md reports/v56-full/report.md; do
+            if [ -f "$report" ]; then cat "$report" >> "$GITHUB_STEP_SUMMARY"; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v56-evidence
+          path: reports/v56-*/
+          retention-days: 90

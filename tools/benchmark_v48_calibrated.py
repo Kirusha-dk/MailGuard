@@ -22,6 +22,7 @@ from train_v47_phishing_aware import from_eml, metrics_at
 
 def threshold_for_budget(labels, scores, budget):
     """Smallest score boundary satisfying an exact ham budget, including ties."""
+    original = np.asarray(scores)
     labels, scores = np.asarray(labels), np.asarray(scores, dtype=float)
     if not np.isfinite(scores).all() or budget < 0:
         raise ValueError('Invalid scores or budget')
@@ -30,7 +31,10 @@ def threshold_for_budget(labels, scores, budget):
         raise ValueError('Calibration requires ham')
     if budget >= len(ham):
         return float('-inf')
-    return float(np.nextafter(ham[budget], np.inf))
+    # NumPy can cast a Python float boundary back to the array's float32 dtype.
+    # Step in that dtype so the excluded score cannot round back onto the boundary.
+    dtype = original.dtype if original.dtype.kind == 'f' and original.dtype.itemsize < 8 else np.dtype('float64')
+    return float(np.nextafter(np.asarray(ham[budget], dtype=dtype), np.asarray(np.inf, dtype=dtype)))
 
 
 def features(texts):

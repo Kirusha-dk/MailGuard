@@ -24,5 +24,14 @@ class BudgetTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             threshold_for_budget([0, 1], [float('nan'), .8], 0)
 
+    def test_float32_boundary_does_not_round_back_to_ham(self):
+        y = np.array([0, 0, 0, 1])
+        for dtype in (np.float32, np.float64):
+            p = np.array([.987662971, .9, .9, .995], dtype=dtype)
+            for budget in (0, 1, 2):
+                t = threshold_for_budget(y, p, budget)
+                self.assertLessEqual(int(((p >= t) & (y == 0)).sum()), budget)
+                self.assertTrue(p[-1] >= t)
+
 if __name__ == '__main__':
     unittest.main()

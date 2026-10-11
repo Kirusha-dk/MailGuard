@@ -1,0 +1,18 @@
+{
+  "version": 55,
+  "run": 38137477063,
+  "scope": "Diagnosis on already inspected engineering test scores; these thresholds must not select or calibrate v56",
+  "finding": "The ranking retains substantially more spam at lower thresholds, but FP increase. A single global ham-maximum threshold loses old spam disproportionately.",
+  "calibrationHam": 2498,
+  "calibrationThreshold": 0.987662971019745,
+  "requestedCalibrationFpBudget": 0,
+  "observedCalibrationFp": 1,
+  "boundaryBug": "A float64 nextafter boundary rounds back to a float32 score during NumPy array comparison. v56 steps in the original score dtype and uses float64 gate comparisons.",
+  "diagnosticThresholds": [
+    {"threshold": 0.5, "newRecall": 0.9978286267916678, "newFp": 5, "legacyRecall": 0.9591224359289685, "legacyFp": 313},
+    {"threshold": 0.9, "newRecall": 0.953289829880603, "newFp": 0, "legacyRecall": 0.7263023267253677, "legacyFp": 26},
+    {"threshold": 0.97, "newRecall": 0.8312540962585131, "newFp": 0, "legacyRecall": 0.46160657189237053, "legacyFp": 4}
+  ],
+  "v56": "Reuse frozen v54 and v55. Fit a small consensus gate on part of v55 selection families, choose it on different selection families, calibrate on untouched v55 calibration, and evaluate fixed models on matched test identities.",
+  "limitations": "Reused engineering corpora. Frozen v54 may have trained on relatives of legacy holdout. Sparse legitimate multilingual coverage. Neither a threshold diagnosis nor a green workflow validates production quality."
+}
