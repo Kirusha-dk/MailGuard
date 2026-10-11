@@ -1,0 +1,61 @@
+name: MailGuard v55 multilingual grouped experiment
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/train_v55_multilingual.py', 'tests/python/test_v55_multilingual.py', '.github/workflows/v55-multilingual.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: v55-multilingual-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  train:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+    env:
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v40-fresh50k
+          key: v40-fresh50k-v1
+          fail-on-cache-miss: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v54-unique500k-corpus
+          run-id: 38092976048
+          github-token: ${{ github.token }}
+          path: .cache/v54-corpus
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v54-unique500k-evidence
+          run-id: 38092976048
+          github-token: ${{ github.token }}
+          path: .cache/v54-evidence
+      - name: Dependencies matching the frozen model environment
+        run: python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Verify multilingual normalization and split contracts
+        run: python -m unittest discover -s tests/python -p 'test_v55_multilingual.py'
+      - name: First 1000-row experiment
+        run: python -u tools/train_v55_multilingual.py --limit 1000 --epochs 1 --output reports/v55-smoke
+      - name: Learn IDF and classifiers on TRAIN; select and calibrate on separate groups
+        run: python -u tools/train_v55_multilingual.py --limit 0 --epochs 3 --output reports/v55-full
+      - name: Summary
+        if: always()
+        run: |
+          for report in reports/v55-smoke/report.md reports/v55-full/report.md; do
+            if [ -f "$report" ]; then cat "$report" >> "$GITHUB_STEP_SUMMARY"; fi
+          done
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v55-evidence
+          path: reports/v55-*/
+          retention-days: 30
