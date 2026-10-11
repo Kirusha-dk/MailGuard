@@ -33,6 +33,7 @@ EMAIL = re.compile(r'[\w.+-]+@[\w.-]+\.[\w-]+', re.U)
 CJK = r'\u3040-\u30ff\u3400-\u9fff\uac00-\ud7af'
 CJK_NOISE = re.compile(r'(?<=[' + CJK + r'])[\s\W_]+(?=[' + CJK + r'])')
 CSS = re.compile(r'/\*.*?\*/|(?:[.#][\w.:[\]# >,+-]{1,80}|\b(?:html|body|p|a|td|table|span|div|h[1-6]))\s*\{[^{}]{0,4000}\}', re.S)
+ANNOTATION = re.compile(r'(?:\[\s*(?:spam|junk)\s*\]|\*{2,}\s*(?:spam|junk)\s*\*{2,})\s*', re.I)
 FEATURES = 2**18 + 2**18 + 2**17
 CORPUS_SHA = '5c0993c0258b854ce9cf2d5a31172d56692aaa351a533ca57c1ecc6e97c81f82'
 WARNING = ('Previously inspected public corpora: engineering holdouts, not an independent production benchmark. '
@@ -108,7 +109,7 @@ def views(text):
     hosts = ' '.join(sorted(set(hosts.split() + discovered))[:24])
     # Discard variable URL paths and recipients; never use source/year or envelope domain.
     body = URL.sub(' urltoken ', body[:6000]) + ' ' + URL.sub(' urltoken ', body[-1200:])
-    subject = clean(URL.sub(' urltoken ', subject))[:500]
+    subject = clean(URL.sub(' urltoken ', ANNOTATION.sub('', subject)))[:500]
     body = clean(body)
     focus = f'subject {subject} hosts {hosts} start {body[:1000]}'
     context = f'subject {subject} body {body[:2400]} tail {body[-600:]}'
@@ -160,7 +161,10 @@ def prepare(args, out):
     excluded = Counter()
     # Reserve legacy test first, then validation, so TRAIN cannot absorb a related holdout.
     for split in ('test', 'val', 'train'):
-        for old in frozen[split]:
+        entries = frozen[split]
+        if args.limit:
+            entries = sorted(entries, key=lambda r: sha(str(r['path'])))[:args.limit * 2]
+        for old in entries:
             row = dict(from_eml(old['path'].read_bytes()), y=int(old['y']), source=old['source'])
             family = campaign_key(row['ngram_text'])
             if family in claimed:
@@ -388,7 +392,9 @@ def main():
                   v54OnSameNewHoldout=baseline_metric, developmentCorpusPreviouslyInspected=True, productionGoalValidated=False, splits=split_report, warning=WARNING)
     (out / 'report.json').write_text(json.dumps(report, indent=2))
     def metric_row(name, m):
-        return f'| {name} | {m["tp"]+m["fn"]+m["fp"]+m["tn"]} | {m["fp"]+m["tn"]} | {m["recall"]:.2%} | {m["fp"]} | {m["fn"]} | {m["fpr"]:.4%} |\n'
+        ham = m['fp'] + m['tn']
+        rate = f'{m["fpr"]:.4%}' if ham else 'n/a'
+        return f'| {name} | {m["tp"]+m["fn"]+ham} | {ham} | {m["recall"]:.2%} | {m["fp"]} | {m["fn"]} | {rate} |\n'
     md = ('# MailGuard v55 multilingual engineering holdouts\n\n' + WARNING + '\n\n'
           '| Split | N | Ham | Spam recall | FP | FN | FP / ham |\n|---|---:|---:|---:|---:|---:|---:|\n'
           + metric_row('v54: same new holdout', baseline_metric) + metric_row('v55: new archive holdout',new_metric) + metric_row('Legacy holdout',old_metric)

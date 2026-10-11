@@ -11,6 +11,13 @@ def mail(body, subject='Notice', sender='one.example'):
 
 
 class MultilingualTests(unittest.TestCase):
+    def test_annotation_tags_are_not_label_shortcuts(self):
+        self.assertEqual(views(mail('Our offer expires today.', '[SPAM] Offer')),
+                         views(mail('Our offer expires today.', 'Offer')))
+        self.assertEqual(views(mail('Our offer expires today.', '***SPAM*** Offer')),
+                         views(mail('Our offer expires today.', 'Offer')))
+        self.assertIn('spam research', views(mail('Meeting agenda', 'Spam research'))[0])
+
     def test_inline_cjk_url_is_visible(self):
         focus, context = views(mail('ご登録くださいませhttps://offers.example/id=123'))
         self.assertIn('offers.example', focus)

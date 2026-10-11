@@ -45,13 +45,15 @@
     "8346 of 12619 sampled false negatives contain more than 25% non-ASCII letters; many sampled examples are Japanese.",
     "Sampled misses include punctuation-obfuscated Japanese, short link-only bodies, and ads padded with unrelated reference text.",
     "Some CJK-adjacent URLs did not appear in the existing URL_HOSTS field.",
-    "HTML-derived bodies can retain CSS declarations after tag removal."
+    "HTML-derived bodies can retain CSS declarations after tag removal.",
+    "Some inspected CSDMC subjects contain pre-existing [SPAM] annotations."
   ],
   "v55Changes": [
     "Unicode char 2-5 features for subject and head; separate compact body channel.",
     "CJK punctuation normalization, inline URL detection, removal of CSS and variable tracking paths/recipients.",
     "New archive families partitioned into TRAIN, selection, calibration and engineering test.",
-    "FP budget uses ham count; evaluation excludes TRAIN families and compares v54 on the identical new holdout."
+    "FP budget uses ham count; evaluation excludes TRAIN families and compares v54 on the identical new holdout.",
+    "Remove [SPAM]/[JUNK] and ***SPAM*** subject annotations from model inputs."
   ],
   "limitations": [
     "The 500k corpus was already examined in v54; reuse is an engineering comparison, not new independent evidence.",
