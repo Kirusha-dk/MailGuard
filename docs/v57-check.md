@@ -16,7 +16,7 @@ mkdir -p model mail/spam mail/ham results
 
 ## 2. Скачать модель
 
-Откройте [запуск v57](https://github.com/Kirusha-dk/MailGuard/actions/workflows/v57-preserved.yml?query=branch%3Amailguard-v48-calibrated). После завершения скачайте в разделе **Artifacts** архив **mailguard-v57-evidence**. Распакуйте его в папку `model`.
+Войдите в GitHub и откройте [запуск v57](https://github.com/Kirusha-dk/MailGuard/actions/runs/38172763308). После завершения скачайте в разделе **Artifacts** архив **mailguard-v57-evidence**. Распакуйте его в папку `model`.
 
 Для полного запуска должны существовать четыре файла:
 

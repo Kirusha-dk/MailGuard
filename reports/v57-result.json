@@ -1,0 +1,85 @@
+{
+  "version": 57,
+  "run": 38172763308,
+  "results": {
+    "conservative": {
+      "new": {
+        "n": 351448,
+        "spam": 350930,
+        "ham": 518,
+        "tp": 274906,
+        "fn": 76024,
+        "fp": 0,
+        "tn": 518,
+        "recall": 0.783364203687345,
+        "fpr": 0.0
+      },
+      "legacy": {
+        "n": 43828,
+        "spam": 20329,
+        "ham": 23499,
+        "tp": 18870,
+        "fn": 1459,
+        "fp": 46,
+        "tn": 23453,
+        "recall": 0.9282306065227015,
+        "fpr": 0.001957530107664156
+      },
+      "all": {
+        "n": 395276,
+        "spam": 371259,
+        "ham": 24017,
+        "tp": 293776,
+        "fn": 77483,
+        "fp": 46,
+        "tn": 23971,
+        "recall": 0.7912966419669287,
+        "fpr": 0.0019153099887579631
+      }
+    },
+    "high-recall": {
+      "new": {
+        "n": 351448,
+        "spam": 350930,
+        "ham": 518,
+        "tp": 340579,
+        "fn": 10351,
+        "fp": 1,
+        "tn": 517,
+        "recall": 0.9705040891345852,
+        "fpr": 0.0019305019305019305
+      },
+      "legacy": {
+        "n": 43828,
+        "spam": 20329,
+        "ham": 23499,
+        "tp": 18958,
+        "fn": 1371,
+        "fp": 50,
+        "tn": 23449,
+        "recall": 0.9325593979044714,
+        "fpr": 0.0021277501170262566
+      },
+      "all": {
+        "n": 395276,
+        "spam": 371259,
+        "ham": 24017,
+        "tp": 359537,
+        "fn": 11722,
+        "fp": 51,
+        "tn": 23966,
+        "recall": 0.9684263546472948,
+        "fpr": 0.00212349585710122
+      }
+    }
+  },
+  "source": "Completed GitHub Actions job summary; full precision metrics recalculated from reported TP/FN/FP/TN counts. Full model report is in the original artifact.",
+  "independentBenchmark": false,
+  "productionGoalValidated": false,
+  "testHamLanguageAudit": {
+    "dominantCjkHam": 0,
+    "dominantNonAsciiLettersHam": 2,
+    "rule": "More than 25% of alphabetic characters in first 1800 characters of v55 context"
+  },
+  "warning": "Reused engineering holdout, not customer mail. Frozen v54 may have trained on relatives of old holdout. High-recall v57 also misclassified a synthetic ordinary Japanese meeting email."
+}

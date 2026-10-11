@@ -1,0 +1,91 @@
+{
+  "version": 58,
+  "run": 38173412288,
+  "results": {
+    "conservative": {
+      "new": {
+        "n": 351448,
+        "spam": 350930,
+        "ham": 518,
+        "tp": 274906,
+        "fn": 76024,
+        "fp": 0,
+        "tn": 518,
+        "recall": 0.783364203687345,
+        "fpr": 0.0
+      },
+      "legacy": {
+        "n": 43828,
+        "spam": 20329,
+        "ham": 23499,
+        "tp": 18870,
+        "fn": 1459,
+        "fp": 46,
+        "tn": 23453,
+        "recall": 0.9282306065227015,
+        "fpr": 0.001957530107664156
+      },
+      "all": {
+        "n": 395276,
+        "spam": 371259,
+        "ham": 24017,
+        "tp": 293776,
+        "fn": 77483,
+        "fp": 46,
+        "tn": 23971,
+        "recall": 0.7912966419669287,
+        "fpr": 0.0019153099887579631
+      }
+    },
+    "high-recall": {
+      "new": {
+        "n": 351448,
+        "spam": 350930,
+        "ham": 518,
+        "tp": 327556,
+        "fn": 23374,
+        "fp": 1,
+        "tn": 517,
+        "recall": 0.9333941241843102,
+        "fpr": 0.0019305019305019305
+      },
+      "legacy": {
+        "n": 43828,
+        "spam": 20329,
+        "ham": 23499,
+        "tp": 18884,
+        "fn": 1445,
+        "fp": 47,
+        "tn": 23452,
+        "recall": 0.9289192778788922,
+        "fpr": 0.002000085110004681
+      },
+      "all": {
+        "n": 395276,
+        "spam": 371259,
+        "ham": 24017,
+        "tp": 346440,
+        "fn": 24819,
+        "fp": 48,
+        "tn": 23969,
+        "recall": 0.9331490953754656,
+        "fpr": 0.001998584336095266
+      }
+    }
+  },
+  "independentBenchmark": false,
+  "productionGoalValidated": false,
+  "calibration": {
+    "ham": 2498,
+    "inheritedV54Fp": 5,
+    "additionalFp": 0,
+    "unionFp": 5,
+    "highRecallThreshold": 0.9989996624460185
+  },
+  "source": "Completed GitHub Actions summary; rates recalculated from reported confusion-matrix counts.",
+  "syntheticJapaneseHamProbe": {
+    "conservativePredictedSpam": false,
+    "highRecallPredictedSpam": true
+  },
+  "warning": "Previously inspected engineering data. Frozen v54 may have trained on relatives of old holdout. Legitimate multilingual mail is underrepresented; synthetic Japanese meeting email is still a false positive in high-recall mode."
+}
