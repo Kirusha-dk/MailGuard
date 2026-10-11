@@ -13,6 +13,7 @@ import json
 import re
 import unicodedata
 from collections import Counter
+from itertools import islice
 from pathlib import Path
 from urllib.parse import urlsplit
 
@@ -148,6 +149,9 @@ def corpus_rows(path):
 
 def prepare(args, out):
     corpus = Path(args.corpus)
+    def new_rows():
+        # The smoke tests only a fixed prefix; full mode audits every corpus row.
+        return islice(corpus_rows(corpus), args.limit * 20) if args.limit else corpus_rows(corpus)
     if file_sha(corpus) != CORPUS_SHA:
         raise ValueError('Frozen v54 corpus hash mismatch')
     frozen, audit = load_frozen_v40('.cache/v40-fresh50k')
@@ -173,7 +177,7 @@ def prepare(args, out):
         legacy[split] = [r for r in legacy[split] if r['family'] not in legacy_conflicts]
     # Conflict discovery precedes selection. Do not turn label-conflicting families into training examples.
     families, conflicts = {}, set()
-    for row in corpus_rows(corpus):
+    for row in new_rows():
         family = campaign_key(row['ngram_text'])
         if family in claimed:
             excluded['archiveRelatedToLegacy'] += 1
@@ -205,7 +209,7 @@ def prepare(args, out):
         for r in legacy['test']:
             test.write(json.dumps(r, ensure_ascii=False) + '\n')
             writer.writerow([r['identity'], r['family'], 'test', r['y'], r['source']])
-        for row in corpus_rows(corpus):
+        for row in new_rows():
             family = campaign_key(row['ngram_text'])
             if family in legacy_families or family in conflicts:
                 continue
@@ -245,7 +249,7 @@ def prepare(args, out):
     counts['test'] = dict(Counter(r['y'] for r in corpus_rows(test_path)))
     split_report = dict(counts=counts, legacyAudit=audit, exclusions=dict(excluded),
                         familyOverlap=0, corpusSha256=CORPUS_SHA, archiveSplit='family hash: 20% TRAIN, 5% selection, 5% calibration, 70% test',
-                        warning=WARNING, smokeLimitPerSourceSplit=args.limit)
+                        warning=WARNING, smokeLimitPerSplit=args.limit, smokeCorpusPrefixRows=args.limit * 20 if args.limit else None)
     (out / 'split-report.json').write_text(json.dumps(split_report, indent=2))
     print('Split inventory:', json.dumps(counts), flush=True)
     del frozen, legacy, families, claimed, seen, test_keys
