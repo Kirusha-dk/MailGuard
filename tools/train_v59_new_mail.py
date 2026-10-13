@@ -4,6 +4,7 @@ import argparse
 import csv
 import gc
 import json
+import os
 import shutil
 from collections import Counter
 from pathlib import Path
@@ -18,6 +19,7 @@ from benchmark_v48_calibrated import threshold_for_budget
 from train_v47_phishing_aware import metrics_at
 from train_v55_multilingual import FEATURES, corpus_rows, features, file_sha, predict, transformed, views
 from train_v56_consensus import load_components, predict_margin_union, gate_features, candidate_score
+from v59_runtime import prior_decisions, specialist_scores
 
 PROFILES = {'conservative': .0002, 'high-recall': .002}
 
@@ -71,6 +73,42 @@ def reference_scores(rows, old, neural, old_stream, cached):
         if start % 4096 == 0:
             print('Reference inference', start, '/', len(rows), flush=True)
     return old_scores, stream_scores
+
+
+def legacy_regression(out, artifact, old, neural, stream, cached):
+    """Reused English/CSDMC engineering mail; all fitting is already finished."""
+    from rspamd_benchmark_audit import load_frozen_v40
+    from train_v47_phishing_aware import from_eml as old_parse
+    from train_v55_multilingual import compact
+    with Path('.cache/v55/v55-full/split-manifest.csv').open() as f:
+        wanted = {r['identity']: r for r in csv.DictReader(f)
+                  if r['split'] == 'test' and not r['source'].startswith('SpamArchive-')}
+    restored = {}
+    def retain(parsed, y, source):
+        e = wanted.get(parsed['identity'])
+        if e and (int(e['label']), e['source']) == (y, source) and parsed['identity'] not in restored:
+            row = compact(dict(parsed, y=y, source=source), e['family'])
+            row['text'] = parsed['ngram_text']; restored[row['identity']] = row
+    frozen, _ = load_frozen_v40('.cache/v40-fresh50k')
+    for e in frozen['test']:
+        retain(old_parse(e['path'].read_bytes()), int(e['y']), e['source'])
+    for r in corpus_rows('.cache/v54-corpus/selected.jsonl.gz'):
+        if r['identity'] in wanted:
+            retain(r, int(r['y']), r['source'])
+    if set(restored) != set(wanted):
+        raise AssertionError('Legacy engineering holdout reconstruction incomplete')
+    rows = list(restored.values())
+    ref, prior_stream = reference_scores(rows, old, neural, stream, cached)
+    core = artifact['core']; new = score_batches(core, rows)
+    x = np.column_stack([gate_features(rows, ref, new, old['threshold']), prior_stream])
+    with Path('.cache/v56/v56-full/predictions.csv').open() as f:
+        baseline = {r['identity']: r for r in csv.DictReader(f) if r['identity'] in wanted}
+    results = {}
+    for profile, cfg in artifact['profiles'].items():
+        prior = np.asarray([int(baseline[r['identity']]['v54Spam']) | int(baseline[r['identity']][profile + 'Spam']) for r in rows])
+        scores = new if cfg['selected'] == 'new-only' else specialist_scores(x, new, prior) if cfg['selected'] == 'cjk-specialist' else artifact['gates'][cfg['selected']].predict_proba(x)[:, 1]
+        results[profile] = dict(v59=metrics(rows, scores, cfg['threshold']), v57=metrics(rows, prior, .5))
+    return dict(count=len(rows), reusedEngineeringData=True, input='Previously stored canonical texts; not a new independent benchmark', profiles=results)
 
 
 def main():
@@ -150,6 +188,7 @@ def main():
     old_root = Path('.cache/v56/v56-full')
     old, neural = load_components(old_root / 'v54')
     old_stream = joblib.load(old_root / 'v55/model.joblib')
+    frozen_gate = joblib.load(old_root / 'model.joblib')
     with Path('.cache/v54-evidence/predictions.csv').open() as f:
         cached = {r['identity']: float(r['score']) for r in csv.DictReader(f)}
     # Legacy validation lacks its canonical text in compact v55 rows. Restore it only for reference inference.
@@ -179,20 +218,26 @@ def main():
     ref_cal, stream_cal = reference_scores(cal, old, neural, old_stream, cached)
     new_cal = score_batches(core, cal)
     xc = np.column_stack([gate_features(cal, ref_cal, new_cal, old['threshold']), stream_cal])
+    def original_rows(rows):
+        return [dict(zip(('focus', 'context'), views(r['old_text']))) if 'old_text' in r else r for r in rows]
+    prior_select = {p: prior_decisions(frozen_gate, original_rows(selection), ref_select, stream_select, old['threshold'], p) for p in PROFILES}
+    prior_cal = {p: prior_decisions(frozen_gate, original_rows(cal), ref_cal, stream_cal, old['threshold'], p) for p in PROFILES}
     for profile, fpr in PROFILES.items():
         options = []
-        for name in ('new-only', *gates):
-            scores = new_select[choose_ix] if name == 'new-only' else gates[name].predict_proba(x[choose_ix])[:, 1]
+        for name in ('new-only', 'cjk-specialist', *gates):
+            scores = new_select[choose_ix] if name == 'new-only' else specialist_scores(x[choose_ix], new_select[choose_ix], prior_select[profile][choose_ix]) if name == 'cjk-specialist' else gates[name].predict_proba(x[choose_ix])[:, 1]
             cut = threshold(choose_rows, scores, fpr)
             key = macro_recall(choose_rows, scores, cut)
             options.append((key, name, cut))
             selection_results.append(dict(profile=profile, candidate=name, threshold=cut, selection=metrics(choose_rows, scores, cut)))
         _, name, select_cut = max(options)
-        scores = new_cal if name == 'new-only' else gates[name].predict_proba(xc)[:, 1]
+        scores = new_cal if name == 'new-only' else specialist_scores(xc, new_cal, prior_cal[profile]) if name == 'cjk-specialist' else gates[name].predict_proba(xc)[:, 1]
         # Never relax the selection FP limit when calibrating.
         cut = max(select_cut, threshold(cal, scores, fpr))
         profiles[profile] = dict(selected=name, threshold=cut, targetHamFpr=fpr, calibration=metrics(cal, scores, cut))
     artifact = dict(version='v59-multilingual-ham', core=core, gates=gates, profiles=profiles, protectedV54Decisions=False,
+                    priorGate=dict(gates=frozen_gate['gates'], profiles=frozen_gate['profiles']),
+                    codeCommit=os.environ.get('GITHUB_SHA'), githubRunId=os.environ.get('GITHUB_RUN_ID'),
                     sourceWeights='source x class capped at 12000; HAM cost 6; weak Japanese HAM weight .25',
                     splitManifestSha256=provenance['manifestSha256'], components={})
     for folder in ('v54', 'v55'):
@@ -206,7 +251,8 @@ def main():
     bundle = load_bundle(out)
     probe = cal[:32]
     for profile in PROFILES:
-        expected = new_cal[:32] if profiles[profile]['selected'] == 'new-only' else gates[profiles[profile]['selected']].predict_proba(xc[:32])[:, 1]
+        name = profiles[profile]['selected']
+        expected = new_cal[:32] if name == 'new-only' else specialist_scores(xc[:32], new_cal[:32], prior_cal[profile][:32]) if name == 'cjk-specialist' else gates[name].predict_proba(xc[:32])[:, 1]
         observed = predict_texts(bundle, [r['text'] for r in probe], profile, [r.get('old_text', r['text']) for r in probe])
         if not np.allclose(expected, observed, rtol=1e-6, atol=1e-7):
             raise AssertionError('Saved runtime differs from training inference')
@@ -217,25 +263,28 @@ def main():
     ref_test, stream_test = reference_scores(test, old, neural, old_stream, cached)
     new_test = score_batches(core, test)
     xt = np.column_stack([gate_features(test, ref_test, new_test, old['threshold']), stream_test])
-    frozen_gate = joblib.load(old_root / 'model.joblib')
     baseline_scores, scores = {}, {}
     for profile in PROFILES:
         cfg = profiles[profile]
-        scores[profile] = new_test if cfg['selected'] == 'new-only' else gates[cfg['selected']].predict_proba(xt)[:, 1]
         cfg57 = frozen_gate['profiles'][profile]
         # Actual frozen v57 fixed OR rule, original decoding and unchanged thresholds.
         original_rows = [dict(focus=views(r['old_text'])[0], context=views(r['old_text'])[1]) for r in test]
         x57 = gate_features(original_rows, ref_test, stream_test, old['threshold'])
         rescue = candidate_score(cfg57['selected'], frozen_gate['gates'], x57, ref_test, stream_test, old['threshold'])
         baseline_scores[profile] = ((ref_test >= old['threshold']) | (rescue >= cfg57['threshold'])).astype(float)
+        scores[profile] = new_test if cfg['selected'] == 'new-only' else specialist_scores(xt, new_test, baseline_scores[profile]) if cfg['selected'] == 'cjk-specialist' else gates[cfg['selected']].predict_proba(xt)[:, 1]
     if locked_model_sha != file_sha(out / 'model.joblib'):
         raise AssertionError('Model changed after TEST was opened')
-    result = dict(version=59, testCount=len(test), profiles={}, coreCandidates=core_results, gateSelection=selection_results,
+    result = dict(version=59, codeCommit=os.environ.get('GITHUB_SHA'), githubRunId=os.environ.get('GITHUB_RUN_ID'),
+                  testCount=len(test), profiles={}, coreCandidates=core_results, gateSelection=selection_results,
                   modelSha256=locked_model_sha, estimatorAndThresholdLockedBeforeTest=True, testLabelsUsedForTraining=False,
                   oldErrorExamplesAddedToTrain=False, productionGoalValidated=False, provenance=provenance)
     for profile in PROFILES:
         result['profiles'][profile] = dict(configuration=profiles[profile], test=metrics(test, scores[profile], profiles[profile]['threshold']),
                                            v57SameTest=metrics(test, baseline_scores[profile], .5))
+    result['legacyRegression'] = legacy_regression(out, artifact, old, neural, old_stream, cached)
+    if locked_model_sha != file_sha(out / 'model.joblib'):
+        raise AssertionError('Model changed during legacy regression')
     with (out / 'predictions.csv').open('w', newline='') as f:
         writer = csv.writer(f); writer.writerow(['identity', 'family', 'source', 'label', 'conservativeScore', 'highRecallScore', 'v57ConservativeSpam', 'v57HighRecallSpam'])
         for i, row in enumerate(test):
@@ -249,6 +298,10 @@ def main():
         for version, metric in (('v57', r['v57SameTest']), ('v59', r['test'])):
             ham = metric['tn'] + metric['fp']
             md += f'| {version} {profile} | {len(test)} | {ham} | {metric["recall"]:.2%} | {metric["fp"]} | {metric["fn"]} | {metric["fpr"]:.4%} |\n'
+    md += '\nReused English/CSDMC engineering regression (not independent):\n\n| Model/profile | Mail | Ham | Spam recall | FP | FN |\n|---|---:|---:|---:|---:|---:|\n'
+    for profile, comparisons in result['legacyRegression']['profiles'].items():
+        for version, metric in comparisons.items():
+            md += f'| {version} {profile} | {result["legacyRegression"]["count"]} | {metric["fp"]+metric["tn"]} | {metric["recall"]:.2%} | {metric["fp"]} | {metric["fn"]} |\n'
     md += '\n' + provenance['caveat'] + '\n\nWeak Japanese ham is training-only. This result does not validate customer production quality.\n'
     (out / 'report.md').write_text(md)
     print(md, flush=True)

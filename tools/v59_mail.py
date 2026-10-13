@@ -7,6 +7,11 @@ from train_v47_phishing_aware import canonical_fields
 def decode_payload(payload, charset=None):
     if not isinstance(payload, bytes):
         return str(payload or '')
+    if b'\x1b$B' in payload or b'\x1b$@' in payload:
+        try:
+            return payload.decode('iso2022_jp', 'strict')
+        except UnicodeError:
+            pass
     if charset:
         try:
             return payload.decode(charset, 'strict')
@@ -38,6 +43,6 @@ def from_eml(raw):
         parts.append(decode_payload(part.get_payload(decode=True), part.get_content_charset()))
     subject = str(msg.get('subject') or '')
     original_subject = next((v for k, v in msg.raw_items() if k.lower() == 'subject'), '')
-    if any('\udc80' <= c <= '\udcff' for c in original_subject):
+    if any('\udc80' <= c <= '\udcff' for c in original_subject) or '\x1b$' in original_subject:
         subject = decode_payload(original_subject.encode('ascii', 'surrogateescape'), msg.get_content_charset())
     return canonical_fields(subject, '\n'.join(parts), str(msg.get('from') or ''))

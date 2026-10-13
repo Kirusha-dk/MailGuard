@@ -59,6 +59,8 @@ class Collector:
         old_body = old['ngram_text'].split('\nBODY: ', 1)[-1]
         # Garbled ASCII-default decoding must not merge unrelated Chinese mail.
         aliases = list(keys) + ['family:' + family]
+        if raw:
+            aliases.append('raw:' + hashlib.sha256(raw).hexdigest())
         if old_body.count('\ufffd') / max(1, len(old_body)) < .005:
             aliases += list(content_keys(old)[0]) + ['family:' + campaign_key(old['ngram_text'])]
         if any(self.pool.db.execute('SELECT 1 FROM keys WHERE key=?', (k,)).fetchone() for k in aliases):
@@ -243,6 +245,40 @@ def main():
 
 
 def freeze_new(pool, legacy, previous, out):
+    frozen, _ = load_frozen_v40('.cache/v40-fresh50k')
+    recovered, raw_count = 0, 0
+    for rows in frozen.values():
+        for r in rows:
+            raw = r['path'].read_bytes()
+            pool.db.execute('INSERT OR IGNORE INTO keys VALUES (?,NULL,NULL)', ('raw:' + hashlib.sha256(raw).hexdigest(),))
+            raw_count += 1
+            try:
+                raw.decode('utf-8', 'strict')
+                needs_recovery = b'\x1b$' in raw
+            except UnicodeError:
+                needs_recovery = True
+            if needs_recovery:
+                parsed = from_eml(raw)
+                pool.block(parsed)
+                pool.db.execute('INSERT OR IGNORE INTO keys VALUES (?,NULL,NULL)', ('family:' + campaign_key(parsed['ngram_text']),))
+                recovered += 1
+    previous['rawSha256RowsBlocked'] = raw_count
+    previous['priorCharsetRecoveryRowsBlocked'] = recovered
+    # The original blocker loaded Seven's TRAIN split. Also block its published
+    # TEST pool before claiming whole-source isolation for genuinely new mail.
+    from datasets import load_dataset
+    extra = load_dataset('JinqiangDing/seven-phishing-email-datasets')
+    extra_fingerprints = {}
+    for split, rows in extra.items():
+        if split == 'train':
+            continue
+        extra_fingerprints[split] = rows._fingerprint
+        for r in rows:
+            parsed = canonical_fields(r.get('subject') or '', r.get('text') or '', r.get('sender') or 'unknown@example.invalid')
+            pool.block(parsed)
+            pool.db.execute('INSERT OR IGNORE INTO keys VALUES (?,NULL,NULL)', ('family:' + campaign_key(parsed['ngram_text']),))
+    pool.db.commit()
+    previous['additionalSevenSplits'] = extra_fingerprints
     collector = Collector(pool)
     work = out / 'downloads'; work.mkdir()
     sources = [collect_trec(collector, work)]

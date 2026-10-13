@@ -133,3 +133,4 @@ jobs:
             .cache/v59-data/manifest.csv
             checks/output/
           retention-days: 90
+          include-hidden-files: true
