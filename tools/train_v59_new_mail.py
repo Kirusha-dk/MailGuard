@@ -10,6 +10,7 @@ from pathlib import Path
 
 import joblib
 import numpy as np
+from scipy.sparse import save_npz, load_npz
 from sklearn.ensemble import HistGradientBoostingClassifier
 from sklearn.linear_model import SGDClassifier
 
@@ -79,6 +80,7 @@ def main():
     p.add_argument('--data', default='.cache/v59-data')
     p.add_argument('--output', default='reports/v59-full')
     p.add_argument('--epochs', type=int, default=4)
+    p.add_argument('--feature-cache', default='.cache/v59-feature-cache')
     args = p.parse_args()
     data, out = Path(args.data), Path(args.output); out.mkdir(parents=True, exist_ok=True)
     provenance = json.loads((data / 'provenance.json').read_text())
@@ -92,15 +94,24 @@ def main():
     counts = Counter((r['source'], r['y']) for r in train)
     weights = np.asarray([min(1., 12000 / counts[r['source'], r['y']]) * (6. if r['y'] == 0 else 1.)
                           * (.25 if r.get('weakLabel') else 1.) for r in train], dtype=np.float64)
+    rng = np.random.default_rng(59)
+    order = rng.permutation(len(train))
+    train = [train[i] for i in order]
+    weights = weights[order]
+    y_train = np.asarray([r['y'] for r in train])
+    cache = Path(args.feature_cache); cache.mkdir(parents=True, exist_ok=False)
     df = np.zeros(FEATURES, dtype=np.float64)
     totals = [np.zeros(FEATURES, dtype=np.float64) for _ in (0, 1)]
     for start in range(0, len(train), 256):
         raw = features(train[start:start+256]); y = np.asarray([r['y'] for r in train[start:start+256]])
+        save_npz(cache / f'{start:08d}.npz', raw, compressed=True)
         df += np.bincount(raw.indices, minlength=FEATURES)
         for label in (0, 1):
             # Frequency ratios also respect the source caps, without the HAM cost multiplier.
             w = weights[start:start+len(y)][y == label] / (6. if label == 0 else 1.)
             totals[label] += np.asarray(raw[y == label].multiply(w[:, None]).sum(axis=0)).ravel()
+        if start % 8192 == 0:
+            print('TRAIN feature cache', start, '/', len(train), flush=True)
     idf = (np.log((1 + len(train)) / (1 + df)) + 1).astype(np.float32)
     pos, neg = totals[1] + 1., totals[0] + 1.
     nb = np.log((pos / pos.sum()) / (neg / neg.sum())).astype(np.float32)
@@ -108,18 +119,22 @@ def main():
     candidates = [dict(name=f'{rep}-alpha{alpha}', model=SGDClassifier(loss='log_loss', alpha=alpha, average=True, random_state=59),
                        idf=idf, ratio=nb if rep == 'nb' else None)
                   for rep in ('tfidf', 'nb') for alpha in (1e-5, 3e-6)]
-    rng = np.random.default_rng(59)
     for epoch in range(args.epochs):
-        order = rng.permutation(len(train))
-        for start in range(0, len(order), 256):
-            ix = order[start:start+256]; batch = [train[i] for i in ix]
-            raw = features(batch); y = np.asarray([r['y'] for r in batch])
+        # Initial global shuffle mixes sources/classes; each epoch also shuffles
+        # blocks and rows. Only TRAIN features are cached, never TEST features.
+        blocks = rng.permutation(np.arange(0, len(train), 256))
+        for start in blocks:
+            raw = load_npz(cache / f'{start:08d}.npz')
+            within = rng.permutation(raw.shape[0])
+            raw = raw[within]
+            ix = start + within; y = y_train[ix]
             for rep in (None, nb):
                 x = transformed(raw, idf, rep)
                 for c in candidates:
                     if c['ratio'] is rep:
                         c['model'].partial_fit(x, y, classes=np.asarray([0, 1]), sample_weight=weights[ix])
         print('v59 core epoch', epoch+1, '/', args.epochs, 'rows', len(train), flush=True)
+    shutil.rmtree(cache)
     # Use only the model-selection portion here; gate TRAIN has disjoint families.
     fit_ix = np.asarray([i for i, r in enumerate(selection) if int(r['family'][-12:], 16) % 10 < 6])
     choose_ix = np.asarray([i for i, r in enumerate(selection) if int(r['family'][-12:], 16) % 10 >= 6])

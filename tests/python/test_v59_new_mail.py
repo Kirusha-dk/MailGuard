@@ -18,6 +18,10 @@ class NewMailRegressionTests(unittest.TestCase):
         raw = b'Content-Type: text/plain; charset=iso-2022-jp\n\n' + text.encode('iso2022_jp')
         self.assertIn(text, from_eml(raw)['ngram_text'])
 
+    def test_unencoded_chinese_subject(self):
+        raw = b'Subject: ' + '会议时间'.encode('gb2312') + b'\n\n' + '明天下午三点会议'.encode('gb2312')
+        self.assertIn('SUBJECT: 会议时间', from_eml(raw)['ngram_text'])
+
     def test_latin_fallback_and_attachment_exclusion(self):
         self.assertEqual(decode_payload('Please send the café receipt'.encode('cp1252')), 'Please send the café receipt')
         raw = (b'MIME-Version: 1.0\nContent-Type: multipart/mixed; boundary=x\n\n'

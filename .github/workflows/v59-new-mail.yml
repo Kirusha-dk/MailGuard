@@ -9,7 +9,7 @@ permissions:
   actions: read
 concurrency:
   group: v59-new-mail-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   train:
     runs-on: ubuntu-24.04
@@ -66,7 +66,24 @@ jobs:
           key: mailguard-v59-new-mail-v1
       - name: Freeze new email families and provenance before fitting
         if: steps.fresh-data.outputs.cache-hit != 'true'
-        run: python -u tools/prepare_v59_new_mail.py
+        run: echo 'New TEST will be locked before training.'
+      - uses: actions/cache/restore@v4
+        id: prior-blocking
+        if: steps.fresh-data.outputs.cache-hit != 'true'
+        with:
+          path: .cache/v59-data
+          key: mailguard-v59-prior-blocking-v1
+      - name: Restore old development rows and block all previous sources
+        if: steps.fresh-data.outputs.cache-hit != 'true' && steps.prior-blocking.outputs.cache-hit != 'true'
+        run: python -u tools/prepare_v59_new_mail.py --phase old
+      - uses: actions/cache/save@v4
+        if: steps.fresh-data.outputs.cache-hit != 'true' && steps.prior-blocking.outputs.cache-hit != 'true'
+        with:
+          path: .cache/v59-data
+          key: mailguard-v59-prior-blocking-v1
+      - name: Freeze new Chinese and 2026 mail families
+        if: steps.fresh-data.outputs.cache-hit != 'true'
+        run: python -u tools/prepare_v59_new_mail.py --phase new
       - uses: actions/cache/save@v4
         if: steps.fresh-data.outputs.cache-hit != 'true'
         with:

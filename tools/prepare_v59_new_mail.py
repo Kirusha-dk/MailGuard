@@ -12,6 +12,7 @@ import html
 import json
 import re
 import shutil
+import sqlite3
 import subprocess
 import zipfile
 from collections import Counter
@@ -45,7 +46,7 @@ def family_split(family, source):
 class Collector:
     def __init__(self, pool):
         self.pool = pool
-        self.rows, self.conflicts, self.keys = {}, set(), set()
+        self.rows, self.conflicts, self.keys = {}, set(), {}
         self.stats = Counter()
 
     def add(self, raw, label, source, origin, canonical=None):
@@ -65,9 +66,14 @@ class Collector:
         if family in self.rows and self.rows[family]['y'] != label:
             self.conflicts.add(family)
             self.stats['conflictingFamily'] += 1; return
-        if family in self.rows or any(k in self.keys for k in keys):
+        owners = [self.keys[k] for k in keys if k in self.keys]
+        if any(old_label != label for _, old_label in owners):
+            self.conflicts.update(f for f, _ in owners)
+            self.conflicts.add(family)
+            self.stats['conflictingContentKeys'] += 1; return
+        if family in self.rows or owners:
             self.stats['duplicateNewContentOrFamily'] += 1; return
-        self.keys.update(keys)
+        self.keys.update({k: (family, label) for k in keys})
         row = compact(dict(parsed, y=label, source=source), family)
         row.update(text=parsed['ngram_text'], old_text=old['ngram_text'], origin=origin,
                    rawSha256=hashlib.sha256(raw).hexdigest() if raw else None,
@@ -177,8 +183,17 @@ def main():
     p.add_argument('--output', default='.cache/v59-data')
     p.add_argument('--manifest', default='.cache/v55/v55-full/split-manifest.csv')
     p.add_argument('--corpus', default='.cache/v54-corpus/selected.jsonl.gz')
+    p.add_argument('--phase', choices=('old', 'new'), default='old')
     args = p.parse_args()
     out = Path(args.output)
+    if args.phase == 'new':
+        previous = json.loads((out / 'old-blocking.json').read_text())
+        legacy = {s: list(corpus_rows(out / f'legacy-{s}.jsonl.gz')) for s in SPLITS}
+        pool = object.__new__(Pool)
+        pool.db = sqlite3.connect(out / 'blocked.sqlite')
+        pool.stats = Counter()
+        freeze_new(pool, legacy, previous, out)
+        return
     out.mkdir(parents=True, exist_ok=False)
     manifest = list(csv.DictReader(Path(args.manifest).open()))
     wanted = {r['identity']: r for r in manifest if r['split'] != 'test'}
@@ -192,17 +207,23 @@ def main():
     previous = block_previous(pool, '.cache/v40-fresh50k')
     if file_sha(args.corpus) != CORPUS_SHA:
         raise ValueError('Old corpus hash mismatch')
+    reconstructed, alias_counts = set(), Counter()
     def retain(parsed, y, source):
         entry = wanted.get(parsed['identity'])
         if entry:
             if (int(entry['label']), entry['source']) != (y, source):
-                raise ValueError('Old development manifest mismatch')
+                alias_counts['unselectedCanonicalAlias'] += 1
+                return
+            if parsed['identity'] in reconstructed:
+                alias_counts['duplicateCanonicalAlias'] += 1
+                return
+            reconstructed.add(parsed['identity'])
             row = compact(dict(parsed, y=y, source=source), entry['family'])
             if entry['split'] != 'train':
                 row['text'] = parsed['ngram_text']
             legacy[entry['split']].append(row)
     frozen, _ = load_frozen_v40('.cache/v40-fresh50k')
-    for split in ('train', 'val'):
+    for split in ('val', 'train'):
         for r in frozen[split]:
             retain(old_parse(r['path'].read_bytes()), int(r['y']), r['source'])
     for r in corpus_rows(args.corpus):
@@ -211,7 +232,17 @@ def main():
     if sum(map(len, legacy.values())) != len(wanted):
         raise ValueError('Old development reconstruction incomplete')
     pool.db.commit()
+    previous['reconstructionAliasesSkipped'] = dict(alias_counts)
+    for split, rows in legacy.items():
+        with gzip.open(out / f'legacy-{split}.jsonl.gz', 'wt', encoding='utf-8') as f:
+            for r in rows:
+                f.write(json.dumps(r, ensure_ascii=False) + '\n')
+    (out / 'old-blocking.json').write_text(json.dumps(previous, indent=2))
+    pool.close()
     print('Legacy development reconstructed; all previous pools blocked', flush=True)
+
+
+def freeze_new(pool, legacy, previous, out):
     collector = Collector(pool)
     work = out / 'downloads'; work.mkdir()
     sources = [collect_trec(collector, work)]
@@ -247,6 +278,7 @@ def main():
                       caveat='Public historical Chinese mail is not a customer sample. Spam traps are weak spam labels. Family fingerprints cannot exclude every semantic near-duplicate. Unselected old SpamArchive pool is unavailable; all selected 500k, whole HF source pools and frozen 110k are blocked.')
     (out / 'provenance.json').write_text(json.dumps(provenance, indent=2))
     pool.close()
+    (out / 'blocked.sqlite').unlink()
     print('Locked new splits:', json.dumps(new_counts), flush=True)
 
 

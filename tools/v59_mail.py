@@ -36,4 +36,8 @@ def from_eml(raw):
         if part.get_content_type() not in ('text/plain', 'text/html'):
             continue
         parts.append(decode_payload(part.get_payload(decode=True), part.get_content_charset()))
-    return canonical_fields(str(msg.get('subject') or ''), '\n'.join(parts), str(msg.get('from') or ''))
+    subject = str(msg.get('subject') or '')
+    original_subject = next((v for k, v in msg.raw_items() if k.lower() == 'subject'), '')
+    if any('\udc80' <= c <= '\udcff' for c in original_subject):
+        subject = decode_payload(original_subject.encode('ascii', 'surrogateescape'), msg.get_content_charset())
+    return canonical_fields(subject, '\n'.join(parts), str(msg.get('from') or ''))
