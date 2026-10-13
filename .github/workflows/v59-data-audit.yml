@@ -1,0 +1,32 @@
+name: MailGuard v59 frozen data audit
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/audit_v59_splits.py', '.github/workflows/v59-data-audit.yml']
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v59-data
+          key: mailguard-v59-new-mail-v1
+          fail-on-cache-miss: true
+      - run: python -u tools/audit_v59_splits.py
+      - name: Summary
+        if: always()
+        run: if [ -f reports/v59-data-audit/audit.md ]; then cat reports/v59-data-audit/audit.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v59-data-audit
+          path: reports/v59-data-audit/
+          retention-days: 90
