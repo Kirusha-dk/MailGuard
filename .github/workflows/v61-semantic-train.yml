@@ -22,11 +22,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Wait for frozen new TEST and development features
+      - name: Verify completed data preparations
         run: |
-          gh run watch 38458413022 --exit-status --interval 30
-          gh run watch 38458804953 --exit-status --interval 30
-          gh run watch 38463565162 --exit-status --interval 30
+          for run in 38458413022 38458804953 38463565162; do
+            conclusion=''
+            for attempt in 1 2 3 4 5; do
+              if conclusion=$(gh api "repos/${{ github.repository }}/actions/runs/$run" --jq .conclusion); then break; fi
+              sleep 3
+            done
+            test "$conclusion" = success || { echo "Preparation $run is not successful: $conclusion"; exit 1; }
+          done
         env:
           GH_TOKEN: ${{ github.token }}
       - uses: actions/cache/restore@v4
