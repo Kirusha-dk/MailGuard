@@ -59,6 +59,8 @@ def main():
     if cache['priorManifestSha256']!=provenance['manifestSha256'] or cache['viewVersion']!=VIEW_VERSION or cache['encoderRevision']!=REVISION:
         raise ValueError('Wrong semantic feature cache')
     if cache['newTestRead']: raise ValueError('Feature cache used new TEST')
+    if file_sha('.cache/v60-model/model.joblib')!=cache['baseModelSha256']:
+        raise ValueError('Base model differs from cached development scores')
     for filename,digest in cache['files'].items():
         if file_sha(root/filename)!=digest: raise ValueError('Feature cache file changed')
     train=list(corpus_rows(root/'train.jsonl.gz'))
@@ -131,6 +133,7 @@ def main():
     for leaf in ('model.joblib','unicode.pt'): shutil.copyfile(source/leaf,out/'v60'/leaf)
     shutil.copytree(source/'v59',out/'v60/v59'); shutil.copytree(root/'encoder',out/'encoder')
     artifact=dict(version='v61-semantic-neighbour-ensemble',semanticCores=cores,semanticCoreNames=core_names,anchors=anchors,anchorLabels=anchor_labels,
+                  anchorIdentities=[train[i]['identity'] for i in anchor_ix],
                   gates=gates,profiles=profiles,codeCommit=os.environ.get('GITHUB_SHA'),githubRunId=os.environ.get('GITHUB_RUN_ID'),
                   encoderRevision=REVISION,viewVersion=VIEW_VERSION,queryEncodingBatchSize=1,splitManifestSha256=provenance['manifestSha256'],
                   components={str(p.relative_to(out)):file_sha(p) for p in out.rglob('*') if p.is_file()})
@@ -176,6 +179,9 @@ def main():
     fresh_provenance=json.loads(Path('.cache/v61-new/provenance.json').read_text())
     if file_sha('.cache/v61-new/test.jsonl.gz')!=fresh_provenance['testSha256']: raise ValueError('New TEST changed')
     fresh=evaluate(list(corpus_rows('.cache/v61-new/test.jsonl.gz')),'new-october')
+    # October is a changing archive. Preserve the exact frozen research snapshot
+    # in the draft model package so a later rerun can recover the same TEST.
+    shutil.copyfile('.cache/v61-new/test.jsonl.gz',out/'new-october-test.jsonl.gz')
     may=evaluate(list(corpus_rows('.cache/v60-data/test.jsonl.gz')),'may-regression')
     chinese=evaluate(list(corpus_rows('.cache/v59-data/test.jsonl.gz')),'v59-regression')
     legacy=evaluate(legacy_rows(),'legacy-regression')
@@ -192,7 +198,7 @@ def main():
     result=dict(version=61,codeCommit=os.environ.get('GITHUB_SHA'),githubRunId=os.environ.get('GITHUB_RUN_ID'),modelSha256=locked,
                 profiles=profiles,selectedSemanticCores=core_names,coreCandidates=core_results,gateSelection=gate_results,trainSemanticPool=cache['trainPoolCount'],
                 freshTest=fresh,mayRegression=dict(may,reused=True),v59Regression=dict(chinese,reused=True),legacyRegression=dict(legacy,reused=True),
-                newTestProvenance=fresh_provenance,featureManifest=cache,estimatorAndThresholdLockedBeforeTest=True,
+                newTestProvenance=fresh_provenance,newTestSnapshotFile='new-october-test.jsonl.gz',featureManifest=cache,estimatorAndThresholdLockedBeforeTest=True,
                 testLabelsUsedForTraining=False,productionGoalValidated=False,engineeringAcceptance=acceptance,
                 caveat='New October TEST is SPAM-only. All HAM evaluations are explicitly reused engineering tests; this cannot establish the customer false-positive rate. Pretrained encoder is frozen; our semantic and stack classifiers fit development only.')
     (out/'report.json').write_text(json.dumps(result,indent=2)); (out/'new-test-provenance.json').write_text(json.dumps(fresh_provenance,indent=2))
