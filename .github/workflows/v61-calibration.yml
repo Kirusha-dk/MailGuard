@@ -1,0 +1,51 @@
+name: MailGuard v61 deterministic calibration features
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/prepare_v61_calibration.py', '.github/workflows/v61-calibration.yml']
+permissions:
+  contents: read
+concurrency:
+  group: v61-calibration-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  encode:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+      HF_HUB_DISABLE_XET: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v60-data
+          key: mailguard-v60-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        id: cal
+        with:
+          path: .cache/v61-cal-query
+          key: mailguard-v61-cal-query-v1
+      - name: Dependencies
+        run: python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 onnxruntime==1.23.2 tokenizers==0.22.1 huggingface_hub==0.36.0
+      - name: Encode only CAL in the exact query mode
+        if: steps.cal.outputs.cache-hit != 'true'
+        run: python -u tools/prepare_v61_calibration.py
+      - uses: actions/cache/save@v4
+        if: steps.cal.outputs.cache-hit != 'true'
+        with:
+          path: .cache/v61-cal-query
+          key: mailguard-v61-cal-query-v1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v61-calibration-audit
+          path: .cache/v61-cal-query/manifest.json
+          include-hidden-files: true
+          retention-days: 90
