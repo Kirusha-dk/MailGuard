@@ -1,0 +1,9 @@
+{
+  "diagnosticOnly": true,
+  "testDerivedThresholdMustNotBeDeployed": true,
+  "targetSpamRecall": 0.95,
+  "threshold": 0.30721392355540345,
+  "observedRecall": 0.9512318767109399,
+  "fp": 14,
+  "ham": 1968
+}
