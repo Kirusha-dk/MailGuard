@@ -1,0 +1,60 @@
+name: MailGuard v63 CAL-only component diagnostic
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/diagnose_v63_runtime.py', '.github/workflows/v63-runtime-diagnostic.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  diagnose:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    env:
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v61-dev
+          key: mailguard-v61-semantic-dev-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v61-cal-query
+          key: mailguard-v61-cal-query-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v60-data
+          key: mailguard-v60-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v40-fresh50k
+          key: v40-fresh50k-v1
+          fail-on-cache-miss: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v63-evidence
+          run-id: 38476116112
+          github-token: ${{ github.token }}
+          path: .cache/v63-frozen
+      - name: Dependencies
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 onnxruntime==1.23.2 tokenizers==0.22.1
+      - name: Diagnose on CAL without training or TEST access
+        run: python -u tools/diagnose_v63_runtime.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v63-runtime-diagnostic
+          path: |
+            reports/v63-runtime-diagnostic.json
+          retention-days: 90
