@@ -1,0 +1,28 @@
+{
+  "version": 61,
+  "diagnosticOnly": true,
+  "testDerivedThresholdMustNotBeDeployed": true,
+  "fromVersion": 60,
+  "reason": "Changing the score cutoff cannot satisfy the requested low-FP target on reused tests.",
+  "oracleAt95": [
+    {
+      "dataset": "v60 fresh May (now reused)",
+      "cutoff": 0.41372813896158667,
+      "fp": 13,
+      "ham": 313
+    },
+    {
+      "dataset": "v59 reused test",
+      "cutoff": 0.1421802095470766,
+      "fp": 11,
+      "ham": 1968
+    },
+    {
+      "dataset": "legacy reused English/CSDMC",
+      "cutoff": 0.7576131609641774,
+      "fp": 113,
+      "ham": 24017
+    }
+  ],
+  "modelSha256": "3dcd9d2888bb2ded32c729aedbe99411dc7a023403ed4931755096300f66fb72"
+}

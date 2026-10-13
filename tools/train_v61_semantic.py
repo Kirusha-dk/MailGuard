@@ -21,7 +21,7 @@ from v60_runtime import load_bundle as load60,predict_texts as predict60
 from v61_semantic import Encoder,neighbours,script,group,VIEW_VERSION,REVISION
 from v61_runtime import stack,raw_score,margins,score_rows
 
-PROFILES={'conservative':.0002,'high-recall':.002}
+PROFILES={'conservative':.0001,'high-recall':.002}
 
 
 def cuts(rows,scores,rate):
@@ -163,11 +163,21 @@ def main():
     may=evaluate(list(corpus_rows('.cache/v60-data/test.jsonl.gz')),'may-regression')
     chinese=evaluate(list(corpus_rows('.cache/v59-data/test.jsonl.gz')),'v59-regression')
     legacy=evaluate(legacy_rows(),'legacy-regression')
+    acceptance={}
+    for p in PROFILES:
+        datasets=[fresh,may,chinese,legacy]
+        recalls=[d['profiles'][p]['v61']['recall'] for d in datasets]
+        ham=sum(d['ham'] for d in datasets); fp=sum(d['profiles'][p]['v61']['fp'] for d in datasets)
+        acceptance[p]=dict(requiredRecall=.95,requiredHamFpr=.0001,
+                           minimumDatasetRecall=min(recalls),fp=fp,ham=ham,
+                           empiricalHamFpr=fp/ham,
+                           engineeringGoalMet=min(recalls)>=.95 and fp<=int(ham*.0001),
+                           customerGoalValidated=False,reusedHamOnly=True)
     result=dict(version=61,codeCommit=os.environ.get('GITHUB_SHA'),githubRunId=os.environ.get('GITHUB_RUN_ID'),modelSha256=locked,
                 profiles=profiles,coreCandidates=core_results,gateSelection=gate_results,trainSemanticPool=cache['trainPoolCount'],
                 freshTest=fresh,mayRegression=dict(may,reused=True),v59Regression=dict(chinese,reused=True),legacyRegression=dict(legacy,reused=True),
                 newTestProvenance=fresh_provenance,featureManifest=cache,estimatorAndThresholdLockedBeforeTest=True,
-                testLabelsUsedForTraining=False,productionGoalValidated=False,
+                testLabelsUsedForTraining=False,productionGoalValidated=False,engineeringAcceptance=acceptance,
                 caveat='New October TEST is SPAM-only. All HAM evaluations are explicitly reused engineering tests; this cannot establish the customer false-positive rate. Pretrained encoder is frozen; our semantic and stack classifiers fit development only.')
     (out/'report.json').write_text(json.dumps(result,indent=2)); (out/'new-test-provenance.json').write_text(json.dumps(fresh_provenance,indent=2))
     md='# MailGuard v61 — semantic neighbour ensemble\n\n'+result['caveat']+'\n\n'
