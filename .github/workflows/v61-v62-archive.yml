@@ -1,0 +1,82 @@
+name: MailGuard archive validated v61 and v62 checkpoints
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['.github/workflows/v61-v62-archive.yml']
+permissions:
+  contents: write
+  actions: read
+jobs:
+  archive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        include:
+          - version: 61
+            run: 38468336735
+            source: 2694463a49875f2d2bd783516a17596f5ecb8b9b
+            model: 07239ee4a2de4824bbf41df17197151ae8d425e7ea0d73106d5814b37f148116
+          - version: 62
+            run: 38468905929
+            source: 118b063a15a992d76697619d5be37e052c1b7856
+            model: 380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v${{ matrix.version }}-evidence
+          run-id: ${{ matrix.run }}
+          github-token: ${{ github.token }}
+          path: saved
+      - name: Verify frozen model, completed report and both packaging checks
+        env:
+          CHECKPOINT_VERSION: ${{ matrix.version }}
+          CHECKPOINT_SOURCE: ${{ matrix.source }}
+          CHECKPOINT_MODEL: ${{ matrix.model }}
+        run: |
+          python - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          v=os.environ['CHECKPOINT_VERSION']; root=Path('saved/reports/v'+v+'-full')
+          report=json.loads((root/'report.json').read_text())
+          digest=hashlib.sha256((root/'model.joblib').read_bytes()).hexdigest()
+          if digest!=os.environ['CHECKPOINT_MODEL'] or report['modelSha256']!=digest or report['codeCommit']!=os.environ['CHECKPOINT_SOURCE']:
+              raise ValueError('Checkpoint identity differs')
+          if not report['estimatorAndThresholdLockedBeforeTest'] or report['testLabelsUsedForTraining']:
+              raise ValueError('Checkpoint evaluation provenance differs')
+          for p in ('conservative','high-recall'):
+              check=json.loads(Path('saved/checks/output',p,'summary.json').read_text())
+              if check['modelSha256']!=digest or check['failed'] or check['scored']!=2 or check['thresholdChanged']:
+                  raise ValueError('Packaging check failed')
+          if v=='61':
+              parity=json.loads((root/'cal-runtime-parity.json').read_text())
+              if any(not p['numericParity'] or p['decisionDifferences'] for p in parity['profiles'].values()):
+                  raise ValueError('Full CAL runtime parity failed')
+          print('Validated unchanged v'+v+' checkpoint',digest)
+          PY
+      - name: Preserve source and immutable model package
+        run: |
+          mkdir -p saved/reports/v${{ matrix.version }}-full/source
+          git archive '${{ matrix.source }}' | tar -x -C saved/reports/v${{ matrix.version }}-full/source
+          tar -czf mailguard-v${{ matrix.version }}-model.tar.gz -C saved/reports v${{ matrix.version }}-full
+          sha256sum mailguard-v${{ matrix.version }}-model.tar.gz > mailguard-v${{ matrix.version }}-model.sha256
+          cp saved/reports/v${{ matrix.version }}-full/report.md release-notes.md
+          echo '' >> release-notes.md
+          echo 'Research checkpoint. Source: ${{ matrix.source }}. No production promotion; customer validation is separate.' >> release-notes.md
+          gh release create 'mailguard-v${{ matrix.version }}-checkpoint-${{ matrix.run }}' --draft --target '${{ matrix.source }}' \
+            --title 'MailGuard v${{ matrix.version }} — research checkpoint' --notes-file release-notes.md \
+            mailguard-v${{ matrix.version }}-model.tar.gz mailguard-v${{ matrix.version }}-model.sha256
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v${{ matrix.version }}-validated-package
+          path: |
+            mailguard-v${{ matrix.version }}-model.tar.gz
+            mailguard-v${{ matrix.version }}-model.sha256
+          retention-days: 90

@@ -27,9 +27,22 @@ def main():
     root61=[p.parent for p in Path('.cache/v61-frozen').rglob('model.joblib') if (p.parent/'encoder').exists()]
     root62=list(Path('.cache/v62-frozen').rglob('model.joblib'))
     if len(root61)!=1 or len(root62)!=1:raise ValueError('Expected one bundle of each type')
+    expected62='380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf'
+    if file_sha(root62[0])!=expected62:raise ValueError('Wrong frozen character checkpoint')
+    # The source run failed only in release creation, after fitting, every TEST,
+    # and both Docker checks. Verify those saved outputs rather than assuming
+    # that a run-level failure means the estimator/packaging checks failed.
+    for p in PROFILES:
+        summaries=list(Path('.cache/v62-frozen/checks/output').glob(p+'/summary.json'))
+        if len(summaries)!=1:raise ValueError('Missing source runtime packaging check')
+        check=json.loads(summaries[0].read_text())
+        if check['modelSha256']!=expected62 or check['failed']!=0 or check['scored']!=2 or check['thresholdChanged']:
+            raise ValueError('Source runtime packaging check failed')
     prior_report=root62[0].parent/'report.json'
     if prior_report.exists():
         prior=json.loads(prior_report.read_text())
+        if prior['modelSha256']!=expected62 or not prior['estimatorAndThresholdLockedBeforeTest'] or prior['testLabelsUsedForTraining']:
+            raise ValueError('Source evaluation provenance failed')
         accepted=[p for p,v in prior['engineeringAcceptance'].items() if v['engineeringGoalMet']]
         if accepted:
             note=dict(skipped=True,reason='v62 already meets the engineering acceptance criterion',

@@ -27,11 +27,11 @@ jobs:
           conclusion=''
           for attempt in {1..120}; do
             conclusion=$(gh api 'repos/${{ github.repository }}/actions/runs/38468905929' --jq '.conclusion // "running"') || conclusion=running
-            if [ "$conclusion" = success ]; then break; fi
+            if [ "$conclusion" = success ] || [ "$conclusion" = failure ]; then break; fi
             if [ "$conclusion" != running ]; then echo "v62 preparation failed: $conclusion"; exit 1; fi
             sleep 30
           done
-          test "$conclusion" = success
+          test "$conclusion" = success || test "$conclusion" = failure
         env:
           GH_TOKEN: ${{ github.token }}
       - uses: actions/cache/restore@v4
