@@ -1,0 +1,127 @@
+name: MailGuard v61 semantic classifier and new October test
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/train_v61_semantic.py', 'tools/v61_runtime.py', 'tests/python/test_v61_semantic.py', '.github/workflows/v61-semantic-train.yml']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: v61-semantic-train-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  train:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    env:
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Wait for frozen new TEST and development features
+        run: |
+          gh run watch 38458413022 --exit-status --interval 30
+          gh run watch 38458804953 --exit-status --interval 30
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v61-dev
+          key: mailguard-v61-semantic-dev-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v61-new
+          key: mailguard-v61-october-20261013-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v60-data
+          key: mailguard-v60-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v59-data
+          key: mailguard-v59-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v40-fresh50k
+          key: v40-fresh50k-v1
+          fail-on-cache-miss: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v60-evidence
+          run-id: 38387733735
+          github-token: ${{ github.token }}
+          path: .cache/v60-evidence
+      - name: Locate frozen v60 bundle
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import shutil
+          files=list(Path('.cache/v60-evidence').rglob('v60-full/model.joblib'))
+          if len(files)!=1: raise ValueError('Expected one v60 bundle')
+          shutil.copytree(files[0].parent,'.cache/v60-model')
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v55-evidence
+          run-id: 38137477063
+          github-token: ${{ github.token }}
+          path: .cache/v55
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v54-unique500k-corpus
+          run-id: 38092976048
+          github-token: ${{ github.token }}
+          path: .cache/v54-corpus
+      - name: Dependencies
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 onnxruntime==1.23.2 tokenizers==0.22.1
+      - name: Semantic isolation tests
+        run: python -m unittest discover -s tests/python -p 'test_v61_semantic.py'
+      - name: Fit and calibrate; lock before opening October TEST
+        run: python -u tools/train_v61_semantic.py
+      - name: Build offline checker
+        run: docker build -f Dockerfile.v61-check -t mailguard-v61-check .
+      - name: Verify both saved runtime profiles without network
+        run: |
+          mkdir -p checks/input/ham checks/input/spam checks/output
+          python - <<'PY'
+          from pathlib import Path
+          from email.message import EmailMessage
+          for folder,body in [('ham','Please confirm the meeting tomorrow.'),('spam','Buy cheap pills now at https://example.invalid')]:
+              msg=EmailMessage(); msg['From']='sender@example.invalid'; msg['Subject']='Offline packaging check'; msg.set_content(body)
+              Path(f'checks/input/{folder}/mail.eml').write_bytes(msg.as_bytes())
+          PY
+          for profile in conservative high-recall; do
+            docker run --rm --network none -v "$PWD/reports/v61-full:/model:ro" \
+              -v "$PWD/checks:/checks" mailguard-v61-check --model-dir /model \
+              --ham /checks/input/ham --spam /checks/input/spam --output "/checks/output/$profile" --profile "$profile"
+          done
+      - name: Preserve permanent research checkpoint
+        run: |
+          tar -czf mailguard-v61-model.tar.gz -C reports v61-full
+          sha256sum mailguard-v61-model.tar.gz > mailguard-v61-model.sha256
+          gh release create "mailguard-v61-checkpoint-${{ github.run_id }}" --draft --target '${{ github.sha }}' \
+            --title 'MailGuard v61 — semantic evaluation' --notes-file reports/v61-full/report.md \
+            mailguard-v61-model.tar.gz mailguard-v61-model.sha256
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Summary
+        if: always()
+        run: if [ -f reports/v61-full/report.md ]; then cat reports/v61-full/report.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v61-evidence
+          path: |
+            reports/v61-full/
+            checks/output/
+          retention-days: 90
