@@ -31,7 +31,7 @@ def load_bundle(root):
 
 
 def score_rows(artifact,rows,embeddings,base,profile):
-    semantic=artifact['semanticCore'].predict_proba(embeddings)[:,1]
+    semantic=artifact['semanticCores'][profile].predict_proba(embeddings)[:,1]
     near=neighbours(embeddings,artifact['anchors'],artifact['anchorLabels'])
     x=stack(rows,base,semantic,near); setting=artifact['profiles'][profile]
     scores=raw_score(setting['selected'],artifact['gates'][profile],x,base,semantic)

@@ -14,6 +14,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 from sklearn.ensemble import HistGradientBoostingClassifier
+from sklearn.kernel_approximation import Nystroem
 from train_v55_multilingual import corpus_rows,file_sha
 from train_v59_new_mail import metrics,threshold
 from train_v60_new_mail import restore_validation,legacy_rows
@@ -79,22 +80,36 @@ def main():
     y=np.array([r['y'] for r in train]); counts=Counter((r['source'],r['y']) for r in train)
     weights=np.array([min(1.,3000/counts[r['source'],r['y']])*(.25 if r.get('weakLabel') else 1.) for r in train])
     candidates=[]; core_results=[]
-    for regularization in (4.,20.):
-        core=LogisticRegression(C=regularization,max_iter=700,random_state=61)
-        core.fit(embeddings,y,sample_weight=weights)
-        scores=core.predict_proba(es[choose])[:,1]; cut=cuts(choose_rows,scores,PROFILES['high-recall']); key=rank(choose_rows,scores,cut)
-        candidates.append((key,core)); core_results.append(dict(C=regularization,macroKey=key,selection=measure(choose_rows,margins(choose_rows,scores,cut))))
-        print('Semantic core SELECT',json.dumps(core_results[-1]),flush=True)
-    core=max(candidates,key=lambda c:c[0])[1]
+    core_candidates=[(f'linear-C{c}',LogisticRegression(C=c,max_iter=700,random_state=61)) for c in (4.,20.)]
+    for gamma in (4.,12.):
+        kernel=make_pipeline(Nystroem(kernel='rbf',gamma=gamma,n_components=min(512,len(train)),random_state=61),
+                             LogisticRegression(C=4.,max_iter=700,random_state=61))
+        core_candidates.append((f'rbf-gamma{gamma}',kernel))
+    for name,core in core_candidates:
+        if name.startswith('rbf-'):
+            core.fit(embeddings,y,logisticregression__sample_weight=weights)
+        else:
+            core.fit(embeddings,y,sample_weight=weights)
+        scores=core.predict_proba(es[choose])[:,1]
+        keys={}
+        for p,rate in PROFILES.items():
+            cut=cuts(choose_rows,scores,rate); keys[p]=rank(choose_rows,scores,cut)
+            core_results.append(dict(profile=p,name=name,macroKey=keys[p],selection=measure(choose_rows,margins(choose_rows,scores,cut))))
+            print('Semantic core SELECT',json.dumps(core_results[-1]),flush=True)
+        candidates.append((keys,name,core))
+    cores={}; core_names={}
+    for p in PROFILES:
+        _,core_names[p],cores[p]=max(candidates,key=lambda c:c[0][p])
     # Weak Japanese HAM helps fitting, but is not a gold nearest-neighbour anchor.
     anchor_ix=np.array([i for i,r in enumerate(train) if not r.get('weakLabel')])
     anchors=embeddings[anchor_ix]; anchor_labels=y[anchor_ix].astype(np.uint8)
     ns=neighbours(es,anchors,anchor_labels); nc=neighbours(ec,anchors,anchor_labels)
-    sem_select=core.predict_proba(es)[:,1]; sem_cal=core.predict_proba(ec)[:,1]
-    xs=stack(selection,base_select,sem_select,ns); xc=stack(cal,base_cal,sem_cal,nc)
     ys=np.array([r['y'] for r in selection]); counts=Counter((group(selection[i]['source']),selection[i]['y']) for i in fit)
     gates,profiles,gate_results={},{},[]
     for profile,rate in PROFILES.items():
+        core=cores[profile]
+        sem_select=core.predict_proba(es)[:,1]; sem_cal=core.predict_proba(ec)[:,1]
+        xs=stack(selection,base_select,sem_select,ns); xc=stack(cal,base_cal,sem_cal,nc)
         gates[profile]={}
         for ham_cost in (1.,4.,12.):
             w=np.array([min(1.,1000/counts[group(selection[i]['source']),selection[i]['y']])*(ham_cost if ys[i]==0 else 1.) for i in fit])
@@ -115,7 +130,7 @@ def main():
     source=Path('.cache/v60-model'); (out/'v60').mkdir()
     for leaf in ('model.joblib','unicode.pt'): shutil.copyfile(source/leaf,out/'v60'/leaf)
     shutil.copytree(source/'v59',out/'v60/v59'); shutil.copytree(root/'encoder',out/'encoder')
-    artifact=dict(version='v61-semantic-neighbour-ensemble',semanticCore=core,anchors=anchors,anchorLabels=anchor_labels,
+    artifact=dict(version='v61-semantic-neighbour-ensemble',semanticCores=cores,semanticCoreNames=core_names,anchors=anchors,anchorLabels=anchor_labels,
                   gates=gates,profiles=profiles,codeCommit=os.environ.get('GITHUB_SHA'),githubRunId=os.environ.get('GITHUB_RUN_ID'),
                   encoderRevision=REVISION,viewVersion=VIEW_VERSION,queryEncodingBatchSize=1,splitManifestSha256=provenance['manifestSha256'],
                   components={str(p.relative_to(out)):file_sha(p) for p in out.rglob('*') if p.is_file()})
@@ -143,9 +158,10 @@ def main():
                 texts=[batch[i]['text'] for i in missing]; originals=[batch[i].get('old_text',batch[i]['text']) for i in missing]
                 for p in PROFILES:
                     baseline[p][start+np.array(missing)]=predict60(baseline_bundle,texts,p,originals)
-        base=baseline['high-recall']; semantic=core.predict_proba(embedding)[:,1]; near=neighbours(embedding,anchors,anchor_labels); x=stack(rows,base,semantic,near)
+        base=baseline['high-recall']; near=neighbours(embedding,anchors,anchor_labels)
         comparisons={}; scores={}
         for p,setting in profiles.items():
+            semantic=cores[p].predict_proba(embedding)[:,1]; x=stack(rows,base,semantic,near)
             scores[p]=margins(rows,raw_score(setting['selected'],gates[p],x,base,semantic),setting['scriptCutoffs'])
             old_cut=baseline_bundle[0]['profiles'][p]['threshold']
             old=metrics(rows,baseline[p],old_cut)
@@ -174,7 +190,7 @@ def main():
                            engineeringGoalMet=min(recalls)>=.95 and fp<=int(ham*.0001),
                            customerGoalValidated=False,reusedHamOnly=True)
     result=dict(version=61,codeCommit=os.environ.get('GITHUB_SHA'),githubRunId=os.environ.get('GITHUB_RUN_ID'),modelSha256=locked,
-                profiles=profiles,coreCandidates=core_results,gateSelection=gate_results,trainSemanticPool=cache['trainPoolCount'],
+                profiles=profiles,selectedSemanticCores=core_names,coreCandidates=core_results,gateSelection=gate_results,trainSemanticPool=cache['trainPoolCount'],
                 freshTest=fresh,mayRegression=dict(may,reused=True),v59Regression=dict(chinese,reused=True),legacyRegression=dict(legacy,reused=True),
                 newTestProvenance=fresh_provenance,featureManifest=cache,estimatorAndThresholdLockedBeforeTest=True,
                 testLabelsUsedForTraining=False,productionGoalValidated=False,engineeringAcceptance=acceptance,
