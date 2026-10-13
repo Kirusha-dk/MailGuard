@@ -97,7 +97,22 @@ jobs:
           python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 onnxruntime==1.23.2 tokenizers==0.22.1
       - name: Semantic isolation tests
         run: python -m unittest discover -s tests/python -p 'test_v61_semantic.py'
-      - name: Fit and calibrate; lock before opening October TEST
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v61-evidence
+          run-id: 38465721316
+          github-token: ${{ github.token }}
+          path: .cache/v61-frozen
+      - name: Locate unchanged frozen v61 checkpoint
+        run: |
+          python - <<'PY'
+          import os
+          from pathlib import Path
+          files=[p for p in Path('.cache/v61-frozen').rglob('model.joblib') if (p.parent/'encoder').exists()]
+          if len(files)!=1: raise ValueError('Expected one frozen v61 model')
+          with open(os.environ['GITHUB_ENV'],'a') as f: f.write('V61_FROZEN_CHECKPOINT='+str(files[0].parent)+'\n')
+          PY
+      - name: Full CAL parity then resume frozen checkpoint; no retraining
         run: python -u tools/train_v61_semantic.py
       - name: Build offline checker
         run: docker build -f Dockerfile.v61-check -t mailguard-v61-check .
