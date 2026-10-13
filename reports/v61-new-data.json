@@ -1,0 +1,25 @@
+{
+  "version": 61,
+  "count": 122,
+  "ham": 0,
+  "spam": 122,
+  "sourceArchive": {
+    "url": "https://untroubled.org/spam/2026-10.7z",
+    "sha256": "778b0b9d047a9c8ab5759fe13fada6f43568e587727daf05d8eb901bf5d3ba9b",
+    "bytes": 847635,
+    "rawEmailsRead": 394,
+    "labels": "Spam trap; not individually human adjudicated"
+  },
+  "freezeDate": "2026-10-13",
+  "previousRowsBlocked": 176202,
+  "rawPreviousRowsBlocked": 110000,
+  "wholeSevenTestRowsBlocked": 40604,
+  "exclusions": {
+    "relatedToPriorDevelopment": 222,
+    "duplicateNewContentOrFamily": 50
+  },
+  "testSha256": "f8ca87f7c9ca7ebf15b6b49fc20c76c2d21151abdb1a9b80a0bc9c8aca4b8ba0",
+  "manifestSha256": "81306f5b6a89c49470b4f1a9ff870d0eb22c297651bdd7396cb3ee5241749479",
+  "testPreviouslyScored": false,
+  "caveat": "Partial October snapshot, only previously unused spam-trap families. No new gold HAM; false positives must be measured separately on explicitly reused HAM tests. Semantic relatives may remain."
+}

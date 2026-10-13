@@ -1,0 +1,11 @@
+{
+  "viewVersion": "v61-pair-head-tail-128-v1",
+  "encoderRevision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+  "queryEncodingBatchSize": 1,
+  "identitySha256": "afb49392ecb53177ebe16e0d58a189f8929e6b37ddc46520b13f757255b9b88c",
+  "calSplitSha256": "24e2731ddee9924432da40fb2d0a8e96be388d105d6147b5445134983d7dfa93",
+  "embeddingsSha256": "0af0aa672fca00406d93b0e5ea1d6b541089cd17158f6c881070b177cf06e632",
+  "count": 22865,
+  "estimatorFit": false,
+  "newTestRead": false
+}

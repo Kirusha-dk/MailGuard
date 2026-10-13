@@ -1,0 +1,22 @@
+{
+  "viewVersion": "v61-pair-head-tail-128-v1",
+  "encoderRevision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+  "priorManifestSha256": "7c24771a93692a7a26f0a97e7347ead57aa183036be28a7c69c9d13a01ea3996",
+  "trainPoolCount": 36553,
+  "identityHashes": {
+    "train": "97e8e27489b576357d2b79b9ea3054ef0f761f0e1aab951c5650591bdca4cde8",
+    "select": "dbc5d5ac4ff9307a7c5b8ee37b726c6122b42f742b73d99b364e21565856aeb0",
+    "cal": "afb49392ecb53177ebe16e0d58a189f8929e6b37ddc46520b13f757255b9b88c"
+  },
+  "baseModelSha256": "3dcd9d2888bb2ded32c729aedbe99411dc7a023403ed4931755096300f66fb72",
+  "newTestRead": false,
+  "files": {
+    "select-embeddings.npy": "3e3f1e1258f20c1d7269613743c335888dec31129024c28e8f840a4f55670e33",
+    "train-embeddings.npy": "05bbab730b6fc4fc851ce8c9c8a545a3772b5c24b1a02759c10608bb55dbf89a",
+    "cal-base-components.npy": "42a77c01cde917371e7b12aa515098e0acc86fc5dd06b6e225d34d5a70b1aadf",
+    "select-base.npy": "c1ce6711e16f5909b14926cdf59652a82ce6277f68e51430baa1d17b07590e57",
+    "select-base-components.npy": "52f078121e4dbac8e315123750d93941b6886012a0e5e4cf77e93307cd5fbd04",
+    "cal-embeddings.npy": "c90008ca9dceddf61e340a05c979eda4c4a32759dfafab6cf334499b1c1716c7",
+    "cal-base.npy": "a6a482c5afb81462840d07e31599b893752967cd7318383dcd210159c5af6799"
+  }
+}
