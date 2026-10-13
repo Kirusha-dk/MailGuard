@@ -26,12 +26,18 @@ jobs:
         run: |
           gh run watch 38458413022 --exit-status --interval 30
           gh run watch 38458804953 --exit-status --interval 30
+          gh run watch 38463565162 --exit-status --interval 30
         env:
           GH_TOKEN: ${{ github.token }}
       - uses: actions/cache/restore@v4
         with:
           path: .cache/v61-dev
           key: mailguard-v61-semantic-dev-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v61-cal-query
+          key: mailguard-v61-cal-query-v1
           fail-on-cache-miss: true
       - uses: actions/cache/restore@v4
         with:

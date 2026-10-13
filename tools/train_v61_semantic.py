@@ -71,10 +71,20 @@ def main():
         if fingerprint!=cache['identityHashes'][split]: raise ValueError('Feature row order differs')
     restore_validation(selection+cal)
     embeddings=np.load(root/'train-embeddings.npy'); es=np.load(root/'select-embeddings.npy')
-    print('CALIBRATION uses the exact deterministic one-message runtime',flush=True)
-    query_encoder=Encoder(root/'encoder')
-    ec=query_encoder.encode(cal,batch_size=1)
-    del query_encoder
+    query_root=Path('.cache/v61-cal-query')
+    query_cache=json.loads((query_root/'manifest.json').read_text())
+    if (query_cache['identitySha256']!=cache['identityHashes']['cal']
+        or query_cache['calSplitSha256']!=provenance['splitHashes']['cal']
+        or query_cache['queryEncodingBatchSize']!=1
+        or query_cache['encoderRevision']!=REVISION
+        or query_cache['viewVersion']!=VIEW_VERSION
+        or query_cache['newTestRead'] or query_cache['estimatorFit']):
+        raise ValueError('Wrong deterministic CAL cache')
+    if file_sha(query_root/'embeddings.npy')!=query_cache['embeddingsSha256']:
+        raise ValueError('Deterministic CAL embeddings changed')
+    ec=np.load(query_root/'embeddings.npy')
+    if ec.shape!=(len(cal),384):raise ValueError('Wrong CAL embedding shape')
+    print('CALIBRATION restored from exact one-message runtime',flush=True)
     base_select=np.load(root/'select-base.npy'); base_cal=np.load(root/'cal-base.npy')
     fit=np.array([i for i,r in enumerate(selection) if int(r['family'][-12:],16)%10<6])
     choose=np.array([i for i,r in enumerate(selection) if int(r['family'][-12:],16)%10>=6])
@@ -198,7 +208,7 @@ def main():
     result=dict(version=61,codeCommit=os.environ.get('GITHUB_SHA'),githubRunId=os.environ.get('GITHUB_RUN_ID'),modelSha256=locked,
                 profiles=profiles,selectedSemanticCores=core_names,coreCandidates=core_results,gateSelection=gate_results,trainSemanticPool=cache['trainPoolCount'],
                 freshTest=fresh,mayRegression=dict(may,reused=True),v59Regression=dict(chinese,reused=True),legacyRegression=dict(legacy,reused=True),
-                newTestProvenance=fresh_provenance,newTestSnapshotFile='new-october-test.jsonl.gz',featureManifest=cache,estimatorAndThresholdLockedBeforeTest=True,
+                newTestProvenance=fresh_provenance,newTestSnapshotFile='new-october-test.jsonl.gz',featureManifest=cache,calibrationFeatureManifest=query_cache,estimatorAndThresholdLockedBeforeTest=True,
                 testLabelsUsedForTraining=False,productionGoalValidated=False,engineeringAcceptance=acceptance,
                 caveat='New October TEST is SPAM-only. All HAM evaluations are explicitly reused engineering tests; this cannot establish the customer false-positive rate. Pretrained encoder is frozen; our semantic and stack classifiers fit development only.')
     (out/'report.json').write_text(json.dumps(result,indent=2)); (out/'new-test-provenance.json').write_text(json.dumps(fresh_provenance,indent=2))
