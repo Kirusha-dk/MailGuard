@@ -46,8 +46,11 @@ def main():
     modelpath, checkpoint = modeldir / 'model.joblib', modeldir / 'neural.pt'
     artifact = joblib.load(modelpath)
     torch.set_num_threads(4)
-    if artifact.get('version') in ('v56-consensus', 'v57-preserved-consensus', 'v58-calibrated-protected-consensus'):
-        if artifact['version'] == 'v58-calibrated-protected-consensus':
+    if artifact.get('version') in ('v56-consensus', 'v57-preserved-consensus', 'v58-calibrated-protected-consensus', 'v59-multilingual-ham'):
+        if artifact['version'] == 'v59-multilingual-ham':
+            from v59_runtime import load_bundle, predict_texts
+            from v59_mail import from_eml as parse_v59
+        elif artifact['version'] == 'v58-calibrated-protected-consensus':
             from v58_runtime import load_bundle, predict_texts
         elif artifact['version'] == 'v57-preserved-consensus':
             from v57_runtime import load_bundle, predict_texts
@@ -55,10 +58,12 @@ def main():
             from train_v56_consensus import load_bundle, predict_texts
         bundle = load_bundle(modeldir)
         threshold = artifact['profiles'][args.profile]['threshold']
-        version, profile = ({'v56-consensus':56,'v57-preserved-consensus':57,'v58-calibrated-protected-consensus':58}[artifact['version']]), args.profile
+        version, profile = ({'v56-consensus':56,'v57-preserved-consensus':57,'v58-calibrated-protected-consensus':58,'v59-multilingual-ham':59}[artifact['version']]), args.profile
         checkpoint = modeldir / 'v54/neural.pt'
         component_hashes = artifact['components']
-        def score_texts(texts):
+        def score_texts(texts, originals=None):
+            if version == 59:
+                return predict_texts(bundle, texts, profile, original_texts=originals)
             return predict_texts(bundle, texts, profile)
     elif artifact.get('version') == 'v51-residual-neural':
         if args.profile != 'conservative':
@@ -67,11 +72,11 @@ def main():
         neural.load_state_dict(torch.load(checkpoint, map_location='cpu', weights_only=True)['state'])
         threshold = artifact['threshold']
         version, profile, component_hashes = 51, None, None
-        def score_texts(texts):
+        def score_texts(texts, originals=None):
             sparse = artifact['model'].predict_proba(artifact['tfidf'].transform(features(texts)))[:, 1]
             return predict_scores(artifact, sparse, predict_neural(neural, texts))
     else:
-        parser.error('This checker requires a frozen v51, v56, v57 or v58 bundle')
+        parser.error('This checker requires a frozen v51, v56, v57, v58 or v59 bundle')
     counts = dict(tp=0, fn=0, fp=0, tn=0)
     failures = 0
     seen, duplicates, conflicting = {}, 0, 0
@@ -87,7 +92,9 @@ def main():
                     raw = path.read_bytes()
                     if not raw.strip():
                         raise ValueError('Empty message')
-                    row = from_eml(raw)
+                    row = parse_v59(raw) if version == 59 else from_eml(raw)
+                    if version == 59:
+                        row['original_text'] = from_eml(raw)['ngram_text']
                 except (OSError, ValueError):
                     failures += 1
                     errors.writerow([folder, relative, 'unreadable_or_empty'])
@@ -101,7 +108,8 @@ def main():
                 batch.append((row, label, relative))
             if batch:
                 texts = [r['ngram_text'] for r, _, _ in batch]
-                scores = np.asarray(score_texts(texts), dtype=np.float64)
+                originals = [r['original_text'] for r, _, _ in batch] if version == 59 else None
+                scores = np.asarray(score_texts(texts, originals), dtype=np.float64)
                 for (row, label, relative), score in zip(batch, scores):
                     predicted = int(score >= threshold)
                     key = ('tp' if predicted else 'fn') if label else ('fp' if predicted else 'tn')
@@ -137,3 +145,4 @@ def main():
 
 if __name__ == '__main__':
     raise SystemExit(main())
+
