@@ -1,0 +1,67 @@
+name: MailGuard v61 frozen October mail
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/prepare_v61_new_mail.py', '.github/workflows/v61-new-data.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: v61-new-data-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  freeze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v40-fresh50k
+          key: v40-fresh50k-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v59-data
+          key: mailguard-v59-prior-blocking-v1
+          fail-on-cache-miss: true
+      - run: mv .cache/v59-data .cache/v61-blocking
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v59-data
+          key: mailguard-v59-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v60-data
+          key: mailguard-v60-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        id: frozen
+        with:
+          path: .cache/v61-new
+          key: mailguard-v61-october-20261013-v1
+      - run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y p7zip-full
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 datasets
+      - if: steps.frozen.outputs.cache-hit != 'true'
+        run: python -u tools/prepare_v61_new_mail.py
+      - uses: actions/cache/save@v4
+        if: steps.frozen.outputs.cache-hit != 'true'
+        with:
+          path: .cache/v61-new
+          key: mailguard-v61-october-20261013-v1
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v61-new-data-audit
+          path: |
+            .cache/v61-new/provenance.json
+            .cache/v61-new/manifest.csv
+          include-hidden-files: true
+          retention-days: 90
