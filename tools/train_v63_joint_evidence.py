@@ -16,7 +16,8 @@ from train_v55_multilingual import corpus_rows,file_sha
 from train_v60_new_mail import restore_validation,legacy_rows
 from train_v61_semantic import cuts,rank,measure,PROFILES
 from v61_runtime import load_bundle as load61,margins
-from v61_semantic import neighbours,group
+from v61_semantic import group
+from v63_neighbours import neighbours
 from v62_runtime import load_bundle as load62
 from v63_runtime import character_evidence,joint_features,load_bundle,predict_texts,train_only_evidence
 

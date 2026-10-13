@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [mailguard-v48-calibrated]
-    paths: ['tools/train_v63_joint_evidence.py', 'tools/v63_runtime.py', '.github/workflows/v63-joint-evidence.yml']
+    paths: ['tools/train_v63_joint_evidence.py', 'tools/v63_runtime.py', 'tools/v63_neighbours.py', 'tests/python/test_v63_neighbours.py', '.github/workflows/v63-joint-evidence.yml']
 permissions:
   contents: write
   actions: read
@@ -96,6 +96,7 @@ jobs:
         run: |
           python -m unittest discover -s tests/python -p 'test_v61_semantic.py'
           python -m unittest discover -s tests/python -p 'test_v62_script.py'
+          python -m unittest discover -s tests/python -p 'test_v63_neighbours.py'
       - name: Joint gate using only TRAIN-fitted inputs
         id: fit
         run: |

@@ -5,7 +5,8 @@ import numpy as np
 from train_v55_multilingual import views,file_sha,transformed,predict as sparse_predict
 from v60_neural import predict as neural_predict
 from v61_runtime import load_bundle as load61,stack as semantic_stack
-from v61_semantic import neighbours,script
+from v61_semantic import script
+from v63_neighbours import neighbours
 from v62_runtime import features,load_bundle as load62
 
 
