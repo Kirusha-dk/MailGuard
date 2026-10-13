@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
   push:
     branches: [mailguard-v48-calibrated]
-    paths: ['tools/diagnose_v61_runtime.py', '.github/workflows/v61-runtime-diagnostic.yml']
+    paths: ['tools/diagnose_v61_runtime.py', 'tools/audit_v61_cal_errors.py', '.github/workflows/v61-runtime-diagnostic.yml']
 permissions:
   contents: read
   actions: read
@@ -51,9 +51,13 @@ jobs:
           python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 onnxruntime==1.23.2 tokenizers==0.22.1
       - name: Diagnose on CAL without training or TEST access
         run: python -u tools/diagnose_v61_runtime.py
+      - name: Inspect only public development errors
+        run: python -u tools/audit_v61_cal_errors.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: mailguard-v61-runtime-diagnostic
-          path: reports/v61-runtime-diagnostic.json
+          path: |
+            reports/v61-runtime-diagnostic.json
+            reports/v61-development-errors.json
           retention-days: 90
