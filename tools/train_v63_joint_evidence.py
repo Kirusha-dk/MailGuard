@@ -18,6 +18,7 @@ from train_v61_semantic import cuts,rank,measure,PROFILES
 from v61_runtime import load_bundle as load61,margins
 from v61_semantic import group
 from v63_neighbours import neighbours
+from v63_portable_encoder import prepare_encoder
 from v62_runtime import load_bundle as load62
 from v63_runtime import character_evidence,joint_features,load_bundle,predict_texts,train_only_evidence
 
@@ -52,7 +53,8 @@ def main():
             (out/'report.md').write_text('v62 meets the engineering criterion; joint training skipped. Customer validation remains separate.\n')
             print(json.dumps(note),flush=True);return
     if file_sha(root61[0]/'model.joblib')!='07239ee4a2de4824bbf41df17197151ae8d425e7ea0d73106d5814b37f148116':raise ValueError('Wrong semantic checkpoint')
-    bundle61=load61(root61[0]);semantic,encoder,_=bundle61
+    bundle61=load61(root61[0]);semantic,_,_=bundle61
+    encoder=prepare_encoder(root61[0]/'encoder',out/'encoder')
     char=load62(root62[0].parent)
     data=Path('.cache/v60-data');provenance=json.loads((data/'provenance.json').read_text())
     for s in ('select','cal'):
@@ -74,7 +76,9 @@ def main():
     if query['identitySha256']!=manifest['identityHashes']['cal'] or file_sha('.cache/v61-cal-query/embeddings.npy')!=query['embeddingsSha256']:
         raise ValueError('CAL query cache changed')
     es=encoder.encode(selection,batch_size=1)
-    ec=np.load('.cache/v61-cal-query/embeddings.npy')
+    # Both SELECT and CAL use the portable graph and exact one-message runtime.
+    # Cross-run embeddings from the original 8-bit graph are not compatible.
+    ec=encoder.encode(cal,batch_size=1)
     previous=np.load(cache/'select-base-components.npy');previous_cal=np.load(cache/'cal-base-components.npy')
     old=previous[:,0];old_cal=previous_cal[:,0]
     ns=neighbours(es,semantic['anchors'],semantic['anchorLabels']);nc=neighbours(ec,semantic['anchors'],semantic['anchorLabels'])
@@ -114,6 +118,8 @@ def main():
                   codeCommit=os.environ.get('GITHUB_SHA'),githubRunId=os.environ.get('GITHUB_RUN_ID'),
                   components={name:file_sha(out/name) for name in ('v61/model.joblib','v62/model.joblib')},
                   featureRoundingDecimals=5,splitManifestSha256=provenance['manifestSha256'])
+    artifact['components'].update({str(p.relative_to(out)):file_sha(p) for p in (out/'encoder').iterdir() if p.is_file()})
+    artifact['encoderQuantization']='signed-7bit-v1'
     joblib.dump(artifact,out/'model.joblib',compress=3);locked=file_sha(out/'model.joblib')
     print('V63 JOINT MODEL LOCKED',locked,json.dumps(profiles),flush=True)
     bundle=load_bundle(out);ix=np.unique(np.linspace(0,len(cal)-1,64,dtype=int));probe=[cal[i] for i in ix]

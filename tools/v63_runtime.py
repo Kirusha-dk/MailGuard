@@ -6,6 +6,7 @@ from train_v55_multilingual import views,file_sha,transformed,predict as sparse_
 from v60_neural import predict as neural_predict
 from v61_runtime import load_bundle as load61,stack as semantic_stack
 from v61_semantic import script
+from v61_semantic import Encoder
 from v63_neighbours import neighbours
 from v62_runtime import features,load_bundle as load62
 
@@ -39,7 +40,10 @@ def load_bundle(root):
     if artifact.get('version')!='v63-joint-character-semantic':raise ValueError('Expected v63')
     for name,digest in artifact['components'].items():
         if file_sha(root/name)!=digest:raise ValueError('Changed component: '+name)
-    return artifact,load61(root/'v61'),load62(root/'v62')
+    semantic_bundle=load61(root/'v61')
+    if artifact.get('encoderQuantization')=='signed-7bit-v1':
+        semantic_bundle=(semantic_bundle[0],Encoder(root/'encoder'),semantic_bundle[2])
+    return artifact,semantic_bundle,load62(root/'v62')
 
 
 def predict_texts(bundle,texts,profile='conservative',original_texts=None):

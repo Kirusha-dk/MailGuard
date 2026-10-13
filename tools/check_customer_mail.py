@@ -71,7 +71,7 @@ def main():
         bundle = load_bundle(modeldir)
         threshold = artifact['profiles'][args.profile]['threshold']
         version, profile = ({'v56-consensus':56,'v57-preserved-consensus':57,'v58-calibrated-protected-consensus':58,'v59-multilingual-ham':59,'v60-unicode-ensemble':60,'v61-semantic-neighbour-ensemble':61,'v62-script-nb-margin':62,'v63-joint-character-semantic':63}[artifact['version']]), args.profile
-        checkpoint = modelpath if version == 62 else modeldir / ('v61/encoder/model_quint8_avx2.onnx' if version == 63 else 'encoder/model_quint8_avx2.onnx' if version == 61 else 'unicode.pt' if version == 60 else 'v54/neural.pt')
+        checkpoint = modelpath if version == 62 else modeldir / ('encoder/model_quint8_avx2.onnx' if version == 63 and artifact.get('encoderQuantization')=='signed-7bit-v1' else 'v61/encoder/model_quint8_avx2.onnx' if version == 63 else 'encoder/model_quint8_avx2.onnx' if version == 61 else 'unicode.pt' if version == 60 else 'v54/neural.pt')
         component_hashes = artifact['components']
         def score_texts(texts, originals=None):
             if version in (59, 60, 61, 62, 63):
