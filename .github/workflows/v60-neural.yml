@@ -1,0 +1,124 @@
+name: MailGuard v60 Unicode CNN and independent May mail
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/train_v60_new_mail.py', 'tools/v60_runtime.py', 'tools/v60_neural.py', 'tests/python/test_v60_new_mail.py', '.github/workflows/v60-neural.yml']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: v60-neural-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  train:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OMP_NUM_THREADS: 4
+      OPENBLAS_NUM_THREADS: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v40-fresh50k
+          key: v40-fresh50k-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v59-data
+          key: mailguard-v59-new-mail-v1
+          fail-on-cache-miss: true
+      - name: Wait for independent data freeze to finish
+        run: gh run watch 38386551636 --exit-status --interval 30
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v60-data
+          key: mailguard-v60-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v59-evidence
+          run-id: 38371588029
+          github-token: ${{ github.token }}
+          path: .cache/v59-evidence
+      - name: Locate frozen v59 model
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import shutil
+          roots = list(Path('.cache/v59-evidence').rglob('v59-full/model.joblib'))
+          if len(roots) != 1:
+              raise ValueError('Expected one v59 model')
+          shutil.copytree(roots[0].parent, '.cache/v59-model')
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v55-evidence
+          run-id: 38137477063
+          github-token: ${{ github.token }}
+          path: .cache/v55
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v54-unique500k-corpus
+          run-id: 38092976048
+          github-token: ${{ github.token }}
+          path: .cache/v54-corpus
+      - name: Dependencies
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Charset and temporal isolation tests
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v59_new_mail.py'
+          python -m unittest discover -s tests/python -p 'test_v60_new_mail.py'
+      - name: Independently verify frozen identities and reserved v59 TEST
+        run: python -u tools/audit_v60_splits.py
+      - name: Train Unicode CNN and sparse candidates; lock before May TEST
+        run: python -u tools/train_v60_new_mail.py
+      - name: Build offline customer image
+        run: docker build -f Dockerfile.customer -t mailguard-v60-check .
+      - name: Verify both customer profiles without network
+        run: |
+          mkdir -p checks/input/ham checks/input/spam checks/output
+          python - <<'PY'
+          from pathlib import Path
+          from email.message import EmailMessage
+          for folder, body in [('ham', 'Please confirm the meeting tomorrow.'), ('spam', 'Buy cheap pills now at https://example.invalid')]:
+              msg = EmailMessage()
+              msg['From'] = 'sender@example.invalid'
+              msg['Subject'] = 'Offline packaging check'
+              msg.set_content(body)
+              Path(f'checks/input/{folder}/mail.eml').write_bytes(msg.as_bytes())
+          PY
+          for profile in conservative high-recall; do
+            docker run --rm --network none -v "$PWD/reports/v60-full:/model:ro" \
+              -v "$PWD/checks:/checks" mailguard-v60-check --model-dir /model \
+              --ham /checks/input/ham --spam /checks/input/spam --output "/checks/output/$profile" --profile "$profile"
+          done
+      - name: Preserve model as draft research checkpoint
+        run: |
+          tar -czf mailguard-v60-model.tar.gz -C reports v60-full
+          sha256sum mailguard-v60-model.tar.gz > mailguard-v60-model.sha256
+          gh release create "mailguard-v60-checkpoint-${{ github.run_id }}" --draft --target '${{ github.sha }}' \
+            --title 'MailGuard v60 — independent May evaluation' --notes-file reports/v60-full/report.md \
+            mailguard-v60-model.tar.gz mailguard-v60-model.sha256
+        env:
+          GH_TOKEN: ${{ github.token }}
+      - name: Summary
+        if: always()
+        run: if [ -f reports/v60-full/report.md ]; then cat reports/v60-full/report.md >> "$GITHUB_STEP_SUMMARY"; fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v60-evidence
+          path: |
+            reports/v60-full/
+            reports/v60-data-audit/
+            checks/output/
+          retention-days: 90
