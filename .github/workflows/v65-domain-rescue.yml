@@ -1,0 +1,67 @@
+name: MailGuard v65 domain rescue 100k holdouts
+on:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths:
+      - tools/v65_domain_rescue.py
+      - tests/python/test_v65_domain_rescue.py
+      - .github/workflows/v65-domain-rescue.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mailguard-v65-domain-rescue-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  adaptation-and-holdouts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env:
+      OMP_NUM_THREADS: 2
+      OPENBLAS_NUM_THREADS: 2
+      MKL_NUM_THREADS: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Load audited historic input and previously saved decisions
+        uses: actions/download-artifact@v4
+        with:
+          name: v64-new500k-audit
+          run-id: 38635836571
+          github-token: ${{ github.token }}
+          path: prepared
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v64-new500k-input-*
+          run-id: 38635836571
+          github-token: ${{ github.token }}
+          path: prepared
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v64-transfer-predictions-*
+          run-id: 38636123356
+          github-token: ${{ github.token }}
+          path: combined
+          merge-multiple: true
+      - name: Install tested scientific stack
+        run: python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Test partition, calibration and fail-safe logic
+        run: python -m unittest discover -s tests/python -p 'test_v65_domain_rescue.py' -v
+      - name: Train two sparse experts on source-disjoint TRAIN and calibrate additional zero-FP gate
+        run: |
+          python -u tools/v65_domain_rescue.py --epochs 4 --inputs prepared --predictions combined --output reports/v65-domain-rescue
+          cat reports/v65-domain-rescue/result.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v65-retrospective-rescue
+          path: |
+            reports/v65-domain-rescue/result.json
+            reports/v65-domain-rescue/result.md
+            reports/v65-domain-rescue/model.joblib
+          compression-level: 0
+          retention-days: 90
