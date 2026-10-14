@@ -1,0 +1,76 @@
+name: MailGuard v64 ready new-source transfer preview
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/evaluate_v64_transfer_preview.py', '.github/workflows/v64-transfer-preview.yml']
+permissions:
+  contents: write
+  actions: read
+jobs:
+  evaluate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: 2
+      OPENBLAS_NUM_THREADS: 2
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: v64-new-candidates-independent
+          run-id: 38629238441
+          github-token: ${{ github.token }}
+          path: new-cohort
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v64-frozen-model
+          run-id: 38615175304
+          github-token: ${{ github.token }}
+          path: .cache/v64
+      - name: Frozen dependencies
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: First 1000 parity and all ready labelled-source mail
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v64_transfer.py'
+          python -u tools/evaluate_v64_transfer_preview.py
+          cat reports/v64-transfer-preview/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v64-new-source-preview
+          path: reports/v64-transfer-preview/
+          compression-level: 0
+          retention-days: 90
+      - name: Save actual preliminary results in repository
+        run: |
+          cp reports/v64-transfer-preview/report.json /tmp/mailguard-v64-new-source-preview.json
+          cp reports/v64-transfer-preview/report.md /tmp/mailguard-v64-new-source-preview.md
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/mailguard-v64-new-source-preview.json reports/v64-new-source-preview.json
+          cp /tmp/mailguard-v64-new-source-preview.md reports/v64-new-source-preview.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v64-new-source-preview.json reports/v64-new-source-preview.md
+          git commit -m 'Record actual frozen-model transfer on ready first-use labelled mail'
+          git push origin HEAD:mailguard-v48-calibrated
+      - name: Preserve preliminary input, predictions and source checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tar -czf mailguard-v64-new-source-preview.tar.gz reports/v64-transfer-preview new-cohort
+          git archive --format=tar.gz --output=mailguard-v64-new-source-preview-source.tar.gz '${{ github.sha }}'
+          sha256sum mailguard-v64-new-source-preview.tar.gz mailguard-v64-new-source-preview-source.tar.gz > mailguard-v64-new-source-preview.sha256
+          gh release create "mailguard-v64-new-source-preview-${{ github.run_id }}" --draft \
+            --target 3a4c834aa61f3b0cbd5725543f22a1225ff3f839 \
+            --title 'MailGuard v64: new labelled-source transfer preview, not 500k' \
+            --notes-file reports/v64-transfer-preview/report.md \
+            mailguard-v64-new-source-preview.tar.gz mailguard-v64-new-source-preview-source.tar.gz mailguard-v64-new-source-preview.sha256
