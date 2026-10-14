@@ -3,7 +3,7 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'tools'))
-from evaluate_v62_large_ham import HamPool
+from evaluate_v62_large_ham import HamPool,legacy_manifest
 from evaluate_v62_500k import measure
 
 
@@ -50,6 +50,14 @@ class GoldHamAudit(unittest.TestCase):
 
     def test_fp_denominator_is_all_scored_ham(self):
         self.assertEqual(measure({'fp':5,'tn':49995})['hamFpr'],.0001)
+
+    def test_full_manifest_is_chosen_when_smoke_manifest_is_also_present(self):
+        root = Path(self.temp.name)
+        for folder in ('reports/v55-full','reports/v55-smoke'):
+            p = root/folder/'split-manifest.csv'
+            p.parent.mkdir(parents=True)
+            p.write_text('identity,family,label,split,source\n')
+        self.assertEqual(legacy_manifest(root),root/'reports/v55-full/split-manifest.csv')
 
 
 if __name__ == '__main__':

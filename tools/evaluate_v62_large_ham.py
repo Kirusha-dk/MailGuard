@@ -26,6 +26,13 @@ CAVEAT = ('Historical public gold labels, not customer mail. All TRAIN/SELECT/CA
           'threshold selection occurs in this evaluation; HAM-only results cannot establish spam recall.')
 
 
+def legacy_manifest(root):
+    matches = [p for p in Path(root).rglob('split-manifest.csv') if p.parent.name == 'v55-full']
+    if len(matches) != 1:
+        raise ValueError('Expected exactly one v55-full split manifest')
+    return matches[0]
+
+
 class HamPool:
     """Keep HAM once; process SPAM too so conflicting labels invalidate earlier HAM."""
     def __init__(self, path):
@@ -108,10 +115,7 @@ def prepare(args):
                 raise ValueError('Actual training pool differs from model')
     del artifact, train, batch
     seen_ids, seen_families = set(), set()
-    manifests = list(Path('.cache/v55').rglob('split-manifest.csv'))
-    if len(manifests) != 1:
-        raise ValueError('Expected original v55 split manifest')
-    with manifests[0].open() as f:
+    with legacy_manifest('.cache/v55').open() as f:
         for r in csv.DictReader(f):
             if r['split'] == 'test' and r['label'] == '0':
                 seen_ids.add(r['identity']); seen_families.add(r['family'])
