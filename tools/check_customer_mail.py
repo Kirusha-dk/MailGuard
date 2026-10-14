@@ -46,8 +46,11 @@ def main():
     modelpath, checkpoint = modeldir / 'model.joblib', modeldir / 'neural.pt'
     artifact = joblib.load(modelpath)
     torch.set_num_threads(4)
-    if artifact.get('version') in ('v56-consensus', 'v57-preserved-consensus', 'v58-calibrated-protected-consensus', 'v59-multilingual-ham', 'v60-unicode-ensemble', 'v61-semantic-neighbour-ensemble', 'v62-script-nb-margin', 'v63-joint-character-semantic'):
-        if artifact['version'] == 'v63-joint-character-semantic':
+    if artifact.get('version') in ('v56-consensus', 'v57-preserved-consensus', 'v58-calibrated-protected-consensus', 'v59-multilingual-ham', 'v60-unicode-ensemble', 'v61-semantic-neighbour-ensemble', 'v62-script-nb-margin', 'v63-joint-character-semantic', 'v64-word-character-gate'):
+        if artifact['version'] == 'v64-word-character-gate':
+            from v64_runtime import load_bundle, predict_texts
+            from v59_mail import from_eml as parse_v59
+        elif artifact['version'] == 'v63-joint-character-semantic':
             from v63_runtime import load_bundle, predict_texts
             from v59_mail import from_eml as parse_v59
         elif artifact['version'] == 'v62-script-nb-margin':
@@ -70,11 +73,11 @@ def main():
             from train_v56_consensus import load_bundle, predict_texts
         bundle = load_bundle(modeldir)
         threshold = artifact['profiles'][args.profile]['threshold']
-        version, profile = ({'v56-consensus':56,'v57-preserved-consensus':57,'v58-calibrated-protected-consensus':58,'v59-multilingual-ham':59,'v60-unicode-ensemble':60,'v61-semantic-neighbour-ensemble':61,'v62-script-nb-margin':62,'v63-joint-character-semantic':63}[artifact['version']]), args.profile
-        checkpoint = modelpath if version == 62 else modeldir / ('encoder/model_quint8_avx2.onnx' if version == 63 and artifact.get('encoderQuantization')=='signed-7bit-v1' else 'v61/encoder/model_quint8_avx2.onnx' if version == 63 else 'encoder/model_quint8_avx2.onnx' if version == 61 else 'unicode.pt' if version == 60 else 'v54/neural.pt')
+        version, profile = ({'v56-consensus':56,'v57-preserved-consensus':57,'v58-calibrated-protected-consensus':58,'v59-multilingual-ham':59,'v60-unicode-ensemble':60,'v61-semantic-neighbour-ensemble':61,'v62-script-nb-margin':62,'v63-joint-character-semantic':63,'v64-word-character-gate':64}[artifact['version']]), args.profile
+        checkpoint = modelpath if version in (62, 64) else modeldir / ('encoder/model_quint8_avx2.onnx' if version == 63 and artifact.get('encoderQuantization')=='signed-7bit-v1' else 'v61/encoder/model_quint8_avx2.onnx' if version == 63 else 'encoder/model_quint8_avx2.onnx' if version == 61 else 'unicode.pt' if version == 60 else 'v54/neural.pt')
         component_hashes = artifact['components']
         def score_texts(texts, originals=None):
-            if version in (59, 60, 61, 62, 63):
+            if version in (59, 60, 61, 62, 63, 64):
                 return predict_texts(bundle, texts, profile, original_texts=originals)
             return predict_texts(bundle, texts, profile)
     elif artifact.get('version') == 'v51-residual-neural':
@@ -88,7 +91,7 @@ def main():
             sparse = artifact['model'].predict_proba(artifact['tfidf'].transform(features(texts)))[:, 1]
             return predict_scores(artifact, sparse, predict_neural(neural, texts))
     else:
-        parser.error('This checker requires a frozen v51 or v56-v63 bundle')
+        parser.error('This checker requires a frozen v51 or v56-v64 bundle')
     counts = dict(tp=0, fn=0, fp=0, tn=0)
     failures = 0
     seen, duplicates, conflicting = {}, 0, 0
@@ -104,8 +107,8 @@ def main():
                     raw = path.read_bytes()
                     if not raw.strip():
                         raise ValueError('Empty message')
-                    row = parse_v59(raw) if version in (59, 60, 61, 62, 63) else from_eml(raw)
-                    if version in (59, 60, 61, 62, 63):
+                    row = parse_v59(raw) if version in (59, 60, 61, 62, 63, 64) else from_eml(raw)
+                    if version in (59, 60, 61, 62, 63, 64):
                         row['original_text'] = from_eml(raw)['ngram_text']
                 except (OSError, ValueError):
                     failures += 1
@@ -120,7 +123,7 @@ def main():
                 batch.append((row, label, relative))
             if batch:
                 texts = [r['ngram_text'] for r, _, _ in batch]
-                originals = [r['original_text'] for r, _, _ in batch] if version in (59, 60, 61, 62, 63) else None
+                originals = [r['original_text'] for r, _, _ in batch] if version in (59, 60, 61, 62, 63, 64) else None
                 scores = np.asarray(score_texts(texts, originals), dtype=np.float64)
                 for (row, label, relative), score in zip(batch, scores):
                     predicted = int(score >= threshold)
@@ -157,5 +160,6 @@ def main():
 
 if __name__ == '__main__':
     raise SystemExit(main())
+
 
 

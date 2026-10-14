@@ -1,0 +1,74 @@
+name: MailGuard v64 full-TRAIN word and character experts
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/train_v64_word_gate.py', 'tools/v64_runtime.py', 'tests/python/test_v64_word_gate.py']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: v64-word-gate-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  train:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    env:
+      OMP_NUM_THREADS: 2
+      OPENBLAS_NUM_THREADS: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v60-data
+          key: mailguard-v60-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v62-evidence
+          run-id: 38468905929
+          github-token: ${{ github.token }}
+          path: .cache/v62
+      - name: Dependencies
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Verify evidence independence, subject parsing and batching
+        run: python -m unittest discover -s tests/python -p 'test_v64_word_gate.py'
+      - name: Train all word experts on full TRAIN; select and calibrate without TEST
+        run: python -u tools/train_v64_word_gate.py
+      - name: Build offline customer checker
+        run: docker build -f Dockerfile.v64-check -t mailguard-v64-check .
+      - name: Verify saved model for both deployment profiles
+        run: |
+          mkdir -p checks/input/ham checks/input/spam checks/output
+          python - <<'PY'
+          from pathlib import Path
+          from email.message import EmailMessage
+          for folder,body in [('ham','Please confirm the meeting tomorrow.'),('spam','Buy cheap pills now at https://example.invalid')]:
+              msg=EmailMessage();msg['From']='sender@example.invalid';msg['Subject']='Offline packaging check';msg.set_content(body)
+              Path(f'checks/input/{folder}/mail.eml').write_bytes(msg.as_bytes())
+          PY
+          for profile in conservative high-recall; do
+            docker run --rm --network none -v "$PWD/reports/v64-full:/model:ro" \
+              -v "$PWD/checks:/checks" mailguard-v64-check --model-dir /model \
+              --ham /checks/input/ham --spam /checks/input/spam --profile "$profile" --output "/checks/output/$profile"
+          done
+      - name: Save locked model before full 500k and HAM evaluation
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v64-frozen-model
+          path: reports/v64-full/
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v64-training-evidence
+          path: |
+            reports/v64-full/
+            checks/output/
+          retention-days: 90
