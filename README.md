@@ -4,7 +4,7 @@
 
 ## Проверка на своих письмах
 
-Нужны Linux или macOS, Git и работающий Docker; рекомендуется 4 ГБ свободной памяти. Одно письмо — один файл `.eml`. Проверка работает на CPU.
+Нужны Git и работающий Docker; рекомендуется 4 ГБ свободной памяти. Команды ниже выполняются в Bash: Linux, macOS или Ubuntu в WSL2 на Windows с включённой [интеграцией Docker Desktop](https://docs.docker.com/desktop/features/wsl/). Одно письмо — один файл `.eml`. Проверка работает на CPU в контейнере `linux/amd64`; он проверен в GitHub Actions на Linux. На Apple Silicon Docker Desktop использует эмуляцию, поэтому запуск может быть медленнее; отдельные проверки macOS и Windows пока не выполнены.
 
 ### 1. Скачать код
 
@@ -31,7 +31,7 @@ ls model/model.joblib model/v62/model.joblib
 Скопируйте заранее размеченный спам в `mail/spam`, обычную почту в `mail/ham`. Подпапки допустимы, обе папки должны содержать `.eml`. Начните с небольшой выборки, затем проверьте отдельный набор за новый период.
 
 ```bash
-docker build -f Dockerfile.v64-check -t mailguard-v64-check .
+docker build --platform linux/amd64 -f Dockerfile.v64-check -t mailguard-v64-check .
 ```
 
 Для сборки нужен интернет. Письма в образ не копируются.
@@ -39,7 +39,7 @@ docker build -f Dockerfile.v64-check -t mailguard-v64-check .
 ### 4. Запустить проверку
 
 ```bash
-docker run --rm --network none \
+docker run --rm --platform linux/amd64 --network none \
   -v "$PWD/model:/model:ro" \
   -v "$PWD/mail:/mail:ro" \
   -v "$PWD/results:/results" \
