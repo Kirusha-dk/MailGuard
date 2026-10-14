@@ -47,7 +47,7 @@ def split_family(row):
 
 
 def text_view(row):
-    return (row['focus'][:1800]+' '+row['context'][:5000]).strip()
+    return (row['focus'][:650]+' '+row['context'][:1600]).strip()
 
 
 def source_weight_counts(train):
@@ -89,6 +89,14 @@ def new_scores(reps,models,batch):
     x=[text_view(r) for r in batch]
     return sum(.5*models[k].decision_function(reps[k].transform(x))
                for k in ('word','char'))
+
+
+def score_active(reps,models,batch):
+    result=np.full(len(batch),float('-inf'))
+    ix=[i for i,r in enumerate(batch) if r['script']!='cjk' and float(r['v64ConservativeMargin'])<0]
+    if ix:
+        result[ix]=new_scores(reps,models,[batch[i] for i in ix])
+    return result
 
 
 def fpr_zero_cutoff(rows,scores):
@@ -170,15 +178,18 @@ def main():
         split=split_family(r)
         prior=family_splits.setdefault(r['family'],split)
         if prior!=split:raise ValueError('Campaign family crosses TRAIN/CAL/HOLDOUT')
-        counts[(split,r['source'],r['y'])]+=1
-        if split=='train':train.append(r)
+        if split=='holdout':
+            counts[(split,r['source'],'label-unread')]+=1
+        else:
+            counts[(split,r['source'],r['y'])]+=1
+        if split=='train' and r['script']!='cjk':train.append(r)
         if split=='cal':cal.append(r)
     if len(seen)!=500000 or sum(k[0]=='holdout' and v for k,v in counts.items())<100000:
         raise ValueError('Not enough held-out messages')
     if sum(r['y']==0 for r in cal)<500:raise ValueError('Inadequate CAL HAM')
     print('V65 FROZEN PARTITION',dict((str(k),v) for k,v in counts.items()),flush=True)
     reps,models=fit_experts(train,args.epochs)
-    cal_new=np.concatenate([new_scores(reps,models,cal[i:i+128])
+    cal_new=np.concatenate([score_active(reps,models,cal[i:i+128])
                              for i in range(0,len(cal),128)])
     cutoff=fpr_zero_cutoff(cal,cal_new)
     verify=defaultdict(Counter)
@@ -201,7 +212,7 @@ def main():
     iterator=(r for r in pair_shards(args.inputs,args.predictions,audit)
               if split_family(r)=='holdout')
     while batch:=list(islice(iterator,128)):
-        new=new_scores(reps,models,batch)
+        new=score_active(reps,models,batch)
         for r,s in zip(batch,new):
             selected=decisions(r,s,cutoff)
             names=['all-holdout','source/'+r['source'],'script/'+r['script']]
@@ -224,6 +235,7 @@ def main():
                  results=report,modelLockedBeforeHoldout=True,testLabelsUsedForTraining=False,
                  optimisticBecausePriorV64ScoresAlreadyInspected=True,
                  confirmedAny100kGeneralization=False,confirmedCustomerQuality=False,
+                 prefitHoldoutLabelsUninspected=True,
                  limitation='Previously assessed v64 transfer corpus was used for v65 adaptation. Training and CAL use disjoint campaign families from v65 HOLDOUT, but the source pool was already reported. Archive trap spam labels are weak, two 100k cohorts contain no HAM, and the independent supplier HAM sample is insufficient to prove extremely low production FPR.')
     (out/'result.json').write_text(json.dumps(summary,indent=2))
     md='# MailGuard v65: source adaptation, retrospective experiment\n\n'+summary['limitation']+'\n\n'
