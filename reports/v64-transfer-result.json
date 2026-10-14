@@ -1,0 +1,2549 @@
+{
+  "version": 64,
+  "benchmark": "first-use-public-transfer",
+  "modelsSha256": {
+    "v62": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+    "v64": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5"
+  },
+  "audit": {
+    "count": 500000,
+    "ham": 10737,
+    "spam": 489263,
+    "available": 683540,
+    "nonArchiveSourceRows": 25971,
+    "bySource": {
+      "SpamArchive-2014": 95705,
+      "SpamArchive-2016": 159976,
+      "SpamArchive-2013": 108922,
+      "GenSpam": 19066,
+      "SpamArchive-2015": 109426,
+      "Published-ASCII-mail": 6502,
+      "Nazario-2025": 403
+    },
+    "byScript": {
+      "other": 14757,
+      "cjk": 307775,
+      "latin": 177468
+    },
+    "shardCounts": {
+      "0": 100000,
+      "1": 100000,
+      "2": 100000,
+      "3": 100000,
+      "4": 100000
+    },
+    "shardSha256": {
+      "0": "b9fee4e4b5a90c4ef832b320d31bf38e542bc3852f2fdb92f255562a87918471",
+      "1": "b6cb7e5498a272637b12b60a58082896d0de3ec1e604847d2285e9cd1b525fb9",
+      "2": "40d1cba927422e7ff1ac38e8d5b58c9c6bd946165f73d6d21e76dd7a0e12e2f8",
+      "3": "51526d34a7f5b36709daf0d7d7516d496be558e72bb2c763148667b0136dc2f8",
+      "4": "c67008030669b2b138536e1394dd558dda52c594107ece9ef9602d473dc166ea"
+    },
+    "priorExclusions": {
+      "priorCache": "mailguard-v59-prior-blocking-v1",
+      "priorDatabaseSha256": "d42bdc841f5b1944d8fdca3f9c10f57eaeeab7380a70a0534d6a0bc30e560a87",
+      "priorKeys": 2518174,
+      "old500kCorpusSha256": "5c0993c0258b854ce9cf2d5a31172d56692aaa351a533ca57c1ecc6e97c81f82",
+      "splits": {
+        ".cache/v60-data/train": {
+          "count": 114058,
+          "sha256": "53ccb57d9cd1ebf76123beeb834743e8e61c119f5bd551f34c90ffb49a1b2423"
+        },
+        ".cache/v60-data/select": {
+          "count": 23302,
+          "sha256": "4cc06aae3b7583166bb1f1cdea92d50666818f2a344cf64deb877483dacecdca"
+        },
+        ".cache/v60-data/cal": {
+          "count": 22865,
+          "sha256": "24e2731ddee9924432da40fb2d0a8e96be388d105d6147b5445134983d7dfa93"
+        },
+        ".cache/v60-data/test": {
+          "count": 4146,
+          "sha256": "a4d41b2f2930c0d038424515ad8a3622812e8d66bf5bca6e6341fbfdb891ee88"
+        },
+        ".cache/v59-data/train": {
+          "count": 111957,
+          "sha256": "1e2925a7a101b26b31b167d2d78d5ab52866c27a95e29b91e7941cfe0d90c01f"
+        },
+        ".cache/v59-data/select": {
+          "count": 22608,
+          "sha256": "2d67bbae0edad3eff8a3304b3487dac608778710d7d308b1002d91a2133e8b2a"
+        },
+        ".cache/v59-data/cal": {
+          "count": 22117,
+          "sha256": "558bcb078e89c191f0c5bb31654dbf44344b76f38c72a3c131ec7b27d8031186"
+        },
+        ".cache/v59-data/test": {
+          "count": 11831,
+          "sha256": "ba31fb2d29b10f4c8b940d8afc90e0091436f9090808ceda067c8bb25b43844c"
+        },
+        ".cache/v61-new/test": {
+          "count": 122,
+          "sha256": "f8ca87f7c9ca7ebf15b6b49fc20c76c2d21151abdb1a9b80a0bc9c8aca4b8ba0"
+        }
+      },
+      "previousPrepared": {
+        "500k/0": {
+          "count": 100000,
+          "sha256": "b08357da51a8fe3d50bd33d201b9965aace2312eb244ea344160a26c520b7f38"
+        },
+        "500k/1": {
+          "count": 100000,
+          "sha256": "e2e2f027c1fe4248f9dc637e8b87614364a2baf7c1d7582e38d6894bd90f0e1d"
+        },
+        "500k/2": {
+          "count": 100000,
+          "sha256": "e34d5493f3538cf4a9260c320f3961db450a944f639cf82d016e1d0b104772a2"
+        },
+        "500k/3": {
+          "count": 100000,
+          "sha256": "77a6aee52b2c82bd6cc08c39625cbd943ef1e200349c8fe46d976400f342958a"
+        },
+        "500k/4": {
+          "count": 100000,
+          "sha256": "8e3bd6c13f6e4214ee211cc8b6f1f2e90f981188b8af5e739674a62168e46643"
+        },
+        "ham": {
+          "count": 75271,
+          "sha256": "e8ce4c6da3c49ac92f4528cb9ff59cb31d8a66ffe67f0f3876ab3abcdab95f4b"
+        }
+      },
+      "classifierLoaded": false,
+      "wholeSeven": {
+        "revision": "deb4cc27dc2754c14cb157aace412727f77b41dd",
+        "counts": {
+          "train": 162413,
+          "test": 40604
+        }
+      },
+      "blockedKeys": 3486848,
+      "databaseSha256": "17d0418fc6088176adc03ac623a8f0349da983c2b756295b82e47e9faded2011"
+    },
+    "candidateAudits": [
+      {
+        "source": "independent",
+        "count": 25971,
+        "exclusions": {
+          "read": 45928,
+          "retained": 25973,
+          "shortOrEmpty": 14478,
+          "duplicate": 8271,
+          "priorOverlap": 11683,
+          "conflictOrBridge": 1
+        },
+        "sources": [
+          {
+            "name": "genspam.tar.gz",
+            "available": true,
+            "url": "http://www.cl.cam.ac.uk/Research/NL/nl-download/GenSpam.tar.gz",
+            "file": "genspam.tar.gz",
+            "sha256": "1e0b8f0eb73f16787df7b11144a2bc8937342d50fbedd124ba9fe379a076895f",
+            "bytes": 10560985,
+            "members": [
+              "adapt_GEN.ems",
+              "adapt_SPAM.ems",
+              "test_GEN.ems",
+              "test_SPAM.ems",
+              "train_GEN.ems",
+              "train_SPAM.ems"
+            ],
+            "messageCounts": {
+              "adapt_GEN.ems": 300,
+              "adapt_SPAM.ems": 300,
+              "test_GEN.ems": 754,
+              "test_SPAM.ems": 797,
+              "train_GEN.ems": 8158,
+              "train_SPAM.ems": 30088
+            },
+            "publishedTrainSpamCount": 30099,
+            "archiveTrainSpamCount": 30088,
+            "inventoryDifferenceDocumented": true,
+            "labels": "Original genuine/spam annotation",
+            "anonymized": true,
+            "attribution": "Ben Medlock, CEAS 2006"
+          },
+          {
+            "name": "labelled-mail.zip",
+            "available": true,
+            "url": "https://codeload.github.com/realprogrammersusevim/email-dataset/zip/84209612df4c55831f074a65b7c137a4b980059d",
+            "file": "labelled-mail.zip",
+            "sha256": "a51c47191cb32e0f62e56e4e265a20be2393d326a003001e0830601f6f444eb7",
+            "bytes": 32884940,
+            "ham": 10776,
+            "spam": 8752,
+            "revision": "84209612df4c55831f074a65b7c137a4b980059d"
+          },
+          {
+            "name": "nazario-2025.mbox",
+            "available": true,
+            "url": "https://monkey.org/~jose/phishing/phishing-2025",
+            "file": "nazario-2025.mbox",
+            "sha256": "f1fa7e0fe35c9a16f36d9aa20ade7e1d3908d1d0c1d917b8c53c8aa799ec1c8f",
+            "bytes": 18769863,
+            "mboxMessages": 481,
+            "labels": "Author hand-classified phishing; original labels retained",
+            "attribution": "Jose Nazario",
+            "license": "CC-BY-4.0"
+          }
+        ],
+        "candidatesSha256": "d30cbcd97c16489525e6afc066a6f05b2b511bb4f693dbc499e06a97ceb9718c",
+        "priorDatabaseSha256": "17d0418fc6088176adc03ac623a8f0349da983c2b756295b82e47e9faded2011",
+        "classifierLoaded": false,
+        "scoreBasedSelection": false
+      },
+      {
+        "source": "2016",
+        "count": 222138,
+        "exclusions": {
+          "read": 482497,
+          "retained": 222451,
+          "duplicate": 214067,
+          "conflictOrBridge": 1143,
+          "shortOrEmpty": 1122,
+          "priorOverlap": 44836
+        },
+        "sources": [
+          {
+            "url": "https://untroubled.org/spam/2016.7z",
+            "sha256": "82b1d1b0d71eb2bef3df0bdb1240ccc9b08d29879a8efc2aa23c5d9d68c3a7be",
+            "bytes": 142685721,
+            "rawEmailsRead": 483619,
+            "labels": "Spam trap; not individually adjudicated"
+          }
+        ],
+        "candidatesSha256": "4b6eff75b3a33a029306551bac1206e23f729b2a0de03139ee845076cdca5b40",
+        "priorDatabaseSha256": "17d0418fc6088176adc03ac623a8f0349da983c2b756295b82e47e9faded2011",
+        "classifierLoaded": false,
+        "scoreBasedSelection": false
+      },
+      {
+        "source": "2015",
+        "count": 153664,
+        "exclusions": {
+          "read": 443570,
+          "retained": 153822,
+          "priorOverlap": 2828,
+          "duplicate": 286896,
+          "shortOrEmpty": 389,
+          "conflictOrBridge": 24
+        },
+        "sources": [
+          {
+            "url": "https://untroubled.org/spam/2015.7z",
+            "sha256": "12858645b626b561dbeebf8b9008e23dbf23264ccf7132079c5f19461676aa83",
+            "bytes": 155575001,
+            "rawEmailsRead": 443959,
+            "labels": "Spam trap; not individually adjudicated"
+          }
+        ],
+        "candidatesSha256": "9d0aaa84d898ff683d0b2b7fa3242e3d412fb8d0796ef1ef4d02dd9ba1a1c6d1",
+        "priorDatabaseSha256": "17d0418fc6088176adc03ac623a8f0349da983c2b756295b82e47e9faded2011",
+        "classifierLoaded": false,
+        "scoreBasedSelection": false
+      },
+      {
+        "source": "2014",
+        "count": 134710,
+        "exclusions": {
+          "read": 465746,
+          "retained": 134742,
+          "duplicate": 330101,
+          "priorOverlap": 900,
+          "shortOrEmpty": 904,
+          "conflictOrBridge": 3
+        },
+        "sources": [
+          {
+            "url": "https://untroubled.org/spam/2014.7z",
+            "sha256": "34ee6fdc8473ff4c0896a5664231d8defced7c228734f512b6eca74aea55ea57",
+            "bytes": 143034781,
+            "rawEmailsRead": 466650,
+            "labels": "Spam trap; not individually adjudicated"
+          }
+        ],
+        "candidatesSha256": "ab174f2233ae95e418b936bb943328954b0233e4b779f638f9f25ac516f54882",
+        "priorDatabaseSha256": "17d0418fc6088176adc03ac623a8f0349da983c2b756295b82e47e9faded2011",
+        "classifierLoaded": false,
+        "scoreBasedSelection": false
+      },
+      {
+        "source": "2013",
+        "count": 154038,
+        "exclusions": {
+          "read": 730468,
+          "retained": 154049,
+          "duplicate": 575395,
+          "priorOverlap": 983,
+          "shortOrEmpty": 1528,
+          "conflictOrBridge": 41
+        },
+        "sources": [
+          {
+            "url": "https://untroubled.org/spam/2013.7z",
+            "sha256": "6afa2d727d108fb3c8894d857eeca13a06b372a9ab42c63544a0a9d2a18bfbbf",
+            "bytes": 138885490,
+            "rawEmailsRead": 731996,
+            "labels": "Spam trap; not individually adjudicated"
+          }
+        ],
+        "candidatesSha256": "79bdf42fc75cbedf36f30ebfc73e729e04d315bed5fbaf3aa15433bd955f5942",
+        "priorDatabaseSha256": "17d0418fc6088176adc03ac623a8f0349da983c2b756295b82e47e9faded2011",
+        "classifierLoaded": false,
+        "scoreBasedSelection": false
+      }
+    ],
+    "selectedSourcePartitions": [
+      "independent",
+      "2016",
+      "2015",
+      "2014",
+      "2013"
+    ],
+    "globalExclusions": {
+      "read": 690521,
+      "retained": 683546,
+      "duplicate": 6972,
+      "conflictOrBridge": 3
+    },
+    "selection": "All eligible non-archive labelled-source mail; bulk archives fill remaining slots by fixed content hash; global hash order; no model scores used",
+    "zeroDetectedPriorOverlap": true,
+    "identityBodyTemplateFamilyViewDedupPassed": true,
+    "testPreviouslyScored": false,
+    "testLabelsUsedForTraining": false,
+    "targetRecall": 0.95,
+    "targetHamFpr": 0.0001,
+    "codeCommit": "4fe9d4548a4076c14b2e14a891ebf3f8c329ee09",
+    "githubRunId": "38635836571",
+    "previewCohortAlreadyScoredWithinThisExperiment": true,
+    "all500kFirstScoredInThisRun": false,
+    "caveat": "Historical public mail unused in development and prior benchmarks before this experiment, not customer traffic. The ready 25971-message labelled-source preview is included again with the same unchanged models, so it is not another independent test. GenSpam is anonymized; published ASCII mail has removed headers; Nazario is a single manually labelled inbox. Bulk spam traps are weak spam labels and come from a previously used provider in different years. Exact fingerprints and campaign prefixes exclude known relatives, but semantic near-duplicates may remain. HAM sample size may not establish extremely rare production FP. No synthetic messages or duplicated refill are used."
+  },
+  "profiles": {
+    "v62": {
+      "conservative": {
+        "threshold": 0.0,
+        "targetHamFpr": 0.0001,
+        "scripts": {
+          "latin": {
+            "scope": "global",
+            "model": "log_loss-alpha1e-06-ham4",
+            "cutoff": 9.5759334564209,
+            "selectionKey": [
+              0.36585365853658536,
+              0.6103829429040328
+            ],
+            "scriptHasGoldHam": true
+          },
+          "cjk": {
+            "scope": "cjk",
+            "model": "hinge-alpha1e-06-ham1",
+            "cutoff": 0.44717746973037725,
+            "selectionKey": [
+              0.9870317002881844,
+              0.9964157837940169
+            ],
+            "scriptHasGoldHam": true
+          },
+          "other": {
+            "scope": "global",
+            "model": "log_loss-alpha1e-06-ham4",
+            "cutoff": 9.5759334564209,
+            "selectionKey": [
+              0.38517179023508136,
+              0.6148555662223152
+            ],
+            "scriptHasGoldHam": false
+          }
+        }
+      },
+      "high-recall": {
+        "threshold": 0.0,
+        "targetHamFpr": 0.002,
+        "scripts": {
+          "latin": {
+            "scope": "global",
+            "model": "hinge-alpha1e-06-ham4",
+            "cutoff": 3.121076583862305,
+            "selectionKey": [
+              0.8421333333333333,
+              0.889651538895978
+            ],
+            "scriptHasGoldHam": true
+          },
+          "cjk": {
+            "scope": "cjk",
+            "model": "hinge-alpha3e-07-ham1",
+            "cutoff": -0.06901241093873976,
+            "selectionKey": [
+              0.9927953890489913,
+              0.9980672544630058
+            ],
+            "scriptHasGoldHam": true
+          },
+          "other": {
+            "scope": "global",
+            "model": "log_loss-alpha1e-06-ham4",
+            "cutoff": 3.3004524707794194,
+            "selectionKey": [
+              0.8697501329080276,
+              0.92680900949571
+            ],
+            "scriptHasGoldHam": false
+          }
+        }
+      }
+    },
+    "v64": {
+      "conservative": {
+        "selected": "linear1-ham4",
+        "threshold": 0.0,
+        "scriptCutoffs": {
+          "latin": 0.9989265058633192,
+          "cjk": 0.8431514303368317,
+          "other": 0.9989265058633192
+        },
+        "targetHamFpr": 0.0001,
+        "calibration": {
+          "count": 22865,
+          "spam": 18924,
+          "ham": 3941,
+          "tp": 14783,
+          "fn": 4141,
+          "tn": 3941,
+          "fp": 0,
+          "recall": 0.7811773409427183,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0009737929548739141,
+          "precision": 1.0
+        }
+      },
+      "high-recall": {
+        "selected": "linear1-ham1",
+        "threshold": 0.0,
+        "scriptCutoffs": {
+          "latin": 0.998933262359923,
+          "cjk": 0.7289899546257077,
+          "other": 0.9976884596402817
+        },
+        "targetHamFpr": 0.002,
+        "calibration": {
+          "count": 22865,
+          "spam": 18924,
+          "ham": 3941,
+          "tp": 17268,
+          "fn": 1656,
+          "tn": 3934,
+          "fp": 7,
+          "recall": 0.9124920735573875,
+          "hamFpr": 0.0017761989342806395,
+          "hamFprWilson95Upper": 0.003662067249032997,
+          "precision": 0.9995947901591896
+        }
+      }
+    }
+  },
+  "results": {
+    "all": {
+      "v62": {
+        "conservative": {
+          "count": 500000,
+          "spam": 489263,
+          "ham": 10737,
+          "tp": 321813,
+          "fn": 167450,
+          "tn": 10737,
+          "fp": 0,
+          "recall": 0.6577505349883396,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0003576497088633039,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 500000,
+          "spam": 489263,
+          "ham": 10737,
+          "tp": 432563,
+          "fn": 56700,
+          "tn": 10649,
+          "fp": 88,
+          "recall": 0.8841114083836301,
+          "hamFpr": 0.008195957902579864,
+          "hamFprWilson95Upper": 0.010085968111407705,
+          "precision": 0.99979660280457
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 500000,
+          "spam": 489263,
+          "ham": 10737,
+          "tp": 361984,
+          "fn": 127279,
+          "tn": 10737,
+          "fp": 0,
+          "recall": 0.7398556604525582,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0003576497088633039,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 500000,
+          "spam": 489263,
+          "ham": 10737,
+          "tp": 420232,
+          "fn": 69031,
+          "tn": 10730,
+          "fp": 7,
+          "recall": 0.8589081945702005,
+          "hamFpr": 0.0006519511967961255,
+          "hamFprWilson95Upper": 0.001345240005464294,
+          "precision": 0.9999833428120665
+        }
+      }
+    },
+    "different-year-same-provider": {
+      "v62": {
+        "conservative": {
+          "count": 474029,
+          "spam": 474029,
+          "ham": 0,
+          "tp": 321049,
+          "fn": 152980,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6772771286144941,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 474029,
+          "spam": 474029,
+          "ham": 0,
+          "tp": 423733,
+          "fn": 50296,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8938967869054425,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 474029,
+          "spam": 474029,
+          "ham": 0,
+          "tp": 360343,
+          "fn": 113686,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7601707912385107,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 474029,
+          "spam": 474029,
+          "ham": 0,
+          "tp": 414298,
+          "fn": 59731,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8739929413601277,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "different-year-same-provider/script/cjk": {
+      "v62": {
+        "conservative": {
+          "count": 307772,
+          "spam": 307772,
+          "ham": 0,
+          "tp": 306092,
+          "fn": 1680,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9945414137738325,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 307772,
+          "spam": 307772,
+          "ham": 0,
+          "tp": 307402,
+          "fn": 370,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.998797811366856,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 307772,
+          "spam": 307772,
+          "ham": 0,
+          "tp": 304483,
+          "fn": 3289,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9893135177988901,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 307772,
+          "spam": 307772,
+          "ham": 0,
+          "tp": 306995,
+          "fn": 777,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9974754038703976,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "different-year-same-provider/script/latin": {
+      "v62": {
+        "conservative": {
+          "count": 151500,
+          "spam": 151500,
+          "ham": 0,
+          "tp": 14955,
+          "fn": 136545,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.09871287128712872,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 151500,
+          "spam": 151500,
+          "ham": 0,
+          "tp": 108617,
+          "fn": 42883,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.716943894389439,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 151500,
+          "spam": 151500,
+          "ham": 0,
+          "tp": 54330,
+          "fn": 97170,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.3586138613861386,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 151500,
+          "spam": 151500,
+          "ham": 0,
+          "tp": 96740,
+          "fn": 54760,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6385478547854786,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "different-year-same-provider/script/other": {
+      "v62": {
+        "conservative": {
+          "count": 14757,
+          "spam": 14757,
+          "ham": 0,
+          "tp": 2,
+          "fn": 14755,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.00013552890153825303,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 14757,
+          "spam": 14757,
+          "ham": 0,
+          "tp": 7714,
+          "fn": 7043,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.522734973233042,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 14757,
+          "spam": 14757,
+          "ham": 0,
+          "tp": 1530,
+          "fn": 13227,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.10367960967676357,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 14757,
+          "spam": 14757,
+          "ham": 0,
+          "tp": 10563,
+          "fn": 4194,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7157958934742834,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "new-mail-known-domain": {
+      "v62": {
+        "conservative": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 558,
+          "fn": 3522,
+          "tn": 2422,
+          "fp": 0,
+          "recall": 0.13676470588235295,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0015835572463839512,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 3339,
+          "fn": 741,
+          "tn": 2419,
+          "fp": 3,
+          "recall": 0.8183823529411764,
+          "hamFpr": 0.0012386457473162675,
+          "hamFprWilson95Upper": 0.0036355870523054677,
+          "precision": 0.9991023339317774
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 1006,
+          "fn": 3074,
+          "tn": 2422,
+          "fp": 0,
+          "recall": 0.2465686274509804,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0015835572463839512,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 2540,
+          "fn": 1540,
+          "tn": 2421,
+          "fp": 1,
+          "recall": 0.6225490196078431,
+          "hamFpr": 0.00041288191577208916,
+          "hamFprWilson95Upper": 0.002335125918801737,
+          "precision": 0.9996064541519087
+        }
+      }
+    },
+    "new-mail-known-domain/script/cjk": {
+      "v62": {
+        "conservative": {
+          "count": 1,
+          "spam": 1,
+          "ham": 0,
+          "tp": 1,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 1,
+          "spam": 1,
+          "ham": 0,
+          "tp": 1,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 1,
+          "spam": 1,
+          "ham": 0,
+          "tp": 0,
+          "fn": 1,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 1,
+          "spam": 1,
+          "ham": 0,
+          "tp": 1,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "new-mail-known-domain/script/latin": {
+      "v62": {
+        "conservative": {
+          "count": 6501,
+          "spam": 4079,
+          "ham": 2422,
+          "tp": 557,
+          "fn": 3522,
+          "tn": 2422,
+          "fp": 0,
+          "recall": 0.13655307673449374,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0015835572463839512,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 6501,
+          "spam": 4079,
+          "ham": 2422,
+          "tp": 3338,
+          "fn": 741,
+          "tn": 2419,
+          "fp": 3,
+          "recall": 0.8183378278989949,
+          "hamFpr": 0.0012386457473162675,
+          "hamFprWilson95Upper": 0.0036355870523054677,
+          "precision": 0.9991020652499252
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 6501,
+          "spam": 4079,
+          "ham": 2422,
+          "tp": 1006,
+          "fn": 3073,
+          "tn": 2422,
+          "fp": 0,
+          "recall": 0.24662907575386125,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0015835572463839512,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 6501,
+          "spam": 4079,
+          "ham": 2422,
+          "tp": 2539,
+          "fn": 1540,
+          "tn": 2421,
+          "fp": 1,
+          "recall": 0.6224564844324589,
+          "hamFpr": 0.00041288191577208916,
+          "hamFprWilson95Upper": 0.002335125918801737,
+          "precision": 0.9996062992125985
+        }
+      }
+    },
+    "script/cjk": {
+      "v62": {
+        "conservative": {
+          "count": 307775,
+          "spam": 307775,
+          "ham": 0,
+          "tp": 306095,
+          "fn": 1680,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.994541466980749,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 307775,
+          "spam": 307775,
+          "ham": 0,
+          "tp": 307405,
+          "fn": 370,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9987978230850459,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 307775,
+          "spam": 307775,
+          "ham": 0,
+          "tp": 304485,
+          "fn": 3290,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9893103728373,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 307775,
+          "spam": 307775,
+          "ham": 0,
+          "tp": 306998,
+          "fn": 777,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9974754284785964,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "script/latin": {
+      "v62": {
+        "conservative": {
+          "count": 177468,
+          "spam": 166731,
+          "ham": 10737,
+          "tp": 15716,
+          "fn": 151015,
+          "tn": 10737,
+          "fp": 0,
+          "recall": 0.09425961578830572,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0003576497088633039,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 177468,
+          "spam": 166731,
+          "ham": 10737,
+          "tp": 117444,
+          "fn": 49287,
+          "tn": 10649,
+          "fp": 88,
+          "recall": 0.704392104647606,
+          "hamFpr": 0.008195957902579864,
+          "hamFprWilson95Upper": 0.010085968111407705,
+          "precision": 0.9992512677398496
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 177468,
+          "spam": 166731,
+          "ham": 10737,
+          "tp": 55969,
+          "fn": 110762,
+          "tn": 10737,
+          "fp": 0,
+          "recall": 0.3356844258116367,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0003576497088633039,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 177468,
+          "spam": 166731,
+          "ham": 10737,
+          "tp": 102671,
+          "fn": 64060,
+          "tn": 10730,
+          "fp": 7,
+          "recall": 0.6157883057139943,
+          "hamFpr": 0.0006519511967961255,
+          "hamFprWilson95Upper": 0.001345240005464294,
+          "precision": 0.9999318257075518
+        }
+      }
+    },
+    "script/other": {
+      "v62": {
+        "conservative": {
+          "count": 14757,
+          "spam": 14757,
+          "ham": 0,
+          "tp": 2,
+          "fn": 14755,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.00013552890153825303,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 14757,
+          "spam": 14757,
+          "ham": 0,
+          "tp": 7714,
+          "fn": 7043,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.522734973233042,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 14757,
+          "spam": 14757,
+          "ham": 0,
+          "tp": 1530,
+          "fn": 13227,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.10367960967676357,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 14757,
+          "spam": 14757,
+          "ham": 0,
+          "tp": 10563,
+          "fn": 4194,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7157958934742834,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "source/GenSpam": {
+      "v62": {
+        "conservative": {
+          "count": 19066,
+          "spam": 10751,
+          "ham": 8315,
+          "tp": 196,
+          "fn": 10555,
+          "tn": 8315,
+          "fp": 0,
+          "recall": 0.018230862245372525,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00046177810212032856,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19066,
+          "spam": 10751,
+          "ham": 8315,
+          "tp": 5343,
+          "fn": 5408,
+          "tn": 8230,
+          "fp": 85,
+          "recall": 0.4969770253929867,
+          "hamFpr": 0.010222489476849068,
+          "hamFprWilson95Upper": 0.012622000710084638,
+          "precision": 0.984340456890199
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 19066,
+          "spam": 10751,
+          "ham": 8315,
+          "tp": 574,
+          "fn": 10177,
+          "tn": 8315,
+          "fp": 0,
+          "recall": 0.053390382290019536,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00046177810212032856,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19066,
+          "spam": 10751,
+          "ham": 8315,
+          "tp": 3253,
+          "fn": 7498,
+          "tn": 8309,
+          "fp": 6,
+          "recall": 0.30257650451120827,
+          "hamFpr": 0.0007215874924834636,
+          "hamFprWilson95Upper": 0.00157353600364885,
+          "precision": 0.9981589444614912
+        }
+      }
+    },
+    "source/Nazario-2025": {
+      "v62": {
+        "conservative": {
+          "count": 403,
+          "spam": 403,
+          "ham": 0,
+          "tp": 10,
+          "fn": 393,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.02481389578163772,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 403,
+          "spam": 403,
+          "ham": 0,
+          "tp": 148,
+          "fn": 255,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.36724565756823824,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 403,
+          "spam": 403,
+          "ham": 0,
+          "tp": 61,
+          "fn": 342,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.1513647642679901,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 403,
+          "spam": 403,
+          "ham": 0,
+          "tp": 141,
+          "fn": 262,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.34987593052109184,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "source/Published-ASCII-mail": {
+      "v62": {
+        "conservative": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 558,
+          "fn": 3522,
+          "tn": 2422,
+          "fp": 0,
+          "recall": 0.13676470588235295,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0015835572463839512,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 3339,
+          "fn": 741,
+          "tn": 2419,
+          "fp": 3,
+          "recall": 0.8183823529411764,
+          "hamFpr": 0.0012386457473162675,
+          "hamFprWilson95Upper": 0.0036355870523054677,
+          "precision": 0.9991023339317774
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 1006,
+          "fn": 3074,
+          "tn": 2422,
+          "fp": 0,
+          "recall": 0.2465686274509804,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0015835572463839512,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 2540,
+          "fn": 1540,
+          "tn": 2421,
+          "fp": 1,
+          "recall": 0.6225490196078431,
+          "hamFpr": 0.00041288191577208916,
+          "hamFprWilson95Upper": 0.002335125918801737,
+          "precision": 0.9996064541519087
+        }
+      }
+    },
+    "source/SpamArchive-2013": {
+      "v62": {
+        "conservative": {
+          "count": 108922,
+          "spam": 108922,
+          "ham": 0,
+          "tp": 71080,
+          "fn": 37842,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6525770735021391,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 108922,
+          "spam": 108922,
+          "ham": 0,
+          "tp": 92394,
+          "fn": 16528,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.848258386735462,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 108922,
+          "spam": 108922,
+          "ham": 0,
+          "tp": 77907,
+          "fn": 31015,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7152549530856943,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 108922,
+          "spam": 108922,
+          "ham": 0,
+          "tp": 90420,
+          "fn": 18502,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8301353261967279,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "source/SpamArchive-2014": {
+      "v62": {
+        "conservative": {
+          "count": 95705,
+          "spam": 95705,
+          "ham": 0,
+          "tp": 61441,
+          "fn": 34264,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6419831774724414,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 95705,
+          "spam": 95705,
+          "ham": 0,
+          "tp": 79880,
+          "fn": 15825,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8346481375058774,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 95705,
+          "spam": 95705,
+          "ham": 0,
+          "tp": 66336,
+          "fn": 29369,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6931299305156471,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 95705,
+          "spam": 95705,
+          "ham": 0,
+          "tp": 76837,
+          "fn": 18868,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8028525155425527,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "source/SpamArchive-2015": {
+      "v62": {
+        "conservative": {
+          "count": 109426,
+          "spam": 109426,
+          "ham": 0,
+          "tp": 71070,
+          "fn": 38356,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6494800138906658,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 109426,
+          "spam": 109426,
+          "ham": 0,
+          "tp": 98973,
+          "fn": 10453,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9044742565752197,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 109426,
+          "spam": 109426,
+          "ham": 0,
+          "tp": 82435,
+          "fn": 26991,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7533401568183065,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 109426,
+          "spam": 109426,
+          "ham": 0,
+          "tp": 97243,
+          "fn": 12183,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8886644855884341,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "source/SpamArchive-2016": {
+      "v62": {
+        "conservative": {
+          "count": 159976,
+          "spam": 159976,
+          "ham": 0,
+          "tp": 117458,
+          "fn": 42518,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7342226333950093,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 159976,
+          "spam": 159976,
+          "ham": 0,
+          "tp": 152486,
+          "fn": 7490,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9531804770715607,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 159976,
+          "spam": 159976,
+          "ham": 0,
+          "tp": 133665,
+          "fn": 26311,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8355315797369606,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 159976,
+          "spam": 159976,
+          "ham": 0,
+          "tp": 149798,
+          "fn": 10178,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.936377956693504,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "unseen-source": {
+      "v62": {
+        "conservative": {
+          "count": 19469,
+          "spam": 11154,
+          "ham": 8315,
+          "tp": 206,
+          "fn": 10948,
+          "tn": 8315,
+          "fp": 0,
+          "recall": 0.018468710776403083,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00046177810212032856,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19469,
+          "spam": 11154,
+          "ham": 8315,
+          "tp": 5491,
+          "fn": 5663,
+          "tn": 8230,
+          "fp": 85,
+          "recall": 0.4922897615205308,
+          "hamFpr": 0.010222489476849068,
+          "hamFprWilson95Upper": 0.012622000710084638,
+          "precision": 0.9847560975609756
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 19469,
+          "spam": 11154,
+          "ham": 8315,
+          "tp": 635,
+          "fn": 10519,
+          "tn": 8315,
+          "fp": 0,
+          "recall": 0.056930249237941544,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00046177810212032856,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19469,
+          "spam": 11154,
+          "ham": 8315,
+          "tp": 3394,
+          "fn": 7760,
+          "tn": 8309,
+          "fp": 6,
+          "recall": 0.30428545813161195,
+          "hamFpr": 0.0007215874924834636,
+          "hamFprWilson95Upper": 0.00157353600364885,
+          "precision": 0.9982352941176471
+        }
+      }
+    },
+    "unseen-source/script/cjk": {
+      "v62": {
+        "conservative": {
+          "count": 2,
+          "spam": 2,
+          "ham": 0,
+          "tp": 2,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 2,
+          "spam": 2,
+          "ham": 0,
+          "tp": 2,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 2,
+          "spam": 2,
+          "ham": 0,
+          "tp": 2,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 2,
+          "spam": 2,
+          "ham": 0,
+          "tp": 2,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "unseen-source/script/latin": {
+      "v62": {
+        "conservative": {
+          "count": 19467,
+          "spam": 11152,
+          "ham": 8315,
+          "tp": 204,
+          "fn": 10948,
+          "tn": 8315,
+          "fp": 0,
+          "recall": 0.018292682926829267,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00046177810212032856,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19467,
+          "spam": 11152,
+          "ham": 8315,
+          "tp": 5489,
+          "fn": 5663,
+          "tn": 8230,
+          "fp": 85,
+          "recall": 0.4921987087517934,
+          "hamFpr": 0.010222489476849068,
+          "hamFprWilson95Upper": 0.012622000710084638,
+          "precision": 0.9847506279153211
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 19467,
+          "spam": 11152,
+          "ham": 8315,
+          "tp": 633,
+          "fn": 10519,
+          "tn": 8315,
+          "fp": 0,
+          "recall": 0.056761119081779055,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00046177810212032856,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19467,
+          "spam": 11152,
+          "ham": 8315,
+          "tp": 3392,
+          "fn": 7760,
+          "tn": 8309,
+          "fp": 6,
+          "recall": 0.30416068866571017,
+          "hamFpr": 0.0007215874924834636,
+          "hamFprWilson95Upper": 0.00157353600364885,
+          "precision": 0.998234255444379
+        }
+      }
+    }
+  },
+  "pairedChanges": {
+    "all": {
+      "conservative": {
+        "fixedFN": 43918,
+        "newFN": 3747
+      },
+      "high-recall": {
+        "newFN": 21685,
+        "fixedFN": 9354,
+        "fixedFP": 82,
+        "newFP": 1
+      }
+    },
+    "different-year-same-provider": {
+      "conservative": {
+        "fixedFN": 42786,
+        "newFN": 3492
+      },
+      "high-recall": {
+        "newFN": 18566,
+        "fixedFN": 9131
+      }
+    },
+    "new-mail-known-domain": {
+      "conservative": {
+        "fixedFN": 638,
+        "newFN": 190
+      },
+      "high-recall": {
+        "newFN": 843,
+        "fixedFN": 44,
+        "fixedFP": 2
+      }
+    },
+    "unseen-source": {
+      "conservative": {
+        "newFN": 65,
+        "fixedFN": 494
+      },
+      "high-recall": {
+        "newFN": 2276,
+        "fixedFN": 179,
+        "fixedFP": 80,
+        "newFP": 1
+      }
+    }
+  },
+  "goals": {
+    "v62": {
+      "conservative": {
+        "observedRecallAndFprGoalMet": false,
+        "minimumSourceRecall": 0.018230862245372525,
+        "minimumScriptRecall": 0.00013552890153825303,
+        "broadTransferGoalMet": false,
+        "rareFp95UpperBoundSupportsTarget": false,
+        "customerGoalValidated": false
+      },
+      "high-recall": {
+        "observedRecallAndFprGoalMet": false,
+        "minimumSourceRecall": 0.36724565756823824,
+        "minimumScriptRecall": 0.522734973233042,
+        "broadTransferGoalMet": false,
+        "rareFp95UpperBoundSupportsTarget": false,
+        "customerGoalValidated": false
+      }
+    },
+    "v64": {
+      "conservative": {
+        "observedRecallAndFprGoalMet": false,
+        "minimumSourceRecall": 0.053390382290019536,
+        "minimumScriptRecall": 0.10367960967676357,
+        "broadTransferGoalMet": false,
+        "rareFp95UpperBoundSupportsTarget": false,
+        "customerGoalValidated": false
+      },
+      "high-recall": {
+        "observedRecallAndFprGoalMet": false,
+        "minimumSourceRecall": 0.30257650451120827,
+        "minimumScriptRecall": 0.6157883057139943,
+        "broadTransferGoalMet": false,
+        "rareFp95UpperBoundSupportsTarget": false,
+        "customerGoalValidated": false
+      }
+    }
+  },
+  "shards": [
+    {
+      "shard": 0,
+      "counts": {
+        "count": 100000,
+        "spam": 97866,
+        "ham": 2134
+      },
+      "modelsSha256": {
+        "v62": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+        "v64": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5"
+      },
+      "profiles": {
+        "v62": {
+          "conservative": {
+            "threshold": 0.0,
+            "targetHamFpr": 0.0001,
+            "scripts": {
+              "latin": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 9.5759334564209,
+                "selectionKey": [
+                  0.36585365853658536,
+                  0.6103829429040328
+                ],
+                "scriptHasGoldHam": true
+              },
+              "cjk": {
+                "scope": "cjk",
+                "model": "hinge-alpha1e-06-ham1",
+                "cutoff": 0.44717746973037725,
+                "selectionKey": [
+                  0.9870317002881844,
+                  0.9964157837940169
+                ],
+                "scriptHasGoldHam": true
+              },
+              "other": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 9.5759334564209,
+                "selectionKey": [
+                  0.38517179023508136,
+                  0.6148555662223152
+                ],
+                "scriptHasGoldHam": false
+              }
+            }
+          },
+          "high-recall": {
+            "threshold": 0.0,
+            "targetHamFpr": 0.002,
+            "scripts": {
+              "latin": {
+                "scope": "global",
+                "model": "hinge-alpha1e-06-ham4",
+                "cutoff": 3.121076583862305,
+                "selectionKey": [
+                  0.8421333333333333,
+                  0.889651538895978
+                ],
+                "scriptHasGoldHam": true
+              },
+              "cjk": {
+                "scope": "cjk",
+                "model": "hinge-alpha3e-07-ham1",
+                "cutoff": -0.06901241093873976,
+                "selectionKey": [
+                  0.9927953890489913,
+                  0.9980672544630058
+                ],
+                "scriptHasGoldHam": true
+              },
+              "other": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 3.3004524707794194,
+                "selectionKey": [
+                  0.8697501329080276,
+                  0.92680900949571
+                ],
+                "scriptHasGoldHam": false
+              }
+            }
+          }
+        },
+        "v64": {
+          "conservative": {
+            "selected": "linear1-ham4",
+            "threshold": 0.0,
+            "scriptCutoffs": {
+              "latin": 0.9989265058633192,
+              "cjk": 0.8431514303368317,
+              "other": 0.9989265058633192
+            },
+            "targetHamFpr": 0.0001,
+            "calibration": {
+              "count": 22865,
+              "spam": 18924,
+              "ham": 3941,
+              "tp": 14783,
+              "fn": 4141,
+              "tn": 3941,
+              "fp": 0,
+              "recall": 0.7811773409427183,
+              "hamFpr": 0.0,
+              "hamFprWilson95Upper": 0.0009737929548739141,
+              "precision": 1.0
+            }
+          },
+          "high-recall": {
+            "selected": "linear1-ham1",
+            "threshold": 0.0,
+            "scriptCutoffs": {
+              "latin": 0.998933262359923,
+              "cjk": 0.7289899546257077,
+              "other": 0.9976884596402817
+            },
+            "targetHamFpr": 0.002,
+            "calibration": {
+              "count": 22865,
+              "spam": 18924,
+              "ham": 3941,
+              "tp": 17268,
+              "fn": 1656,
+              "tn": 3934,
+              "fp": 7,
+              "recall": 0.9124920735573875,
+              "hamFpr": 0.0017761989342806395,
+              "hamFprWilson95Upper": 0.003662067249032997,
+              "precision": 0.9995947901591896
+            }
+          }
+        }
+      },
+      "predictionsSha256": "ad5a9f61b99c68ad9a3ef9a6eb9e0cb57956df18254cf5756eaed1e68ec05e14",
+      "inputSha256": "b9fee4e4b5a90c4ef832b320d31bf38e542bc3852f2fdb92f255562a87918471",
+      "auditSha256": "9ec24ef6ae6fdd6d136fdbd32270ed58e0037061b168e0b7d122b94327971d4e",
+      "runtimeSha256": "1650e984b6a0cc1147d46d18371b0fbebf01bb743889d4dee2aa845376b2a3c8",
+      "first1000ParityPassed": true,
+      "probeByScript": {
+        "other": 41,
+        "cjk": 625,
+        "latin": 334
+      },
+      "probeBySource": {
+        "SpamArchive-2014": 171,
+        "SpamArchive-2016": 346,
+        "SpamArchive-2013": 211,
+        "GenSpam": 27,
+        "SpamArchive-2015": 236,
+        "Published-ASCII-mail": 9
+      },
+      "frozenModelCodeCommit": "3a4c834aa61f3b0cbd5725543f22a1225ff3f839",
+      "evaluationCodeCommit": "9b5ae0f44d3c603ba7e925de7d4f1658cc0d3ba1",
+      "evaluationRunId": "38636123356",
+      "inferenceAndCsvSeconds": 278.288131498
+    },
+    {
+      "shard": 1,
+      "counts": {
+        "count": 100000,
+        "spam": 97793,
+        "ham": 2207
+      },
+      "modelsSha256": {
+        "v62": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+        "v64": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5"
+      },
+      "profiles": {
+        "v62": {
+          "conservative": {
+            "threshold": 0.0,
+            "targetHamFpr": 0.0001,
+            "scripts": {
+              "latin": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 9.5759334564209,
+                "selectionKey": [
+                  0.36585365853658536,
+                  0.6103829429040328
+                ],
+                "scriptHasGoldHam": true
+              },
+              "cjk": {
+                "scope": "cjk",
+                "model": "hinge-alpha1e-06-ham1",
+                "cutoff": 0.44717746973037725,
+                "selectionKey": [
+                  0.9870317002881844,
+                  0.9964157837940169
+                ],
+                "scriptHasGoldHam": true
+              },
+              "other": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 9.5759334564209,
+                "selectionKey": [
+                  0.38517179023508136,
+                  0.6148555662223152
+                ],
+                "scriptHasGoldHam": false
+              }
+            }
+          },
+          "high-recall": {
+            "threshold": 0.0,
+            "targetHamFpr": 0.002,
+            "scripts": {
+              "latin": {
+                "scope": "global",
+                "model": "hinge-alpha1e-06-ham4",
+                "cutoff": 3.121076583862305,
+                "selectionKey": [
+                  0.8421333333333333,
+                  0.889651538895978
+                ],
+                "scriptHasGoldHam": true
+              },
+              "cjk": {
+                "scope": "cjk",
+                "model": "hinge-alpha3e-07-ham1",
+                "cutoff": -0.06901241093873976,
+                "selectionKey": [
+                  0.9927953890489913,
+                  0.9980672544630058
+                ],
+                "scriptHasGoldHam": true
+              },
+              "other": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 3.3004524707794194,
+                "selectionKey": [
+                  0.8697501329080276,
+                  0.92680900949571
+                ],
+                "scriptHasGoldHam": false
+              }
+            }
+          }
+        },
+        "v64": {
+          "conservative": {
+            "selected": "linear1-ham4",
+            "threshold": 0.0,
+            "scriptCutoffs": {
+              "latin": 0.9989265058633192,
+              "cjk": 0.8431514303368317,
+              "other": 0.9989265058633192
+            },
+            "targetHamFpr": 0.0001,
+            "calibration": {
+              "count": 22865,
+              "spam": 18924,
+              "ham": 3941,
+              "tp": 14783,
+              "fn": 4141,
+              "tn": 3941,
+              "fp": 0,
+              "recall": 0.7811773409427183,
+              "hamFpr": 0.0,
+              "hamFprWilson95Upper": 0.0009737929548739141,
+              "precision": 1.0
+            }
+          },
+          "high-recall": {
+            "selected": "linear1-ham1",
+            "threshold": 0.0,
+            "scriptCutoffs": {
+              "latin": 0.998933262359923,
+              "cjk": 0.7289899546257077,
+              "other": 0.9976884596402817
+            },
+            "targetHamFpr": 0.002,
+            "calibration": {
+              "count": 22865,
+              "spam": 18924,
+              "ham": 3941,
+              "tp": 17268,
+              "fn": 1656,
+              "tn": 3934,
+              "fp": 7,
+              "recall": 0.9124920735573875,
+              "hamFpr": 0.0017761989342806395,
+              "hamFprWilson95Upper": 0.003662067249032997,
+              "precision": 0.9995947901591896
+            }
+          }
+        }
+      },
+      "predictionsSha256": "0579f8a87437ace19a651c2a344e42d7b36c4ef0ef71fdc9e809bd5cffb14604",
+      "inputSha256": "b6cb7e5498a272637b12b60a58082896d0de3ec1e604847d2285e9cd1b525fb9",
+      "auditSha256": "9ec24ef6ae6fdd6d136fdbd32270ed58e0037061b168e0b7d122b94327971d4e",
+      "runtimeSha256": "1650e984b6a0cc1147d46d18371b0fbebf01bb743889d4dee2aa845376b2a3c8",
+      "first1000ParityPassed": true,
+      "probeByScript": {
+        "cjk": 636,
+        "latin": 333,
+        "other": 31
+      },
+      "probeBySource": {
+        "SpamArchive-2016": 314,
+        "SpamArchive-2015": 222,
+        "SpamArchive-2014": 206,
+        "SpamArchive-2013": 212,
+        "GenSpam": 39,
+        "Published-ASCII-mail": 7
+      },
+      "frozenModelCodeCommit": "3a4c834aa61f3b0cbd5725543f22a1225ff3f839",
+      "evaluationCodeCommit": "9b5ae0f44d3c603ba7e925de7d4f1658cc0d3ba1",
+      "evaluationRunId": "38636123356",
+      "inferenceAndCsvSeconds": 485.77890618600003
+    },
+    {
+      "shard": 2,
+      "counts": {
+        "count": 100000,
+        "spam": 97890,
+        "ham": 2110
+      },
+      "modelsSha256": {
+        "v62": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+        "v64": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5"
+      },
+      "profiles": {
+        "v62": {
+          "conservative": {
+            "threshold": 0.0,
+            "targetHamFpr": 0.0001,
+            "scripts": {
+              "latin": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 9.5759334564209,
+                "selectionKey": [
+                  0.36585365853658536,
+                  0.6103829429040328
+                ],
+                "scriptHasGoldHam": true
+              },
+              "cjk": {
+                "scope": "cjk",
+                "model": "hinge-alpha1e-06-ham1",
+                "cutoff": 0.44717746973037725,
+                "selectionKey": [
+                  0.9870317002881844,
+                  0.9964157837940169
+                ],
+                "scriptHasGoldHam": true
+              },
+              "other": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 9.5759334564209,
+                "selectionKey": [
+                  0.38517179023508136,
+                  0.6148555662223152
+                ],
+                "scriptHasGoldHam": false
+              }
+            }
+          },
+          "high-recall": {
+            "threshold": 0.0,
+            "targetHamFpr": 0.002,
+            "scripts": {
+              "latin": {
+                "scope": "global",
+                "model": "hinge-alpha1e-06-ham4",
+                "cutoff": 3.121076583862305,
+                "selectionKey": [
+                  0.8421333333333333,
+                  0.889651538895978
+                ],
+                "scriptHasGoldHam": true
+              },
+              "cjk": {
+                "scope": "cjk",
+                "model": "hinge-alpha3e-07-ham1",
+                "cutoff": -0.06901241093873976,
+                "selectionKey": [
+                  0.9927953890489913,
+                  0.9980672544630058
+                ],
+                "scriptHasGoldHam": true
+              },
+              "other": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 3.3004524707794194,
+                "selectionKey": [
+                  0.8697501329080276,
+                  0.92680900949571
+                ],
+                "scriptHasGoldHam": false
+              }
+            }
+          }
+        },
+        "v64": {
+          "conservative": {
+            "selected": "linear1-ham4",
+            "threshold": 0.0,
+            "scriptCutoffs": {
+              "latin": 0.9989265058633192,
+              "cjk": 0.8431514303368317,
+              "other": 0.9989265058633192
+            },
+            "targetHamFpr": 0.0001,
+            "calibration": {
+              "count": 22865,
+              "spam": 18924,
+              "ham": 3941,
+              "tp": 14783,
+              "fn": 4141,
+              "tn": 3941,
+              "fp": 0,
+              "recall": 0.7811773409427183,
+              "hamFpr": 0.0,
+              "hamFprWilson95Upper": 0.0009737929548739141,
+              "precision": 1.0
+            }
+          },
+          "high-recall": {
+            "selected": "linear1-ham1",
+            "threshold": 0.0,
+            "scriptCutoffs": {
+              "latin": 0.998933262359923,
+              "cjk": 0.7289899546257077,
+              "other": 0.9976884596402817
+            },
+            "targetHamFpr": 0.002,
+            "calibration": {
+              "count": 22865,
+              "spam": 18924,
+              "ham": 3941,
+              "tp": 17268,
+              "fn": 1656,
+              "tn": 3934,
+              "fp": 7,
+              "recall": 0.9124920735573875,
+              "hamFpr": 0.0017761989342806395,
+              "hamFprWilson95Upper": 0.003662067249032997,
+              "precision": 0.9995947901591896
+            }
+          }
+        }
+      },
+      "predictionsSha256": "f5752518b610c9ca38bd7c8972c0178ac1fb798d057f84256eb00ebb4812ef64",
+      "inputSha256": "40d1cba927422e7ff1ac38e8d5b58c9c6bd946165f73d6d21e76dd7a0e12e2f8",
+      "auditSha256": "9ec24ef6ae6fdd6d136fdbd32270ed58e0037061b168e0b7d122b94327971d4e",
+      "runtimeSha256": "1650e984b6a0cc1147d46d18371b0fbebf01bb743889d4dee2aa845376b2a3c8",
+      "first1000ParityPassed": true,
+      "probeByScript": {
+        "latin": 335,
+        "cjk": 635,
+        "other": 30
+      },
+      "probeBySource": {
+        "SpamArchive-2013": 218,
+        "SpamArchive-2016": 316,
+        "GenSpam": 33,
+        "SpamArchive-2015": 212,
+        "SpamArchive-2014": 212,
+        "Published-ASCII-mail": 9
+      },
+      "frozenModelCodeCommit": "3a4c834aa61f3b0cbd5725543f22a1225ff3f839",
+      "evaluationCodeCommit": "9b5ae0f44d3c603ba7e925de7d4f1658cc0d3ba1",
+      "evaluationRunId": "38636123356",
+      "inferenceAndCsvSeconds": 290.03747351000004
+    },
+    {
+      "shard": 3,
+      "counts": {
+        "count": 100000,
+        "spam": 97838,
+        "ham": 2162
+      },
+      "modelsSha256": {
+        "v62": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+        "v64": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5"
+      },
+      "profiles": {
+        "v62": {
+          "conservative": {
+            "threshold": 0.0,
+            "targetHamFpr": 0.0001,
+            "scripts": {
+              "latin": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 9.5759334564209,
+                "selectionKey": [
+                  0.36585365853658536,
+                  0.6103829429040328
+                ],
+                "scriptHasGoldHam": true
+              },
+              "cjk": {
+                "scope": "cjk",
+                "model": "hinge-alpha1e-06-ham1",
+                "cutoff": 0.44717746973037725,
+                "selectionKey": [
+                  0.9870317002881844,
+                  0.9964157837940169
+                ],
+                "scriptHasGoldHam": true
+              },
+              "other": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 9.5759334564209,
+                "selectionKey": [
+                  0.38517179023508136,
+                  0.6148555662223152
+                ],
+                "scriptHasGoldHam": false
+              }
+            }
+          },
+          "high-recall": {
+            "threshold": 0.0,
+            "targetHamFpr": 0.002,
+            "scripts": {
+              "latin": {
+                "scope": "global",
+                "model": "hinge-alpha1e-06-ham4",
+                "cutoff": 3.121076583862305,
+                "selectionKey": [
+                  0.8421333333333333,
+                  0.889651538895978
+                ],
+                "scriptHasGoldHam": true
+              },
+              "cjk": {
+                "scope": "cjk",
+                "model": "hinge-alpha3e-07-ham1",
+                "cutoff": -0.06901241093873976,
+                "selectionKey": [
+                  0.9927953890489913,
+                  0.9980672544630058
+                ],
+                "scriptHasGoldHam": true
+              },
+              "other": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 3.3004524707794194,
+                "selectionKey": [
+                  0.8697501329080276,
+                  0.92680900949571
+                ],
+                "scriptHasGoldHam": false
+              }
+            }
+          }
+        },
+        "v64": {
+          "conservative": {
+            "selected": "linear1-ham4",
+            "threshold": 0.0,
+            "scriptCutoffs": {
+              "latin": 0.9989265058633192,
+              "cjk": 0.8431514303368317,
+              "other": 0.9989265058633192
+            },
+            "targetHamFpr": 0.0001,
+            "calibration": {
+              "count": 22865,
+              "spam": 18924,
+              "ham": 3941,
+              "tp": 14783,
+              "fn": 4141,
+              "tn": 3941,
+              "fp": 0,
+              "recall": 0.7811773409427183,
+              "hamFpr": 0.0,
+              "hamFprWilson95Upper": 0.0009737929548739141,
+              "precision": 1.0
+            }
+          },
+          "high-recall": {
+            "selected": "linear1-ham1",
+            "threshold": 0.0,
+            "scriptCutoffs": {
+              "latin": 0.998933262359923,
+              "cjk": 0.7289899546257077,
+              "other": 0.9976884596402817
+            },
+            "targetHamFpr": 0.002,
+            "calibration": {
+              "count": 22865,
+              "spam": 18924,
+              "ham": 3941,
+              "tp": 17268,
+              "fn": 1656,
+              "tn": 3934,
+              "fp": 7,
+              "recall": 0.9124920735573875,
+              "hamFpr": 0.0017761989342806395,
+              "hamFprWilson95Upper": 0.003662067249032997,
+              "precision": 0.9995947901591896
+            }
+          }
+        }
+      },
+      "predictionsSha256": "5f8837d62f70af78dcb63bb46f7351e7048904111127d25f5a654ac6d60824e6",
+      "inputSha256": "51526d34a7f5b36709daf0d7d7516d496be558e72bb2c763148667b0136dc2f8",
+      "auditSha256": "9ec24ef6ae6fdd6d136fdbd32270ed58e0037061b168e0b7d122b94327971d4e",
+      "runtimeSha256": "1650e984b6a0cc1147d46d18371b0fbebf01bb743889d4dee2aa845376b2a3c8",
+      "first1000ParityPassed": true,
+      "probeByScript": {
+        "latin": 361,
+        "cjk": 608,
+        "other": 31
+      },
+      "probeBySource": {
+        "GenSpam": 22,
+        "SpamArchive-2013": 234,
+        "SpamArchive-2014": 186,
+        "SpamArchive-2015": 211,
+        "SpamArchive-2016": 338,
+        "Published-ASCII-mail": 9
+      },
+      "frozenModelCodeCommit": "3a4c834aa61f3b0cbd5725543f22a1225ff3f839",
+      "evaluationCodeCommit": "9b5ae0f44d3c603ba7e925de7d4f1658cc0d3ba1",
+      "evaluationRunId": "38636123356",
+      "inferenceAndCsvSeconds": 280.52716663
+    },
+    {
+      "shard": 4,
+      "counts": {
+        "count": 100000,
+        "spam": 97876,
+        "ham": 2124
+      },
+      "modelsSha256": {
+        "v62": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+        "v64": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5"
+      },
+      "profiles": {
+        "v62": {
+          "conservative": {
+            "threshold": 0.0,
+            "targetHamFpr": 0.0001,
+            "scripts": {
+              "latin": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 9.5759334564209,
+                "selectionKey": [
+                  0.36585365853658536,
+                  0.6103829429040328
+                ],
+                "scriptHasGoldHam": true
+              },
+              "cjk": {
+                "scope": "cjk",
+                "model": "hinge-alpha1e-06-ham1",
+                "cutoff": 0.44717746973037725,
+                "selectionKey": [
+                  0.9870317002881844,
+                  0.9964157837940169
+                ],
+                "scriptHasGoldHam": true
+              },
+              "other": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 9.5759334564209,
+                "selectionKey": [
+                  0.38517179023508136,
+                  0.6148555662223152
+                ],
+                "scriptHasGoldHam": false
+              }
+            }
+          },
+          "high-recall": {
+            "threshold": 0.0,
+            "targetHamFpr": 0.002,
+            "scripts": {
+              "latin": {
+                "scope": "global",
+                "model": "hinge-alpha1e-06-ham4",
+                "cutoff": 3.121076583862305,
+                "selectionKey": [
+                  0.8421333333333333,
+                  0.889651538895978
+                ],
+                "scriptHasGoldHam": true
+              },
+              "cjk": {
+                "scope": "cjk",
+                "model": "hinge-alpha3e-07-ham1",
+                "cutoff": -0.06901241093873976,
+                "selectionKey": [
+                  0.9927953890489913,
+                  0.9980672544630058
+                ],
+                "scriptHasGoldHam": true
+              },
+              "other": {
+                "scope": "global",
+                "model": "log_loss-alpha1e-06-ham4",
+                "cutoff": 3.3004524707794194,
+                "selectionKey": [
+                  0.8697501329080276,
+                  0.92680900949571
+                ],
+                "scriptHasGoldHam": false
+              }
+            }
+          }
+        },
+        "v64": {
+          "conservative": {
+            "selected": "linear1-ham4",
+            "threshold": 0.0,
+            "scriptCutoffs": {
+              "latin": 0.9989265058633192,
+              "cjk": 0.8431514303368317,
+              "other": 0.9989265058633192
+            },
+            "targetHamFpr": 0.0001,
+            "calibration": {
+              "count": 22865,
+              "spam": 18924,
+              "ham": 3941,
+              "tp": 14783,
+              "fn": 4141,
+              "tn": 3941,
+              "fp": 0,
+              "recall": 0.7811773409427183,
+              "hamFpr": 0.0,
+              "hamFprWilson95Upper": 0.0009737929548739141,
+              "precision": 1.0
+            }
+          },
+          "high-recall": {
+            "selected": "linear1-ham1",
+            "threshold": 0.0,
+            "scriptCutoffs": {
+              "latin": 0.998933262359923,
+              "cjk": 0.7289899546257077,
+              "other": 0.9976884596402817
+            },
+            "targetHamFpr": 0.002,
+            "calibration": {
+              "count": 22865,
+              "spam": 18924,
+              "ham": 3941,
+              "tp": 17268,
+              "fn": 1656,
+              "tn": 3934,
+              "fp": 7,
+              "recall": 0.9124920735573875,
+              "hamFpr": 0.0017761989342806395,
+              "hamFprWilson95Upper": 0.003662067249032997,
+              "precision": 0.9995947901591896
+            }
+          }
+        }
+      },
+      "predictionsSha256": "06b919cf47021114db21d47afb2c2c7b27310c1ceb3e5d0d8774a333cb5a53bf",
+      "inputSha256": "c67008030669b2b138536e1394dd558dda52c594107ece9ef9602d473dc166ea",
+      "auditSha256": "9ec24ef6ae6fdd6d136fdbd32270ed58e0037061b168e0b7d122b94327971d4e",
+      "runtimeSha256": "1650e984b6a0cc1147d46d18371b0fbebf01bb743889d4dee2aa845376b2a3c8",
+      "first1000ParityPassed": true,
+      "probeByScript": {
+        "latin": 365,
+        "cjk": 599,
+        "other": 36
+      },
+      "probeBySource": {
+        "SpamArchive-2015": 234,
+        "SpamArchive-2013": 219,
+        "SpamArchive-2014": 179,
+        "SpamArchive-2016": 328,
+        "Published-ASCII-mail": 5,
+        "GenSpam": 35
+      },
+      "frozenModelCodeCommit": "3a4c834aa61f3b0cbd5725543f22a1225ff3f839",
+      "evaluationCodeCommit": "9b5ae0f44d3c603ba7e925de7d4f1658cc0d3ba1",
+      "evaluationRunId": "38636123356",
+      "inferenceAndCsvSeconds": 484.001594056
+    }
+  ],
+  "modelAndThresholdChanged": false,
+  "testLabelsUsedForTraining": false,
+  "firstUseRelativeToPriorBenchmarks": true,
+  "productionGoalValidated": false,
+  "evaluationCodeCommit": "9b5ae0f44d3c603ba7e925de7d4f1658cc0d3ba1",
+  "githubRunId": "38636123356",
+  "caveat": "Historical public mail unused in development and prior benchmarks before this experiment, not customer traffic. The ready 25971-message labelled-source preview is included again with the same unchanged models, so it is not another independent test. GenSpam is anonymized; published ASCII mail has removed headers; Nazario is a single manually labelled inbox. Bulk spam traps are weak spam labels and come from a previously used provider in different years. Exact fingerprints and campaign prefixes exclude known relatives, but semantic near-duplicates may remain. HAM sample size may not establish extremely rare production FP. No synthetic messages or duplicated refill are used."
+}
