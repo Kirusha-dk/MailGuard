@@ -1,0 +1,4549 @@
+{
+  "version": 64,
+  "modelSha256": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5",
+  "modelCodeCommit": "3a4c834aa61f3b0cbd5725543f22a1225ff3f839",
+  "counts": {
+    "500k": 500000,
+    "ham": 75271,
+    "may": 4146,
+    "summer": 11831,
+    "october": 122
+  },
+  "evaluationCodeCommit": "ea2be2283d2637ff8aa3119915576fea20ec4231",
+  "evaluationRunId": "38616558885",
+  "training": {
+    "version": 64,
+    "modelSha256": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5",
+    "parentModelSha256": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+    "trainCount": 114058,
+    "codeCommit": "3a4c834aa61f3b0cbd5725543f22a1225ff3f839",
+    "githubRunId": "38615175304",
+    "profiles": {
+      "conservative": {
+        "selected": "linear1-ham4",
+        "threshold": 0.0,
+        "scriptCutoffs": {
+          "latin": 0.9989265058633192,
+          "cjk": 0.8431514303368317,
+          "other": 0.9989265058633192
+        },
+        "targetHamFpr": 0.0001,
+        "calibration": {
+          "count": 22865,
+          "spam": 18924,
+          "ham": 3941,
+          "tp": 14783,
+          "fn": 4141,
+          "tn": 3941,
+          "fp": 0,
+          "recall": 0.7811773409427183,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0009737929548739141,
+          "precision": 1.0
+        }
+      },
+      "high-recall": {
+        "selected": "linear1-ham1",
+        "threshold": 0.0,
+        "scriptCutoffs": {
+          "latin": 0.998933262359923,
+          "cjk": 0.7289899546257077,
+          "other": 0.9976884596402817
+        },
+        "targetHamFpr": 0.002,
+        "calibration": {
+          "count": 22865,
+          "spam": 18924,
+          "ham": 3941,
+          "tp": 17268,
+          "fn": 1656,
+          "tn": 3934,
+          "fp": 7,
+          "recall": 0.9124920735573875,
+          "hamFpr": 0.0017761989342806395,
+          "hamFprWilson95Upper": 0.003662067249032997,
+          "precision": 0.9995947901591896
+        }
+      }
+    },
+    "trainScriptClassCounts": {
+      "('cjk', 1)": 40321,
+      "('latin', 1)": 43047,
+      "('latin', 0)": 25272,
+      "('other', 1)": 772,
+      "('cjk', 0)": 4152,
+      "('other', 0)": 494
+    },
+    "candidates": [
+      {
+        "profile": "conservative",
+        "name": "gate7-ham1",
+        "rank": [
+          0.6418300653594772,
+          0.865779686056321,
+          0.9095143047238856
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6835,
+          "fn": 680,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.9095143047238856,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "gate15-ham1",
+        "rank": [
+          0.5843137254901961,
+          0.8430633744912894,
+          0.89208250166334
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6704,
+          "fn": 811,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.89208250166334,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "gate31-ham1",
+        "rank": [
+          0.6235294117647059,
+          0.8623565033201285,
+          0.902727877578177
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6784,
+          "fn": 731,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.902727877578177,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "linear1-ham1",
+        "rank": [
+          0.7111111111111111,
+          0.8866886668967761,
+          0.9233532934131736
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6939,
+          "fn": 576,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.9233532934131736,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "linear10-ham1",
+        "rank": [
+          0.677124183006536,
+          0.8715997443551927,
+          0.9085828343313374
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6828,
+          "fn": 687,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.9085828343313374,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "gate7-ham4",
+        "rank": [
+          0.5660130718954248,
+          0.8246542826721441,
+          0.877977378576181
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6598,
+          "fn": 917,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.877977378576181,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "gate15-ham4",
+        "rank": [
+          0.6496732026143791,
+          0.8631939315598753,
+          0.9037924151696607
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6792,
+          "fn": 723,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.9037924151696607,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "gate31-ham4",
+        "rank": [
+          0.5908496732026144,
+          0.8420615253337184,
+          0.8914171656686627
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6699,
+          "fn": 816,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.8914171656686627,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "linear1-ham4",
+        "rank": [
+          0.726797385620915,
+          0.8986214598637764,
+          0.9296074517631404
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6986,
+          "fn": 529,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.9296074517631404,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "linear10-ham4",
+        "rank": [
+          0.665359477124183,
+          0.8788767247487997,
+          0.9135063206919495
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6865,
+          "fn": 650,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.9135063206919495,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "gate7-ham12",
+        "rank": [
+          0.6888888888888889,
+          0.8944650108750407,
+          0.9198935462408516
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6913,
+          "fn": 602,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.9198935462408516,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "gate15-ham12",
+        "rank": [
+          0.4130718954248366,
+          0.7325052330513232,
+          0.8053226879574185
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6052,
+          "fn": 1463,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.8053226879574185,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "gate31-ham12",
+        "rank": [
+          0.14248366013071895,
+          0.5141970612118091,
+          0.6667997338656021
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 5011,
+          "fn": 2504,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.6667997338656021,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "linear1-ham12",
+        "rank": [
+          0.5555555555555556,
+          0.8317185073479352,
+          0.881437125748503
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6624,
+          "fn": 891,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.881437125748503,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "conservative",
+        "name": "linear10-ham12",
+        "rank": [
+          0.5111111111111111,
+          0.8129337967370233,
+          0.8685296074517631
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6527,
+          "fn": 988,
+          "tn": 1439,
+          "fp": 0,
+          "recall": 0.8685296074517631,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0026624261433643172,
+          "precision": 1.0
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "gate7-ham1",
+        "rank": [
+          0.8130718954248366,
+          0.9250950498523031,
+          0.9500998003992016
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7140,
+          "fn": 375,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.9500998003992016,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997199663959675
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "gate15-ham1",
+        "rank": [
+          0.7594771241830065,
+          0.9065697075384914,
+          0.9370592149035263
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7042,
+          "fn": 473,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.9370592149035263,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997160704145373
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "gate31-ham1",
+        "rank": [
+          0.788235294117647,
+          0.9187340359011911,
+          0.9439787092481703
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7094,
+          "fn": 421,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.9439787092481703,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997181510710259
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "linear1-ham1",
+        "rank": [
+          0.8522875816993464,
+          0.9438012267415578,
+          0.9606121091151031
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7219,
+          "fn": 296,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.9606121091151031,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997230300512394
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "linear10-ham1",
+        "rank": [
+          0.8104575163398693,
+          0.9245820884069585,
+          0.9495675316034597
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7136,
+          "fn": 379,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.9495675316034597,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997198094704399
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "gate7-ham4",
+        "rank": [
+          0.8156862745098039,
+          0.9348498354041391,
+          0.9524950099800399
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7158,
+          "fn": 357,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.9524950099800399,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997206703910615
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "gate15-ham4",
+        "rank": [
+          0.7790849673202614,
+          0.9231950247171228,
+          0.9438456420492348
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7093,
+          "fn": 422,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.9438456420492348,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997181113460183
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "gate31-ham4",
+        "rank": [
+          0.681045751633987,
+          0.8863542422979744,
+          0.9152361942781104
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6878,
+          "fn": 637,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.9152361942781104,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997093023255814
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "linear1-ham4",
+        "rank": [
+          0.8261437908496732,
+          0.941398189675004,
+          0.957684630738523
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7197,
+          "fn": 318,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.957684630738523,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997221836366162
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "linear10-ham4",
+        "rank": [
+          0.8130718954248366,
+          0.932471316943943,
+          0.95395874916833
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7169,
+          "fn": 346,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.95395874916833,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997210988704505
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "gate7-ham12",
+        "rank": [
+          0.7660130718954249,
+          0.9217216506755518,
+          0.9434464404524284
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7090,
+          "fn": 425,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.9434464404524284,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997179921037789
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "gate15-ham12",
+        "rank": [
+          0.74640522875817,
+          0.9128065394514587,
+          0.9328010645375915
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7010,
+          "fn": 505,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.9328010645375915,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997147746719909
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "gate31-ham12",
+        "rank": [
+          0.7176470588235294,
+          0.8964482232133656,
+          0.9248170326014638
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 6950,
+          "fn": 565,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.9248170326014638,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997123130034522
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "linear1-ham12",
+        "rank": [
+          0.8379084967320262,
+          0.946379657774953,
+          0.960878243512974
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7221,
+          "fn": 294,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.960878243512974,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.9997231067423509
+        }
+      },
+      {
+        "profile": "high-recall",
+        "name": "linear10-ham12",
+        "rank": [
+          0.8287581699346406,
+          0.9413280705837254,
+          0.9575515635395875
+        ],
+        "selection": {
+          "count": 8954,
+          "spam": 7515,
+          "ham": 1439,
+          "tp": 7196,
+          "fn": 319,
+          "tn": 1437,
+          "fp": 2,
+          "recall": 0.9575515635395875,
+          "hamFpr": 0.001389854065323141,
+          "hamFprWilson95Upper": 0.005053502610129474,
+          "precision": 0.999722145040289
+        }
+      }
+    ],
+    "featureCount": 34,
+    "runtimeParityPassed": true,
+    "estimatorAndThresholdLockedBeforeTest": true,
+    "testLabelsUsedForTraining": false,
+    "frozenGatesUsedAsInput": false,
+    "productionGoalValidated": false,
+    "caveat": "New word experts use full frozen TRAIN; every character expert is TRAIN-fitted. SELECT-fit and SELECT-choose families are disjoint; CAL fixes thresholds. TEST labels do not fit, choose or calibrate this model."
+  },
+  "results": {
+    "500k": {
+      "all": {
+        "conservative": {
+          "count": 500000,
+          "spam": 499225,
+          "ham": 775,
+          "tp": 434397,
+          "fn": 64828,
+          "tn": 775,
+          "fp": 0,
+          "recall": 0.8701427212178877,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.004932273156735627,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 500000,
+          "spam": 499225,
+          "ham": 775,
+          "tp": 475619,
+          "fn": 23606,
+          "tn": 774,
+          "fp": 1,
+          "recall": 0.9527147077970854,
+          "hamFpr": 0.0012903225806451613,
+          "hamFprWilson95Upper": 0.007272379927599973,
+          "precision": 0.9999978974811825
+        }
+      },
+      "development-overlap": {
+        "conservative": {
+          "count": 148515,
+          "spam": 148261,
+          "ham": 254,
+          "tp": 130205,
+          "fn": 18056,
+          "tn": 254,
+          "fp": 0,
+          "recall": 0.8782147698990295,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01489853043131252,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 148515,
+          "spam": 148261,
+          "ham": 254,
+          "tp": 142456,
+          "fn": 5805,
+          "tn": 254,
+          "fp": 0,
+          "recall": 0.9608460755019863,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01489853043131252,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/script/cjk": {
+        "conservative": {
+          "count": 101187,
+          "spam": 101187,
+          "ham": 0,
+          "tp": 101138,
+          "fn": 49,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9995157480704043,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 101187,
+          "spam": 101187,
+          "ham": 0,
+          "tp": 101172,
+          "fn": 15,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9998517596133891,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/script/latin": {
+        "conservative": {
+          "count": 46714,
+          "spam": 46460,
+          "ham": 254,
+          "tp": 28753,
+          "fn": 17707,
+          "tn": 254,
+          "fp": 0,
+          "recall": 0.6188764528626776,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01489853043131252,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 46714,
+          "spam": 46460,
+          "ham": 254,
+          "tp": 40756,
+          "fn": 5704,
+          "tn": 254,
+          "fp": 0,
+          "recall": 0.8772277227722772,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01489853043131252,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/script/other": {
+        "conservative": {
+          "count": 614,
+          "spam": 614,
+          "ham": 0,
+          "tp": 314,
+          "fn": 300,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.511400651465798,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 614,
+          "spam": 614,
+          "ham": 0,
+          "tp": 528,
+          "fn": 86,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8599348534201955,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/CSDMC2010": {
+        "conservative": {
+          "count": 403,
+          "spam": 149,
+          "ham": 254,
+          "tp": 55,
+          "fn": 94,
+          "tn": 254,
+          "fp": 0,
+          "recall": 0.3691275167785235,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01489853043131252,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 403,
+          "spam": 149,
+          "ham": 254,
+          "tp": 111,
+          "fn": 38,
+          "tn": 254,
+          "fp": 0,
+          "recall": 0.7449664429530202,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01489853043131252,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2017": {
+        "conservative": {
+          "count": 118477,
+          "spam": 118477,
+          "ham": 0,
+          "tp": 112872,
+          "fn": 5605,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9526912396498899,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 118477,
+          "spam": 118477,
+          "ham": 0,
+          "tp": 117145,
+          "fn": 1332,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9887573115457009,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2018": {
+        "conservative": {
+          "count": 8033,
+          "spam": 8033,
+          "ham": 0,
+          "tp": 6782,
+          "fn": 1251,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8442673969874268,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 8033,
+          "spam": 8033,
+          "ham": 0,
+          "tp": 7576,
+          "fn": 457,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9431096726005228,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2019": {
+        "conservative": {
+          "count": 3689,
+          "spam": 3689,
+          "ham": 0,
+          "tp": 2117,
+          "fn": 1572,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.5738682569802115,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 3689,
+          "spam": 3689,
+          "ham": 0,
+          "tp": 3086,
+          "fn": 603,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8365410680401193,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2020": {
+        "conservative": {
+          "count": 7388,
+          "spam": 7388,
+          "ham": 0,
+          "tp": 3589,
+          "fn": 3799,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.4857877639415268,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 7388,
+          "spam": 7388,
+          "ham": 0,
+          "tp": 6147,
+          "fn": 1241,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8320249052517596,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2021": {
+        "conservative": {
+          "count": 3091,
+          "spam": 3091,
+          "ham": 0,
+          "tp": 1420,
+          "fn": 1671,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.45939825299255904,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 3091,
+          "spam": 3091,
+          "ham": 0,
+          "tp": 2330,
+          "fn": 761,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7538013587835651,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2022": {
+        "conservative": {
+          "count": 3285,
+          "spam": 3285,
+          "ham": 0,
+          "tp": 1420,
+          "fn": 1865,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.4322678843226788,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 3285,
+          "spam": 3285,
+          "ham": 0,
+          "tp": 2691,
+          "fn": 594,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8191780821917808,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2023": {
+        "conservative": {
+          "count": 1871,
+          "spam": 1871,
+          "ham": 0,
+          "tp": 952,
+          "fn": 919,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.5088188134687333,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 1871,
+          "spam": 1871,
+          "ham": 0,
+          "tp": 1580,
+          "fn": 291,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8444681988241582,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2024": {
+        "conservative": {
+          "count": 857,
+          "spam": 857,
+          "ham": 0,
+          "tp": 370,
+          "fn": 487,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.43173862310385064,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 857,
+          "spam": 857,
+          "ham": 0,
+          "tp": 649,
+          "fn": 208,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7572928821470245,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2025": {
+        "conservative": {
+          "count": 1421,
+          "spam": 1421,
+          "ham": 0,
+          "tp": 628,
+          "fn": 793,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.4419422941590429,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 1421,
+          "spam": 1421,
+          "ham": 0,
+          "tp": 1141,
+          "fn": 280,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8029556650246306,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap": {
+        "conservative": {
+          "count": 351485,
+          "spam": 350964,
+          "ham": 521,
+          "tp": 304192,
+          "fn": 46772,
+          "tn": 521,
+          "fp": 0,
+          "recall": 0.8667327703126246,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.007319274718361214,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 351485,
+          "spam": 350964,
+          "ham": 521,
+          "tp": 333163,
+          "fn": 17801,
+          "tn": 520,
+          "fp": 1,
+          "recall": 0.9492796982026647,
+          "hamFpr": 0.0019193857965451055,
+          "hamFprWilson95Upper": 0.010791050175613473,
+          "precision": 0.9999969984752254
+        }
+      },
+      "no-development-overlap/script/cjk": {
+        "conservative": {
+          "count": 233422,
+          "spam": 233422,
+          "ham": 0,
+          "tp": 233062,
+          "fn": 360,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9984577289201532,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 233422,
+          "spam": 233422,
+          "ham": 0,
+          "tp": 233339,
+          "fn": 83,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9996444208343687,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/script/latin": {
+        "conservative": {
+          "count": 116341,
+          "spam": 115821,
+          "ham": 520,
+          "tp": 70188,
+          "fn": 45633,
+          "tn": 520,
+          "fp": 0,
+          "recall": 0.6060040925220815,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0073332470273396585,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 116341,
+          "spam": 115821,
+          "ham": 520,
+          "tp": 98314,
+          "fn": 17507,
+          "tn": 520,
+          "fp": 0,
+          "recall": 0.8488443373826854,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0073332470273396585,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/script/other": {
+        "conservative": {
+          "count": 1722,
+          "spam": 1721,
+          "ham": 1,
+          "tp": 942,
+          "fn": 779,
+          "tn": 1,
+          "fp": 0,
+          "recall": 0.547356188262638,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.7934506856227626,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 1722,
+          "spam": 1721,
+          "ham": 1,
+          "tp": 1510,
+          "fn": 211,
+          "tn": 0,
+          "fp": 1,
+          "recall": 0.8773968622893666,
+          "hamFpr": 1.0,
+          "hamFprWilson95Upper": 1.0,
+          "precision": 0.99933818663137
+        }
+      },
+      "no-development-overlap/source/CSDMC2010": {
+        "conservative": {
+          "count": 811,
+          "spam": 290,
+          "ham": 521,
+          "tp": 109,
+          "fn": 181,
+          "tn": 521,
+          "fp": 0,
+          "recall": 0.3758620689655172,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.007319274718361214,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 811,
+          "spam": 290,
+          "ham": 521,
+          "tp": 172,
+          "fn": 118,
+          "tn": 520,
+          "fp": 1,
+          "recall": 0.593103448275862,
+          "hamFpr": 0.0019193857965451055,
+          "hamFprWilson95Upper": 0.010791050175613473,
+          "precision": 0.9942196531791907
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2017": {
+        "conservative": {
+          "count": 280107,
+          "spam": 280107,
+          "ham": 0,
+          "tp": 263299,
+          "fn": 16808,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.939994359298411,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 280107,
+          "spam": 280107,
+          "ham": 0,
+          "tp": 273624,
+          "fn": 6483,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9768552731634697,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2018": {
+        "conservative": {
+          "count": 19493,
+          "spam": 19493,
+          "ham": 0,
+          "tp": 16374,
+          "fn": 3119,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8399938439439799,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19493,
+          "spam": 19493,
+          "ham": 0,
+          "tp": 18276,
+          "fn": 1217,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9375673318627199,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2019": {
+        "conservative": {
+          "count": 8679,
+          "spam": 8679,
+          "ham": 0,
+          "tp": 4673,
+          "fn": 4006,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.5384260859546031,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 8679,
+          "spam": 8679,
+          "ham": 0,
+          "tp": 7070,
+          "fn": 1609,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.814609978108077,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2020": {
+        "conservative": {
+          "count": 18016,
+          "spam": 18016,
+          "ham": 0,
+          "tp": 8511,
+          "fn": 9505,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.47241341030195383,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 18016,
+          "spam": 18016,
+          "ham": 0,
+          "tp": 14730,
+          "fn": 3286,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8176065719360568,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2021": {
+        "conservative": {
+          "count": 7292,
+          "spam": 7292,
+          "ham": 0,
+          "tp": 3283,
+          "fn": 4009,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.4502194185408667,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 7292,
+          "spam": 7292,
+          "ham": 0,
+          "tp": 5415,
+          "fn": 1877,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7425946242457487,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2022": {
+        "conservative": {
+          "count": 7776,
+          "spam": 7776,
+          "ham": 0,
+          "tp": 3416,
+          "fn": 4360,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.43930041152263377,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 7776,
+          "spam": 7776,
+          "ham": 0,
+          "tp": 6342,
+          "fn": 1434,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8155864197530864,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2023": {
+        "conservative": {
+          "count": 4680,
+          "spam": 4680,
+          "ham": 0,
+          "tp": 2300,
+          "fn": 2380,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.49145299145299143,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 4680,
+          "spam": 4680,
+          "ham": 0,
+          "tp": 3926,
+          "fn": 754,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8388888888888889,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2024": {
+        "conservative": {
+          "count": 1961,
+          "spam": 1961,
+          "ham": 0,
+          "tp": 828,
+          "fn": 1133,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.422233554309026,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 1961,
+          "spam": 1961,
+          "ham": 0,
+          "tp": 1468,
+          "fn": 493,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7485976542580316,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2025": {
+        "conservative": {
+          "count": 2670,
+          "spam": 2670,
+          "ham": 0,
+          "tp": 1399,
+          "fn": 1271,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.5239700374531835,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 2670,
+          "spam": 2670,
+          "ham": 0,
+          "tp": 2140,
+          "fn": 530,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8014981273408239,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "ham": {
+      "additional": {
+        "conservative": {
+          "count": 47258,
+          "spam": 0,
+          "ham": 47258,
+          "tp": 0,
+          "fn": 0,
+          "tn": 47251,
+          "fp": 7,
+          "recall": null,
+          "hamFpr": 0.00014812306910999196,
+          "hamFprWilson95Upper": 0.0003057484512005975,
+          "precision": 0.0
+        },
+        "high-recall": {
+          "count": 47258,
+          "spam": 0,
+          "ham": 47258,
+          "tp": 0,
+          "fn": 0,
+          "tn": 47197,
+          "fp": 61,
+          "recall": null,
+          "hamFpr": 0.0012907867451013586,
+          "hamFprWilson95Upper": 0.001657547808494089,
+          "precision": 0.0
+        }
+      },
+      "additional/script/cjk": {
+        "conservative": {
+          "count": 699,
+          "spam": 0,
+          "ham": 699,
+          "tp": 0,
+          "fn": 0,
+          "tn": 698,
+          "fp": 1,
+          "recall": null,
+          "hamFpr": 0.001430615164520744,
+          "hamFprWilson95Upper": 0.0080586207499121,
+          "precision": 0.0
+        },
+        "high-recall": {
+          "count": 699,
+          "spam": 0,
+          "ham": 699,
+          "tp": 0,
+          "fn": 0,
+          "tn": 698,
+          "fp": 1,
+          "recall": null,
+          "hamFpr": 0.001430615164520744,
+          "hamFprWilson95Upper": 0.0080586207499121,
+          "precision": 0.0
+        }
+      },
+      "additional/script/latin": {
+        "conservative": {
+          "count": 46292,
+          "spam": 0,
+          "ham": 46292,
+          "tp": 0,
+          "fn": 0,
+          "tn": 46286,
+          "fp": 6,
+          "recall": null,
+          "hamFpr": 0.00012961202799619806,
+          "hamFprWilson95Upper": 0.0002827752064692075,
+          "precision": 0.0
+        },
+        "high-recall": {
+          "count": 46292,
+          "spam": 0,
+          "ham": 46292,
+          "tp": 0,
+          "fn": 0,
+          "tn": 46232,
+          "fp": 60,
+          "recall": null,
+          "hamFpr": 0.0012961202799619805,
+          "hamFprWilson95Upper": 0.0016678344536790123,
+          "precision": 0.0
+        }
+      },
+      "additional/script/other": {
+        "conservative": {
+          "count": 267,
+          "spam": 0,
+          "ham": 267,
+          "tp": 0,
+          "fn": 0,
+          "tn": 267,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.014183422425136531,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 267,
+          "spam": 0,
+          "ham": 267,
+          "tp": 0,
+          "fn": 0,
+          "tn": 267,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.014183422425136531,
+          "precision": null
+        }
+      },
+      "additional/source/Assassin": {
+        "conservative": {
+          "count": 1031,
+          "spam": 0,
+          "ham": 1031,
+          "tp": 0,
+          "fn": 0,
+          "tn": 1031,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.003712123038703778,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 1031,
+          "spam": 0,
+          "ham": 1031,
+          "tp": 0,
+          "fn": 0,
+          "tn": 1029,
+          "fp": 2,
+          "recall": null,
+          "hamFpr": 0.0019398642095053346,
+          "hamFprWilson95Upper": 0.007045307401570111,
+          "precision": 0.0
+        }
+      },
+      "additional/source/CEAS-08": {
+        "conservative": {
+          "count": 11719,
+          "spam": 0,
+          "ham": 11719,
+          "tp": 0,
+          "fn": 0,
+          "tn": 11716,
+          "fp": 3,
+          "recall": null,
+          "hamFpr": 0.00025599453878317265,
+          "hamFprWilson95Upper": 0.000752446403167785,
+          "precision": 0.0
+        },
+        "high-recall": {
+          "count": 11719,
+          "spam": 0,
+          "ham": 11719,
+          "tp": 0,
+          "fn": 0,
+          "tn": 11684,
+          "fp": 35,
+          "recall": null,
+          "hamFpr": 0.0029866029524703475,
+          "hamFprWilson95Upper": 0.00415060999686374,
+          "precision": 0.0
+        }
+      },
+      "additional/source/Enron": {
+        "conservative": {
+          "count": 4059,
+          "spam": 0,
+          "ham": 4059,
+          "tp": 0,
+          "fn": 0,
+          "tn": 4059,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0009455103920814009,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 4059,
+          "spam": 0,
+          "ham": 4059,
+          "tp": 0,
+          "fn": 0,
+          "tn": 4059,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0009455103920814009,
+          "precision": null
+        }
+      },
+      "additional/source/Ling": {
+        "conservative": {
+          "count": 480,
+          "spam": 0,
+          "ham": 480,
+          "tp": 0,
+          "fn": 0,
+          "tn": 480,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.007939499087277936,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 480,
+          "spam": 0,
+          "ham": 480,
+          "tp": 0,
+          "fn": 0,
+          "tn": 480,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.007939499087277936,
+          "precision": null
+        }
+      },
+      "additional/source/TREC-05": {
+        "conservative": {
+          "count": 17274,
+          "spam": 0,
+          "ham": 17274,
+          "tp": 0,
+          "fn": 0,
+          "tn": 17271,
+          "fp": 3,
+          "recall": null,
+          "hamFpr": 0.0001736714136853074,
+          "hamFprWilson95Upper": 0.0005105343476108587,
+          "precision": 0.0
+        },
+        "high-recall": {
+          "count": 17274,
+          "spam": 0,
+          "ham": 17274,
+          "tp": 0,
+          "fn": 0,
+          "tn": 17258,
+          "fp": 16,
+          "recall": null,
+          "hamFpr": 0.0009262475396549728,
+          "hamFprWilson95Upper": 0.0015041760087127177,
+          "precision": 0.0
+        }
+      },
+      "additional/source/TREC-06": {
+        "conservative": {
+          "count": 3616,
+          "spam": 0,
+          "ham": 3616,
+          "tp": 0,
+          "fn": 0,
+          "tn": 3616,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0010612229470253185,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 3616,
+          "spam": 0,
+          "ham": 3616,
+          "tp": 0,
+          "fn": 0,
+          "tn": 3615,
+          "fp": 1,
+          "recall": null,
+          "hamFpr": 0.0002765486725663717,
+          "hamFprWilson95Upper": 0.0015649140330779947,
+          "precision": 0.0
+        }
+      },
+      "additional/source/TREC-07": {
+        "conservative": {
+          "count": 7718,
+          "spam": 0,
+          "ham": 7718,
+          "tp": 0,
+          "fn": 0,
+          "tn": 7718,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0004974796285549233,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 7718,
+          "spam": 0,
+          "ham": 7718,
+          "tp": 0,
+          "fn": 0,
+          "tn": 7712,
+          "fp": 6,
+          "recall": null,
+          "hamFpr": 0.0007774034724021767,
+          "hamFprWilson95Upper": 0.0016951749367208385,
+          "precision": 0.0
+        }
+      },
+      "additional/source/TREC06-Chinese-original": {
+        "conservative": {
+          "count": 1361,
+          "spam": 0,
+          "ham": 1361,
+          "tp": 0,
+          "fn": 0,
+          "tn": 1360,
+          "fp": 1,
+          "recall": null,
+          "hamFpr": 0.0007347538574577516,
+          "hamFprWilson95Upper": 0.0041502402425928975,
+          "precision": 0.0
+        },
+        "high-recall": {
+          "count": 1361,
+          "spam": 0,
+          "ham": 1361,
+          "tp": 0,
+          "fn": 0,
+          "tn": 1360,
+          "fp": 1,
+          "recall": null,
+          "hamFpr": 0.0007347538574577516,
+          "hamFprWilson95Upper": 0.0041502402425928975,
+          "precision": 0.0
+        }
+      },
+      "all": {
+        "conservative": {
+          "count": 75271,
+          "spam": 0,
+          "ham": 75271,
+          "tp": 0,
+          "fn": 0,
+          "tn": 75264,
+          "fp": 7,
+          "recall": null,
+          "hamFpr": 9.299730307821073e-05,
+          "hamFprWilson95Upper": 0.00019196810759985875,
+          "precision": 0.0
+        },
+        "high-recall": {
+          "count": 75271,
+          "spam": 0,
+          "ham": 75271,
+          "tp": 0,
+          "fn": 0,
+          "tn": 75195,
+          "fp": 76,
+          "recall": null,
+          "hamFpr": 0.0010096850048491451,
+          "hamFprWilson95Upper": 0.0012634545692165756,
+          "precision": 0.0
+        }
+      },
+      "previously-scored": {
+        "conservative": {
+          "count": 28013,
+          "spam": 0,
+          "ham": 28013,
+          "tp": 0,
+          "fn": 0,
+          "tn": 28013,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00013711248737086664,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 28013,
+          "spam": 0,
+          "ham": 28013,
+          "tp": 0,
+          "fn": 0,
+          "tn": 27998,
+          "fp": 15,
+          "recall": null,
+          "hamFpr": 0.0005354656766501267,
+          "hamFprWilson95Upper": 0.0008833579047414742,
+          "precision": 0.0
+        }
+      },
+      "previously-scored/script/cjk": {
+        "conservative": {
+          "count": 1665,
+          "spam": 0,
+          "ham": 1665,
+          "tp": 0,
+          "fn": 0,
+          "tn": 1665,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0023018716369910515,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 1665,
+          "spam": 0,
+          "ham": 1665,
+          "tp": 0,
+          "fn": 0,
+          "tn": 1665,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0023018716369910515,
+          "precision": null
+        }
+      },
+      "previously-scored/script/latin": {
+        "conservative": {
+          "count": 26175,
+          "spam": 0,
+          "ham": 26175,
+          "tp": 0,
+          "fn": 0,
+          "tn": 26175,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00014673906890557927,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 26175,
+          "spam": 0,
+          "ham": 26175,
+          "tp": 0,
+          "fn": 0,
+          "tn": 26160,
+          "fp": 15,
+          "recall": null,
+          "hamFpr": 0.0005730659025787965,
+          "hamFprWilson95Upper": 0.0009453726216899839,
+          "precision": 0.0
+        }
+      },
+      "previously-scored/script/other": {
+        "conservative": {
+          "count": 173,
+          "spam": 0,
+          "ham": 173,
+          "tp": 0,
+          "fn": 0,
+          "tn": 173,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.02172261440451652,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 173,
+          "spam": 0,
+          "ham": 173,
+          "tp": 0,
+          "fn": 0,
+          "tn": 173,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.02172261440451652,
+          "precision": null
+        }
+      },
+      "previously-scored/source/Assassin": {
+        "conservative": {
+          "count": 496,
+          "spam": 0,
+          "ham": 496,
+          "tp": 0,
+          "fn": 0,
+          "tn": 496,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.007685354531729939,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 496,
+          "spam": 0,
+          "ham": 496,
+          "tp": 0,
+          "fn": 0,
+          "tn": 496,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.007685354531729939,
+          "precision": null
+        }
+      },
+      "previously-scored/source/CEAS-08": {
+        "conservative": {
+          "count": 1742,
+          "spam": 0,
+          "ham": 1742,
+          "tp": 0,
+          "fn": 0,
+          "tn": 1742,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0022003480334858174,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 1742,
+          "spam": 0,
+          "ham": 1742,
+          "tp": 0,
+          "fn": 0,
+          "tn": 1738,
+          "fp": 4,
+          "recall": null,
+          "hamFpr": 0.002296211251435132,
+          "hamFprWilson95Upper": 0.005889362748554142,
+          "precision": 0.0
+        }
+      },
+      "previously-scored/source/Enron": {
+        "conservative": {
+          "count": 4245,
+          "spam": 0,
+          "ham": 4245,
+          "tp": 0,
+          "fn": 0,
+          "tn": 4245,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0009041191246896651,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 4245,
+          "spam": 0,
+          "ham": 4245,
+          "tp": 0,
+          "fn": 0,
+          "tn": 4241,
+          "fp": 4,
+          "recall": null,
+          "hamFpr": 0.0009422850412249705,
+          "hamFprWilson95Upper": 0.002420489977542815,
+          "precision": 0.0
+        }
+      },
+      "previously-scored/source/Ling": {
+        "conservative": {
+          "count": 109,
+          "spam": 0,
+          "ham": 109,
+          "tp": 0,
+          "fn": 0,
+          "tn": 109,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.034042973751325124,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 109,
+          "spam": 0,
+          "ham": 109,
+          "tp": 0,
+          "fn": 0,
+          "tn": 109,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.034042973751325124,
+          "precision": null
+        }
+      },
+      "previously-scored/source/TREC-05": {
+        "conservative": {
+          "count": 8405,
+          "spam": 0,
+          "ham": 8405,
+          "tp": 0,
+          "fn": 0,
+          "tn": 8405,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0004568356817649972,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 8405,
+          "spam": 0,
+          "ham": 8405,
+          "tp": 0,
+          "fn": 0,
+          "tn": 8402,
+          "fp": 3,
+          "recall": null,
+          "hamFpr": 0.0003569303985722784,
+          "hamFprWilson95Upper": 0.0010489745588478318,
+          "precision": 0.0
+        }
+      },
+      "previously-scored/source/TREC-06": {
+        "conservative": {
+          "count": 3026,
+          "spam": 0,
+          "ham": 3026,
+          "tp": 0,
+          "fn": 0,
+          "tn": 3026,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0012678745316889739,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 3026,
+          "spam": 0,
+          "ham": 3026,
+          "tp": 0,
+          "fn": 0,
+          "tn": 3024,
+          "fp": 2,
+          "recall": null,
+          "hamFpr": 0.0006609385327164573,
+          "hamFprWilson95Upper": 0.0024068037218347303,
+          "precision": 0.0
+        }
+      },
+      "previously-scored/source/TREC-07": {
+        "conservative": {
+          "count": 8006,
+          "spam": 0,
+          "ham": 8006,
+          "tp": 0,
+          "fn": 0,
+          "tn": 8006,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00047959236652103616,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 8006,
+          "spam": 0,
+          "ham": 8006,
+          "tp": 0,
+          "fn": 0,
+          "tn": 8004,
+          "fp": 2,
+          "recall": null,
+          "hamFpr": 0.0002498126405196103,
+          "hamFprWilson95Upper": 0.0009104677211666687,
+          "precision": 0.0
+        }
+      },
+      "previously-scored/source/TREC06-Chinese-original": {
+        "conservative": {
+          "count": 1984,
+          "spam": 0,
+          "ham": 1984,
+          "tp": 0,
+          "fn": 0,
+          "tn": 1984,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0019324774637576518,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 1984,
+          "spam": 0,
+          "ham": 1984,
+          "tp": 0,
+          "fn": 0,
+          "tn": 1984,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0019324774637576518,
+          "precision": null
+        }
+      }
+    },
+    "may": {
+      "all": {
+        "conservative": {
+          "count": 4146,
+          "spam": 3833,
+          "ham": 313,
+          "tp": 2471,
+          "fn": 1362,
+          "tn": 312,
+          "fp": 1,
+          "recall": 0.6446647534568223,
+          "hamFpr": 0.003194888178913738,
+          "hamFprWilson95Upper": 0.01787233653829115,
+          "precision": 0.9995954692556634
+        },
+        "high-recall": {
+          "count": 4146,
+          "spam": 3833,
+          "ham": 313,
+          "tp": 3547,
+          "fn": 286,
+          "tn": 312,
+          "fp": 1,
+          "recall": 0.9253848160709627,
+          "hamFpr": 0.003194888178913738,
+          "hamFprWilson95Upper": 0.01787233653829115,
+          "precision": 0.9997181510710259
+        }
+      },
+      "engineering-regression": {
+        "conservative": {
+          "count": 4146,
+          "spam": 3833,
+          "ham": 313,
+          "tp": 2471,
+          "fn": 1362,
+          "tn": 312,
+          "fp": 1,
+          "recall": 0.6446647534568223,
+          "hamFpr": 0.003194888178913738,
+          "hamFprWilson95Upper": 0.01787233653829115,
+          "precision": 0.9995954692556634
+        },
+        "high-recall": {
+          "count": 4146,
+          "spam": 3833,
+          "ham": 313,
+          "tp": 3547,
+          "fn": 286,
+          "tn": 312,
+          "fp": 1,
+          "recall": 0.9253848160709627,
+          "hamFpr": 0.003194888178913738,
+          "hamFprWilson95Upper": 0.01787233653829115,
+          "precision": 0.9997181510710259
+        }
+      },
+      "engineering-regression/script/cjk": {
+        "conservative": {
+          "count": 41,
+          "spam": 39,
+          "ham": 2,
+          "tp": 29,
+          "fn": 10,
+          "tn": 1,
+          "fp": 1,
+          "recall": 0.7435897435897436,
+          "hamFpr": 0.5,
+          "hamFprWilson95Upper": 0.9054687942657693,
+          "precision": 0.9666666666666667
+        },
+        "high-recall": {
+          "count": 41,
+          "spam": 39,
+          "ham": 2,
+          "tp": 35,
+          "fn": 4,
+          "tn": 1,
+          "fp": 1,
+          "recall": 0.8974358974358975,
+          "hamFpr": 0.5,
+          "hamFprWilson95Upper": 0.9054687942657693,
+          "precision": 0.9722222222222222
+        }
+      },
+      "engineering-regression/script/latin": {
+        "conservative": {
+          "count": 4101,
+          "spam": 3790,
+          "ham": 311,
+          "tp": 2442,
+          "fn": 1348,
+          "tn": 311,
+          "fp": 0,
+          "recall": 0.6443271767810026,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01220124832060914,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 4101,
+          "spam": 3790,
+          "ham": 311,
+          "tp": 3512,
+          "fn": 278,
+          "tn": 311,
+          "fp": 0,
+          "recall": 0.9266490765171504,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01220124832060914,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/script/other": {
+        "conservative": {
+          "count": 4,
+          "spam": 4,
+          "ham": 0,
+          "tp": 0,
+          "fn": 4,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 4,
+          "spam": 4,
+          "ham": 0,
+          "tp": 0,
+          "fn": 4,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": null
+        }
+      },
+      "engineering-regression/source/SpamArchive-2026-05": {
+        "conservative": {
+          "count": 3468,
+          "spam": 3468,
+          "ham": 0,
+          "tp": 2334,
+          "fn": 1134,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6730103806228374,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 3468,
+          "spam": 3468,
+          "ham": 0,
+          "tp": 3303,
+          "fn": 165,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9524221453287197,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/source/SpamAssassin-original-20030228_easy_ham": {
+        "conservative": {
+          "count": 98,
+          "spam": 0,
+          "ham": 98,
+          "tp": 0,
+          "fn": 0,
+          "tn": 98,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.03771999012168061,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 98,
+          "spam": 0,
+          "ham": 98,
+          "tp": 0,
+          "fn": 0,
+          "tn": 98,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.03771999012168061,
+          "precision": null
+        }
+      },
+      "engineering-regression/source/SpamAssassin-original-20030228_easy_ham_2": {
+        "conservative": {
+          "count": 91,
+          "spam": 0,
+          "ham": 91,
+          "tp": 0,
+          "fn": 0,
+          "tn": 91,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.04050400392888021,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 91,
+          "spam": 0,
+          "ham": 91,
+          "tp": 0,
+          "fn": 0,
+          "tn": 91,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.04050400392888021,
+          "precision": null
+        }
+      },
+      "engineering-regression/source/SpamAssassin-original-20030228_hard_ham": {
+        "conservative": {
+          "count": 124,
+          "spam": 0,
+          "ham": 124,
+          "tp": 0,
+          "fn": 0,
+          "tn": 123,
+          "fp": 1,
+          "recall": null,
+          "hamFpr": 0.008064516129032258,
+          "hamFprWilson95Upper": 0.04426798605447707,
+          "precision": 0.0
+        },
+        "high-recall": {
+          "count": 124,
+          "spam": 0,
+          "ham": 124,
+          "tp": 0,
+          "fn": 0,
+          "tn": 123,
+          "fp": 1,
+          "recall": null,
+          "hamFpr": 0.008064516129032258,
+          "hamFprWilson95Upper": 0.04426798605447707,
+          "precision": 0.0
+        }
+      },
+      "engineering-regression/source/SpamAssassin-original-20030228_spam": {
+        "conservative": {
+          "count": 100,
+          "spam": 100,
+          "ham": 0,
+          "tp": 35,
+          "fn": 65,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.35,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 100,
+          "spam": 100,
+          "ham": 0,
+          "tp": 67,
+          "fn": 33,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.67,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/source/SpamAssassin-original-20050311_spam_2": {
+        "conservative": {
+          "count": 265,
+          "spam": 265,
+          "ham": 0,
+          "tp": 102,
+          "fn": 163,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.3849056603773585,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 265,
+          "spam": 265,
+          "ham": 0,
+          "tp": 177,
+          "fn": 88,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6679245283018868,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "october": {
+      "all": {
+        "conservative": {
+          "count": 122,
+          "spam": 122,
+          "ham": 0,
+          "tp": 75,
+          "fn": 47,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6147540983606558,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 122,
+          "spam": 122,
+          "ham": 0,
+          "tp": 100,
+          "fn": 22,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.819672131147541,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression": {
+        "conservative": {
+          "count": 122,
+          "spam": 122,
+          "ham": 0,
+          "tp": 75,
+          "fn": 47,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6147540983606558,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 122,
+          "spam": 122,
+          "ham": 0,
+          "tp": 100,
+          "fn": 22,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.819672131147541,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/script/cjk": {
+        "conservative": {
+          "count": 9,
+          "spam": 9,
+          "ham": 0,
+          "tp": 9,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 9,
+          "spam": 9,
+          "ham": 0,
+          "tp": 9,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/script/latin": {
+        "conservative": {
+          "count": 113,
+          "spam": 113,
+          "ham": 0,
+          "tp": 66,
+          "fn": 47,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.584070796460177,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 113,
+          "spam": 113,
+          "ham": 0,
+          "tp": 91,
+          "fn": 22,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8053097345132744,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/source/SpamArchive-2026-10": {
+        "conservative": {
+          "count": 122,
+          "spam": 122,
+          "ham": 0,
+          "tp": 75,
+          "fn": 47,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6147540983606558,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 122,
+          "spam": 122,
+          "ham": 0,
+          "tp": 100,
+          "fn": 22,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.819672131147541,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "summer": {
+      "all": {
+        "conservative": {
+          "count": 11831,
+          "spam": 9863,
+          "ham": 1968,
+          "tp": 5454,
+          "fn": 4409,
+          "tn": 1968,
+          "fp": 0,
+          "recall": 0.5529757680219001,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0019481580547513182,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 11831,
+          "spam": 9863,
+          "ham": 1968,
+          "tp": 8269,
+          "fn": 1594,
+          "tn": 1968,
+          "fp": 0,
+          "recall": 0.8383858866470648,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0019481580547513182,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression": {
+        "conservative": {
+          "count": 11831,
+          "spam": 9863,
+          "ham": 1968,
+          "tp": 5454,
+          "fn": 4409,
+          "tn": 1968,
+          "fp": 0,
+          "recall": 0.5529757680219001,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0019481580547513182,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 11831,
+          "spam": 9863,
+          "ham": 1968,
+          "tp": 8269,
+          "fn": 1594,
+          "tn": 1968,
+          "fp": 0,
+          "recall": 0.8383858866470648,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0019481580547513182,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/script/cjk": {
+        "conservative": {
+          "count": 2531,
+          "spam": 881,
+          "ham": 1650,
+          "tp": 845,
+          "fn": 36,
+          "tn": 1650,
+          "fp": 0,
+          "recall": 0.9591373439273553,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.002322749136687719,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 2531,
+          "spam": 881,
+          "ham": 1650,
+          "tp": 872,
+          "fn": 9,
+          "tn": 1650,
+          "fp": 0,
+          "recall": 0.9897843359818388,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.002322749136687719,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/script/latin": {
+        "conservative": {
+          "count": 8940,
+          "spam": 8794,
+          "ham": 146,
+          "tp": 4524,
+          "fn": 4270,
+          "tn": 146,
+          "fp": 0,
+          "recall": 0.514441664771435,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.025636822084673896,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 8940,
+          "spam": 8794,
+          "ham": 146,
+          "tp": 7256,
+          "fn": 1538,
+          "tn": 146,
+          "fp": 0,
+          "recall": 0.8251080282010461,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.025636822084673896,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/script/other": {
+        "conservative": {
+          "count": 360,
+          "spam": 188,
+          "ham": 172,
+          "tp": 85,
+          "fn": 103,
+          "tn": 172,
+          "fp": 0,
+          "recall": 0.4521276595744681,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0218461496307948,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 360,
+          "spam": 188,
+          "ham": 172,
+          "tp": 141,
+          "fn": 47,
+          "tn": 172,
+          "fp": 0,
+          "recall": 0.75,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0218461496307948,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/source/SpamArchive-2026-06": {
+        "conservative": {
+          "count": 4994,
+          "spam": 4994,
+          "ham": 0,
+          "tp": 2998,
+          "fn": 1996,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6003203844613536,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 4994,
+          "spam": 4994,
+          "ham": 0,
+          "tp": 4537,
+          "fn": 457,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.908490188225871,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/source/SpamArchive-2026-07": {
+        "conservative": {
+          "count": 1682,
+          "spam": 1682,
+          "ham": 0,
+          "tp": 700,
+          "fn": 982,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.4161712247324614,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 1682,
+          "spam": 1682,
+          "ham": 0,
+          "tp": 1296,
+          "fn": 386,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7705112960760999,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/source/SpamArchive-2026-08": {
+        "conservative": {
+          "count": 1044,
+          "spam": 1044,
+          "ham": 0,
+          "tp": 256,
+          "fn": 788,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.24521072796934865,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 1044,
+          "spam": 1044,
+          "ham": 0,
+          "tp": 563,
+          "fn": 481,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.539272030651341,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/source/SpamArchive-2026-09": {
+        "conservative": {
+          "count": 770,
+          "spam": 770,
+          "ham": 0,
+          "tp": 459,
+          "fn": 311,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.5961038961038961,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 770,
+          "spam": 770,
+          "ham": 0,
+          "tp": 657,
+          "fn": 113,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8532467532467533,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "engineering-regression/source/TREC06-Chinese": {
+        "conservative": {
+          "count": 3341,
+          "spam": 1373,
+          "ham": 1968,
+          "tp": 1041,
+          "fn": 332,
+          "tn": 1968,
+          "fp": 0,
+          "recall": 0.7581937363437727,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0019481580547513182,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 3341,
+          "spam": 1373,
+          "ham": 1968,
+          "tp": 1216,
+          "fn": 157,
+          "tn": 1968,
+          "fp": 0,
+          "recall": 0.8856518572469045,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0019481580547513182,
+          "precision": 1.0
+        }
+      }
+    }
+  },
+  "baselineV62": {
+    "spam": {
+      "all": {
+        "conservative": {
+          "count": 500000,
+          "spam": 499225,
+          "ham": 775,
+          "tp": 358679,
+          "fn": 140546,
+          "tn": 775,
+          "fp": 0,
+          "recall": 0.7184716310280935,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.004932273156735627,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 500000,
+          "spam": 499225,
+          "ham": 775,
+          "tp": 455487,
+          "fn": 43738,
+          "tn": 775,
+          "fp": 0,
+          "recall": 0.9123882017126547,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.004932273156735627,
+          "precision": 1.0
+        }
+      },
+      "development-overlap": {
+        "conservative": {
+          "count": 148515,
+          "spam": 148261,
+          "ham": 254,
+          "tp": 108504,
+          "fn": 39757,
+          "tn": 254,
+          "fp": 0,
+          "recall": 0.7318445174388409,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01489853043131252,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 148515,
+          "spam": 148261,
+          "ham": 254,
+          "tp": 137489,
+          "fn": 10772,
+          "tn": 254,
+          "fp": 0,
+          "recall": 0.9273443454448573,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01489853043131252,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/script/cjk": {
+        "conservative": {
+          "count": 101187,
+          "spam": 101187,
+          "ham": 0,
+          "tp": 101104,
+          "fn": 83,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9991797365274195,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 101187,
+          "spam": 101187,
+          "ham": 0,
+          "tp": 101143,
+          "fn": 44,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.999565161532608,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/script/latin": {
+        "conservative": {
+          "count": 46714,
+          "spam": 46460,
+          "ham": 254,
+          "tp": 7400,
+          "fn": 39060,
+          "tn": 254,
+          "fp": 0,
+          "recall": 0.1592767972449419,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01489853043131252,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 46714,
+          "spam": 46460,
+          "ham": 254,
+          "tp": 36006,
+          "fn": 10454,
+          "tn": 254,
+          "fp": 0,
+          "recall": 0.7749892380542402,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01489853043131252,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/script/other": {
+        "conservative": {
+          "count": 614,
+          "spam": 614,
+          "ham": 0,
+          "tp": 0,
+          "fn": 614,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 614,
+          "spam": 614,
+          "ham": 0,
+          "tp": 340,
+          "fn": 274,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.5537459283387622,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/CSDMC2010": {
+        "conservative": {
+          "count": 403,
+          "spam": 149,
+          "ham": 254,
+          "tp": 12,
+          "fn": 137,
+          "tn": 254,
+          "fp": 0,
+          "recall": 0.08053691275167785,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01489853043131252,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 403,
+          "spam": 149,
+          "ham": 254,
+          "tp": 107,
+          "fn": 42,
+          "tn": 254,
+          "fp": 0,
+          "recall": 0.7181208053691275,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.01489853043131252,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2017": {
+        "conservative": {
+          "count": 118477,
+          "spam": 118477,
+          "ham": 0,
+          "tp": 99628,
+          "fn": 18849,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.84090582982351,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 118477,
+          "spam": 118477,
+          "ham": 0,
+          "tp": 112716,
+          "fn": 5761,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9513745283894764,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2018": {
+        "conservative": {
+          "count": 8033,
+          "spam": 8033,
+          "ham": 0,
+          "tp": 4650,
+          "fn": 3383,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.5788621934520105,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 8033,
+          "spam": 8033,
+          "ham": 0,
+          "tp": 6904,
+          "fn": 1129,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8594547491597162,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2019": {
+        "conservative": {
+          "count": 3689,
+          "spam": 3689,
+          "ham": 0,
+          "tp": 884,
+          "fn": 2805,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.23963133640552994,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 3689,
+          "spam": 3689,
+          "ham": 0,
+          "tp": 3124,
+          "fn": 565,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8468419625914883,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2020": {
+        "conservative": {
+          "count": 7388,
+          "spam": 7388,
+          "ham": 0,
+          "tp": 1443,
+          "fn": 5945,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.19531672983216025,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 7388,
+          "spam": 7388,
+          "ham": 0,
+          "tp": 6193,
+          "fn": 1195,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8382512181916622,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2021": {
+        "conservative": {
+          "count": 3091,
+          "spam": 3091,
+          "ham": 0,
+          "tp": 617,
+          "fn": 2474,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.19961177612423164,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 3091,
+          "spam": 3091,
+          "ham": 0,
+          "tp": 2382,
+          "fn": 709,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7706243934001941,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2022": {
+        "conservative": {
+          "count": 3285,
+          "spam": 3285,
+          "ham": 0,
+          "tp": 414,
+          "fn": 2871,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.12602739726027398,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 3285,
+          "spam": 3285,
+          "ham": 0,
+          "tp": 2731,
+          "fn": 554,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8313546423135464,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2023": {
+        "conservative": {
+          "count": 1871,
+          "spam": 1871,
+          "ham": 0,
+          "tp": 356,
+          "fn": 1515,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.1902725815072154,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 1871,
+          "spam": 1871,
+          "ham": 0,
+          "tp": 1562,
+          "fn": 309,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8348476750400855,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2024": {
+        "conservative": {
+          "count": 857,
+          "spam": 857,
+          "ham": 0,
+          "tp": 170,
+          "fn": 687,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.1983663943990665,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 857,
+          "spam": 857,
+          "ham": 0,
+          "tp": 675,
+          "fn": 182,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7876312718786465,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "development-overlap/source/SpamArchive-2025": {
+        "conservative": {
+          "count": 1421,
+          "spam": 1421,
+          "ham": 0,
+          "tp": 330,
+          "fn": 1091,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.2322308233638283,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 1421,
+          "spam": 1421,
+          "ham": 0,
+          "tp": 1095,
+          "fn": 326,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7705840957072484,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap": {
+        "conservative": {
+          "count": 351485,
+          "spam": 350964,
+          "ham": 521,
+          "tp": 250175,
+          "fn": 100789,
+          "tn": 521,
+          "fp": 0,
+          "recall": 0.7128223977387994,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.007319274718361214,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 351485,
+          "spam": 350964,
+          "ham": 521,
+          "tp": 317998,
+          "fn": 32966,
+          "tn": 521,
+          "fp": 0,
+          "recall": 0.9060701382477975,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.007319274718361214,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/script/cjk": {
+        "conservative": {
+          "count": 233422,
+          "spam": 233422,
+          "ham": 0,
+          "tp": 232992,
+          "fn": 430,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9981578428768496,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 233422,
+          "spam": 233422,
+          "ham": 0,
+          "tp": 233306,
+          "fn": 116,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9995030459853826,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/script/latin": {
+        "conservative": {
+          "count": 116341,
+          "spam": 115821,
+          "ham": 520,
+          "tp": 17183,
+          "fn": 98638,
+          "tn": 520,
+          "fp": 0,
+          "recall": 0.1483582424603483,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0073332470273396585,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 116341,
+          "spam": 115821,
+          "ham": 520,
+          "tp": 83723,
+          "fn": 32098,
+          "tn": 520,
+          "fp": 0,
+          "recall": 0.7228654561780679,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0073332470273396585,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/script/other": {
+        "conservative": {
+          "count": 1722,
+          "spam": 1721,
+          "ham": 1,
+          "tp": 0,
+          "fn": 1721,
+          "tn": 1,
+          "fp": 0,
+          "recall": 0.0,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.7934506856227626,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 1722,
+          "spam": 1721,
+          "ham": 1,
+          "tp": 969,
+          "fn": 752,
+          "tn": 1,
+          "fp": 0,
+          "recall": 0.5630447414294015,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.7934506856227626,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/CSDMC2010": {
+        "conservative": {
+          "count": 811,
+          "spam": 290,
+          "ham": 521,
+          "tp": 19,
+          "fn": 271,
+          "tn": 521,
+          "fp": 0,
+          "recall": 0.06551724137931035,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.007319274718361214,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 811,
+          "spam": 290,
+          "ham": 521,
+          "tp": 191,
+          "fn": 99,
+          "tn": 521,
+          "fp": 0,
+          "recall": 0.6586206896551724,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.007319274718361214,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2017": {
+        "conservative": {
+          "count": 280107,
+          "spam": 280107,
+          "ham": 0,
+          "tp": 231046,
+          "fn": 49061,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8248490755318503,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 280107,
+          "spam": 280107,
+          "ham": 0,
+          "tp": 259746,
+          "fn": 20361,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.9273099208516745,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2018": {
+        "conservative": {
+          "count": 19493,
+          "spam": 19493,
+          "ham": 0,
+          "tp": 9126,
+          "fn": 10367,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.468168060329349,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19493,
+          "spam": 19493,
+          "ham": 0,
+          "tp": 15797,
+          "fn": 3696,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8103934745806187,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2019": {
+        "conservative": {
+          "count": 8679,
+          "spam": 8679,
+          "ham": 0,
+          "tp": 2061,
+          "fn": 6618,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.23746975458002073,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 8679,
+          "spam": 8679,
+          "ham": 0,
+          "tp": 7254,
+          "fn": 1425,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8358105772554442,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2020": {
+        "conservative": {
+          "count": 18016,
+          "spam": 18016,
+          "ham": 0,
+          "tp": 3424,
+          "fn": 14592,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.19005328596802842,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 18016,
+          "spam": 18016,
+          "ham": 0,
+          "tp": 15128,
+          "fn": 2888,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8396980461811723,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2021": {
+        "conservative": {
+          "count": 7292,
+          "spam": 7292,
+          "ham": 0,
+          "tp": 1419,
+          "fn": 5873,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.19459681843115742,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 7292,
+          "spam": 7292,
+          "ham": 0,
+          "tp": 5596,
+          "fn": 1696,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.7674163466812945,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2022": {
+        "conservative": {
+          "count": 7776,
+          "spam": 7776,
+          "ham": 0,
+          "tp": 1017,
+          "fn": 6759,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.13078703703703703,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 7776,
+          "spam": 7776,
+          "ham": 0,
+          "tp": 6488,
+          "fn": 1288,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8343621399176955,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2023": {
+        "conservative": {
+          "count": 4680,
+          "spam": 4680,
+          "ham": 0,
+          "tp": 869,
+          "fn": 3811,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.1856837606837607,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 4680,
+          "spam": 4680,
+          "ham": 0,
+          "tp": 3975,
+          "fn": 705,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8493589743589743,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2024": {
+        "conservative": {
+          "count": 1961,
+          "spam": 1961,
+          "ham": 0,
+          "tp": 426,
+          "fn": 1535,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.21723610402855686,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 1961,
+          "spam": 1961,
+          "ham": 0,
+          "tp": 1547,
+          "fn": 414,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.788883222845487,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "no-development-overlap/source/SpamArchive-2025": {
+        "conservative": {
+          "count": 2670,
+          "spam": 2670,
+          "ham": 0,
+          "tp": 768,
+          "fn": 1902,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.2876404494382023,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 2670,
+          "spam": 2670,
+          "ham": 0,
+          "tp": 2276,
+          "fn": 394,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.8524344569288389,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "ham": {
+      "additional": {
+        "conservative": {
+          "count": 47258,
+          "spam": 0,
+          "ham": 47258,
+          "tp": 0,
+          "fn": 0,
+          "tn": 47258,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 8.128034587990383e-05,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 47258,
+          "spam": 0,
+          "ham": 47258,
+          "tp": 0,
+          "fn": 0,
+          "tn": 47145,
+          "fp": 113,
+          "recall": null,
+          "hamFpr": 0.0023911295442041558,
+          "hamFprWilson95Upper": 0.0028737551708431213,
+          "precision": 0.0
+        }
+      },
+      "all": {
+        "conservative": {
+          "count": 75271,
+          "spam": 0,
+          "ham": 75271,
+          "tp": 0,
+          "fn": 0,
+          "tn": 75271,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 5.103243987296348e-05,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 75271,
+          "spam": 0,
+          "ham": 75271,
+          "tp": 0,
+          "fn": 0,
+          "tn": 75107,
+          "fp": 164,
+          "recall": null,
+          "hamFpr": 0.0021787939578323656,
+          "hamFprWilson95Upper": 0.0025382533688131357,
+          "precision": 0.0
+        }
+      },
+      "previously-scored": {
+        "conservative": {
+          "count": 28013,
+          "spam": 0,
+          "ham": 28013,
+          "tp": 0,
+          "fn": 0,
+          "tn": 28013,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00013711248737086664,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 28013,
+          "spam": 0,
+          "ham": 28013,
+          "tp": 0,
+          "fn": 0,
+          "tn": 27962,
+          "fp": 51,
+          "recall": null,
+          "hamFpr": 0.0018205833006104308,
+          "hamFprWilson95Upper": 0.0023927113526803164,
+          "precision": 0.0
+        }
+      },
+      "script/cjk": {
+        "conservative": {
+          "count": 2364,
+          "spam": 0,
+          "ham": 2364,
+          "tp": 0,
+          "fn": 0,
+          "tn": 2364,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0016223462961947495,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 2364,
+          "spam": 0,
+          "ham": 2364,
+          "tp": 0,
+          "fn": 0,
+          "tn": 2360,
+          "fp": 4,
+          "recall": null,
+          "hamFpr": 0.001692047377326565,
+          "hamFprWilson95Upper": 0.004342756065725897,
+          "precision": 0.0
+        }
+      },
+      "script/latin": {
+        "conservative": {
+          "count": 72467,
+          "spam": 0,
+          "ham": 72467,
+          "tp": 0,
+          "fn": 0,
+          "tn": 72467,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 5.300695760345097e-05,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 72467,
+          "spam": 0,
+          "ham": 72467,
+          "tp": 0,
+          "fn": 0,
+          "tn": 72307,
+          "fp": 160,
+          "recall": null,
+          "hamFpr": 0.0022079015275918695,
+          "hamFprWilson95Upper": 0.0025770298390618437,
+          "precision": 0.0
+        }
+      },
+      "script/other": {
+        "conservative": {
+          "count": 440,
+          "spam": 0,
+          "ham": 440,
+          "tp": 0,
+          "fn": 0,
+          "tn": 440,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.008655024771460167,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 440,
+          "spam": 0,
+          "ham": 440,
+          "tp": 0,
+          "fn": 0,
+          "tn": 440,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.008655024771460167,
+          "precision": null
+        }
+      },
+      "source/Assassin": {
+        "conservative": {
+          "count": 1527,
+          "spam": 0,
+          "ham": 1527,
+          "tp": 0,
+          "fn": 0,
+          "tn": 1527,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0025093773091652803,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 1527,
+          "spam": 0,
+          "ham": 1527,
+          "tp": 0,
+          "fn": 0,
+          "tn": 1524,
+          "fp": 3,
+          "recall": null,
+          "hamFpr": 0.0019646365422396855,
+          "hamFprWilson95Upper": 0.005760416653758341,
+          "precision": 0.0
+        }
+      },
+      "source/CEAS-08": {
+        "conservative": {
+          "count": 13461,
+          "spam": 0,
+          "ham": 13461,
+          "tp": 0,
+          "fn": 0,
+          "tn": 13461,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0002852955107152502,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 13461,
+          "spam": 0,
+          "ham": 13461,
+          "tp": 0,
+          "fn": 0,
+          "tn": 13399,
+          "fp": 62,
+          "recall": null,
+          "hamFpr": 0.004605898521655152,
+          "hamFprWilson95Upper": 0.005899605891529687,
+          "precision": 0.0
+        }
+      },
+      "source/Enron": {
+        "conservative": {
+          "count": 8304,
+          "spam": 0,
+          "ham": 8304,
+          "tp": 0,
+          "fn": 0,
+          "tn": 8304,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0004623895195563137,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 8304,
+          "spam": 0,
+          "ham": 8304,
+          "tp": 0,
+          "fn": 0,
+          "tn": 8296,
+          "fp": 8,
+          "recall": null,
+          "hamFpr": 0.0009633911368015414,
+          "hamFprWilson95Upper": 0.0019000285625947544,
+          "precision": 0.0
+        }
+      },
+      "source/Ling": {
+        "conservative": {
+          "count": 589,
+          "spam": 0,
+          "ham": 589,
+          "tp": 0,
+          "fn": 0,
+          "tn": 589,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.006479740516690114,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 589,
+          "spam": 0,
+          "ham": 589,
+          "tp": 0,
+          "fn": 0,
+          "tn": 589,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.006479740516690114,
+          "precision": null
+        }
+      },
+      "source/TREC-05": {
+        "conservative": {
+          "count": 25679,
+          "spam": 0,
+          "ham": 25679,
+          "tp": 0,
+          "fn": 0,
+          "tn": 25679,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00014957296788415861,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 25679,
+          "spam": 0,
+          "ham": 25679,
+          "tp": 0,
+          "fn": 0,
+          "tn": 25614,
+          "fp": 65,
+          "recall": null,
+          "hamFpr": 0.0025312512169477002,
+          "hamFprWilson95Upper": 0.003224678431756513,
+          "precision": 0.0
+        }
+      },
+      "source/TREC-06": {
+        "conservative": {
+          "count": 6642,
+          "spam": 0,
+          "ham": 6642,
+          "tp": 0,
+          "fn": 0,
+          "tn": 6642,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0005780244449851491,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 6642,
+          "spam": 0,
+          "ham": 6642,
+          "tp": 0,
+          "fn": 0,
+          "tn": 6634,
+          "fp": 8,
+          "recall": null,
+          "hamFpr": 0.0012044564890093346,
+          "hamFprWilson95Upper": 0.002375094936138782,
+          "precision": 0.0
+        }
+      },
+      "source/TREC-07": {
+        "conservative": {
+          "count": 15724,
+          "spam": 0,
+          "ham": 15724,
+          "tp": 0,
+          "fn": 0,
+          "tn": 15724,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.000244245774650768,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 15724,
+          "spam": 0,
+          "ham": 15724,
+          "tp": 0,
+          "fn": 0,
+          "tn": 15710,
+          "fp": 14,
+          "recall": null,
+          "hamFpr": 0.0008903586873569067,
+          "hamFprWilson95Upper": 0.0014940666155128012,
+          "precision": 0.0
+        }
+      },
+      "source/TREC06-Chinese-original": {
+        "conservative": {
+          "count": 3345,
+          "spam": 0,
+          "ham": 3345,
+          "tp": 0,
+          "fn": 0,
+          "tn": 3345,
+          "fp": 0,
+          "recall": null,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0011471008311175496,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 3345,
+          "spam": 0,
+          "ham": 3345,
+          "tp": 0,
+          "fn": 0,
+          "tn": 3341,
+          "fp": 4,
+          "recall": null,
+          "hamFpr": 0.001195814648729447,
+          "hamFprWilson95Upper": 0.0030708625297067556,
+          "precision": 0.0
+        }
+      }
+    }
+  },
+  "acceptance": {
+    "conservative": {
+      "primary500kAndHamGoalMet": false,
+      "engineeringGoalMet": false,
+      "minimumRegressionRecall": 0.5529757680219001,
+      "customerGoalValidated": false
+    },
+    "high-recall": {
+      "primary500kAndHamGoalMet": false,
+      "engineeringGoalMet": false,
+      "minimumRegressionRecall": 0.819672131147541,
+      "customerGoalValidated": false
+    }
+  },
+  "shards": [
+    {
+      "shard": 0,
+      "counts": {
+        "500k": 100000,
+        "ham": 15055,
+        "may": 4146,
+        "summer": 11831,
+        "october": 122
+      },
+      "modelSha256": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5",
+      "predictionsSha256": "c744e6972a01ff2df3933bd676a5ff44e3bb8288947da20f0fcacdca50bd1f3b",
+      "runtimeSha256": "1650e984b6a0cc1147d46d18371b0fbebf01bb743889d4dee2aa845376b2a3c8",
+      "first1000ParityPassed": true,
+      "profiles": {
+        "conservative": {
+          "selected": "linear1-ham4",
+          "threshold": 0.0,
+          "scriptCutoffs": {
+            "latin": 0.9989265058633192,
+            "cjk": 0.8431514303368317,
+            "other": 0.9989265058633192
+          },
+          "targetHamFpr": 0.0001,
+          "calibration": {
+            "count": 22865,
+            "spam": 18924,
+            "ham": 3941,
+            "tp": 14783,
+            "fn": 4141,
+            "tn": 3941,
+            "fp": 0,
+            "recall": 0.7811773409427183,
+            "hamFpr": 0.0,
+            "hamFprWilson95Upper": 0.0009737929548739141,
+            "precision": 1.0
+          }
+        },
+        "high-recall": {
+          "selected": "linear1-ham1",
+          "threshold": 0.0,
+          "scriptCutoffs": {
+            "latin": 0.998933262359923,
+            "cjk": 0.7289899546257077,
+            "other": 0.9976884596402817
+          },
+          "targetHamFpr": 0.002,
+          "calibration": {
+            "count": 22865,
+            "spam": 18924,
+            "ham": 3941,
+            "tp": 17268,
+            "fn": 1656,
+            "tn": 3934,
+            "fp": 7,
+            "recall": 0.9124920735573875,
+            "hamFpr": 0.0017761989342806395,
+            "hamFprWilson95Upper": 0.003662067249032997,
+            "precision": 0.9995947901591896
+          }
+        }
+      },
+      "modelCodeCommit": "3a4c834aa61f3b0cbd5725543f22a1225ff3f839",
+      "splitManifestSha256": "7c24771a93692a7a26f0a97e7347ead57aa183036be28a7c69c9d13a01ea3996",
+      "evaluationCodeCommit": "ea2be2283d2637ff8aa3119915576fea20ec4231",
+      "evaluationRunId": "38616558885"
+    },
+    {
+      "shard": 1,
+      "counts": {
+        "500k": 100000,
+        "ham": 15054
+      },
+      "modelSha256": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5",
+      "predictionsSha256": "8314238af3c57b9ca45468619c8637fb791e3f1cd9591ca911cce3a7ccc616c0",
+      "runtimeSha256": "1650e984b6a0cc1147d46d18371b0fbebf01bb743889d4dee2aa845376b2a3c8",
+      "first1000ParityPassed": true,
+      "profiles": {
+        "conservative": {
+          "selected": "linear1-ham4",
+          "threshold": 0.0,
+          "scriptCutoffs": {
+            "latin": 0.9989265058633192,
+            "cjk": 0.8431514303368317,
+            "other": 0.9989265058633192
+          },
+          "targetHamFpr": 0.0001,
+          "calibration": {
+            "count": 22865,
+            "spam": 18924,
+            "ham": 3941,
+            "tp": 14783,
+            "fn": 4141,
+            "tn": 3941,
+            "fp": 0,
+            "recall": 0.7811773409427183,
+            "hamFpr": 0.0,
+            "hamFprWilson95Upper": 0.0009737929548739141,
+            "precision": 1.0
+          }
+        },
+        "high-recall": {
+          "selected": "linear1-ham1",
+          "threshold": 0.0,
+          "scriptCutoffs": {
+            "latin": 0.998933262359923,
+            "cjk": 0.7289899546257077,
+            "other": 0.9976884596402817
+          },
+          "targetHamFpr": 0.002,
+          "calibration": {
+            "count": 22865,
+            "spam": 18924,
+            "ham": 3941,
+            "tp": 17268,
+            "fn": 1656,
+            "tn": 3934,
+            "fp": 7,
+            "recall": 0.9124920735573875,
+            "hamFpr": 0.0017761989342806395,
+            "hamFprWilson95Upper": 0.003662067249032997,
+            "precision": 0.9995947901591896
+          }
+        }
+      },
+      "modelCodeCommit": "3a4c834aa61f3b0cbd5725543f22a1225ff3f839",
+      "splitManifestSha256": "7c24771a93692a7a26f0a97e7347ead57aa183036be28a7c69c9d13a01ea3996",
+      "evaluationCodeCommit": "ea2be2283d2637ff8aa3119915576fea20ec4231",
+      "evaluationRunId": "38616558885"
+    },
+    {
+      "shard": 2,
+      "counts": {
+        "500k": 100000,
+        "ham": 15054
+      },
+      "modelSha256": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5",
+      "predictionsSha256": "5243f49074bd7514129dc1927d31019c2d86fcbe66860f552640378f4e5f7825",
+      "runtimeSha256": "1650e984b6a0cc1147d46d18371b0fbebf01bb743889d4dee2aa845376b2a3c8",
+      "first1000ParityPassed": true,
+      "profiles": {
+        "conservative": {
+          "selected": "linear1-ham4",
+          "threshold": 0.0,
+          "scriptCutoffs": {
+            "latin": 0.9989265058633192,
+            "cjk": 0.8431514303368317,
+            "other": 0.9989265058633192
+          },
+          "targetHamFpr": 0.0001,
+          "calibration": {
+            "count": 22865,
+            "spam": 18924,
+            "ham": 3941,
+            "tp": 14783,
+            "fn": 4141,
+            "tn": 3941,
+            "fp": 0,
+            "recall": 0.7811773409427183,
+            "hamFpr": 0.0,
+            "hamFprWilson95Upper": 0.0009737929548739141,
+            "precision": 1.0
+          }
+        },
+        "high-recall": {
+          "selected": "linear1-ham1",
+          "threshold": 0.0,
+          "scriptCutoffs": {
+            "latin": 0.998933262359923,
+            "cjk": 0.7289899546257077,
+            "other": 0.9976884596402817
+          },
+          "targetHamFpr": 0.002,
+          "calibration": {
+            "count": 22865,
+            "spam": 18924,
+            "ham": 3941,
+            "tp": 17268,
+            "fn": 1656,
+            "tn": 3934,
+            "fp": 7,
+            "recall": 0.9124920735573875,
+            "hamFpr": 0.0017761989342806395,
+            "hamFprWilson95Upper": 0.003662067249032997,
+            "precision": 0.9995947901591896
+          }
+        }
+      },
+      "modelCodeCommit": "3a4c834aa61f3b0cbd5725543f22a1225ff3f839",
+      "splitManifestSha256": "7c24771a93692a7a26f0a97e7347ead57aa183036be28a7c69c9d13a01ea3996",
+      "evaluationCodeCommit": "ea2be2283d2637ff8aa3119915576fea20ec4231",
+      "evaluationRunId": "38616558885"
+    },
+    {
+      "shard": 3,
+      "counts": {
+        "500k": 100000,
+        "ham": 15054
+      },
+      "modelSha256": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5",
+      "predictionsSha256": "45cda28601df136aa34e877a17b39ec41ce7b1980bfe1fce0ab24ece060aba51",
+      "runtimeSha256": "1650e984b6a0cc1147d46d18371b0fbebf01bb743889d4dee2aa845376b2a3c8",
+      "first1000ParityPassed": true,
+      "profiles": {
+        "conservative": {
+          "selected": "linear1-ham4",
+          "threshold": 0.0,
+          "scriptCutoffs": {
+            "latin": 0.9989265058633192,
+            "cjk": 0.8431514303368317,
+            "other": 0.9989265058633192
+          },
+          "targetHamFpr": 0.0001,
+          "calibration": {
+            "count": 22865,
+            "spam": 18924,
+            "ham": 3941,
+            "tp": 14783,
+            "fn": 4141,
+            "tn": 3941,
+            "fp": 0,
+            "recall": 0.7811773409427183,
+            "hamFpr": 0.0,
+            "hamFprWilson95Upper": 0.0009737929548739141,
+            "precision": 1.0
+          }
+        },
+        "high-recall": {
+          "selected": "linear1-ham1",
+          "threshold": 0.0,
+          "scriptCutoffs": {
+            "latin": 0.998933262359923,
+            "cjk": 0.7289899546257077,
+            "other": 0.9976884596402817
+          },
+          "targetHamFpr": 0.002,
+          "calibration": {
+            "count": 22865,
+            "spam": 18924,
+            "ham": 3941,
+            "tp": 17268,
+            "fn": 1656,
+            "tn": 3934,
+            "fp": 7,
+            "recall": 0.9124920735573875,
+            "hamFpr": 0.0017761989342806395,
+            "hamFprWilson95Upper": 0.003662067249032997,
+            "precision": 0.9995947901591896
+          }
+        }
+      },
+      "modelCodeCommit": "3a4c834aa61f3b0cbd5725543f22a1225ff3f839",
+      "splitManifestSha256": "7c24771a93692a7a26f0a97e7347ead57aa183036be28a7c69c9d13a01ea3996",
+      "evaluationCodeCommit": "ea2be2283d2637ff8aa3119915576fea20ec4231",
+      "evaluationRunId": "38616558885"
+    },
+    {
+      "shard": 4,
+      "counts": {
+        "500k": 100000,
+        "ham": 15054
+      },
+      "modelSha256": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5",
+      "predictionsSha256": "7c143b1476f34757d352dd856c48d64c20cf2ede0ed35f7b371c0317049bf873",
+      "runtimeSha256": "1650e984b6a0cc1147d46d18371b0fbebf01bb743889d4dee2aa845376b2a3c8",
+      "first1000ParityPassed": true,
+      "profiles": {
+        "conservative": {
+          "selected": "linear1-ham4",
+          "threshold": 0.0,
+          "scriptCutoffs": {
+            "latin": 0.9989265058633192,
+            "cjk": 0.8431514303368317,
+            "other": 0.9989265058633192
+          },
+          "targetHamFpr": 0.0001,
+          "calibration": {
+            "count": 22865,
+            "spam": 18924,
+            "ham": 3941,
+            "tp": 14783,
+            "fn": 4141,
+            "tn": 3941,
+            "fp": 0,
+            "recall": 0.7811773409427183,
+            "hamFpr": 0.0,
+            "hamFprWilson95Upper": 0.0009737929548739141,
+            "precision": 1.0
+          }
+        },
+        "high-recall": {
+          "selected": "linear1-ham1",
+          "threshold": 0.0,
+          "scriptCutoffs": {
+            "latin": 0.998933262359923,
+            "cjk": 0.7289899546257077,
+            "other": 0.9976884596402817
+          },
+          "targetHamFpr": 0.002,
+          "calibration": {
+            "count": 22865,
+            "spam": 18924,
+            "ham": 3941,
+            "tp": 17268,
+            "fn": 1656,
+            "tn": 3934,
+            "fp": 7,
+            "recall": 0.9124920735573875,
+            "hamFpr": 0.0017761989342806395,
+            "hamFprWilson95Upper": 0.003662067249032997,
+            "precision": 0.9995947901591896
+          }
+        }
+      },
+      "modelCodeCommit": "3a4c834aa61f3b0cbd5725543f22a1225ff3f839",
+      "splitManifestSha256": "7c24771a93692a7a26f0a97e7347ead57aa183036be28a7c69c9d13a01ea3996",
+      "evaluationCodeCommit": "ea2be2283d2637ff8aa3119915576fea20ec4231",
+      "evaluationRunId": "38616558885"
+    }
+  ],
+  "thresholdsChanged": false,
+  "estimatorAndThresholdLockedBeforeTest": true,
+  "testLabelsUsedForTraining": false,
+  "allTestsReused": true,
+  "productionGoalValidated": false,
+  "caveat": "All TEST sources have already been inspected: this is a repeated engineering comparison, not independent customer validation. The full 500k replay includes development messages; use its no-development-overlap subset for quality. The 75271 HAM set excludes the full TRAIN/SELECT/CAL partitions used by both versions. Original labels are preserved. No TEST labels fit, choose or calibrate v64; thresholds remain fixed."
+}
