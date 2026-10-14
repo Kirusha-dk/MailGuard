@@ -3,7 +3,8 @@ import tempfile
 import unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'tools'))
-from prepare_v64_transfer import UniquePool,view_keys,genspam_messages
+from prepare_v64_transfer import UniquePool,view_keys,genspam_messages,FAST_EMAIL
+import random,re
 from evaluate_v64_transfer import add_record
 from collections import defaultdict,Counter
 
@@ -12,6 +13,12 @@ def row(name,label):
                 focus='subject test hosts  start body',context='subject test body body tail body')
 
 class FirstUseProtocol(unittest.TestCase):
+    def test_email_normalizer_preserves_frozen_matches(self):
+        frozen=re.compile(r'[\w.+-]+@[\w.-]+\.[\w-]+',re.U)
+        cases=['a@b.com','甲'*4000,'a@b.com '+'甲'*4000,'foo+bar@example.org','a@foo.x@b.com']
+        rng=random.Random(64)
+        cases+=[''.join(rng.choice('ab甲_+-..@@\n<>:/012 ') for _ in range(rng.randint(0,160))) for _ in range(1000)]
+        for text in cases:self.assertEqual(frozen.sub('X',text),FAST_EMAIL.sub('X',text))
     def test_conflicting_labels_invalidate_retained_mail(self):
         with tempfile.TemporaryDirectory() as d:
             pool=UniquePool(Path(d)/'db');pool.add(row('a',0),['body:shared']);pool.add(row('b',1),['body:shared'])

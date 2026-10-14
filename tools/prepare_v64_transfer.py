@@ -12,6 +12,7 @@ import shutil
 import sqlite3
 import subprocess
 import tarfile
+import unicodedata
 import zipfile
 from collections import Counter
 from pathlib import Path,PurePosixPath
@@ -19,7 +20,25 @@ from pathlib import Path,PurePosixPath
 SEED='mailguard-v64-transfer-20261014:'
 EXPECTED_GENS={'adapt_GEN.ems':300,'adapt_SPAM.ems':300,'test_GEN.ems':754,
                'test_SPAM.ems':797,'train_GEN.ems':8158,'train_SPAM.ems':30088}
-SOURCES=('independent','2016','2015','2014','2013')
+SOURCES=('independent','2016','2015','2014','2013','2012','2011')
+FAST_EMAIL=re.compile(r'(?<![\w.+-])[\w.+-]+@[\w.-]+\.[\w-]+',re.U)
+
+def enable_equivalent_normalizers():
+    # A valid match always starts at the beginning of a maximal local-part run.
+    # This boundary eliminates quadratic retries in long text without changing
+    # the leftmost matches produced by the frozen expression.
+    import train_v55_multilingual as v55
+    v55.EMAIL=FAST_EMAIL
+
+def fast_content_keys(row):
+    body=row['ngram_text'].split('\nBODY: ',1)[-1]
+    body=unicodedata.normalize('NFKC',body).casefold()
+    body=re.sub('[\u200b-\u200f\ufeff]','',body)
+    body=re.sub(r'\s+',' ',body).strip()
+    template=re.sub(r'https?://\S+|www\.\S+','<url>',body)
+    template=FAST_EMAIL.sub('<email>',template)
+    template=re.sub(r'\d+','<number>',template)
+    return ('identity:'+row['identity'],'body:'+sha_text(body),'template:'+sha_text(template)),body
 
 def sha_file(path):
     h=hashlib.sha256()
@@ -94,7 +113,8 @@ class UniquePool:
 def prepare_blocks(args):
     from train_v47_phishing_aware import canonical_fields
     from train_v55_multilingual import campaign_key,views
-    from evaluate_v54_unique500k import content_keys
+    enable_equivalent_normalizers()
+    content_keys=fast_content_keys
     from datasets import load_dataset
     out=Path(args.output);out.mkdir(parents=True,exist_ok=False)
     old=Path('.cache/v64-prior/blocked.sqlite')
@@ -160,7 +180,9 @@ def collect(args):
     from train_v55_multilingual import campaign_key,views
     from v59_mail import from_eml
     from v61_semantic import script
-    from evaluate_v54_unique500k import content_keys,download,has_mail_headers
+    from evaluate_v54_unique500k import download,has_mail_headers
+    enable_equivalent_normalizers()
+    content_keys=fast_content_keys
     out=Path(args.output);out.mkdir(parents=True,exist_ok=False)
     blocked,audit=checked_blocks(args.blocks);pool=UniquePool(out/'pool.sqlite',blocked);del blocked
     inventories=[]
@@ -269,7 +291,7 @@ def merge(args):
     finally:
         for h in handles:h.close()
     if count!=args.count or not classes[0] or not classes[1]:raise ValueError('Incomplete selection or missing class')
-    audit=dict(count=count,ham=classes[0],spam=classes[1],available=available,independentSourceRows=independent,
+    audit=dict(count=count,ham=classes[0],spam=classes[1],available=available,nonArchiveSourceRows=independent,
         bySource=dict(sources),byScript=dict(scripts),shardCounts=dict(counts),shardSha256={str(i):sha_file(out/f'input-{i}.jsonl.gz') for i in range(5)},
         priorExclusions=prior,candidateAudits=audits,globalExclusions=dict(pool.stats),
         selection='All eligible non-archive labelled-source mail; bulk archives fill remaining slots by fixed content hash; global hash order; no model scores used',

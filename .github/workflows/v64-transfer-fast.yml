@@ -1,0 +1,187 @@
+name: MailGuard v64 fast first-use corpus
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: v64-fast-transfer-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  blocks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: write
+    steps:
+    - name: Stop superseded preparation and waiting evaluation
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: "for run in 38625454770 38626926984; do\n  status=\"$(gh api \"repos/${{ github.repository }}/actions/runs/$run\"\
+        \ --jq .status)\"\n  if [ \"$status\" != completed ]; then\n    gh api --method POST \"repos/${{ github.repository\
+        \ }}/actions/runs/$run/cancel\"\n  fi\ndone"
+    - uses: actions/download-artifact@v4
+      with:
+        name: v64-transfer-prior-exclusions
+        run-id: 38625454770
+        github-token: ${{ github.token }}
+        path: prior-blocks
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-transfer-prior-exclusions
+        path: prior-blocks/
+        compression-level: 0
+        retention-days: 90
+  collect:
+    needs: blocks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        source:
+        - independent
+        - '2016'
+        - '2015'
+        - '2014'
+        - '2013'
+        - '2012'
+        - '2011'
+      max-parallel: 7
+    env:
+      OMP_NUM_THREADS: 2
+      OPENBLAS_NUM_THREADS: 2
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - name: Reuse completed source candidates where available
+      id: reuse
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: 'found="$(gh api ''repos/${{ github.repository }}/actions/runs/38625454770/artifacts'' --jq ''.artifacts | any(.name
+        == "v64-new-candidates-${{ matrix.source }}" and .expired == false)'')"
+
+        echo "available=$found" >> "$GITHUB_OUTPUT"'
+    - uses: actions/download-artifact@v4
+      if: steps.reuse.outputs.available == 'true'
+      with:
+        name: v64-new-candidates-${{ matrix.source }}
+        run-id: 38625454770
+        github-token: ${{ github.token }}
+        path: candidates
+    - uses: actions/download-artifact@v4
+      with:
+        name: v64-transfer-prior-exclusions
+        path: prior-blocks
+    - uses: actions/download-artifact@v4
+      if: matrix.source == 'independent' && steps.reuse.outputs.available != 'true'
+      with:
+        name: mailguard-v64-new-source-inputs
+        run-id: 38624082220
+        github-token: ${{ github.token }}
+        path: new-sources
+    - name: Text parsing dependencies
+      run: 'sudo apt-get update -qq
+
+        sudo apt-get install -y p7zip-full
+
+        python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+
+        python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+
+        '
+      if: steps.reuse.outputs.available != 'true'
+    - name: Collect unseen identities and campaign families without model inference
+      run: python -u tools/prepare_v64_transfer.py --phase collect --source '${{ matrix.source }}' --output candidates
+      if: steps.reuse.outputs.available != 'true'
+    - uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: v64-new-candidates-${{ matrix.source }}
+        path: 'candidates/candidates.jsonl.gz
+
+          candidates/audit.json
+
+          '
+        compression-level: 0
+        retention-days: 90
+  freeze:
+    needs:
+    - blocks
+    - collect
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - uses: actions/download-artifact@v4
+      with:
+        name: v64-transfer-prior-exclusions
+        path: prior-blocks
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: v64-new-candidates-*
+        path: candidates
+    - name: Global duplicate and conflict audit; lock exactly 500000 before any scoring
+      run: python -u tools/prepare_v64_transfer.py --phase merge --input candidates --count 500000 --output prepared
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-new500k-audit
+        path: prepared/audit.json
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-new500k-input-0
+        path: prepared/input-0.jsonl.gz
+        compression-level: 0
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-new500k-input-1
+        path: prepared/input-1.jsonl.gz
+        compression-level: 0
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-new500k-input-2
+        path: prepared/input-2.jsonl.gz
+        compression-level: 0
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-new500k-input-3
+        path: prepared/input-3.jsonl.gz
+        compression-level: 0
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-new500k-input-4
+        path: prepared/input-4.jsonl.gz
+        compression-level: 0
+        retention-days: 90
+    - name: Preserve permanent first-use corpus, provenance and source code before evaluation
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: "tar -czf mailguard-v64-new500k-inputs.tar.gz prepared prior-blocks\ngit archive --format=tar.gz --output=mailguard-v64-transfer-prepare-source.tar.gz\
+        \ '${{ github.sha }}'\nsha256sum mailguard-v64-new500k-inputs.tar.gz mailguard-v64-transfer-prepare-source.tar.gz\
+        \ > mailguard-v64-new500k-inputs.sha256\ngh release create \"mailguard-v64-new500k-inputs-${{ github.run_id }}\" --draft\
+        \ \\\n  --target 3a4c834aa61f3b0cbd5725543f22a1225ff3f839 \\\n  --title 'MailGuard v64: first-use transfer corpus,\
+        \ fixed before scoring' \\\n  --notes 'Historical public mail, not customer mail. Original labels and source hashes\
+        \ preserved. No model inference or score-based selection in collection. GenSpam: Ben Medlock, CEAS 2006. Phishing\
+        \ corpus: Jose Nazario, CC-BY-4.0. Spam traps: Bruce Guenter, untroubled.org.' \\\n  mailguard-v64-new500k-inputs.tar.gz\
+        \ mailguard-v64-transfer-prepare-source.tar.gz mailguard-v64-new500k-inputs.sha256\n"
+'on':
+  workflow_dispatch: null
+  push:
+    branches:
+    - mailguard-v48-calibrated
+    paths:
+    - .github/workflows/v64-transfer-fast.yml
