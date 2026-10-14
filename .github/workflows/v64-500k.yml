@@ -1,0 +1,153 @@
+name: MailGuard v64 frozen 500k and large HAM evaluation
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/evaluate_v64_frozen.py', 'tests/python/test_v64_frozen_eval.py', '.github/workflows/v64-500k.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: v64-500k-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  wait-for-frozen-model:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - name: Wait for locked model and both offline deployment checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh run watch 38615175304 --repo '${{ github.repository }}' --interval 30 --exit-status
+  score:
+    needs: wait-for-frozen-model
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4]
+    env:
+      OMP_NUM_THREADS: 2
+      OPENBLAS_NUM_THREADS: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v64-frozen-model
+          run-id: 38615175304
+          github-token: ${{ github.token }}
+          path: .cache/v64
+      - uses: actions/download-artifact@v4
+        with:
+          name: v62-500k-input-${{ matrix.shard }}
+          run-id: 38518407108
+          github-token: ${{ github.token }}
+          path: prepared/spam
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v62-large-ham-corpus
+          run-id: 38535255118
+          github-token: ${{ github.token }}
+          path: prepared/ham
+      - uses: actions/cache/restore@v4
+        if: matrix.shard == 0
+        with:
+          path: .cache/v60-data
+          key: mailguard-v60-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        if: matrix.shard == 0
+        with:
+          path: .cache/v59-data
+          key: mailguard-v59-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        if: matrix.shard == 0
+        with:
+          path: .cache/v61-new
+          key: mailguard-v61-october-20261013-v1
+          fail-on-cache-miss: true
+      - name: Dependencies matching trained runtime
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Verify accounting and feature isolation
+        run: python -m unittest discover -s tests/python -p 'test_v64_*.py'
+      - name: First 1000 parity then frozen inference with shared evidence for both profiles
+        run: |
+          python -u tools/evaluate_v64_frozen.py --phase score --shard ${{ matrix.shard }} \
+            --input prepared/spam/input-${{ matrix.shard }}.jsonl.gz --output predictions
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v64-frozen-predictions-${{ matrix.shard }}
+          path: predictions/
+          compression-level: 0
+          retention-days: 90
+  report:
+    needs: score
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v64-frozen-model
+          run-id: 38615175304
+          github-token: ${{ github.token }}
+          path: .cache/v64
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v64-frozen-predictions-*
+          path: combined
+      - name: Verify every saved prediction and compare with identical v62 baselines
+        run: |
+          python -u tools/evaluate_v64_frozen.py --phase aggregate \
+            --input combined --output reports/v64-500k
+          cat reports/v64-500k/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v64-comparison
+          path: |
+            reports/v64-500k/
+            combined/
+          compression-level: 0
+          retention-days: 90
+      - name: Save complete report in repository
+        run: |
+          cp reports/v64-500k/report.json /tmp/mailguard-v64-result.json
+          cp reports/v64-500k/report.md /tmp/mailguard-v64-result.md
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/mailguard-v64-result.json reports/v64-result.json
+          cp /tmp/mailguard-v64-result.md reports/v64-result.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v64-result.json reports/v64-result.md
+          git commit -m 'Record frozen v64 comparison on 500000 mail and 75271 HAM'
+          git push origin HEAD:mailguard-v48-calibrated
+      - name: Preserve permanent model, predictions and source checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tar -czf mailguard-v64-model.tar.gz -C .cache/v64 .
+          tar -czf mailguard-v64-results.tar.gz reports/v64-500k combined
+          git archive --format=tar.gz --output=mailguard-v64-source.tar.gz 3a4c834aa61f3b0cbd5725543f22a1225ff3f839
+          git archive --format=tar.gz --output=mailguard-v64-evaluation-source.tar.gz '${{ github.sha }}'
+          sha256sum mailguard-v64-model.tar.gz mailguard-v64-results.tar.gz mailguard-v64-source.tar.gz mailguard-v64-evaluation-source.tar.gz > mailguard-v64.sha256
+          gh release create "mailguard-v64-checkpoint-${{ github.run_id }}" --draft \
+            --target 3a4c834aa61f3b0cbd5725543f22a1225ff3f839 \
+            --title 'MailGuard v64: word experts and frozen 500k evaluation' --notes-file reports/v64-500k/report.md \
+            mailguard-v64-model.tar.gz mailguard-v64-results.tar.gz mailguard-v64-source.tar.gz mailguard-v64-evaluation-source.tar.gz mailguard-v64.sha256
