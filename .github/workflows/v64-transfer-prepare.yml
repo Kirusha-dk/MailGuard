@@ -1,9 +1,6 @@
 name: MailGuard v64 first-use 500k transfer corpus
 on:
   workflow_dispatch:
-  push:
-    branches: [mailguard-v48-calibrated]
-    paths: ['tools/prepare_v64_transfer.py', 'tests/python/test_v64_transfer.py', '.github/workflows/v64-transfer-prepare.yml']
 permissions:
   contents: read
   actions: read

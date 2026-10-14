@@ -1,0 +1,263 @@
+name: MailGuard v64 frozen first-use transfer evaluation
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/evaluate_v64_transfer.py', '.github/workflows/v64-transfer-evaluate.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: v64-transfer-evaluation-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  independent:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Wait for the existing exclusion checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for attempt in $(seq 1 120); do
+            if gh api 'repos/${{ github.repository }}/actions/runs/38625454770/artifacts?name=v64-transfer-prior-exclusions' \
+              --jq '.artifacts | any(.name == "v64-transfer-prior-exclusions" and .expired == false)' | rg -qx true; then
+              exit 0
+            fi
+            status="$(gh api 'repos/${{ github.repository }}/actions/runs/38625454770' --jq .status)"
+            if [ "$status" = completed ]; then
+              echo 'Prior exclusions unavailable; inspect the original preparation failure'
+              exit 1
+            fi
+            sleep 20
+          done
+          exit 1
+      - uses: actions/download-artifact@v4
+        with:
+          name: v64-transfer-prior-exclusions
+          run-id: 38625454770
+          github-token: ${{ github.token }}
+          path: prior-blocks
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v64-new-source-inputs
+          run-id: 38624082220
+          github-token: ${{ github.token }}
+          path: new-sources
+      - name: Parsing dependencies
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Verify protocol, then collect exact original GenSpam inventory and new phishing
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v64_transfer.py'
+          python -u tools/prepare_v64_transfer.py --phase collect --source independent --output independent-candidates
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v64-transfer-independent-candidates
+          path: |
+            independent-candidates/candidates.jsonl.gz
+            independent-candidates/audit.json
+          compression-level: 0
+          retention-days: 90
+  bulk-finished:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - name: Wait for all existing bulk collection jobs without repeating downloads
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # The original GenSpam guard used a published count that differs from
+          # the exact archive. All four unaffected bulk jobs must still finish.
+          # Download and merge below validate their actual artifacts individually.
+          gh run watch 38625454770 --repo '${{ github.repository }}' --interval 30
+  freeze:
+    needs: [independent, bulk-finished]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: v64-transfer-prior-exclusions
+          run-id: 38625454770
+          github-token: ${{ github.token }}
+          path: prior-blocks
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v64-new-candidates-*
+          run-id: 38625454770
+          github-token: ${{ github.token }}
+          path: candidates/bulk
+      - uses: actions/download-artifact@v4
+        with:
+          name: v64-transfer-independent-candidates
+          path: candidates/independent
+      - name: Globally exclude duplicates and conflicts; freeze 500000 before scoring
+        run: python -u tools/prepare_v64_transfer.py --phase merge --input candidates --count 500000 --output prepared
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v64-transfer-audit
+          path: prepared/audit.json
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v64-transfer-input-0
+          path: prepared/input-0.jsonl.gz
+          compression-level: 0
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v64-transfer-input-1
+          path: prepared/input-1.jsonl.gz
+          compression-level: 0
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v64-transfer-input-2
+          path: prepared/input-2.jsonl.gz
+          compression-level: 0
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v64-transfer-input-3
+          path: prepared/input-3.jsonl.gz
+          compression-level: 0
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v64-transfer-input-4
+          path: prepared/input-4.jsonl.gz
+          compression-level: 0
+          retention-days: 90
+      - name: Save permanent inputs and exclusions before quality evaluation
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tar -czf mailguard-v64-transfer-inputs.tar.gz prepared prior-blocks
+          git archive --format=tar.gz --output=mailguard-v64-transfer-source.tar.gz '${{ github.sha }}'
+          sha256sum mailguard-v64-transfer-inputs.tar.gz mailguard-v64-transfer-source.tar.gz > mailguard-v64-transfer-inputs.sha256
+          gh release create "mailguard-v64-transfer-inputs-${{ github.run_id }}" --draft \
+            --target 3a4c834aa61f3b0cbd5725543f22a1225ff3f839 \
+            --title 'MailGuard v64 first-use public transfer inputs' \
+            --notes 'Historical public corpus frozen before model inference. Original labels and source hashes retained. GenSpam: Ben Medlock, CEAS 2006. Phishing corpus: Jose Nazario, CC-BY-4.0. Spam archives: Bruce Guenter, untroubled.org. Not customer mail.' \
+            mailguard-v64-transfer-inputs.tar.gz mailguard-v64-transfer-source.tar.gz mailguard-v64-transfer-inputs.sha256
+  score:
+    needs: freeze
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4]
+    env:
+      OMP_NUM_THREADS: 2
+      OPENBLAS_NUM_THREADS: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v64-frozen-model
+          run-id: 38615175304
+          github-token: ${{ github.token }}
+          path: .cache/v64
+      - uses: actions/download-artifact@v4
+        with:
+          name: v64-transfer-audit
+          path: prepared
+      - uses: actions/download-artifact@v4
+        with:
+          name: v64-transfer-input-${{ matrix.shard }}
+          path: prepared
+      - name: Frozen runtime dependencies
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Verify first 1000 against both saved runtimes; evaluate both frozen profiles
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v64_transfer.py'
+          python -u tools/evaluate_v64_transfer.py --phase score --shard ${{ matrix.shard }} \
+            --input prepared/input-${{ matrix.shard }}.jsonl.gz --output predictions
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v64-transfer-predictions-${{ matrix.shard }}
+          path: predictions/
+          compression-level: 0
+          retention-days: 90
+  report:
+    needs: score
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: v64-transfer-audit
+          path: prepared
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v64-transfer-predictions-*
+          path: combined
+      - name: Verify all 500000 saved decisions; measure unseen-source and temporal transfer
+        run: |
+          python -u tools/evaluate_v64_transfer.py --phase aggregate --input combined --output reports/v64-transfer
+          cat reports/v64-transfer/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v64-new-transfer-result
+          path: |
+            reports/v64-transfer/
+            combined/
+          compression-level: 0
+          retention-days: 90
+      - name: Save transfer report in repository
+        run: |
+          cp reports/v64-transfer/report.json /tmp/mailguard-v64-transfer-result.json
+          cp reports/v64-transfer/report.md /tmp/mailguard-v64-transfer-result.md
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/mailguard-v64-transfer-result.json reports/v64-transfer-result.json
+          cp /tmp/mailguard-v64-transfer-result.md reports/v64-transfer-result.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v64-transfer-result.json reports/v64-transfer-result.md
+          git commit -m 'Record frozen v62 and v64 transfer on 500000 first-use public mail'
+          git push origin HEAD:mailguard-v48-calibrated
+      - name: Preserve permanent predictions, report and exact evaluator source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tar -czf mailguard-v64-transfer-results.tar.gz reports/v64-transfer combined prepared/audit.json
+          git archive --format=tar.gz --output=mailguard-v64-transfer-evaluator.tar.gz '${{ github.sha }}'
+          sha256sum mailguard-v64-transfer-results.tar.gz mailguard-v64-transfer-evaluator.tar.gz > mailguard-v64-transfer-results.sha256
+          gh release create "mailguard-v64-transfer-results-${{ github.run_id }}" --draft \
+            --target 3a4c834aa61f3b0cbd5725543f22a1225ff3f839 \
+            --title 'MailGuard v64 and v62: first-use transfer results' \
+            --notes-file reports/v64-transfer/report.md \
+            mailguard-v64-transfer-results.tar.gz mailguard-v64-transfer-evaluator.tar.gz mailguard-v64-transfer-results.sha256

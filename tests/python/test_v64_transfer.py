@@ -4,6 +4,8 @@ import unittest
 from pathlib import Path
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'tools'))
 from prepare_v64_transfer import UniquePool,view_keys,genspam_messages
+from evaluate_v64_transfer import add_record
+from collections import defaultdict,Counter
 
 def row(name,label):
     return dict(identity=name,family=name,y=label,source='fixture',script='latin',origin=name,
@@ -33,5 +35,15 @@ class FirstUseProtocol(unittest.TestCase):
     def test_gen_parser_uses_published_text_fields_only(self):
         text='<MESSAGE><FROM>metadata</FROM><SUBJECT><TEXT_NORMAL>Subject &amp; name</TEXT_NORMAL></SUBJECT><MESSAGE_BODY><TEXT_NORMAL>Body one</TEXT_NORMAL><TEXT_NORMAL>Body two</TEXT_NORMAL></MESSAGE_BODY></MESSAGE>'
         self.assertEqual(list(genspam_messages(text)),[('Subject & name','Body one\nBody two')])
+
+    def test_pair_counts_compare_matching_frozen_profiles(self):
+        tally=defaultdict(Counter);changes=defaultdict(Counter)
+        r=dict(label=0,cohort='independent-source',source='fixture',script='latin',
+            v62ConservativeMargin=-1,v62HighRecallMargin=1,v64ConservativeMargin=-1,v64HighRecallMargin=-1)
+        add_record(tally,changes,r)
+        self.assertEqual(tally['all','v64','high-recall']['tn'],1)
+        self.assertEqual(tally['all','v62','high-recall']['fp'],1)
+        self.assertEqual(changes['all','high-recall']['fixedFP'],1)
+        self.assertNotIn(('all','conservative'),changes)
 
 if __name__=='__main__':unittest.main()

@@ -18,7 +18,7 @@ from pathlib import Path,PurePosixPath
 
 SEED='mailguard-v64-transfer-20261014:'
 EXPECTED_GENS={'adapt_GEN.ems':300,'adapt_SPAM.ems':300,'test_GEN.ems':754,
-               'test_SPAM.ems':797,'train_GEN.ems':8158,'train_SPAM.ems':30099}
+               'test_SPAM.ems':797,'train_GEN.ems':8158,'train_SPAM.ems':30088}
 SOURCES=('independent','2016','2015','2014','2013')
 
 def sha_file(path):
@@ -193,7 +193,9 @@ def collect(args):
                     retain(canonical_fields(subject,body),int('_SPAM.' in name),'GenSpam',name+':'+str(count));count+=1
                 if count!=n:raise ValueError('Original GenSpam inventory changed: '+name+': '+str(count))
                 counts[name]=count;print('GENSPAM INVENTORY',name,count,flush=True)
-            inventories.append(dict(sources['genspam.tar.gz'],messageCounts=counts,labels='Original genuine/spam annotation',anonymized=True,attribution='Ben Medlock, CEAS 2006'))
+            inventories.append(dict(sources['genspam.tar.gz'],messageCounts=counts,
+                publishedTrainSpamCount=30099,archiveTrainSpamCount=30088,inventoryDifferenceDocumented=True,
+                labels='Original genuine/spam annotation',anonymized=True,attribution='Ben Medlock, CEAS 2006'))
         with zipfile.ZipFile(root/'labelled-mail.zip') as z:
             labels=Counter()
             for name in z.namelist():
@@ -270,7 +272,7 @@ def merge(args):
     audit=dict(count=count,ham=classes[0],spam=classes[1],available=available,independentSourceRows=independent,
         bySource=dict(sources),byScript=dict(scripts),shardCounts=dict(counts),shardSha256={str(i):sha_file(out/f'input-{i}.jsonl.gz') for i in range(5)},
         priorExclusions=prior,candidateAudits=audits,globalExclusions=dict(pool.stats),
-        selection='All eligible independent labelled-source mail; bulk archives fill remaining slots by fixed content hash; global hash order; no model scores used',
+        selection='All eligible non-archive labelled-source mail; bulk archives fill remaining slots by fixed content hash; global hash order; no model scores used',
         zeroDetectedPriorOverlap=True,identityBodyTemplateFamilyViewDedupPassed=True,testPreviouslyScored=False,testLabelsUsedForTraining=False,
         targetRecall=.95,targetHamFpr=.0001,codeCommit=os.environ.get('GITHUB_SHA'),githubRunId=os.environ.get('GITHUB_RUN_ID'),
         caveat='First-use historical public mail, not customer traffic. GenSpam is anonymized; published ASCII mail has removed headers; Nazario is a single manually labelled inbox. Bulk spam traps are weak spam labels and come from a previously used provider in different years. Exact fingerprints and campaign prefixes exclude known relatives, but semantic near-duplicates may remain. HAM sample size may not establish extremely rare production FP. No synthetic messages or duplicated refill are used.')
