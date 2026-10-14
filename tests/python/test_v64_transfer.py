@@ -15,7 +15,8 @@ def row(name,label):
 class FirstUseProtocol(unittest.TestCase):
     def test_email_normalizer_preserves_frozen_matches(self):
         frozen=re.compile(r'[\w.+-]+@[\w.-]+\.[\w-]+',re.U)
-        cases=['a@b.com','甲'*4000,'a@b.com '+'甲'*4000,'foo+bar@example.org','a@foo.x@b.com']
+        cases=['a@b.com','甲'*4000,'a@b.com '+'甲'*4000,'foo+bar@example.org','a@foo.x@b.com',
+               'a@b.com+foo@bar.org','测试@域.名+甲@乙.丙']
         rng=random.Random(64)
         cases+=[''.join(rng.choice('ab甲_+-..@@\n<>:/012 ') for _ in range(rng.randint(0,160))) for _ in range(1000)]
         for text in cases:self.assertEqual(frozen.sub('X',text),FAST_EMAIL.sub('X',text))

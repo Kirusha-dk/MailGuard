@@ -21,7 +21,17 @@ SEED='mailguard-v64-transfer-20261014:'
 EXPECTED_GENS={'adapt_GEN.ems':300,'adapt_SPAM.ems':300,'test_GEN.ems':754,
                'test_SPAM.ems':797,'train_GEN.ems':8158,'train_SPAM.ems':30088}
 SOURCES=('independent','2016','2015','2014','2013','2012','2011')
-FAST_EMAIL=re.compile(r'(?<![\w.+-])[\w.+-]+@[\w.-]+\.[\w-]+',re.U)
+class EquivalentEmailNormalizer:
+    frozen=re.compile(r'[\w.+-]+@[\w.-]+\.[\w-]+',re.U)
+    bounded=re.compile(r'(?<![\w.+-])[\w.+-]+@[\w.-]+\.[\w-]+',re.U)
+
+    def sub(self,replacement,text,count=0):
+        # Adjacent addresses separated by '+' can begin immediately after a
+        # preceding match. Preserve the original scanner in those strings.
+        pattern=self.frozen if '+' in text and text.count('@')>1 else self.bounded
+        return pattern.sub(replacement,text,count=count)
+
+FAST_EMAIL=EquivalentEmailNormalizer()
 
 def enable_equivalent_normalizers():
     # A valid match always starts at the beginning of a maximal local-part run.
