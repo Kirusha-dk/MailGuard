@@ -1,0 +1,28 @@
+name: MailGuard v64 new transfer source inventory
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/probe_v64_transfer_sources.py', '.github/workflows/v64-transfer-sources.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  sources:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify archives, publisher labels and source hashes without model inference
+        run: python -u tools/probe_v64_transfer_sources.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v64-new-source-inputs
+          path: .cache/v64-transfer-sources/
+          include-hidden-files: true
+          compression-level: 0
+          retention-days: 90
