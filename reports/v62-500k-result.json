@@ -1,0 +1,1503 @@
+{
+  "version": 62,
+  "evaluation": "500k-replay",
+  "modelSha256": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+  "corpusSha256": "5c0993c0258b854ce9cf2d5a31172d56692aaa351a533ca57c1ecc6e97c81f82",
+  "codeCommit": "36f4bfebfb2bd3717078eb1b1c5ee48f35fc4369",
+  "githubRunId": "38518407108",
+  "count": 500000,
+  "profiles": {
+    "conservative": {
+      "threshold": 0.0,
+      "targetHamFpr": 0.0001,
+      "scripts": {
+        "latin": {
+          "scope": "global",
+          "model": "log_loss-alpha1e-06-ham4",
+          "cutoff": 9.5759334564209,
+          "selectionKey": [
+            0.36585365853658536,
+            0.6103829429040328
+          ],
+          "scriptHasGoldHam": true
+        },
+        "cjk": {
+          "scope": "cjk",
+          "model": "hinge-alpha1e-06-ham1",
+          "cutoff": 0.44717746973037725,
+          "selectionKey": [
+            0.9870317002881844,
+            0.9964157837940169
+          ],
+          "scriptHasGoldHam": true
+        },
+        "other": {
+          "scope": "global",
+          "model": "log_loss-alpha1e-06-ham4",
+          "cutoff": 9.5759334564209,
+          "selectionKey": [
+            0.38517179023508136,
+            0.6148555662223152
+          ],
+          "scriptHasGoldHam": false
+        }
+      }
+    },
+    "high-recall": {
+      "threshold": 0.0,
+      "targetHamFpr": 0.002,
+      "scripts": {
+        "latin": {
+          "scope": "global",
+          "model": "hinge-alpha1e-06-ham4",
+          "cutoff": 3.121076583862305,
+          "selectionKey": [
+            0.8421333333333333,
+            0.889651538895978
+          ],
+          "scriptHasGoldHam": true
+        },
+        "cjk": {
+          "scope": "cjk",
+          "model": "hinge-alpha3e-07-ham1",
+          "cutoff": -0.06901241093873976,
+          "selectionKey": [
+            0.9927953890489913,
+            0.9980672544630058
+          ],
+          "scriptHasGoldHam": true
+        },
+        "other": {
+          "scope": "global",
+          "model": "log_loss-alpha1e-06-ham4",
+          "cutoff": 3.3004524707794194,
+          "selectionKey": [
+            0.8697501329080276,
+            0.92680900949571
+          ],
+          "scriptHasGoldHam": false
+        }
+      }
+    }
+  },
+  "results": {
+    "all": {
+      "conservative": {
+        "count": 500000,
+        "spam": 499225,
+        "ham": 775,
+        "tp": 358679,
+        "fn": 140546,
+        "tn": 775,
+        "fp": 0,
+        "recall": 0.7184716310280935,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.004932273156735627,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 500000,
+        "spam": 499225,
+        "ham": 775,
+        "tp": 455487,
+        "fn": 43738,
+        "tn": 775,
+        "fp": 0,
+        "recall": 0.9123882017126547,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.004932273156735627,
+        "precision": 1.0
+      }
+    },
+    "development-overlap": {
+      "conservative": {
+        "count": 148515,
+        "spam": 148261,
+        "ham": 254,
+        "tp": 108504,
+        "fn": 39757,
+        "tn": 254,
+        "fp": 0,
+        "recall": 0.7318445174388409,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.01489853043131252,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 148515,
+        "spam": 148261,
+        "ham": 254,
+        "tp": 137489,
+        "fn": 10772,
+        "tn": 254,
+        "fp": 0,
+        "recall": 0.9273443454448573,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.01489853043131252,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/script/cjk": {
+      "conservative": {
+        "count": 101187,
+        "spam": 101187,
+        "ham": 0,
+        "tp": 101104,
+        "fn": 83,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.9991797365274195,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 101187,
+        "spam": 101187,
+        "ham": 0,
+        "tp": 101143,
+        "fn": 44,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.999565161532608,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/script/latin": {
+      "conservative": {
+        "count": 46714,
+        "spam": 46460,
+        "ham": 254,
+        "tp": 7400,
+        "fn": 39060,
+        "tn": 254,
+        "fp": 0,
+        "recall": 0.1592767972449419,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.01489853043131252,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 46714,
+        "spam": 46460,
+        "ham": 254,
+        "tp": 36006,
+        "fn": 10454,
+        "tn": 254,
+        "fp": 0,
+        "recall": 0.7749892380542402,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.01489853043131252,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/script/other": {
+      "conservative": {
+        "count": 614,
+        "spam": 614,
+        "ham": 0,
+        "tp": 0,
+        "fn": 614,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.0,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": null
+      },
+      "high-recall": {
+        "count": 614,
+        "spam": 614,
+        "ham": 0,
+        "tp": 340,
+        "fn": 274,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.5537459283387622,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/source/CSDMC2010": {
+      "conservative": {
+        "count": 403,
+        "spam": 149,
+        "ham": 254,
+        "tp": 12,
+        "fn": 137,
+        "tn": 254,
+        "fp": 0,
+        "recall": 0.08053691275167785,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.01489853043131252,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 403,
+        "spam": 149,
+        "ham": 254,
+        "tp": 107,
+        "fn": 42,
+        "tn": 254,
+        "fp": 0,
+        "recall": 0.7181208053691275,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.01489853043131252,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/source/SpamArchive-2017": {
+      "conservative": {
+        "count": 118477,
+        "spam": 118477,
+        "ham": 0,
+        "tp": 99628,
+        "fn": 18849,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.84090582982351,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 118477,
+        "spam": 118477,
+        "ham": 0,
+        "tp": 112716,
+        "fn": 5761,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.9513745283894764,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/source/SpamArchive-2018": {
+      "conservative": {
+        "count": 8033,
+        "spam": 8033,
+        "ham": 0,
+        "tp": 4650,
+        "fn": 3383,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.5788621934520105,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 8033,
+        "spam": 8033,
+        "ham": 0,
+        "tp": 6904,
+        "fn": 1129,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.8594547491597162,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/source/SpamArchive-2019": {
+      "conservative": {
+        "count": 3689,
+        "spam": 3689,
+        "ham": 0,
+        "tp": 884,
+        "fn": 2805,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.23963133640552994,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 3689,
+        "spam": 3689,
+        "ham": 0,
+        "tp": 3124,
+        "fn": 565,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.8468419625914883,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/source/SpamArchive-2020": {
+      "conservative": {
+        "count": 7388,
+        "spam": 7388,
+        "ham": 0,
+        "tp": 1443,
+        "fn": 5945,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.19531672983216025,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 7388,
+        "spam": 7388,
+        "ham": 0,
+        "tp": 6193,
+        "fn": 1195,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.8382512181916622,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/source/SpamArchive-2021": {
+      "conservative": {
+        "count": 3091,
+        "spam": 3091,
+        "ham": 0,
+        "tp": 617,
+        "fn": 2474,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.19961177612423164,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 3091,
+        "spam": 3091,
+        "ham": 0,
+        "tp": 2382,
+        "fn": 709,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.7706243934001941,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/source/SpamArchive-2022": {
+      "conservative": {
+        "count": 3285,
+        "spam": 3285,
+        "ham": 0,
+        "tp": 414,
+        "fn": 2871,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.12602739726027398,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 3285,
+        "spam": 3285,
+        "ham": 0,
+        "tp": 2731,
+        "fn": 554,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.8313546423135464,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/source/SpamArchive-2023": {
+      "conservative": {
+        "count": 1871,
+        "spam": 1871,
+        "ham": 0,
+        "tp": 356,
+        "fn": 1515,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.1902725815072154,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 1871,
+        "spam": 1871,
+        "ham": 0,
+        "tp": 1562,
+        "fn": 309,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.8348476750400855,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/source/SpamArchive-2024": {
+      "conservative": {
+        "count": 857,
+        "spam": 857,
+        "ham": 0,
+        "tp": 170,
+        "fn": 687,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.1983663943990665,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 857,
+        "spam": 857,
+        "ham": 0,
+        "tp": 675,
+        "fn": 182,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.7876312718786465,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "development-overlap/source/SpamArchive-2025": {
+      "conservative": {
+        "count": 1421,
+        "spam": 1421,
+        "ham": 0,
+        "tp": 330,
+        "fn": 1091,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.2322308233638283,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 1421,
+        "spam": 1421,
+        "ham": 0,
+        "tp": 1095,
+        "fn": 326,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.7705840957072484,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap": {
+      "conservative": {
+        "count": 351485,
+        "spam": 350964,
+        "ham": 521,
+        "tp": 250175,
+        "fn": 100789,
+        "tn": 521,
+        "fp": 0,
+        "recall": 0.7128223977387994,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.007319274718361214,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 351485,
+        "spam": 350964,
+        "ham": 521,
+        "tp": 317998,
+        "fn": 32966,
+        "tn": 521,
+        "fp": 0,
+        "recall": 0.9060701382477975,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.007319274718361214,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/script/cjk": {
+      "conservative": {
+        "count": 233422,
+        "spam": 233422,
+        "ham": 0,
+        "tp": 232992,
+        "fn": 430,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.9981578428768496,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 233422,
+        "spam": 233422,
+        "ham": 0,
+        "tp": 233306,
+        "fn": 116,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.9995030459853826,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/script/latin": {
+      "conservative": {
+        "count": 116341,
+        "spam": 115821,
+        "ham": 520,
+        "tp": 17183,
+        "fn": 98638,
+        "tn": 520,
+        "fp": 0,
+        "recall": 0.1483582424603483,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.0073332470273396585,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 116341,
+        "spam": 115821,
+        "ham": 520,
+        "tp": 83723,
+        "fn": 32098,
+        "tn": 520,
+        "fp": 0,
+        "recall": 0.7228654561780679,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.0073332470273396585,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/script/other": {
+      "conservative": {
+        "count": 1722,
+        "spam": 1721,
+        "ham": 1,
+        "tp": 0,
+        "fn": 1721,
+        "tn": 1,
+        "fp": 0,
+        "recall": 0.0,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.7934506856227626,
+        "precision": null
+      },
+      "high-recall": {
+        "count": 1722,
+        "spam": 1721,
+        "ham": 1,
+        "tp": 969,
+        "fn": 752,
+        "tn": 1,
+        "fp": 0,
+        "recall": 0.5630447414294015,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.7934506856227626,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/source/CSDMC2010": {
+      "conservative": {
+        "count": 811,
+        "spam": 290,
+        "ham": 521,
+        "tp": 19,
+        "fn": 271,
+        "tn": 521,
+        "fp": 0,
+        "recall": 0.06551724137931035,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.007319274718361214,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 811,
+        "spam": 290,
+        "ham": 521,
+        "tp": 191,
+        "fn": 99,
+        "tn": 521,
+        "fp": 0,
+        "recall": 0.6586206896551724,
+        "hamFpr": 0.0,
+        "hamFprWilson95Upper": 0.007319274718361214,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/source/SpamArchive-2017": {
+      "conservative": {
+        "count": 280107,
+        "spam": 280107,
+        "ham": 0,
+        "tp": 231046,
+        "fn": 49061,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.8248490755318503,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 280107,
+        "spam": 280107,
+        "ham": 0,
+        "tp": 259746,
+        "fn": 20361,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.9273099208516745,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/source/SpamArchive-2018": {
+      "conservative": {
+        "count": 19493,
+        "spam": 19493,
+        "ham": 0,
+        "tp": 9126,
+        "fn": 10367,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.468168060329349,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 19493,
+        "spam": 19493,
+        "ham": 0,
+        "tp": 15797,
+        "fn": 3696,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.8103934745806187,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/source/SpamArchive-2019": {
+      "conservative": {
+        "count": 8679,
+        "spam": 8679,
+        "ham": 0,
+        "tp": 2061,
+        "fn": 6618,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.23746975458002073,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 8679,
+        "spam": 8679,
+        "ham": 0,
+        "tp": 7254,
+        "fn": 1425,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.8358105772554442,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/source/SpamArchive-2020": {
+      "conservative": {
+        "count": 18016,
+        "spam": 18016,
+        "ham": 0,
+        "tp": 3424,
+        "fn": 14592,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.19005328596802842,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 18016,
+        "spam": 18016,
+        "ham": 0,
+        "tp": 15128,
+        "fn": 2888,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.8396980461811723,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/source/SpamArchive-2021": {
+      "conservative": {
+        "count": 7292,
+        "spam": 7292,
+        "ham": 0,
+        "tp": 1419,
+        "fn": 5873,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.19459681843115742,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 7292,
+        "spam": 7292,
+        "ham": 0,
+        "tp": 5596,
+        "fn": 1696,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.7674163466812945,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/source/SpamArchive-2022": {
+      "conservative": {
+        "count": 7776,
+        "spam": 7776,
+        "ham": 0,
+        "tp": 1017,
+        "fn": 6759,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.13078703703703703,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 7776,
+        "spam": 7776,
+        "ham": 0,
+        "tp": 6488,
+        "fn": 1288,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.8343621399176955,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/source/SpamArchive-2023": {
+      "conservative": {
+        "count": 4680,
+        "spam": 4680,
+        "ham": 0,
+        "tp": 869,
+        "fn": 3811,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.1856837606837607,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 4680,
+        "spam": 4680,
+        "ham": 0,
+        "tp": 3975,
+        "fn": 705,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.8493589743589743,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/source/SpamArchive-2024": {
+      "conservative": {
+        "count": 1961,
+        "spam": 1961,
+        "ham": 0,
+        "tp": 426,
+        "fn": 1535,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.21723610402855686,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 1961,
+        "spam": 1961,
+        "ham": 0,
+        "tp": 1547,
+        "fn": 414,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.788883222845487,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    },
+    "no-development-overlap/source/SpamArchive-2025": {
+      "conservative": {
+        "count": 2670,
+        "spam": 2670,
+        "ham": 0,
+        "tp": 768,
+        "fn": 1902,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.2876404494382023,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      },
+      "high-recall": {
+        "count": 2670,
+        "spam": 2670,
+        "ham": 0,
+        "tp": 2276,
+        "fn": 394,
+        "tn": 0,
+        "fp": 0,
+        "recall": 0.8524344569288389,
+        "hamFpr": null,
+        "hamFprWilson95Upper": null,
+        "precision": 1.0
+      }
+    }
+  },
+  "acceptance": {
+    "conservative": {
+      "recall95AndFpAtMost50": false,
+      "rareFpPointGoalMet": true,
+      "customerGoalValidated": false
+    },
+    "high-recall": {
+      "recall95AndFpAtMost50": false,
+      "rareFpPointGoalMet": true,
+      "customerGoalValidated": false
+    }
+  },
+  "audit": {
+    "count": 500000,
+    "counts": {
+      "all": 500000,
+      "no-development-overlap": 351485,
+      "spam": 499225,
+      "no-development-overlap:spam": 350964,
+      "development-overlap": 148515,
+      "development-overlap:spam": 148261,
+      "overlap:train": 96197,
+      "overlap:cal": 24983,
+      "overlap:select": 27335,
+      "ham": 775,
+      "development-overlap:ham": 254,
+      "no-development-overlap:ham": 521
+    },
+    "bySource": {
+      "SpamArchive-2018": 27526,
+      "SpamArchive-2017": 398584,
+      "SpamArchive-2022": 11061,
+      "SpamArchive-2023": 6551,
+      "SpamArchive-2019": 12368,
+      "SpamArchive-2021": 10383,
+      "SpamArchive-2020": 25404,
+      "SpamArchive-2025": 4091,
+      "SpamArchive-2024": 2818,
+      "CSDMC2010": 1214
+    },
+    "shardCounts": {
+      "0": 100000,
+      "1": 100000,
+      "2": 100000,
+      "3": 100000,
+      "4": 100000
+    },
+    "modelSha256": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+    "corpusSha256": "5c0993c0258b854ce9cf2d5a31172d56692aaa351a533ca57c1ecc6e97c81f82",
+    "corpusManifest": {
+      "requestedCount": 500000,
+      "selected": 500000,
+      "available": 678117,
+      "ham": 775,
+      "spam": 499225,
+      "bySource": {
+        "SpamArchive-2018": 27526,
+        "SpamArchive-2017": 398584,
+        "SpamArchive-2022": 11061,
+        "SpamArchive-2023": 6551,
+        "SpamArchive-2019": 12368,
+        "SpamArchive-2021": 10383,
+        "SpamArchive-2020": 25404,
+        "SpamArchive-2025": 4091,
+        "SpamArchive-2024": 2818,
+        "CSDMC2010": 1214
+      },
+      "exclusions": {
+        "seen": 1620411,
+        "retained": 678117,
+        "conflictingOrBridged": 242417,
+        "oldContent": 242417,
+        "shortBody": 19814,
+        "duplicateCandidate": 680063,
+        "notRfc822Mail": 434
+      },
+      "previousSources": {
+        "frozenAudit": {
+          "train": {
+            "count": 50000,
+            "orderedSha256": "b08dd04410b339e212dee8066bb53a49904ed511bcc7e3c326a0a6a9bc852c8b",
+            "spam": 23500
+          },
+          "val": {
+            "count": 10000,
+            "orderedSha256": "fb302bdeba40d3047c13c5732d043056bb37c58979d955b7427c16b08c0038e1",
+            "spam": 4700
+          },
+          "test": {
+            "count": 50000,
+            "orderedSha256": "302b173b387e54982d96aee1fc3c63284033e2efcf7b8a1fc7b9487cde8dfbf4",
+            "spam": 25000
+          },
+          "manifestSha256": "fac57b2f6475e2db211976b2c5bddc767ce746521cd80bcc6fe21a205183fb5a"
+        },
+        "datasetFingerprints": {
+          "seven": "9fa33b44f6449928",
+          "SetFit/train": "7bc04d452ec7dcb1",
+          "SetFit/test": "58de05404b53cdf3"
+        }
+      },
+      "sources": [
+        {
+          "url": "https://codeload.github.com/warmspringwinds/email_spam_filtering/zip/8e9687170dc683a66ba9bae01839cc3eacb85e08",
+          "sha256": "e1e0556bcbd00ab59cbf8473984e100ad7335fa3306c7d00eb17a852f639ef04",
+          "bytes": 22689359
+        },
+        {
+          "url": "https://untroubled.org/spam/2025.7z",
+          "sha256": "3d3ad01f6eb7f90bad6a51d653847e2a8f3818e7abdc17efac9d9da021b3860e",
+          "bytes": 18471207,
+          "messagesRead": 10830
+        },
+        {
+          "url": "https://untroubled.org/spam/2024.7z",
+          "sha256": "1de672fd034cec6c34944da0fa68d02dc31254340b68696a9013e7ceeb74d238",
+          "bytes": 15080579,
+          "messagesRead": 6592
+        },
+        {
+          "url": "https://untroubled.org/spam/2023.7z",
+          "sha256": "6032850eff57eefec70208c5e568c73aa3ef1ab7e9d9122eaf67ce77ad4c29d6",
+          "bytes": 29183084,
+          "messagesRead": 11898
+        },
+        {
+          "url": "https://untroubled.org/spam/2022.7z",
+          "sha256": "171f343cc3d359357142374fe98d642f5d95017f07b3e8abe81ba8fe8bd1e1ec",
+          "bytes": 19533792,
+          "messagesRead": 19876
+        },
+        {
+          "url": "https://untroubled.org/spam/2021.7z",
+          "sha256": "7fcc8b458ba531ef63ad3a084ad8c28cbf0fffb651d7e5fba6bd87e0a9264a0b",
+          "bytes": 22550575,
+          "messagesRead": 18598
+        },
+        {
+          "url": "https://untroubled.org/spam/2020.7z",
+          "sha256": "a2baa235678171a7b44853b70e610b4c19311cc459f935235f0932648289a589",
+          "bytes": 36813845,
+          "messagesRead": 48990
+        },
+        {
+          "url": "https://untroubled.org/spam/2019.7z",
+          "sha256": "9b44477fbe9d1643712c78ba8544c05337b80aa87dcab71a09222c8e3d1b8595",
+          "bytes": 20727696,
+          "messagesRead": 23854
+        },
+        {
+          "url": "https://untroubled.org/spam/2018.7z",
+          "sha256": "e5fe01925ce1a7ac52a7e9045c9dfad3cedf1294edecfc7efba56f857ba1bc5d",
+          "bytes": 19972310,
+          "messagesRead": 77245
+        },
+        {
+          "url": "https://untroubled.org/spam/2017.7z",
+          "sha256": "9744cc3fb7ad3cee1cf036a13a0df313a3af8deeda294da2813755d44eb4593d",
+          "bytes": 272136279,
+          "messagesRead": 1400028
+        }
+      ],
+      "uniqueAuditPassed": true,
+      "selection": "fixed seeded content hash; no labels or scores used to rank rows",
+      "selectedSha256": "5c0993c0258b854ce9cf2d5a31172d56692aaa351a533ca57c1ecc6e97c81f82",
+      "warning": "Historical public mail, heavily spam-skewed. SpamArchive labels come from spam traps; CSDMC supplies labelled ham. This is a stress test, not a representative customer benchmark. FP rate uses the actual ham denominator. Exact body and normalized-template duplicates are excluded; semantic near-duplicates may still remain. No threshold tuning on these labels."
+    },
+    "developmentManifestSha256": "7c24771a93692a7a26f0a97e7347ead57aa183036be28a7c69c9d13a01ea3996",
+    "actualTrainIdentitySha256": "9f17fe3c6a420d57b62eab42aea1cb15fee50b3aac424a3429ecce45833373b3",
+    "auditSeconds": 497.048129486,
+    "codeCommit": "36f4bfebfb2bd3717078eb1b1c5ee48f35fc4369",
+    "githubRunId": "38518407108",
+    "uniqueIdentityBodyTemplateAuditPassed": true,
+    "fixedModelAndThresholds": true,
+    "freshTest": false,
+    "caveat": "Previously inspected historical public corpus, predominantly spam. The full replay includes development messages and is not an independent quality estimate. Use the no-development-overlap subset for the engineering comparison; it is also previously inspected and is not customer validation. Distinct identity/body/template keys do not guarantee semantic independence. Few legitimate messages limit FP evidence.",
+    "shardSha256": {
+      "0": "b08357da51a8fe3d50bd33d201b9965aace2312eb244ea344160a26c520b7f38",
+      "1": "e2e2f027c1fe4248f9dc637e8b87614364a2baf7c1d7582e38d6894bd90f0e1d",
+      "2": "e34d5493f3538cf4a9260c320f3961db450a944f639cf82d016e1d0b104772a2",
+      "3": "77a6aee52b2c82bd6cc08c39625cbd943ef1e200349c8fe46d976400f342958a",
+      "4": "8e3bd6c13f6e4214ee211cc8b6f1f2e90f981188b8af5e739674a62168e46643"
+    }
+  },
+  "shards": [
+    {
+      "shard": 0,
+      "count": 100000,
+      "modelSha256": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+      "inputSha256": "b08357da51a8fe3d50bd33d201b9965aace2312eb244ea344160a26c520b7f38",
+      "predictionsSha256": "c68ab5faaabf6f67dbb3ea41c1656b31d4ad82ac3dbdd5f9b764a41e20357a2f",
+      "profiles": {
+        "conservative": {
+          "threshold": 0.0,
+          "targetHamFpr": 0.0001,
+          "scripts": {
+            "latin": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 9.5759334564209,
+              "selectionKey": [
+                0.36585365853658536,
+                0.6103829429040328
+              ],
+              "scriptHasGoldHam": true
+            },
+            "cjk": {
+              "scope": "cjk",
+              "model": "hinge-alpha1e-06-ham1",
+              "cutoff": 0.44717746973037725,
+              "selectionKey": [
+                0.9870317002881844,
+                0.9964157837940169
+              ],
+              "scriptHasGoldHam": true
+            },
+            "other": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 9.5759334564209,
+              "selectionKey": [
+                0.38517179023508136,
+                0.6148555662223152
+              ],
+              "scriptHasGoldHam": false
+            }
+          }
+        },
+        "high-recall": {
+          "threshold": 0.0,
+          "targetHamFpr": 0.002,
+          "scripts": {
+            "latin": {
+              "scope": "global",
+              "model": "hinge-alpha1e-06-ham4",
+              "cutoff": 3.121076583862305,
+              "selectionKey": [
+                0.8421333333333333,
+                0.889651538895978
+              ],
+              "scriptHasGoldHam": true
+            },
+            "cjk": {
+              "scope": "cjk",
+              "model": "hinge-alpha3e-07-ham1",
+              "cutoff": -0.06901241093873976,
+              "selectionKey": [
+                0.9927953890489913,
+                0.9980672544630058
+              ],
+              "scriptHasGoldHam": true
+            },
+            "other": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 3.3004524707794194,
+              "selectionKey": [
+                0.8697501329080276,
+                0.92680900949571
+              ],
+              "scriptHasGoldHam": false
+            }
+          }
+        }
+      },
+      "seconds": 529.641124656,
+      "runtimeParityPassed": true
+    },
+    {
+      "shard": 1,
+      "count": 100000,
+      "modelSha256": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+      "inputSha256": "e2e2f027c1fe4248f9dc637e8b87614364a2baf7c1d7582e38d6894bd90f0e1d",
+      "predictionsSha256": "c54f626d4ca4ebb37400eae32ff2d058bfe73d731987ca8bb0573d2de2ab0dd1",
+      "profiles": {
+        "conservative": {
+          "threshold": 0.0,
+          "targetHamFpr": 0.0001,
+          "scripts": {
+            "latin": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 9.5759334564209,
+              "selectionKey": [
+                0.36585365853658536,
+                0.6103829429040328
+              ],
+              "scriptHasGoldHam": true
+            },
+            "cjk": {
+              "scope": "cjk",
+              "model": "hinge-alpha1e-06-ham1",
+              "cutoff": 0.44717746973037725,
+              "selectionKey": [
+                0.9870317002881844,
+                0.9964157837940169
+              ],
+              "scriptHasGoldHam": true
+            },
+            "other": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 9.5759334564209,
+              "selectionKey": [
+                0.38517179023508136,
+                0.6148555662223152
+              ],
+              "scriptHasGoldHam": false
+            }
+          }
+        },
+        "high-recall": {
+          "threshold": 0.0,
+          "targetHamFpr": 0.002,
+          "scripts": {
+            "latin": {
+              "scope": "global",
+              "model": "hinge-alpha1e-06-ham4",
+              "cutoff": 3.121076583862305,
+              "selectionKey": [
+                0.8421333333333333,
+                0.889651538895978
+              ],
+              "scriptHasGoldHam": true
+            },
+            "cjk": {
+              "scope": "cjk",
+              "model": "hinge-alpha3e-07-ham1",
+              "cutoff": -0.06901241093873976,
+              "selectionKey": [
+                0.9927953890489913,
+                0.9980672544630058
+              ],
+              "scriptHasGoldHam": true
+            },
+            "other": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 3.3004524707794194,
+              "selectionKey": [
+                0.8697501329080276,
+                0.92680900949571
+              ],
+              "scriptHasGoldHam": false
+            }
+          }
+        }
+      },
+      "seconds": 530.93832402,
+      "runtimeParityPassed": true
+    },
+    {
+      "shard": 2,
+      "count": 100000,
+      "modelSha256": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+      "inputSha256": "e34d5493f3538cf4a9260c320f3961db450a944f639cf82d016e1d0b104772a2",
+      "predictionsSha256": "7ec6e90f22846ca2f664ba2751f5b4f0478b6e08defab023b9244376e26f8ba4",
+      "profiles": {
+        "conservative": {
+          "threshold": 0.0,
+          "targetHamFpr": 0.0001,
+          "scripts": {
+            "latin": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 9.5759334564209,
+              "selectionKey": [
+                0.36585365853658536,
+                0.6103829429040328
+              ],
+              "scriptHasGoldHam": true
+            },
+            "cjk": {
+              "scope": "cjk",
+              "model": "hinge-alpha1e-06-ham1",
+              "cutoff": 0.44717746973037725,
+              "selectionKey": [
+                0.9870317002881844,
+                0.9964157837940169
+              ],
+              "scriptHasGoldHam": true
+            },
+            "other": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 9.5759334564209,
+              "selectionKey": [
+                0.38517179023508136,
+                0.6148555662223152
+              ],
+              "scriptHasGoldHam": false
+            }
+          }
+        },
+        "high-recall": {
+          "threshold": 0.0,
+          "targetHamFpr": 0.002,
+          "scripts": {
+            "latin": {
+              "scope": "global",
+              "model": "hinge-alpha1e-06-ham4",
+              "cutoff": 3.121076583862305,
+              "selectionKey": [
+                0.8421333333333333,
+                0.889651538895978
+              ],
+              "scriptHasGoldHam": true
+            },
+            "cjk": {
+              "scope": "cjk",
+              "model": "hinge-alpha3e-07-ham1",
+              "cutoff": -0.06901241093873976,
+              "selectionKey": [
+                0.9927953890489913,
+                0.9980672544630058
+              ],
+              "scriptHasGoldHam": true
+            },
+            "other": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 3.3004524707794194,
+              "selectionKey": [
+                0.8697501329080276,
+                0.92680900949571
+              ],
+              "scriptHasGoldHam": false
+            }
+          }
+        }
+      },
+      "seconds": 527.9528100169999,
+      "runtimeParityPassed": true
+    },
+    {
+      "shard": 3,
+      "count": 100000,
+      "modelSha256": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+      "inputSha256": "77a6aee52b2c82bd6cc08c39625cbd943ef1e200349c8fe46d976400f342958a",
+      "predictionsSha256": "9ff7073ecaf929ad094c204dff593b79d7a39728a71d5d79c02f981c6b8ae1bd",
+      "profiles": {
+        "conservative": {
+          "threshold": 0.0,
+          "targetHamFpr": 0.0001,
+          "scripts": {
+            "latin": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 9.5759334564209,
+              "selectionKey": [
+                0.36585365853658536,
+                0.6103829429040328
+              ],
+              "scriptHasGoldHam": true
+            },
+            "cjk": {
+              "scope": "cjk",
+              "model": "hinge-alpha1e-06-ham1",
+              "cutoff": 0.44717746973037725,
+              "selectionKey": [
+                0.9870317002881844,
+                0.9964157837940169
+              ],
+              "scriptHasGoldHam": true
+            },
+            "other": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 9.5759334564209,
+              "selectionKey": [
+                0.38517179023508136,
+                0.6148555662223152
+              ],
+              "scriptHasGoldHam": false
+            }
+          }
+        },
+        "high-recall": {
+          "threshold": 0.0,
+          "targetHamFpr": 0.002,
+          "scripts": {
+            "latin": {
+              "scope": "global",
+              "model": "hinge-alpha1e-06-ham4",
+              "cutoff": 3.121076583862305,
+              "selectionKey": [
+                0.8421333333333333,
+                0.889651538895978
+              ],
+              "scriptHasGoldHam": true
+            },
+            "cjk": {
+              "scope": "cjk",
+              "model": "hinge-alpha3e-07-ham1",
+              "cutoff": -0.06901241093873976,
+              "selectionKey": [
+                0.9927953890489913,
+                0.9980672544630058
+              ],
+              "scriptHasGoldHam": true
+            },
+            "other": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 3.3004524707794194,
+              "selectionKey": [
+                0.8697501329080276,
+                0.92680900949571
+              ],
+              "scriptHasGoldHam": false
+            }
+          }
+        }
+      },
+      "seconds": 423.65093317700007,
+      "runtimeParityPassed": true
+    },
+    {
+      "shard": 4,
+      "count": 100000,
+      "modelSha256": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+      "inputSha256": "8e3bd6c13f6e4214ee211cc8b6f1f2e90f981188b8af5e739674a62168e46643",
+      "predictionsSha256": "6522388e53bbce96ca1e62d74cb2448ecbeedbb3079e3dc1a4cf8bc12e8e5329",
+      "profiles": {
+        "conservative": {
+          "threshold": 0.0,
+          "targetHamFpr": 0.0001,
+          "scripts": {
+            "latin": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 9.5759334564209,
+              "selectionKey": [
+                0.36585365853658536,
+                0.6103829429040328
+              ],
+              "scriptHasGoldHam": true
+            },
+            "cjk": {
+              "scope": "cjk",
+              "model": "hinge-alpha1e-06-ham1",
+              "cutoff": 0.44717746973037725,
+              "selectionKey": [
+                0.9870317002881844,
+                0.9964157837940169
+              ],
+              "scriptHasGoldHam": true
+            },
+            "other": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 9.5759334564209,
+              "selectionKey": [
+                0.38517179023508136,
+                0.6148555662223152
+              ],
+              "scriptHasGoldHam": false
+            }
+          }
+        },
+        "high-recall": {
+          "threshold": 0.0,
+          "targetHamFpr": 0.002,
+          "scripts": {
+            "latin": {
+              "scope": "global",
+              "model": "hinge-alpha1e-06-ham4",
+              "cutoff": 3.121076583862305,
+              "selectionKey": [
+                0.8421333333333333,
+                0.889651538895978
+              ],
+              "scriptHasGoldHam": true
+            },
+            "cjk": {
+              "scope": "cjk",
+              "model": "hinge-alpha3e-07-ham1",
+              "cutoff": -0.06901241093873976,
+              "selectionKey": [
+                0.9927953890489913,
+                0.9980672544630058
+              ],
+              "scriptHasGoldHam": true
+            },
+            "other": {
+              "scope": "global",
+              "model": "log_loss-alpha1e-06-ham4",
+              "cutoff": 3.3004524707794194,
+              "selectionKey": [
+                0.8697501329080276,
+                0.92680900949571
+              ],
+              "scriptHasGoldHam": false
+            }
+          }
+        }
+      },
+      "seconds": 524.673952895,
+      "runtimeParityPassed": true
+    }
+  ],
+  "testLabelsUsedForTraining": false,
+  "thresholdsChanged": false,
+  "freshTest": false,
+  "customerGoalValidated": false,
+  "caveat": "Previously inspected historical public corpus, predominantly spam. The full replay includes development messages and is not an independent quality estimate. Use the no-development-overlap subset for the engineering comparison; it is also previously inspected and is not customer validation. Distinct identity/body/template keys do not guarantee semantic independence. Few legitimate messages limit FP evidence."
+}

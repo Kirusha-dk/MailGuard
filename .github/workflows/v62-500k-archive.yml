@@ -1,0 +1,51 @@
+name: MailGuard archive completed v62 500k evaluation
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['.github/workflows/v62-500k-archive.yml']
+permissions:
+  contents: write
+  actions: read
+jobs:
+  archive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v62-500k-result
+          run-id: 38518407108
+          github-token: ${{ github.token }}
+          path: recovered
+      - name: Verify original report and every saved prediction without model inference
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          r=json.loads(Path('recovered/reports/v62-500k/report.json').read_text())
+          assert r['githubRunId']=='38518407108'
+          assert r['codeCommit']=='36f4bfebfb2bd3717078eb1b1c5ee48f35fc4369'
+          assert r['count']==500000
+          assert r['modelSha256']=='380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf'
+          Path('recovered/audit.json').write_text(json.dumps(r['audit']))
+          PY
+          python -u tools/evaluate_v62_500k.py --phase aggregate \
+            --input recovered/combined --audit recovered/audit.json --output verified
+          cmp verified/report.json recovered/reports/v62-500k/report.json
+          cmp verified/report.json reports/v62-500k-result.json
+          cat verified/report.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Preserve permanent benchmark checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tar -czf mailguard-v62-500k.tar.gz -C recovered reports/v62-500k combined
+          sha256sum mailguard-v62-500k.tar.gz > mailguard-v62-500k.sha256
+          gh release create mailguard-v62-500k-38518407108 --draft \
+            --target 36f4bfebfb2bd3717078eb1b1c5ee48f35fc4369 \
+            --title 'MailGuard v62: frozen 500000-message replay' --notes-file verified/report.md \
+            mailguard-v62-500k.tar.gz mailguard-v62-500k.sha256
