@@ -1,24 +1,70 @@
-# MailGuard v62: результаты и проверка
+# Проверка MailGuard v62
 
-Отдельные линейные модели для CJK, латиницы и общего набора: 2 359 296 символьных и словесных признаков. NB и IDF вычисляются только по TRAIN. SELECT выбирает кандидата, CAL фиксирует порог. Группы с недостаточным числом HAM получают общий порог. После TEST модель и пороги не меняются.
+Фильтр спама с локальной обработкой писем. Последняя законченная модель — экспериментальная v62. На отдельных инженерных проверках: 90,61% распознанного спама на 351 485 письмах; в режиме high-recall — 164 FP/75 271 HAM. Цель 95% с редкими FP пока не достигнута. [Проверка спама](../reports/v62-500k-result.md), [большая проверка FP](../reports/v62-large-ham-result.md).
 
-| Набор | Писем | HAM | Режим | Спам распознан | FP |
-|---|---:|---:|---|---:|---:|
-| october-regression | 122 | 0 | conservative | 41.80% | 0 |
-| october-regression | 122 | 0 | high-recall | 87.70% | 0 |
-| may-regression | 4146 | 313 | conservative | 29.43% | 2 |
-| may-regression | 4146 | 313 | high-recall | 93.32% | 6 |
-| v59-regression | 11831 | 1968 | conservative | 26.50% | 0 |
-| v59-regression | 11831 | 1968 | high-recall | 87.05% | 4 |
-| legacy-regression | 44615 | 24017 | conservative | 14.46% | 0 |
-| legacy-regression | 44615 | 24017 | high-recall | 79.39% | 40 |
+## Проверка на своих письмах
 
-Все наборы здесь — повторные инженерные проверки; нового HAM нет. Цель 95% при FP не выше 0,01% среди HAM не достигнута. На майском наборе high-recall улучшил v60 с 78,53% до 93,32%, но дал 6 FP/313 HAM. Conservative дал 2 FP/26 298 HAM суммарно при сильном снижении распознавания спама. Это не уровень заказчика.
+Нужны Linux или macOS, Git и работающий Docker; рекомендуется 4 ГБ свободной памяти. Одно письмо — один файл `.eml`. Проверка работает на CPU.
 
-Проверена согласованность сохранённой модели на 64 калибровочных письмах при разном размере пакета. Оба режима Docker проверены без сети; две пробные `.eml` служат проверкой запуска, а не подтверждением точности.
+### 1. Скачать код
 
-[Полный отчёт](../reports/v62-result.json), [обучение и тесты](https://github.com/Kirusha-dk/MailGuard/actions/runs/38468905929), [успешное сохранение](https://github.com/Kirusha-dk/MailGuard/actions/runs/38474124439), [постоянный пакет для владельца](https://github.com/Kirusha-dk/MailGuard/releases/tag/untagged-c770aa0363895475652e).
+```bash
+git clone --branch mailguard-v48-calibrated --single-branch https://github.com/Kirusha-dk/MailGuard.git MailGuard-check
+cd MailGuard-check
+mkdir -p model mail/spam mail/ham results
+```
 
-SHA модели: `380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf`. Коммит: `118b063a15a992d76697619d5be37e052c1b7856`. В постоянном пакете сохранён исходный код этого коммита.
+Остальные команды выполняйте из `MailGuard-check`.
 
-Пошаговая проверка своих `.eml` находится в [README](../README.md). Действующий фильтр сравнивайте на тех же письмах. Самостоятельная проверка MailGuard не измеряет качество его совместной работы с Rspamd.
+### 2. Скачать модель
+
+Войдите в GitHub, откройте [запуск v62](https://github.com/Kirusha-dk/MailGuard/actions/runs/38468905929) и в **Artifacts** скачайте **mailguard-v62-evidence**. Распакуйте ZIP в `MailGuard-check/model`. Проверьте:
+
+```bash
+ls model/reports/v62-full/model.joblib
+```
+
+Артефакт хранится до 11 января 2027 года. [Постоянный пакет для владельца](https://github.com/Kirusha-dk/MailGuard/releases/tag/untagged-c770aa0363895475652e) — отдельный черновик Release. Если используете его `.tar.gz`, распакуйте в `model` и замените путь модели ниже на `/model/v62-full`.
+
+### 3. Подготовить письма
+
+Скопируйте заранее размеченный спам в `mail/spam`, обычную почту в `mail/ham`. Подпапки допустимы, обе папки должны содержать `.eml`. Начните с небольшой выборки, затем проверьте отдельный набор за новый период.
+
+```bash
+docker build -f Dockerfile.v62-check -t mailguard-v62-check .
+```
+
+Для сборки нужен интернет. Письма в образ не копируются.
+
+### 4. Запустить проверку
+
+```bash
+docker run --rm --network none \
+  -v "$PWD/model:/model:ro" \
+  -v "$PWD/mail:/mail:ro" \
+  -v "$PWD/results:/results" \
+  mailguard-v62-check \
+  --model-dir /model/reports/v62-full \
+  --spam /mail/spam --ham /mail/ham \
+  --profile high-recall \
+  --output /results/check-01
+```
+
+Модель и порог не меняются. `high-recall` распознаёт больше спама; `conservative` даёт меньше FP ценой пропусков. Для сравнения замените профиль и папку вывода на `/results/check-02`. При нехватке памяти добавьте `--batch-size 16`.
+
+### 5. Прочитать результат
+
+```bash
+cat results/check-01/summary.txt
+```
+
+- **Spam recall** — доля обнаруженного спама; **FN** — пропущенный спам.
+- **FP** — обычные письма, ошибочно признанные спамом; **FPR** = FP/HAM.
+- **failed** — непрочитанные файлы; ненулевое значение означает неполную проверку.
+- **Duplicate content / conflicting labels** — повторы и противоречивая разметка. Повторы учтены в итоговых числах.
+
+Рядом сохраняются `summary.json`, `predictions.csv` и `errors.csv`. В CSV нет текстов писем; имена файлов и идентификаторы оставьте у себя. Для обсуждения достаточно `summary.txt` и периода выборки. Действующий фильтр сравнивайте на тех же письмах.
+
+Если Docker не запускается, проверьте, что он включён. Если письма не найдены, проверьте пути и `.eml`. Если папка вывода уже содержит отчёт, используйте новое имя.
+
+Код: `tools/` — обучение и применение моделей; `src/` — исходный C# проект с Rspamd. Качество на почте заказчика не подтверждено. Прежние версии сохранены: [v51](v51-check-legacy.md), [v57](v57-check.md), [v59](v59-check.md), [v60](v60-check.md).

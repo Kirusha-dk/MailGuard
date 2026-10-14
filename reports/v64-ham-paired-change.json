@@ -1,0 +1,43 @@
+{
+  "comparedHam": 75271,
+  "identitiesEqual": true,
+  "labelsPreserved": true,
+  "profiles": {
+    "conservative": {
+      "v62FP": 0,
+      "v64FP": 7,
+      "fixedFP": 0,
+      "newFP": 7,
+      "persistingFP": 0,
+      "fixedBySource": {},
+      "newBySource": {
+        "CEAS-08": 3,
+        "TREC-05": 3,
+        "TREC06-Chinese-original": 1
+      }
+    },
+    "high-recall": {
+      "v62FP": 164,
+      "v64FP": 76,
+      "fixedFP": 107,
+      "newFP": 19,
+      "persistingFP": 57,
+      "fixedBySource": {
+        "CEAS-08": 37,
+        "TREC-05": 48,
+        "TREC-07": 7,
+        "TREC-06": 5,
+        "Enron": 5,
+        "TREC06-Chinese-original": 4,
+        "Assassin": 1
+      },
+      "newBySource": {
+        "CEAS-08": 14,
+        "TREC06-Chinese-original": 1,
+        "TREC-05": 2,
+        "Enron": 1,
+        "TREC-07": 1
+      }
+    }
+  }
+}

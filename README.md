@@ -1,6 +1,6 @@
 # MailGuard
 
-Фильтр спама с локальной обработкой писем. Последняя законченная модель — экспериментальная v62. На отдельных инженерных проверках: 90,61% распознанного спама на 351 485 письмах; в режиме high-recall — 164 FP/75 271 HAM. Цель 95% с редкими FP пока не достигнута. [Проверка спама](reports/v62-500k-result.md), [большая проверка FP](reports/v62-large-ham-result.md).
+Фильтр спама с локальной обработкой писем. Экспериментальная v64: на 351 485 письмах без пересечений с обучением — 94,93% обнаруженного спама; отдельно 76 FP/75 271 HAM в `high-recall`. В `conservative` — 86,67% и 7 FP/75 271 HAM. Цель 95% с редкими FP пока не достигнута; на части прежних наборов есть регрессии. [Полный тест на 500 000 писем и проверка FP](reports/v64-result.md).
 
 ## Проверка на своих письмах
 
@@ -18,20 +18,20 @@ mkdir -p model mail/spam mail/ham results
 
 ### 2. Скачать модель
 
-Войдите в GitHub, откройте [запуск v62](https://github.com/Kirusha-dk/MailGuard/actions/runs/38468905929) и в **Artifacts** скачайте **mailguard-v62-evidence**. Распакуйте ZIP в `MailGuard-check/model`. Проверьте:
+Войдите в GitHub, откройте [запуск v64](https://github.com/Kirusha-dk/MailGuard/actions/runs/38615175304) и в **Artifacts** скачайте **mailguard-v64-frozen-model**. Распакуйте ZIP в `MailGuard-check/model`. Проверьте:
 
 ```bash
-ls model/reports/v62-full/model.joblib
+ls model/model.joblib model/v62/model.joblib
 ```
 
-Артефакт хранится до 11 января 2027 года. [Постоянный пакет для владельца](https://github.com/Kirusha-dk/MailGuard/releases/tag/untagged-c770aa0363895475652e) — отдельный черновик Release. Если используете его `.tar.gz`, распакуйте в `model` и замените путь модели ниже на `/model/v62-full`.
+Артефакт хранится до 12 января 2027 года. [Постоянный пакет для владельца](https://github.com/Kirusha-dk/MailGuard/releases/tag/untagged-8b6b0866d3efb6058fbd) — отдельный черновик Release. Если используете его `.tar.gz`, распакуйте его в `model`; путь модели ниже остаётся `/model`.
 
 ### 3. Подготовить письма
 
 Скопируйте заранее размеченный спам в `mail/spam`, обычную почту в `mail/ham`. Подпапки допустимы, обе папки должны содержать `.eml`. Начните с небольшой выборки, затем проверьте отдельный набор за новый период.
 
 ```bash
-docker build -f Dockerfile.v62-check -t mailguard-v62-check .
+docker build -f Dockerfile.v64-check -t mailguard-v64-check .
 ```
 
 Для сборки нужен интернет. Письма в образ не копируются.
@@ -43,10 +43,10 @@ docker run --rm --network none \
   -v "$PWD/model:/model:ro" \
   -v "$PWD/mail:/mail:ro" \
   -v "$PWD/results:/results" \
-  mailguard-v62-check \
-  --model-dir /model/reports/v62-full \
+  mailguard-v64-check \
+  --model-dir /model \
   --spam /mail/spam --ham /mail/ham \
-  --profile high-recall \
+  --profile conservative \
   --output /results/check-01
 ```
 
@@ -67,5 +67,5 @@ cat results/check-01/summary.txt
 
 Если Docker не запускается, проверьте, что он включён. Если письма не найдены, проверьте пути и `.eml`. Если папка вывода уже содержит отчёт, используйте новое имя.
 
-Код: `tools/` — обучение и применение моделей; `src/` — исходный C# проект с Rspamd. Качество на почте заказчика не подтверждено. Прежние версии сохранены: [v51](docs/v51-check-legacy.md), [v57](docs/v57-check.md), [v59](docs/v59-check.md), [v60](docs/v60-check.md).
+Код: `tools/` — обучение и применение моделей; `src/` — исходный C# проект с Rspamd. Качество на почте заказчика не подтверждено. Прежние версии сохранены: [v51](docs/v51-check-legacy.md), [v57](docs/v57-check.md), [v59](docs/v59-check.md), [v60](docs/v60-check.md), [v62](docs/v62-check.md).
 
