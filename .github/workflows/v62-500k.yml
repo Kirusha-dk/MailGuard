@@ -1,0 +1,186 @@
+name: MailGuard v62 on 500000 distinct emails
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/evaluate_v62_500k.py', 'tests/python/test_v62_500k.py', '.github/workflows/v62-500k.yml']
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: v62-500k-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OMP_NUM_THREADS: 2
+      OPENBLAS_NUM_THREADS: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v60-data
+          key: mailguard-v60-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v54-unique500k-corpus
+          run-id: 38092976048
+          github-token: ${{ github.token }}
+          path: .cache/v54-corpus
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v62-evidence
+          run-id: 38468905929
+          github-token: ${{ github.token }}
+          path: .cache/v62
+      - name: Dependencies matching frozen v62
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Verify overlap and FP accounting
+        run: python -m unittest discover -s tests/python -p 'test_v62_500k.py'
+      - name: Audit all 500000 identities, bodies, templates and development families
+        run: python -u tools/evaluate_v62_500k.py --phase prepare --output prepared
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v62-500k-audit
+          path: prepared/audit.json
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v62-500k-input-0
+          path: prepared/input-0.jsonl.gz
+          compression-level: 0
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v62-500k-input-1
+          path: prepared/input-1.jsonl.gz
+          compression-level: 0
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v62-500k-input-2
+          path: prepared/input-2.jsonl.gz
+          compression-level: 0
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v62-500k-input-3
+          path: prepared/input-3.jsonl.gz
+          compression-level: 0
+          retention-days: 7
+      - uses: actions/upload-artifact@v4
+        with:
+          name: v62-500k-input-4
+          path: prepared/input-4.jsonl.gz
+          compression-level: 0
+          retention-days: 7
+  score:
+    needs: audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [0, 1, 2, 3, 4]
+    env:
+      OMP_NUM_THREADS: 2
+      OPENBLAS_NUM_THREADS: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: v62-500k-audit
+          path: prepared
+      - uses: actions/download-artifact@v4
+        with:
+          name: v62-500k-input-${{ matrix.shard }}
+          path: prepared
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v62-evidence
+          run-id: 38468905929
+          github-token: ${{ github.token }}
+          path: .cache/v62
+      - name: Dependencies matching frozen v62
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Score 100000 messages with both frozen profiles
+        run: |
+          python -u tools/evaluate_v62_500k.py --phase score --shard ${{ matrix.shard }} \
+            --input prepared/input-${{ matrix.shard }}.jsonl.gz --audit prepared/audit.json --output predictions
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: v62-500k-predictions-${{ matrix.shard }}
+          path: predictions/
+          compression-level: 0
+          retention-days: 90
+  report:
+    needs: [audit, score]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: v62-500k-audit
+          path: prepared
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v62-500k-predictions-*
+          path: combined
+      - name: Verify every shard and aggregate all 500000 predictions
+        run: |
+          python -u tools/evaluate_v62_500k.py --phase aggregate \
+            --input combined --audit prepared/audit.json --output reports/v62-500k
+          cat reports/v62-500k/report.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v62-500k-result
+          path: |
+            reports/v62-500k/
+            combined/
+          compression-level: 0
+          retention-days: 90
+      - name: Save report in repository
+        run: |
+          cp reports/v62-500k/report.json /tmp/mailguard-v62-500k-result.json
+          cp reports/v62-500k/report.md /tmp/mailguard-v62-500k-result.md
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/mailguard-v62-500k-result.json reports/v62-500k-result.json
+          cp /tmp/mailguard-v62-500k-result.md reports/v62-500k-result.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add reports/v62-500k-result.json reports/v62-500k-result.md
+          git commit -m 'Record frozen v62 evaluation on 500000 distinct messages'
+          git push origin HEAD:mailguard-v48-calibrated
+      - name: Preserve permanent benchmark checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tar -czf mailguard-v62-500k.tar.gz reports/v62-500k combined
+          sha256sum mailguard-v62-500k.tar.gz > mailguard-v62-500k.sha256
+          gh release create "mailguard-v62-500k-${{ github.run_id }}" --draft --target '${{ github.sha }}' \
+            --title 'MailGuard v62: frozen 500000-message replay' --notes-file reports/v62-500k/report.md \
+            mailguard-v62-500k.tar.gz mailguard-v62-500k.sha256
