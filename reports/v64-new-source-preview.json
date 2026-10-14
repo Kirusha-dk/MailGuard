@@ -1,0 +1,788 @@
+{
+  "benchmark": "first-use-labelled-source-preview",
+  "count": 25971,
+  "ham": 10737,
+  "spam": 15234,
+  "modelsSha256": {
+    "v62": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+    "v64": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5"
+  },
+  "results": {
+    "all": {
+      "v62": {
+        "conservative": {
+          "count": 25971,
+          "spam": 15234,
+          "ham": 10737,
+          "tp": 764,
+          "fn": 14470,
+          "tn": 10737,
+          "fp": 0,
+          "recall": 0.050150978075357754,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0003576497088633039,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 25971,
+          "spam": 15234,
+          "ham": 10737,
+          "tp": 8830,
+          "fn": 6404,
+          "tn": 10649,
+          "fp": 88,
+          "recall": 0.5796245240908494,
+          "hamFpr": 0.008195957902579864,
+          "hamFprWilson95Upper": 0.010085968111407705,
+          "precision": 0.9901323166629289
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 25971,
+          "spam": 15234,
+          "ham": 10737,
+          "tp": 1641,
+          "fn": 13593,
+          "tn": 10737,
+          "fp": 0,
+          "recall": 0.10771957463568334,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0003576497088633039,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 25971,
+          "spam": 15234,
+          "ham": 10737,
+          "tp": 5934,
+          "fn": 9300,
+          "tn": 10730,
+          "fp": 7,
+          "recall": 0.3895234344230012,
+          "hamFpr": 0.0006519511967961255,
+          "hamFprWilson95Upper": 0.001345240005464294,
+          "precision": 0.9988217471806093
+        }
+      }
+    },
+    "new-mail-known-domain": {
+      "v62": {
+        "conservative": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 558,
+          "fn": 3522,
+          "tn": 2422,
+          "fp": 0,
+          "recall": 0.13676470588235295,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0015835572463839512,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 3339,
+          "fn": 741,
+          "tn": 2419,
+          "fp": 3,
+          "recall": 0.8183823529411764,
+          "hamFpr": 0.0012386457473162675,
+          "hamFprWilson95Upper": 0.0036355870523054677,
+          "precision": 0.9991023339317774
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 1006,
+          "fn": 3074,
+          "tn": 2422,
+          "fp": 0,
+          "recall": 0.2465686274509804,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0015835572463839512,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 2540,
+          "fn": 1540,
+          "tn": 2421,
+          "fp": 1,
+          "recall": 0.6225490196078431,
+          "hamFpr": 0.00041288191577208916,
+          "hamFprWilson95Upper": 0.002335125918801737,
+          "precision": 0.9996064541519087
+        }
+      }
+    },
+    "new-mail-known-domain/script/cjk": {
+      "v62": {
+        "conservative": {
+          "count": 1,
+          "spam": 1,
+          "ham": 0,
+          "tp": 1,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 1,
+          "spam": 1,
+          "ham": 0,
+          "tp": 1,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 1,
+          "spam": 1,
+          "ham": 0,
+          "tp": 0,
+          "fn": 1,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": null
+        },
+        "high-recall": {
+          "count": 1,
+          "spam": 1,
+          "ham": 0,
+          "tp": 1,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "new-mail-known-domain/script/latin": {
+      "v62": {
+        "conservative": {
+          "count": 6501,
+          "spam": 4079,
+          "ham": 2422,
+          "tp": 557,
+          "fn": 3522,
+          "tn": 2422,
+          "fp": 0,
+          "recall": 0.13655307673449374,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0015835572463839512,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 6501,
+          "spam": 4079,
+          "ham": 2422,
+          "tp": 3338,
+          "fn": 741,
+          "tn": 2419,
+          "fp": 3,
+          "recall": 0.8183378278989949,
+          "hamFpr": 0.0012386457473162675,
+          "hamFprWilson95Upper": 0.0036355870523054677,
+          "precision": 0.9991020652499252
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 6501,
+          "spam": 4079,
+          "ham": 2422,
+          "tp": 1006,
+          "fn": 3073,
+          "tn": 2422,
+          "fp": 0,
+          "recall": 0.24662907575386125,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0015835572463839512,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 6501,
+          "spam": 4079,
+          "ham": 2422,
+          "tp": 2539,
+          "fn": 1540,
+          "tn": 2421,
+          "fp": 1,
+          "recall": 0.6224564844324589,
+          "hamFpr": 0.00041288191577208916,
+          "hamFprWilson95Upper": 0.002335125918801737,
+          "precision": 0.9996062992125985
+        }
+      }
+    },
+    "script/cjk": {
+      "v62": {
+        "conservative": {
+          "count": 3,
+          "spam": 3,
+          "ham": 0,
+          "tp": 3,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 3,
+          "spam": 3,
+          "ham": 0,
+          "tp": 3,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 3,
+          "spam": 3,
+          "ham": 0,
+          "tp": 2,
+          "fn": 1,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.6666666666666666,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 3,
+          "spam": 3,
+          "ham": 0,
+          "tp": 3,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "script/latin": {
+      "v62": {
+        "conservative": {
+          "count": 25968,
+          "spam": 15231,
+          "ham": 10737,
+          "tp": 761,
+          "fn": 14470,
+          "tn": 10737,
+          "fp": 0,
+          "recall": 0.04996388943601865,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0003576497088633039,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 25968,
+          "spam": 15231,
+          "ham": 10737,
+          "tp": 8827,
+          "fn": 6404,
+          "tn": 10649,
+          "fp": 88,
+          "recall": 0.5795417241152911,
+          "hamFpr": 0.008195957902579864,
+          "hamFprWilson95Upper": 0.010085968111407705,
+          "precision": 0.9901289960740325
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 25968,
+          "spam": 15231,
+          "ham": 10737,
+          "tp": 1639,
+          "fn": 13592,
+          "tn": 10737,
+          "fp": 0,
+          "recall": 0.10760948066443438,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0003576497088633039,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 25968,
+          "spam": 15231,
+          "ham": 10737,
+          "tp": 5931,
+          "fn": 9300,
+          "tn": 10730,
+          "fp": 7,
+          "recall": 0.38940319086074454,
+          "hamFpr": 0.0006519511967961255,
+          "hamFprWilson95Upper": 0.001345240005464294,
+          "precision": 0.9988211519029977
+        }
+      }
+    },
+    "source/GenSpam": {
+      "v62": {
+        "conservative": {
+          "count": 19066,
+          "spam": 10751,
+          "ham": 8315,
+          "tp": 196,
+          "fn": 10555,
+          "tn": 8315,
+          "fp": 0,
+          "recall": 0.018230862245372525,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00046177810212032856,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19066,
+          "spam": 10751,
+          "ham": 8315,
+          "tp": 5343,
+          "fn": 5408,
+          "tn": 8230,
+          "fp": 85,
+          "recall": 0.4969770253929867,
+          "hamFpr": 0.010222489476849068,
+          "hamFprWilson95Upper": 0.012622000710084638,
+          "precision": 0.984340456890199
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 19066,
+          "spam": 10751,
+          "ham": 8315,
+          "tp": 574,
+          "fn": 10177,
+          "tn": 8315,
+          "fp": 0,
+          "recall": 0.053390382290019536,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00046177810212032856,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19066,
+          "spam": 10751,
+          "ham": 8315,
+          "tp": 3253,
+          "fn": 7498,
+          "tn": 8309,
+          "fp": 6,
+          "recall": 0.30257650451120827,
+          "hamFpr": 0.0007215874924834636,
+          "hamFprWilson95Upper": 0.00157353600364885,
+          "precision": 0.9981589444614912
+        }
+      }
+    },
+    "source/Nazario-2025": {
+      "v62": {
+        "conservative": {
+          "count": 403,
+          "spam": 403,
+          "ham": 0,
+          "tp": 10,
+          "fn": 393,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.02481389578163772,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 403,
+          "spam": 403,
+          "ham": 0,
+          "tp": 148,
+          "fn": 255,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.36724565756823824,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 403,
+          "spam": 403,
+          "ham": 0,
+          "tp": 61,
+          "fn": 342,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.1513647642679901,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 403,
+          "spam": 403,
+          "ham": 0,
+          "tp": 141,
+          "fn": 262,
+          "tn": 0,
+          "fp": 0,
+          "recall": 0.34987593052109184,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "source/Published-ASCII-mail": {
+      "v62": {
+        "conservative": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 558,
+          "fn": 3522,
+          "tn": 2422,
+          "fp": 0,
+          "recall": 0.13676470588235295,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0015835572463839512,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 3339,
+          "fn": 741,
+          "tn": 2419,
+          "fp": 3,
+          "recall": 0.8183823529411764,
+          "hamFpr": 0.0012386457473162675,
+          "hamFprWilson95Upper": 0.0036355870523054677,
+          "precision": 0.9991023339317774
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 1006,
+          "fn": 3074,
+          "tn": 2422,
+          "fp": 0,
+          "recall": 0.2465686274509804,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.0015835572463839512,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 6502,
+          "spam": 4080,
+          "ham": 2422,
+          "tp": 2540,
+          "fn": 1540,
+          "tn": 2421,
+          "fp": 1,
+          "recall": 0.6225490196078431,
+          "hamFpr": 0.00041288191577208916,
+          "hamFprWilson95Upper": 0.002335125918801737,
+          "precision": 0.9996064541519087
+        }
+      }
+    },
+    "unseen-source": {
+      "v62": {
+        "conservative": {
+          "count": 19469,
+          "spam": 11154,
+          "ham": 8315,
+          "tp": 206,
+          "fn": 10948,
+          "tn": 8315,
+          "fp": 0,
+          "recall": 0.018468710776403083,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00046177810212032856,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19469,
+          "spam": 11154,
+          "ham": 8315,
+          "tp": 5491,
+          "fn": 5663,
+          "tn": 8230,
+          "fp": 85,
+          "recall": 0.4922897615205308,
+          "hamFpr": 0.010222489476849068,
+          "hamFprWilson95Upper": 0.012622000710084638,
+          "precision": 0.9847560975609756
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 19469,
+          "spam": 11154,
+          "ham": 8315,
+          "tp": 635,
+          "fn": 10519,
+          "tn": 8315,
+          "fp": 0,
+          "recall": 0.056930249237941544,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00046177810212032856,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19469,
+          "spam": 11154,
+          "ham": 8315,
+          "tp": 3394,
+          "fn": 7760,
+          "tn": 8309,
+          "fp": 6,
+          "recall": 0.30428545813161195,
+          "hamFpr": 0.0007215874924834636,
+          "hamFprWilson95Upper": 0.00157353600364885,
+          "precision": 0.9982352941176471
+        }
+      }
+    },
+    "unseen-source/script/cjk": {
+      "v62": {
+        "conservative": {
+          "count": 2,
+          "spam": 2,
+          "ham": 0,
+          "tp": 2,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 2,
+          "spam": 2,
+          "ham": 0,
+          "tp": 2,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 2,
+          "spam": 2,
+          "ham": 0,
+          "tp": 2,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 2,
+          "spam": 2,
+          "ham": 0,
+          "tp": 2,
+          "fn": 0,
+          "tn": 0,
+          "fp": 0,
+          "recall": 1.0,
+          "hamFpr": null,
+          "hamFprWilson95Upper": null,
+          "precision": 1.0
+        }
+      }
+    },
+    "unseen-source/script/latin": {
+      "v62": {
+        "conservative": {
+          "count": 19467,
+          "spam": 11152,
+          "ham": 8315,
+          "tp": 204,
+          "fn": 10948,
+          "tn": 8315,
+          "fp": 0,
+          "recall": 0.018292682926829267,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00046177810212032856,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19467,
+          "spam": 11152,
+          "ham": 8315,
+          "tp": 5489,
+          "fn": 5663,
+          "tn": 8230,
+          "fp": 85,
+          "recall": 0.4921987087517934,
+          "hamFpr": 0.010222489476849068,
+          "hamFprWilson95Upper": 0.012622000710084638,
+          "precision": 0.9847506279153211
+        }
+      },
+      "v64": {
+        "conservative": {
+          "count": 19467,
+          "spam": 11152,
+          "ham": 8315,
+          "tp": 633,
+          "fn": 10519,
+          "tn": 8315,
+          "fp": 0,
+          "recall": 0.056761119081779055,
+          "hamFpr": 0.0,
+          "hamFprWilson95Upper": 0.00046177810212032856,
+          "precision": 1.0
+        },
+        "high-recall": {
+          "count": 19467,
+          "spam": 11152,
+          "ham": 8315,
+          "tp": 3392,
+          "fn": 7760,
+          "tn": 8309,
+          "fp": 6,
+          "recall": 0.30416068866571017,
+          "hamFpr": 0.0007215874924834636,
+          "hamFprWilson95Upper": 0.00157353600364885,
+          "precision": 0.998234255444379
+        }
+      }
+    }
+  },
+  "audit": {
+    "source": "independent",
+    "count": 25971,
+    "exclusions": {
+      "read": 45928,
+      "retained": 25973,
+      "shortOrEmpty": 14478,
+      "duplicate": 8271,
+      "priorOverlap": 11683,
+      "conflictOrBridge": 1
+    },
+    "sources": [
+      {
+        "name": "genspam.tar.gz",
+        "available": true,
+        "url": "http://www.cl.cam.ac.uk/Research/NL/nl-download/GenSpam.tar.gz",
+        "file": "genspam.tar.gz",
+        "sha256": "1e0b8f0eb73f16787df7b11144a2bc8937342d50fbedd124ba9fe379a076895f",
+        "bytes": 10560985,
+        "members": [
+          "adapt_GEN.ems",
+          "adapt_SPAM.ems",
+          "test_GEN.ems",
+          "test_SPAM.ems",
+          "train_GEN.ems",
+          "train_SPAM.ems"
+        ],
+        "messageCounts": {
+          "adapt_GEN.ems": 300,
+          "adapt_SPAM.ems": 300,
+          "test_GEN.ems": 754,
+          "test_SPAM.ems": 797,
+          "train_GEN.ems": 8158,
+          "train_SPAM.ems": 30088
+        },
+        "publishedTrainSpamCount": 30099,
+        "archiveTrainSpamCount": 30088,
+        "inventoryDifferenceDocumented": true,
+        "labels": "Original genuine/spam annotation",
+        "anonymized": true,
+        "attribution": "Ben Medlock, CEAS 2006"
+      },
+      {
+        "name": "labelled-mail.zip",
+        "available": true,
+        "url": "https://codeload.github.com/realprogrammersusevim/email-dataset/zip/84209612df4c55831f074a65b7c137a4b980059d",
+        "file": "labelled-mail.zip",
+        "sha256": "a51c47191cb32e0f62e56e4e265a20be2393d326a003001e0830601f6f444eb7",
+        "bytes": 32884940,
+        "ham": 10776,
+        "spam": 8752,
+        "revision": "84209612df4c55831f074a65b7c137a4b980059d"
+      },
+      {
+        "name": "nazario-2025.mbox",
+        "available": true,
+        "url": "https://monkey.org/~jose/phishing/phishing-2025",
+        "file": "nazario-2025.mbox",
+        "sha256": "f1fa7e0fe35c9a16f36d9aa20ade7e1d3908d1d0c1d917b8c53c8aa799ec1c8f",
+        "bytes": 18769863,
+        "mboxMessages": 481,
+        "labels": "Author hand-classified phishing; original labels retained",
+        "attribution": "Jose Nazario",
+        "license": "CC-BY-4.0"
+      }
+    ],
+    "candidatesSha256": "d30cbcd97c16489525e6afc066a6f05b2b511bb4f693dbc499e06a97ceb9718c",
+    "priorDatabaseSha256": "17d0418fc6088176adc03ac623a8f0349da983c2b756295b82e47e9faded2011",
+    "classifierLoaded": false,
+    "scoreBasedSelection": false
+  },
+  "first1000FrozenRuntimeParityPassed": true,
+  "modelAndThresholdChanged": false,
+  "testLabelsUsedForTraining": false,
+  "notA500kResult": true,
+  "productionGoalValidated": false,
+  "seconds": 94.78821216899999,
+  "codeCommit": "a134d4dc8e3444615b6ffbb2e01c656c7599ad38",
+  "githubRunId": "38634124252",
+  "caveat": "Previously unused labelled public-source cohort after prior-source exclusions. GenSpam is anonymized; published ASCII mail is from a known Enron-like domain with removed headers; Nazario is one manually classified inbox. This cohort will also be included in the pending larger comparison with the same frozen models; it is not a second independent test. Exclusions include short bodies and duplicates. Source labels are preserved; results do not establish customer quality."
+}
