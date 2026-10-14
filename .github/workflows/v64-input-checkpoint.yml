@@ -1,0 +1,75 @@
+name: MailGuard v64 frozen input checkpoint
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['.github/workflows/v64-input-checkpoint.yml']
+permissions:
+  contents: write
+  actions: read
+jobs:
+  preserve:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v62-500k-input-*
+          run-id: 38518407108
+          github-token: ${{ github.token }}
+          path: frozen/spam
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v62-large-ham-corpus
+          run-id: 38535255118
+          github-token: ${{ github.token }}
+          path: frozen/ham
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v60-data
+          key: mailguard-v60-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v59-data
+          key: mailguard-v59-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v61-new
+          key: mailguard-v61-october-20261013-v1
+          fail-on-cache-miss: true
+      - name: Check exact snapshot inputs before permanent preservation
+        run: |
+          python - <<'PY'
+          import hashlib,json
+          from pathlib import Path
+          def sha(p):
+              h=hashlib.sha256()
+              with p.open('rb') as f:
+                  for block in iter(lambda:f.read(1024*1024),b''):h.update(block)
+              return h.hexdigest()
+          audit=json.loads(Path('reports/v62-500k-result.json').read_text())['audit']
+          for shard,digest in audit['shardSha256'].items():
+              files=list(Path('frozen/spam').rglob(f'input-{shard}.jsonl.gz'))
+              assert len(files)==1 and sha(files[0])==digest
+          ham=Path('frozen/ham')
+          assert sha(ham/'ham.jsonl.gz')==json.loads((ham/'audit.json').read_text())['hamSha256']
+          for directory in ('.cache/v60-data','.cache/v59-data','.cache/v61-new'):
+              root=Path(directory);p=json.loads((root/'provenance.json').read_text())
+              checks=p.get('splitHashes',{'test':p.get('testSha256')})
+              for split,digest in checks.items():assert sha(root/f'{split}.jsonl.gz')==digest
+          print('All frozen input hashes verified')
+          PY
+      - name: Preserve input views and development partitions
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tar -czf mailguard-v64-frozen-inputs.tar.gz frozen .cache/v60-data .cache/v59-data .cache/v61-new
+          sha256sum mailguard-v64-frozen-inputs.tar.gz > mailguard-v64-frozen-inputs.sha256
+          gh release create "mailguard-v64-inputs-${{ github.run_id }}" --draft \
+            --target 3a4c834aa61f3b0cbd5725543f22a1225ff3f839 \
+            --title 'MailGuard v64 frozen input checkpoint' \
+            --notes 'Prepared text views, frozen development partitions and reused engineering tests. Original labels preserved. These historical public sources are not independent customer validation.' \
+            mailguard-v64-frozen-inputs.tar.gz mailguard-v64-frozen-inputs.sha256
