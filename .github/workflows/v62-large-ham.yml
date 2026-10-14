@@ -1,0 +1,108 @@
+name: MailGuard v62 large legitimate-mail FP test
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths: ['tools/evaluate_v62_large_ham.py', 'tests/python/test_v62_large_ham.py', '.github/workflows/v62-large-ham.yml']
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: v62-large-ham-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  evaluate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OMP_NUM_THREADS: 2
+      OPENBLAS_NUM_THREADS: 2
+      HF_HUB_DISABLE_XET: 1
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v60-data
+          key: mailguard-v60-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/cache/restore@v4
+        with:
+          path: .cache/v59-data
+          key: mailguard-v59-new-mail-v1
+          fail-on-cache-miss: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v55-evidence
+          run-id: 38137477063
+          github-token: ${{ github.token }}
+          path: .cache/v55
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v62-evidence
+          run-id: 38468905929
+          github-token: ${{ github.token }}
+          path: .cache/v62
+      - name: Dependencies matching frozen v62
+        run: |
+          python -m pip install torch==2.14.1 --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 datasets huggingface_hub
+      - name: Verify duplicate, label conflict, development overlap and FP accounting
+        run: python -m unittest discover -s tests/python -p 'test_v62_large_ham.py'
+      - name: Freeze every eligible distinct gold HAM before model scoring
+        run: python -u tools/evaluate_v62_large_ham.py --phase prepare
+      - name: Save immutable HAM corpus and provenance before scoring
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v62-large-ham-corpus
+          path: |
+            reports/v62-large-ham/ham.jsonl.gz
+            reports/v62-large-ham/audit.json
+          compression-level: 0
+          retention-days: 90
+      - name: Evaluate both fixed profiles on all retained HAM
+        run: python -u tools/evaluate_v62_large_ham.py --phase score
+      - name: Summary
+        if: always()
+        run: |
+          if [ -f reports/v62-large-ham/report.md ]; then
+            cat reports/v62-large-ham/report.md >> "$GITHUB_STEP_SUMMARY"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v62-large-ham-result
+          path: |
+            reports/v62-large-ham/*.json
+            reports/v62-large-ham/*.md
+            reports/v62-large-ham/*.csv
+            reports/v62-large-ham/*.csv.gz
+          compression-level: 0
+          retention-days: 90
+      - name: Save result in repository
+        run: |
+          cp reports/v62-large-ham/report.json /tmp/mailguard-v62-large-ham-result.json
+          cp reports/v62-large-ham/report.md /tmp/mailguard-v62-large-ham-result.md
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/mailguard-v62-large-ham-result.json reports/v62-large-ham-result.json
+          cp /tmp/mailguard-v62-large-ham-result.md reports/v62-large-ham-result.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v62-large-ham-result.json reports/v62-large-ham-result.md
+          git commit -m 'Record frozen v62 FP evaluation on large distinct gold HAM corpus'
+          git push origin HEAD:mailguard-v48-calibrated
+      - name: Preserve permanent FP evaluation checkpoint
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tar -czf mailguard-v62-large-ham.tar.gz -C reports/v62-large-ham \
+            report.json report.md audit.json ham.jsonl.gz predictions.csv.gz false-positives.csv
+          sha256sum mailguard-v62-large-ham.tar.gz > mailguard-v62-large-ham.sha256
+          gh release create "mailguard-v62-large-ham-${{ github.run_id }}" --draft --target '${{ github.sha }}' \
+            --title 'MailGuard v62: large gold HAM FP evaluation' --notes-file reports/v62-large-ham/report.md \
+            mailguard-v62-large-ham.tar.gz mailguard-v62-large-ham.sha256
