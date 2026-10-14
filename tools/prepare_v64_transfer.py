@@ -273,7 +273,8 @@ def merge(args):
     out=Path(args.output);out.mkdir(parents=True,exist_ok=False)
     blocked,prior=checked_blocks(args.blocks);pool=UniquePool(out/'pool.sqlite',blocked);del blocked
     audits=[];inputroot=Path(args.input)
-    for source in SOURCES:
+    selected_sources=args.selected_sources or SOURCES
+    for source in selected_sources:
         roots=[p.parent for p in inputroot.rglob('audit.json') if json.loads(p.read_text()).get('source')==source]
         if len(roots)!=1:raise ValueError('Missing or duplicate source '+source)
         root=roots[0];audit=json.loads((root/'audit.json').read_text());path=root/'candidates.jsonl.gz'
@@ -303,11 +304,12 @@ def merge(args):
     if count!=args.count or not classes[0] or not classes[1]:raise ValueError('Incomplete selection or missing class')
     audit=dict(count=count,ham=classes[0],spam=classes[1],available=available,nonArchiveSourceRows=independent,
         bySource=dict(sources),byScript=dict(scripts),shardCounts=dict(counts),shardSha256={str(i):sha_file(out/f'input-{i}.jsonl.gz') for i in range(5)},
-        priorExclusions=prior,candidateAudits=audits,globalExclusions=dict(pool.stats),
+        priorExclusions=prior,candidateAudits=audits,selectedSourcePartitions=list(selected_sources),globalExclusions=dict(pool.stats),
         selection='All eligible non-archive labelled-source mail; bulk archives fill remaining slots by fixed content hash; global hash order; no model scores used',
         zeroDetectedPriorOverlap=True,identityBodyTemplateFamilyViewDedupPassed=True,testPreviouslyScored=False,testLabelsUsedForTraining=False,
         targetRecall=.95,targetHamFpr=.0001,codeCommit=os.environ.get('GITHUB_SHA'),githubRunId=os.environ.get('GITHUB_RUN_ID'),
-        caveat='First-use historical public mail, not customer traffic. GenSpam is anonymized; published ASCII mail has removed headers; Nazario is a single manually labelled inbox. Bulk spam traps are weak spam labels and come from a previously used provider in different years. Exact fingerprints and campaign prefixes exclude known relatives, but semantic near-duplicates may remain. HAM sample size may not establish extremely rare production FP. No synthetic messages or duplicated refill are used.')
+        previewCohortAlreadyScoredWithinThisExperiment=True,all500kFirstScoredInThisRun=False,
+        caveat='Historical public mail unused in development and prior benchmarks before this experiment, not customer traffic. The ready 25971-message labelled-source preview is included again with the same unchanged models, so it is not another independent test. GenSpam is anonymized; published ASCII mail has removed headers; Nazario is a single manually labelled inbox. Bulk spam traps are weak spam labels and come from a previously used provider in different years. Exact fingerprints and campaign prefixes exclude known relatives, but semantic near-duplicates may remain. HAM sample size may not establish extremely rare production FP. No synthetic messages or duplicated refill are used.')
     (out/'audit.json').write_text(json.dumps(audit,indent=2));pool.close()
     for p in out.glob('pool.sqlite*'):p.unlink()
     print('FIRST-USE TEST LOCKED BEFORE SCORING',json.dumps({k:v for k,v in audit.items() if k not in ('priorExclusions','candidateAudits')}),flush=True)
@@ -316,6 +318,7 @@ def main():
     p=argparse.ArgumentParser();p.add_argument('--phase',choices=('blocks','collect','merge'),required=True)
     p.add_argument('--source',choices=SOURCES);p.add_argument('--blocks',default='prior-blocks');p.add_argument('--sources',default='new-sources')
     p.add_argument('--input');p.add_argument('--count',type=int,default=500000);p.add_argument('--output',required=True)
+    p.add_argument('--selected-sources',nargs='+',choices=SOURCES)
     args=p.parse_args();{'blocks':prepare_blocks,'collect':collect,'merge':merge}[args.phase](args)
 
 if __name__=='__main__':main()

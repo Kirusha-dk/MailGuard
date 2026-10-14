@@ -1,0 +1,98 @@
+name: MailGuard v64 freeze original four-period transfer cohort
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: v64-four-period-freeze-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  freeze:
+    needs: wait-for-sources
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: write
+      actions: read
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+    - uses: actions/download-artifact@v4
+      with:
+        name: v64-transfer-prior-exclusions
+        path: prior-blocks
+        run-id: 38629238441
+        github-token: ${{ github.token }}
+    - uses: actions/download-artifact@v4
+      with:
+        pattern: v64-new-candidates-*
+        path: candidates
+        run-id: 38629238441
+        github-token: ${{ github.token }}
+    - name: Global duplicate and conflict audit; lock exactly 500000 before any scoring
+      run: python -u tools/prepare_v64_transfer.py --phase merge --input candidates --count 500000 --selected-sources independent
+        2016 2015 2014 2013 --output prepared
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-new500k-audit
+        path: prepared/audit.json
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-new500k-input-0
+        path: prepared/input-0.jsonl.gz
+        compression-level: 0
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-new500k-input-1
+        path: prepared/input-1.jsonl.gz
+        compression-level: 0
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-new500k-input-2
+        path: prepared/input-2.jsonl.gz
+        compression-level: 0
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-new500k-input-3
+        path: prepared/input-3.jsonl.gz
+        compression-level: 0
+        retention-days: 90
+    - uses: actions/upload-artifact@v4
+      with:
+        name: v64-new500k-input-4
+        path: prepared/input-4.jsonl.gz
+        compression-level: 0
+        retention-days: 90
+    - name: Preserve permanent first-use corpus, provenance and source code before evaluation
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: "tar -czf mailguard-v64-new500k-inputs.tar.gz prepared prior-blocks\ngit archive --format=tar.gz --output=mailguard-v64-transfer-prepare-source.tar.gz\
+        \ '${{ github.sha }}'\nsha256sum mailguard-v64-new500k-inputs.tar.gz mailguard-v64-transfer-prepare-source.tar.gz\
+        \ > mailguard-v64-new500k-inputs.sha256\ngh release create \"mailguard-v64-new500k-inputs-${{ github.run_id }}\" --draft\
+        \ \\\n  --target 3a4c834aa61f3b0cbd5725543f22a1225ff3f839 \\\n  --title 'MailGuard v64: first-use transfer corpus,\
+        \ fixed before scoring' \\\n  --notes 'Historical public mail, not customer mail. Original labels and source hashes\
+        \ preserved. No model inference or score-based selection in collection. GenSpam: Ben Medlock, CEAS 2006. Phishing\
+        \ corpus: Jose Nazario, CC-BY-4.0. Spam traps: Bruce Guenter, untroubled.org.' \\\n  mailguard-v64-new500k-inputs.tar.gz\
+        \ mailguard-v64-transfer-prepare-source.tar.gz mailguard-v64-new500k-inputs.sha256\n"
+  wait-for-sources:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+    - name: Wait for saved unaffected sources
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: gh run watch 38629238441 --repo '${{ github.repository }}' --interval 30
+'on':
+  workflow_dispatch: null
+  push:
+    branches:
+    - mailguard-v48-calibrated
+    paths:
+    - .github/workflows/v64-transfer-freeze.yml
