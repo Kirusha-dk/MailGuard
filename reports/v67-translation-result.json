@@ -1,0 +1,151 @@
+{
+  "experiment": "MailGuard v67 translation A/B, RETROSPECTIVE ONLY",
+  "baseCohort": "v66 previously first-use scored Turkish stemmed public mail",
+  "sampleSelection": "384 smallest sha256(v67-label-blind-v1:identity), no class or outcome filter",
+  "selectedIdentityFingerprint": "8ae4cbed42bbee033632082ab73351a21f250474f49a1e6fc69b10fc482479a0",
+  "originalCohortSha256": "be7130a55aac3d120dda1afb5993eb6c92100af9993d7d45a026426c3fa0f457",
+  "modelSha256": {
+    "v64": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5",
+    "v62": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+    "v65": "c672d33a6f81ccc5649c84997ee3cdd38d6ce3a8707e76c13a8d552778063c29"
+  },
+  "translator": {
+    "repo": "Helsinki-NLP/opus-mt-tr-en",
+    "revision": "a01ed04b0bd6624fb4f699e3a8d8880a7004e00f",
+    "license": "Apache-2.0",
+    "inputTokenLimit": 192,
+    "decodedTokenLimit": 160,
+    "truncatedInputs": 37
+  },
+  "selected": 384,
+  "spam": 197,
+  "ham": 187,
+  "results": {
+    "original": {
+      "v64-conservative": {
+        "n": 384,
+        "spam": 197,
+        "ham": 187,
+        "tp": 0,
+        "fn": 197,
+        "fp": 0,
+        "tn": 187,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.020129058142986548
+      },
+      "v64-high-recall": {
+        "n": 384,
+        "spam": 197,
+        "ham": 187,
+        "tp": 0,
+        "fn": 197,
+        "fp": 0,
+        "tn": 187,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.020129058142986548
+      },
+      "v65-conservative-rescue": {
+        "n": 384,
+        "spam": 197,
+        "ham": 187,
+        "tp": 0,
+        "fn": 197,
+        "fp": 0,
+        "tn": 187,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.020129058142986548
+      }
+    },
+    "translated_only": {
+      "v64-conservative": {
+        "n": 384,
+        "spam": 197,
+        "ham": 187,
+        "tp": 0,
+        "fn": 197,
+        "fp": 0,
+        "tn": 187,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.020129058142986548
+      },
+      "v64-high-recall": {
+        "n": 384,
+        "spam": 197,
+        "ham": 187,
+        "tp": 0,
+        "fn": 197,
+        "fp": 0,
+        "tn": 187,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.020129058142986548
+      },
+      "v65-conservative-rescue": {
+        "n": 384,
+        "spam": 197,
+        "ham": 187,
+        "tp": 1,
+        "fn": 196,
+        "fp": 0,
+        "tn": 187,
+        "recall": 0.005076142131979695,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.020129058142986548
+      }
+    },
+    "original_or_translation": {
+      "v64-conservative": {
+        "n": 384,
+        "spam": 197,
+        "ham": 187,
+        "tp": 0,
+        "fn": 197,
+        "fp": 0,
+        "tn": 187,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.020129058142986548
+      },
+      "v64-high-recall": {
+        "n": 384,
+        "spam": 197,
+        "ham": 187,
+        "tp": 0,
+        "fn": 197,
+        "fp": 0,
+        "tn": 187,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.020129058142986548
+      },
+      "v65-conservative-rescue": {
+        "n": 384,
+        "spam": 197,
+        "ham": 187,
+        "tp": 1,
+        "fn": 196,
+        "fp": 0,
+        "tn": 187,
+        "recall": 0.005076142131979695,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.020129058142986548
+      }
+    }
+  },
+  "pairedChanges": {
+    "v64-conservative": {},
+    "v64-high-recall": {},
+    "v65-conservative-rescue": {
+      "rescuedFN": 1
+    }
+  },
+  "fitOrCalibrateOnV66": false,
+  "changedFrozenModelOrThreshold": false,
+  "originalV66FirstUseResultsUnaffected": true,
+  "translatedTextOrMessageIdsSaved": false,
+  "caveat": "Engineering replay of previously scored v66 TEST, not independent. Turkish corpus is stemmed/cleaned and does not represent MIME mail; translator may distort malicious indicators. 384 selected public emails cannot establish low FPR. Do NOT tune cutoffs from these outcomes or claim production performance."
+}
