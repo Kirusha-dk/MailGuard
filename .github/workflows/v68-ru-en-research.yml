@@ -1,0 +1,70 @@
+name: MailGuard v68 Russian-English 10k grouped research
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths:
+      - tools/v68_ru_en_research.py
+      - tests/python/test_v68_ru_en_research.py
+      - .github/workflows/v68-ru-en-research.yml
+permissions:
+  contents: read
+concurrency:
+  group: mailguard-v68-ru-en-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  research-10k:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    permissions:
+      contents: write
+    env:
+      OMP_NUM_THREADS: 2
+      OPENBLAS_NUM_THREADS: 2
+      MKL_NUM_THREADS: 2
+      TOKENIZERS_PARALLELISM: "false"
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned classifier and public dataset readers
+        run: |
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 "datasets>=3.6,<5" "huggingface_hub>=0.33,<2"
+      - name: Test language gate, deduplication and no TEST threshold leakage
+        run: python -m unittest discover -s tests/python -p 'test_v68_ru_en_research.py' -v
+      - name: Create TRAIN CAL and fixed 10000-item engineering holdout then train
+        run: |
+          python -u tools/v68_ru_en_research.py --epochs 2 --output research-v68
+          cat research-v68/result.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v68-ru-en-research
+          path: |
+            research-v68/frozen.json
+            research-v68/result.json
+            research-v68/result.md
+            research-v68/model.joblib
+          retention-days: 90
+      - name: Save counts and findings without raw emails or replacing stable models
+        if: success()
+        run: |
+          cp research-v68/result.json /tmp/mailguard-v68-result.json
+          cp research-v68/result.md /tmp/mailguard-v68-result.md
+          cp research-v68/frozen.json /tmp/mailguard-v68-frozen.json
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/mailguard-v68-result.json reports/v68-ru-en-result.json
+          cp /tmp/mailguard-v68-result.md reports/v68-ru-en-result.md
+          cp /tmp/mailguard-v68-frozen.json reports/v68-ru-en-frozen.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v68-ru-en-result.json reports/v68-ru-en-result.md reports/v68-ru-en-frozen.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record RU/EN grouped research evaluation without modifying stable model'
+            git push origin HEAD:mailguard-v48-calibrated
+          fi
