@@ -11,7 +11,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: mailguard-v66-candidate-audit-\${{ github.ref }}
+  group: mailguard-v66-candidate-audit-${{ github.ref }}
   cancel-in-progress: false
 jobs:
   first-use-candidates:
@@ -34,13 +34,13 @@ jobs:
         with:
           name: v64-transfer-prior-exclusions
           run-id: 38629238441
-          github-token: \${{ github.token }}
+          github-token: ${{ github.token }}
           path: prior
       - uses: actions/download-artifact@v4
         with:
           pattern: v64-new500k-input-*
           run-id: 38635836571
-          github-token: \${{ github.token }}
+          github-token: ${{ github.token }}
           path: previous
           merge-multiple: true
       - name: Install audited parsing dependencies
