@@ -56,7 +56,8 @@ def reconstruct(prior,oldroot,expected_audit,scoring=False):
         return info
     v66.row=capture
     try:
-        v66.enable_equivalent_normalizers()
+        from prepare_v64_transfer import enable_equivalent_normalizers
+        enable_equivalent_normalizers()
         records=[];source_meta=[]
         for loader in (v66.turkish,v66.phishing):
             items,meta=loader()
