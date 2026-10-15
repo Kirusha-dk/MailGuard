@@ -54,7 +54,8 @@ def language_fraction(text):
     return cyr/len(chars),lat/len(chars)
 
 def make_row(source,label,text):
-    if label not in (0,1) or len(text)>150000:raise ValueError('Invalid publisher labels/size')
+    if label not in (0,1):raise ValueError('Invalid publisher binary label')
+    if len(text)>150000:return None  # label-blind oversized input quarantine
     cyr,lat=language_fraction(text)
     if (source=='ru' and cyr<.48) or (source=='en' and lat<.55):
         return None
