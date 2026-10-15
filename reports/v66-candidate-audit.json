@@ -1,0 +1,73 @@
+{
+  "stage": "v66 source inventory, not an independent score",
+  "sources": [
+    {
+      "source": "Turkish-stemmed",
+      "revision": "082ace5",
+      "files": [
+        {
+          "url": "https://huggingface.co/datasets/anilguven/turkish_spam_email/resolve/082ace5/spam_train.csv",
+          "sha256": "8ec4eb6d9dd850f6055413768e7df87daaffbd15b1d7966f392d20d1afcecf60",
+          "size": 291605
+        },
+        {
+          "url": "https://huggingface.co/datasets/anilguven/turkish_spam_email/resolve/082ace5/spam_eval.csv",
+          "sha256": "d291c6b2d1a153ae91e2516ee5a51d0f5aa9f37886848f394b253db82f2243c0",
+          "size": 76195
+        }
+      ],
+      "publisherLabels": {
+        "0": 501,
+        "1": 513
+      },
+      "labelQuality": "publisher supplied ham/spam, independent adjudication not verified",
+      "limitations": [
+        "Turkish text already cleaned and stemmed",
+        "MIME headers absent",
+        "license unknown"
+      ]
+    },
+    {
+      "source": "CW-L-phishing",
+      "url": "https://codeload.github.com/cw-l/email-corpus/tar.gz/75b488148d5560109d6fb0c6646d417d7271f66a",
+      "revision": "75b488148d5560109d6fb0c6646d417d7271f66a",
+      "archiveSha256": "98b7cdd390037d22b91aa6842f1133007bb105da3638493d74da274c7751d1a8",
+      "bytes": 13962895,
+      "rawMessages": 1429,
+      "labelQuality": "community contributed phishing/spam; labels not independently validated",
+      "limitations": [
+        "No HAM source",
+        "PII redacted",
+        "URLs defanged",
+        "original MIME structure partially stripped"
+      ]
+    }
+  ],
+  "totalParsed": 2443,
+  "uniqueBeforePriorExclusions": 1327,
+  "ambiguousAliases": {
+    "duplicate": 1406
+  },
+  "excludedPreviouslySeen": {
+    "priorDevelopOrEarlierBenchmarks": 20
+  },
+  "priorEvidence": {
+    "blockedDatabaseSha256": "17d0418fc6088176adc03ac623a8f0349da983c2b756295b82e47e9faded2011",
+    "priorFingerprintHits": 20,
+    "priorTestFingerprintHits": 0,
+    "priorTestRowsChecked": 500000
+  },
+  "retained": 1307,
+  "retainedBySourceClass": {
+    "Turkish-stemmed:0": 489,
+    "Turkish-stemmed:1": 495,
+    "CW-L-phishing:1": 323
+  },
+  "retainedHAM": 489,
+  "retainedSPAM": 818,
+  "noTrainingOrInference": true,
+  "noModelScoresRead": true,
+  "noRawMessagesSaved": true,
+  "independentEvaluationPerformed": false,
+  "restrictions": "Not a gold production benchmark: publisher labels and Turkish preprocessing/unknown license limit interpretation. CW-L phishing-only. Semantic near-duplicates are not comprehensively excluded. No customer mail used. A trustworthy rare-FP claim requires >=30000 independent, validated HAM at zero FP."
+}
