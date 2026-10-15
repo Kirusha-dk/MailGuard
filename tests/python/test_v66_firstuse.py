@@ -34,5 +34,5 @@ class FrozenFirstUse(unittest.TestCase):
         from evaluate_v66_firstuse import V64_SHA,V62_SHA,V65_SHA
         self.assertEqual(V64_SHA,'ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5')
         self.assertEqual(V62_SHA,'380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf')
-        self.assertEqual(V65_SHA,'c672d33a6f81ccc5649c84997ee3cdd38d6ce3d8707e76c13a8d552778063c29'.replace('d8707','d8707')) if False else self.assertEqual(len(V65_SHA),64)
+        self.assertEqual(V65_SHA,'c672d33a6f81ccc5649c84997ee3cdd38d6ce3a8707e76c13a8d552778063c29')
 if __name__=='__main__':unittest.main()
