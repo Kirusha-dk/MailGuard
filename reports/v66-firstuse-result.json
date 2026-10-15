@@ -1,0 +1,176 @@
+{
+  "version": 66,
+  "stage": "FIRST-USE labelled publisher mail; source-quality limited",
+  "parentSourceAuditSha256": "61268c93b4efbb66e1faf8325b32f439f085c54b574300786c1b80de24f3702f",
+  "cohortFingerprintSha256": "be7130a55aac3d120dda1afb5993eb6c92100af9993d7d45a026426c3fa0f457",
+  "frozenModelSha256": {
+    "v64": "ecd8bb221594538698188fd3270daab840a0a43f672c1fcc6af272bc380190e5",
+    "v62": "380991f74ae7ddc4d26cb36fd952ff7a1b6a24a1c8985becf28cb14d2f493aaf",
+    "v65": "c672d33a6f81ccc5649c84997ee3cdd38d6ce3a8707e76c13a8d552778063c29"
+  },
+  "frozenV65Cutoff": 3.9218802452087407,
+  "trainedOnV66": false,
+  "thresholdsAdjustedOnV66": false,
+  "v66LabelsUsedForSelection": false,
+  "previouslyScoredByV64OrV65": false,
+  "independentOfPreexistingTrainingSourcesAtExactFingerprintLevel": true,
+  "semanticOverlapNotRuledOut": true,
+  "sourceLabelCaveats": "Not a gold production benchmark: publisher labels and Turkish preprocessing/unknown license limit interpretation. CW-L phishing-only. Semantic near-duplicates are not comprehensively excluded. No customer mail used. A trustworthy rare-FP claim requires >=30000 independent, validated HAM at zero FP.",
+  "resultByGroup": {
+    "all": {
+      "v64-conservative": {
+        "n": 1307,
+        "spam": 818,
+        "ham": 489,
+        "tp": 147,
+        "fn": 671,
+        "fp": 0,
+        "tn": 489,
+        "recall": 0.17970660146699266,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.007794512316163985
+      },
+      "v64-high-recall": {
+        "n": 1307,
+        "spam": 818,
+        "ham": 489,
+        "tp": 290,
+        "fn": 528,
+        "fp": 0,
+        "tn": 489,
+        "recall": 0.3545232273838631,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.007794512316163985
+      },
+      "v65-conservative-rescue": {
+        "n": 1307,
+        "spam": 818,
+        "ham": 489,
+        "tp": 252,
+        "fn": 566,
+        "fp": 0,
+        "tn": 489,
+        "recall": 0.3080684596577017,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.007794512316163985
+      }
+    },
+    "source/Turkish-stemmed": {
+      "v64-conservative": {
+        "n": 984,
+        "spam": 495,
+        "ham": 489,
+        "tp": 0,
+        "fn": 495,
+        "fp": 0,
+        "tn": 489,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.007794512316163985
+      },
+      "v64-high-recall": {
+        "n": 984,
+        "spam": 495,
+        "ham": 489,
+        "tp": 0,
+        "fn": 495,
+        "fp": 0,
+        "tn": 489,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.007794512316163985
+      },
+      "v65-conservative-rescue": {
+        "n": 984,
+        "spam": 495,
+        "ham": 489,
+        "tp": 0,
+        "fn": 495,
+        "fp": 0,
+        "tn": 489,
+        "recall": 0.0,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.007794512316163985
+      }
+    },
+    "script/latin": {
+      "v64-conservative": {
+        "n": 1307,
+        "spam": 818,
+        "ham": 489,
+        "tp": 147,
+        "fn": 671,
+        "fp": 0,
+        "tn": 489,
+        "recall": 0.17970660146699266,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.007794512316163985
+      },
+      "v64-high-recall": {
+        "n": 1307,
+        "spam": 818,
+        "ham": 489,
+        "tp": 290,
+        "fn": 528,
+        "fp": 0,
+        "tn": 489,
+        "recall": 0.3545232273838631,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.007794512316163985
+      },
+      "v65-conservative-rescue": {
+        "n": 1307,
+        "spam": 818,
+        "ham": 489,
+        "tp": 252,
+        "fn": 566,
+        "fp": 0,
+        "tn": 489,
+        "recall": 0.3080684596577017,
+        "fpr": 0.0,
+        "fprWilson95Upper": 0.007794512316163985
+      }
+    },
+    "source/CW-L-phishing": {
+      "v64-conservative": {
+        "n": 323,
+        "spam": 323,
+        "ham": 0,
+        "tp": 147,
+        "fn": 176,
+        "fp": 0,
+        "tn": 0,
+        "recall": 0.4551083591331269,
+        "fpr": null,
+        "fprWilson95Upper": null
+      },
+      "v64-high-recall": {
+        "n": 323,
+        "spam": 323,
+        "ham": 0,
+        "tp": 290,
+        "fn": 33,
+        "fp": 0,
+        "tn": 0,
+        "recall": 0.8978328173374613,
+        "fpr": null,
+        "fprWilson95Upper": null
+      },
+      "v65-conservative-rescue": {
+        "n": 323,
+        "spam": 323,
+        "ham": 0,
+        "tp": 252,
+        "fn": 71,
+        "fp": 0,
+        "tn": 0,
+        "recall": 0.7801857585139319,
+        "fpr": null,
+        "fprWilson95Upper": null
+      }
+    }
+  },
+  "extremeLowFpGoalValidated": false,
+  "customerTrafficGoalValidated": false,
+  "note": "v66 data publishers supply labels; Turkish-stemmed mail lacks headers and has unclear license. Community phishing samples are altered and spam-only. 489 HAM are inadequate for 0.01% FPR claim. Repeated future evaluation on v66 is retrospective."
+}
