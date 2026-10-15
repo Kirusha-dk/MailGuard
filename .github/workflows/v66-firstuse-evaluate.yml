@@ -1,0 +1,131 @@
+name: MailGuard v66 genuinely first-use frozen evaluation
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths:
+      - tools/evaluate_v66_firstuse.py
+      - tests/python/test_v66_firstuse.py
+      - .github/workflows/v66-firstuse-evaluate.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mailguard-v66-firstuse-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  freeze:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OMP_NUM_THREADS: 2
+      OPENBLAS_NUM_THREADS: 2
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: v64-transfer-prior-exclusions
+          run-id: 38629238441
+          github-token: ${{ github.token }}
+          path: prior
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v64-new500k-input-*
+          run-id: 38635836571
+          github-token: ${{ github.token }}
+          path: previous
+          merge-multiple: true
+      - name: Install reproducible frozen preprocessing stack
+        run: python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Test source-candidate, fingerprint and false-positive logic
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v66_candidate_audit.py' -v
+          python -m unittest discover -s tests/python -p 'test_v66_firstuse.py' -v
+      - name: Freeze exact screened publisher samples before downloading any model
+        run: python -u tools/evaluate_v66_firstuse.py --phase freeze --prior prior/blocked.sqlite --old-input previous --output frozen
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v66-cohort-frozen-before-predictions
+          path: frozen/manifest.json
+          retention-days: 90
+  score:
+    needs: freeze
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    permissions:
+      contents: write
+      actions: read
+    env:
+      OMP_NUM_THREADS: 2
+      OPENBLAS_NUM_THREADS: 2
+      MKL_NUM_THREADS: 2
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v66-cohort-frozen-before-predictions
+          path: frozen
+      - uses: actions/download-artifact@v4
+        with:
+          name: v64-transfer-prior-exclusions
+          run-id: 38629238441
+          github-token: ${{ github.token }}
+          path: prior
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: v64-new500k-input-*
+          run-id: 38635836571
+          github-token: ${{ github.token }}
+          path: previous
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v64-frozen-model
+          run-id: 38615175304
+          github-token: ${{ github.token }}
+          path: models/v64
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v65-retrospective-rescue
+          run-id: 38642773109
+          github-token: ${{ github.token }}
+          path: models/v65
+      - name: Install frozen inference dependencies
+        run: python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0
+      - name: Compare v64 and v65 on cohort locked before scoring
+        run: |
+          python -u tools/evaluate_v66_firstuse.py --phase score \
+            --prior prior/blocked.sqlite --old-input previous \
+            --manifest frozen/manifest.json \
+            --model64 models/v64 --model65 models/v65 \
+            --output result
+          cat result/result.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v66-first-use-scores
+          path: result/
+          retention-days: 90
+      - name: Publish aggregate report only, without message text
+        run: |
+          cp result/result.json /tmp/mailguard-v66-firstuse.json
+          cp result/result.md /tmp/mailguard-v66-firstuse.md
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/mailguard-v66-firstuse.json reports/v66-firstuse-result.json
+          cp /tmp/mailguard-v66-firstuse.md reports/v66-firstuse-result.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v66-firstuse-result.json reports/v66-firstuse-result.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'Document untouched v66 source-level Recall and FP for frozen v64 and v65'
+            git push origin HEAD:mailguard-v48-calibrated
+          fi
