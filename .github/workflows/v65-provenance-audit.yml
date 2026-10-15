@@ -1,0 +1,59 @@
+name: MailGuard v65 provenance and low-FP audit
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths:
+      - tools/audit_v65_transfer_validity.py
+      - tests/python/test_v65_transfer_validity.py
+      - .github/workflows/v65-provenance-audit.yml
+permissions:
+  contents: write
+  actions: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v65-retrospective-rescue
+          run-id: 38642773109
+          github-token: ${{ github.token }}
+          path: previous-v65
+      - name: Verify known regression was completed and source metrics are consistent
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v65_transfer_validity.py' -v
+          python tools/audit_v65_transfer_validity.py \
+            --v65 previous-v65/result.json \
+            --v64 reports/v64-transfer-result.json \
+            --provenance reports/v60-data-provenance.json \
+            --output report
+          cat report/audit.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v65-provenance-audit
+          path: report/
+          retention-days: 90
+      - name: Commit provenance audit report without touching frozen models
+        run: |
+          cp report/audit.json /tmp/v65-provenance.json
+          cp report/audit.md /tmp/v65-provenance.md
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/v65-provenance.json reports/v65-provenance-audit.json
+          cp /tmp/v65-provenance.md reports/v65-provenance-audit.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add reports/v65-provenance-audit.json reports/v65-provenance-audit.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'Document retrospective v65 source overlap and FP uncertainty'
+            git push origin HEAD:mailguard-v48-calibrated
+          fi
