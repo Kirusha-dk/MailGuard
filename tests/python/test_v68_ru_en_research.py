@@ -23,10 +23,10 @@ class ResearchSplitTests(unittest.TestCase):
         self.assertEqual(r['family'],same['family'])
         self.assertEqual(r['split'],same['split'])
     def test_calibration_uses_ham_only(self):
-        y=[0,0,0,0,1,1]
-        scores=[2.0,1.0,-1.0,-3.0,100.0,-100.0]
+        y=[0]*350+[1,1]
+        scores=[i/100. for i in range(350)]+[100.0,-100.0]
         cutoff=thresholds(scores,y)
-        altered=thresholds([*scores[:4],-500.0,800.0],y)
+        altered=thresholds([*scores[:350],-500.0,800.0],y)
         self.assertEqual(cutoff,altered)
         self.assertEqual(confusion(scores,y,cutoff['conservative'])['fp'],0)
         self.assertEqual(confusion(scores,y,cutoff['conservative'])['tp'],1)
