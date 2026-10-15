@@ -1,0 +1,60 @@
+{
+  "sourceRevisions": {
+    "ru": "af298cd351ce1d257ae789571f649d4d94d2cdd6",
+    "en": "deb4cc27dc2754c14cb157aace412727f77b41dd"
+  },
+  "partitions": {
+    "ru": {
+      "train": {
+        "n": 10286,
+        "identityFamilySha256": "00545c54ce305cc3bee8eeeccb0ff084ee84afcdcc5bd8d797c052b416159e8d"
+      },
+      "cal": {
+        "n": 2870,
+        "identityFamilySha256": "653b64afa603616927c551bbf868cd404936c942d0385fcc14bdb09637c8cb29"
+      },
+      "test": {
+        "n": 5000,
+        "identityFamilySha256": "5cacb9d1014c4d1bb657a5a29e72bc390fa54440aa5380c292cd2f2f3316687c"
+      }
+    },
+    "en": {
+      "train": {
+        "n": 70000,
+        "identityFamilySha256": "5059270193f53e2122b9c18363dcd798b84582728faa2adae54f3dbd8ef5d1e1"
+      },
+      "cal": {
+        "n": 22382,
+        "identityFamilySha256": "5510f39f685f16739414d4d7c353e793bb05b662645c7284d23e111375711642"
+      },
+      "test": {
+        "n": 5000,
+        "identityFamilySha256": "63cb85f297e68708bf6b53092604431764cf73cd9dce5aecbf2c9a3ded53c922"
+      }
+    }
+  },
+  "inputCounts": {
+    "ru": {
+      "publisherRows": 21411,
+      "eligible": 18878,
+      "exclusions": {
+        "not_english_or_russian_or_too_short": 2112,
+        "exact_duplicate": 421
+      }
+    },
+    "en": {
+      "publisherRows": 162413,
+      "eligible": 151123,
+      "exclusions": {
+        "not_english_or_russian_or_too_short": 404,
+        "exact_duplicate": 10876,
+        "conflicting_labels": 11
+      }
+    }
+  },
+  "sampler": "fixed 5000 RU and 5000 EN by sha256(identity), before scoring",
+  "labelBlindWithinGroup": true,
+  "sourceDisjoint": false,
+  "testPreviouslyUsedElsewhere": true,
+  "warning": "This is a retrospective engineering benchmark. RU is Telegram chat, NOT emails; EN mail corpus includes sources already examined in earlier MailGuard versions. The 10000-item sample is grouped within two providers, NOT arbitrary independent suppliers. Neither production 90% recall nor 0.01% FPR is validated. Do not use its TEST to tune thresholds."
+}

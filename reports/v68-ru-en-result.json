@@ -1,0 +1,202 @@
+{
+  "version": 68,
+  "task": "Russian + English only",
+  "evaluationKind": "IN-DOMAIN retrospective/partial first-use; NOT new customer mail",
+  "producerRevisions": {
+    "ru": "af298cd351ce1d257ae789571f649d4d94d2cdd6",
+    "en": "deb4cc27dc2754c14cb157aace412727f77b41dd"
+  },
+  "notes": "This is a retrospective engineering benchmark. RU is Telegram chat, NOT emails; EN mail corpus includes sources already examined in earlier MailGuard versions. The 10000-item sample is grouped within two providers, NOT arbitrary independent suppliers. Neither production 90% recall nor 0.01% FPR is validated. Do not use its TEST to tune thresholds.",
+  "modelSha256": "92a38fef77102761b172d973a63720bed1f52a7d9e8ea8e97424c63baabc4f3d",
+  "testWasHeldFromThisEstimator": true,
+  "testFamilyOverlap": 0,
+  "testAndCalThresholdLeakage": false,
+  "counts": {
+    "ru": {
+      "publisherRows": 21411,
+      "eligible": 18878,
+      "exclusions": {
+        "not_english_or_russian_or_too_short": 2112,
+        "exact_duplicate": 421
+      }
+    },
+    "en": {
+      "publisherRows": 162413,
+      "eligible": 151123,
+      "exclusions": {
+        "not_english_or_russian_or_too_short": 404,
+        "exact_duplicate": 10876,
+        "conflicting_labels": 11
+      }
+    }
+  },
+  "freeze": {
+    "ru": {
+      "train": {
+        "n": 10286,
+        "identityFamilySha256": "00545c54ce305cc3bee8eeeccb0ff084ee84afcdcc5bd8d797c052b416159e8d"
+      },
+      "cal": {
+        "n": 2870,
+        "identityFamilySha256": "653b64afa603616927c551bbf868cd404936c942d0385fcc14bdb09637c8cb29"
+      },
+      "test": {
+        "n": 5000,
+        "identityFamilySha256": "5cacb9d1014c4d1bb657a5a29e72bc390fa54440aa5380c292cd2f2f3316687c"
+      }
+    },
+    "en": {
+      "train": {
+        "n": 70000,
+        "identityFamilySha256": "5059270193f53e2122b9c18363dcd798b84582728faa2adae54f3dbd8ef5d1e1"
+      },
+      "cal": {
+        "n": 22382,
+        "identityFamilySha256": "5510f39f685f16739414d4d7c353e793bb05b662645c7284d23e111375711642"
+      },
+      "test": {
+        "n": 5000,
+        "identityFamilySha256": "63cb85f297e68708bf6b53092604431764cf73cd9dce5aecbf2c9a3ded53c922"
+      }
+    }
+  },
+  "cal": {
+    "en": {
+      "conservative": {
+        "n": 22382,
+        "spam": 10055,
+        "ham": 12327,
+        "tp": 1207,
+        "fn": 8848,
+        "fp": 0,
+        "tn": 12327,
+        "recall": 0.12003978120338141,
+        "fpr": 0.0,
+        "fpr95upper": 0.00031153257736082495
+      },
+      "research-high-recall": {
+        "n": 22382,
+        "spam": 10055,
+        "ham": 12327,
+        "tp": 6848,
+        "fn": 3207,
+        "fp": 12,
+        "tn": 12315,
+        "recall": 0.6810542018896072,
+        "fpr": 0.0009734728644439036,
+        "fpr95upper": 0.0017008992028658624
+      }
+    },
+    "ru": {
+      "conservative": {
+        "n": 2870,
+        "spam": 969,
+        "ham": 1901,
+        "tp": 690,
+        "fn": 279,
+        "fp": 0,
+        "tn": 1901,
+        "recall": 0.7120743034055728,
+        "fpr": 0.0,
+        "fpr95upper": 0.0020166816523787814
+      },
+      "research-high-recall": {
+        "n": 2870,
+        "spam": 969,
+        "ham": 1901,
+        "tp": 935,
+        "fn": 34,
+        "fp": 1,
+        "tn": 1900,
+        "recall": 0.9649122807017544,
+        "fpr": 0.0005260389268805891,
+        "fpr95upper": 0.0029737729765362893
+      }
+    }
+  },
+  "testByLanguage": {
+    "ru": {
+      "conservative": {
+        "n": 5000,
+        "spam": 1690,
+        "ham": 3310,
+        "tp": 1212,
+        "fn": 478,
+        "fp": 0,
+        "tn": 3310,
+        "recall": 0.7171597633136094,
+        "fpr": 0.0,
+        "fpr95upper": 0.0011592162354264214
+      },
+      "research-high-recall": {
+        "n": 5000,
+        "spam": 1690,
+        "ham": 3310,
+        "tp": 1625,
+        "fn": 65,
+        "fp": 7,
+        "tn": 3303,
+        "recall": 0.9615384615384616,
+        "fpr": 0.0021148036253776435,
+        "fpr95upper": 0.0043591254780049795
+      }
+    },
+    "en": {
+      "conservative": {
+        "n": 5000,
+        "spam": 2318,
+        "ham": 2682,
+        "tp": 257,
+        "fn": 2061,
+        "fp": 0,
+        "tn": 2682,
+        "recall": 0.11087144089732529,
+        "fpr": 0.0,
+        "fpr95upper": 0.0014302626866072885
+      },
+      "research-high-recall": {
+        "n": 5000,
+        "spam": 2318,
+        "ham": 2682,
+        "tp": 1571,
+        "fn": 747,
+        "fp": 2,
+        "tn": 2680,
+        "recall": 0.677739430543572,
+        "fpr": 0.0007457121551081282,
+        "fpr95upper": 0.0027150288726444823
+      }
+    }
+  },
+  "testAll": {
+    "conservative": {
+      "n": 10000,
+      "spam": 4008,
+      "ham": 5992,
+      "tp": 1469,
+      "fn": 2539,
+      "fp": 0,
+      "tn": 5992,
+      "recall": 0.36651696606786427,
+      "fpr": 0.0,
+      "fpr95upper": 0.0006406871907933489,
+      "minLanguageRecall": 0.11087144089732529
+    },
+    "research-high-recall": {
+      "n": 10000,
+      "spam": 4008,
+      "ham": 5992,
+      "tp": 3196,
+      "fn": 812,
+      "fp": 9,
+      "tn": 5983,
+      "recall": 0.7974051896207585,
+      "fpr": 0.0015020026702269693,
+      "fpr95upper": 0.0028523412138811433,
+      "minLanguageRecall": 0.677739430543572
+    }
+  },
+  "claims90OnAny10000Validated": false,
+  "productionFPGoalValidated": false,
+  "modelSavedBeforeTestLabelsRead": true
+}
