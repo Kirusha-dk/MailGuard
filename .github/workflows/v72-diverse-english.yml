@@ -1,0 +1,82 @@
+name: MailGuard v72 diverse-source English training and dual-CAL FP guards
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths:
+      - tools/v72_diverse_english.py
+      - tests/python/test_v72_diverse_english.py
+      - .github/workflows/v72-diverse-english.yml
+permissions:
+  contents: read
+concurrency:
+  group: mailguard-v72-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  train-evaluate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    permissions:
+      actions: read
+      contents: write
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download frozen v69 original model
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38859270577
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: mailguard-v69-ru-en-nbsvm-research
+          path: frozen-v69
+      - name: Install consistent scientific runtime
+        run: |
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 "datasets>=3.6,<5" "huggingface_hub>=0.33,<2"
+      - name: Test source-wise CAL, dataset split, and identity controls
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v72_diverse_english.py' -v
+          python -m unittest discover -s tests/python -p 'test_v70_external_transfer.py' -v
+      - name: Train diverse-domain expert and score historical v71 holdout
+        run: |
+          python -u tools/v72_diverse_english.py --old-model frozen-v69/model.joblib --out research-v72
+          cat research-v72/result.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v72-diverse-research
+          path: |
+            research-v72/development-freeze.json
+            research-v72/calibration-before-retrospective-test.json
+            research-v72/result.json
+            research-v72/result.md
+            research-v72/model.joblib
+          retention-days: 90
+      - name: Commit aggregate research report, never raw mail
+        if: success()
+        run: |
+          cp research-v72/result.json /tmp/v72-result.json
+          cp research-v72/result.md /tmp/v72-result.md
+          cp research-v72/development-freeze.json /tmp/v72-freeze.json
+          cp research-v72/calibration-before-retrospective-test.json /tmp/v72-cal.json
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/v72-result.json reports/v72-diverse-result.json
+          cp /tmp/v72-result.md reports/v72-diverse-result.md
+          cp /tmp/v72-freeze.json reports/v72-diverse-freeze.json
+          cp /tmp/v72-cal.json reports/v72-diverse-calibration.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v72-diverse-result.json reports/v72-diverse-result.md reports/v72-diverse-freeze.json reports/v72-diverse-calibration.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record v72 diverse English calibration and historical v71 replay'
+            git push origin HEAD:mailguard-v48-calibrated
+          fi
