@@ -43,7 +43,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           run-id: 38963612260
-          github-token: __TOKEN__
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           name: mailguard-v72-diverse-research
           path: frozen-v72
       - name: Install previous immutable inference stack and dataset streaming
