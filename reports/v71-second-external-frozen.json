@@ -1,0 +1,34 @@
+{
+  "source": "realprogrammersusevim/email-dataset",
+  "revision": "84209612df4c55831f074a65b7c137a4b980059d",
+  "archiveSha256": "c24e30ac874480ae4f9eca99be20505b123276709a86a5b9a23800a557c841a9",
+  "rawEligible": 17616,
+  "rawCounts": {
+    "duplicate": 1811,
+    "short": 63,
+    "non_english": 35,
+    "oversized": 3,
+    "retained_raw": 17616,
+    "retained_ham": 9921,
+    "retained_spam": 7695,
+    "excluded_conflicting_identities": 0
+  },
+  "exclusions": {
+    "first160_character_overlap": 594,
+    "exact_content_overlap": 3261
+  },
+  "afterExclusion": 13761,
+  "sampleCount": 10000,
+  "sampleSPAM": 4758,
+  "sampleHAM": 5242,
+  "sampleFingerprint": "838cff416c33aff20eb5e63032e896875eb5e57043c7f97bdb601199923ca647",
+  "sampleRule": "v71-firstuse-english-another-provider-predeclared, smallest SHA256 over identity",
+  "modelDigestExpected": "1a0b228cf86b43d06a62a98e4dc1039bb1788c4eeb14ea77efaa6eb1d9ddb228",
+  "sourceDisjointFromKnownExactAndPrefix": true,
+  "allSeenSourcesExcluded": [
+    "v68-ru",
+    "v68-en",
+    "CSDMC2010"
+  ],
+  "caveat": "New repository previously unscored; publisher may aggregate prior sources, semantic overlap not ruled out, copyright unclear, research only."
+}

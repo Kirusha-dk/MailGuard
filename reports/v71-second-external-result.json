@@ -1,0 +1,70 @@
+{
+  "version": 71,
+  "evaluationKind": "First-use external PUBLIC provider English 10000, no adaptation",
+  "sourceFreeze": {
+    "source": "realprogrammersusevim/email-dataset",
+    "revision": "84209612df4c55831f074a65b7c137a4b980059d",
+    "archiveSha256": "c24e30ac874480ae4f9eca99be20505b123276709a86a5b9a23800a557c841a9",
+    "rawEligible": 17616,
+    "rawCounts": {
+      "duplicate": 1811,
+      "short": 63,
+      "non_english": 35,
+      "oversized": 3,
+      "retained_raw": 17616,
+      "retained_ham": 9921,
+      "retained_spam": 7695,
+      "excluded_conflicting_identities": 0
+    },
+    "exclusions": {
+      "first160_character_overlap": 594,
+      "exact_content_overlap": 3261
+    },
+    "afterExclusion": 13761,
+    "sampleCount": 10000,
+    "sampleSPAM": 4758,
+    "sampleHAM": 5242,
+    "sampleFingerprint": "838cff416c33aff20eb5e63032e896875eb5e57043c7f97bdb601199923ca647",
+    "sampleRule": "v71-firstuse-english-another-provider-predeclared, smallest SHA256 over identity",
+    "modelDigestExpected": "1a0b228cf86b43d06a62a98e4dc1039bb1788c4eeb14ea77efaa6eb1d9ddb228",
+    "sourceDisjointFromKnownExactAndPrefix": true,
+    "allSeenSourcesExcluded": [
+      "v68-ru",
+      "v68-en",
+      "CSDMC2010"
+    ],
+    "caveat": "New repository previously unscored; publisher may aggregate prior sources, semantic overlap not ruled out, copyright unclear, research only."
+  },
+  "modelSHA256": "1a0b228cf86b43d06a62a98e4dc1039bb1788c4eeb14ea77efaa6eb1d9ddb228",
+  "metrics": {
+    "zero-cal-fp": {
+      "n": 10000,
+      "spam": 4758,
+      "ham": 5242,
+      "tp": 2995,
+      "fn": 1763,
+      "fp": 2,
+      "tn": 5240,
+      "recall": 0.6294661622530475,
+      "fpr": 0.00038153376573826786,
+      "fpr95upper": 0.001390158679578655
+    },
+    "research-0p1pct-cal-fpr": {
+      "n": 10000,
+      "spam": 4758,
+      "ham": 5242,
+      "tp": 4026,
+      "fn": 732,
+      "fp": 11,
+      "tn": 5231,
+      "recall": 0.8461538461538461,
+      "fpr": 0.002098435711560473,
+      "fpr95upper": 0.003753921654356767
+    }
+  },
+  "trainedOnThisSource": false,
+  "adjustedThresholdsBasedOnChallenge": false,
+  "resultsNotProductionOrArbitrary10000": true,
+  "russianMailNotEvaluated": true,
+  "sourceOriginalLicenseUnknown": true
+}
