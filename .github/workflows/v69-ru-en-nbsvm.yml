@@ -1,0 +1,70 @@
+name: MailGuard v69 RU/EN NBSVM retrospective 10k
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths:
+      - tools/v69_ru_en_nbsvm.py
+      - tests/python/test_v69_ru_en_nbsvm.py
+      - .github/workflows/v69-ru-en-nbsvm.yml
+permissions:
+  contents: read
+concurrency:
+  group: mailguard-v69-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  nbsvm-10k:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    permissions:
+      contents: write
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned scientific stack and corpus readers
+        run: |
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 "datasets>=3.6,<5" "huggingface_hub>=0.33,<2"
+      - name: Unit tests before reading source messages
+        run: python -m unittest discover -s tests/python -p 'test_v69_ru_en_nbsvm.py' -v
+      - name: Fit frozen development models and evaluate historical 10k
+        run: |
+          python -u tools/v69_ru_en_nbsvm.py --output research-v69
+          cat research-v69/result.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v69-ru-en-nbsvm-research
+          path: |
+            research-v69/cohort.json
+            research-v69/result.json
+            research-v69/result.md
+            research-v69/model.joblib
+          retention-days: 90
+      - name: Commit only aggregates and frozen provenance
+        if: success()
+        run: |
+          cp research-v69/result.json /tmp/v69-result.json
+          cp research-v69/result.md /tmp/v69-result.md
+          cp research-v69/cohort.json /tmp/v69-cohort.json
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/v69-result.json reports/v69-ru-en-result.json
+          cp /tmp/v69-result.md reports/v69-ru-en-result.md
+          cp /tmp/v69-cohort.json reports/v69-ru-en-cohort.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v69-ru-en-result.json reports/v69-ru-en-result.md reports/v69-ru-en-cohort.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record v69 retrospective grouped test and CAL-only classifier selection'
+            git push origin HEAD:mailguard-v48-calibrated
+          fi
