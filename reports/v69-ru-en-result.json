@@ -1,0 +1,217 @@
+{
+  "version": 69,
+  "researchOnly": true,
+  "modelSha256": "1a0b228cf86b43d06a62a98e4dc1039bb1788c4eeb14ea77efaa6eb1d9ddb228",
+  "warning": "REUSED V68 TEST: retrospective, NOT new or independent. RU is Telegram chat, NOT emails; EN contains familiar source families. No claims for arbitrary emails or 0.01% production FPR. Do not tune using these TEST results.",
+  "features": "NBSVM word and char hashed binary ngrams, log count ratios, LinearSVC",
+  "cutsSelectedOnCalibrationOnly": true,
+  "testSelectedOnOutcomes": false,
+  "freeze": {
+    "ru": {
+      "train": {
+        "n": 10286,
+        "identityFamilySha256": "00545c54ce305cc3bee8eeeccb0ff084ee84afcdcc5bd8d797c052b416159e8d"
+      },
+      "cal": {
+        "n": 2870,
+        "identityFamilySha256": "653b64afa603616927c551bbf868cd404936c942d0385fcc14bdb09637c8cb29"
+      },
+      "test": {
+        "n": 5000,
+        "identityFamilySha256": "5cacb9d1014c4d1bb657a5a29e72bc390fa54440aa5380c292cd2f2f3316687c"
+      }
+    },
+    "en": {
+      "train": {
+        "n": 70000,
+        "identityFamilySha256": "5059270193f53e2122b9c18363dcd798b84582728faa2adae54f3dbd8ef5d1e1"
+      },
+      "cal": {
+        "n": 22382,
+        "identityFamilySha256": "5510f39f685f16739414d4d7c353e793bb05b662645c7284d23e111375711642"
+      },
+      "test": {
+        "n": 5000,
+        "identityFamilySha256": "63cb85f297e68708bf6b53092604431764cf73cd9dce5aecbf2c9a3ded53c922"
+      }
+    }
+  },
+  "trainLimits": {
+    "en": 45000,
+    "ru": 16000
+  },
+  "selections": {
+    "en": {
+      "zero-cal-fp": {
+        "candidate": "mean",
+        "cutoff": 1.062817295273382,
+        "calibrationTP": 6470,
+        "calibrationSPAM": 10055,
+        "calibrationFP": 0,
+        "calibrationHAM": 12327
+      },
+      "research-0p1pct-cal-fpr": {
+        "candidate": "mean",
+        "cutoff": 0.6818557560014739,
+        "calibrationTP": 8792,
+        "calibrationSPAM": 10055,
+        "calibrationFP": 12,
+        "calibrationHAM": 12327
+      }
+    },
+    "ru": {
+      "zero-cal-fp": {
+        "candidate": "char",
+        "cutoff": 0.41932817428063357,
+        "calibrationTP": 925,
+        "calibrationSPAM": 969,
+        "calibrationFP": 0,
+        "calibrationHAM": 1901
+      },
+      "research-0p1pct-cal-fpr": {
+        "candidate": "char",
+        "cutoff": -0.0591989343762258,
+        "calibrationTP": 950,
+        "calibrationSPAM": 969,
+        "calibrationFP": 1,
+        "calibrationHAM": 1901
+      }
+    }
+  },
+  "calibration": {
+    "en": {
+      "zero-cal-fp": {
+        "n": 22382,
+        "spam": 10055,
+        "ham": 12327,
+        "tp": 6470,
+        "fn": 3585,
+        "fp": 0,
+        "tn": 12327,
+        "recall": 0.643460964694182,
+        "fpr": 0.0,
+        "fpr95upper": 0.00031153257736082495
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 22382,
+        "spam": 10055,
+        "ham": 12327,
+        "tp": 8792,
+        "fn": 1263,
+        "fp": 12,
+        "tn": 12315,
+        "recall": 0.8743908503232223,
+        "fpr": 0.0009734728644439036,
+        "fpr95upper": 0.0017008992028658624
+      }
+    },
+    "ru": {
+      "zero-cal-fp": {
+        "n": 2870,
+        "spam": 969,
+        "ham": 1901,
+        "tp": 925,
+        "fn": 44,
+        "fp": 0,
+        "tn": 1901,
+        "recall": 0.9545923632610939,
+        "fpr": 0.0,
+        "fpr95upper": 0.0020166816523787814
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 2870,
+        "spam": 969,
+        "ham": 1901,
+        "tp": 950,
+        "fn": 19,
+        "fp": 1,
+        "tn": 1900,
+        "recall": 0.9803921568627451,
+        "fpr": 0.0005260389268805891,
+        "fpr95upper": 0.0029737729765362893
+      }
+    }
+  },
+  "testByLanguage": {
+    "ru": {
+      "zero-cal-fp": {
+        "n": 5000,
+        "spam": 1690,
+        "ham": 3310,
+        "tp": 1603,
+        "fn": 87,
+        "fp": 0,
+        "tn": 3310,
+        "recall": 0.9485207100591716,
+        "fpr": 0.0,
+        "fpr95upper": 0.0011592162354264214
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 5000,
+        "spam": 1690,
+        "ham": 3310,
+        "tp": 1648,
+        "fn": 42,
+        "fp": 6,
+        "tn": 3304,
+        "recall": 0.9751479289940829,
+        "fpr": 0.0018126888217522659,
+        "fpr95upper": 0.003949363187777343
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "n": 5000,
+        "spam": 2318,
+        "ham": 2682,
+        "tp": 1508,
+        "fn": 810,
+        "fp": 0,
+        "tn": 2682,
+        "recall": 0.6505608283002589,
+        "fpr": 0.0,
+        "fpr95upper": 0.0014302626866072885
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 5000,
+        "spam": 2318,
+        "ham": 2682,
+        "tp": 2042,
+        "fn": 276,
+        "fp": 4,
+        "tn": 2678,
+        "recall": 0.8809318377911993,
+        "fpr": 0.0014914243102162564,
+        "fpr95upper": 0.0038287111678297968
+      }
+    }
+  },
+  "testAll": {
+    "zero-cal-fp": {
+      "n": 10000,
+      "spam": 4008,
+      "ham": 5992,
+      "tp": 3111,
+      "fn": 897,
+      "fp": 0,
+      "tn": 5992,
+      "recall": 0.7761976047904192,
+      "fpr": 0.0,
+      "fpr95upper": 0.0006406871907933489
+    },
+    "research-0p1pct-cal-fpr": {
+      "n": 10000,
+      "spam": 4008,
+      "ham": 5992,
+      "tp": 3690,
+      "fn": 318,
+      "fp": 10,
+      "tn": 5982,
+      "recall": 0.9206586826347305,
+      "fpr": 0.0016688918558077437,
+      "fpr95upper": 0.00306954926706122
+    }
+  },
+  "claims90OnAny10000Validated": false,
+  "productionFPGoalValidated": false
+}
