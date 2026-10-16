@@ -1,0 +1,40 @@
+{
+  "source": "locuoco/the-biggest-spam-ham-phish-email-dataset-300000",
+  "sourceRevision": "22fa6d1c1362518821bfb25564654348014303e4",
+  "sourceAdvertisedLicense": "MIT (original underlying corpora rights not independently checked)",
+  "reusedPublicOriginsPossible": true,
+  "datasetType": "merged preprocessed English spam/phishing/HAM",
+  "labelMapping": "0 HAM, 1 or 2 unwanted",
+  "scannedRawRows": 365448,
+  "sourceCounts": {
+    "rows": 365448,
+    "label_0": 168455,
+    "eligible_preconflict": 271822,
+    "invalid_lang_or_length": 6701,
+    "duplicate_inside_source": 86417,
+    "label_2": 154148,
+    "conflicting_inside_source": 5,
+    "prefix_prior": 267,
+    "exact_prior": 241,
+    "label_1": 42845,
+    "removed_label_conflicts": 4
+  },
+  "counts": {
+    "eligibleClassCounts": {
+      "0": 125571,
+      "1": 146251
+    },
+    "selectedHAM": 4636,
+    "selectedSPAM": 5364
+  },
+  "screenPrior": [
+    "v68 all datasets",
+    "CSDMC2010",
+    "v71 provider all"
+  ],
+  "labelBlindSampleSeed": "v73-fixed-label-blind-source-first-test-2026-10-16",
+  "sampleCount": 10000,
+  "sampleFingerprint": "8b2bdf0df6a7bfdc5bc8776df485e006b1afbfe482b3b83e73c919e4e968a965",
+  "sampledInputIsNotRepresentativeOfAny10k": true,
+  "provenanceLimitations": "The dataset aggregates older public repositories, so semantic and campaign overlap with prior MailGuard models may remain despite exact and prefix content rejection."
+}
