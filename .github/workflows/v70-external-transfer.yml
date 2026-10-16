@@ -1,0 +1,81 @@
+name: MailGuard v70 English external first-use transfer and low-FP CAL
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths:
+      - tools/v70_external_transfer.py
+      - tests/python/test_v70_external_transfer.py
+      - .github/workflows/v70-external-transfer.yml
+permissions:
+  contents: read
+concurrency:
+  group: mailguard-v70-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  external-first-use:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 85
+    permissions:
+      actions: read
+      contents: write
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download exact frozen v69 model from prior completed workflow
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38859270577
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: mailguard-v69-ru-en-nbsvm-research
+          path: frozen-v69
+      - name: Install exact previously used inference/runtime versions
+        run: |
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 "datasets>=3.6,<5" "huggingface_hub>=0.33,<2"
+      - name: Run frozen-input, MIME, CAL guard and overlap tests
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v70_external_transfer.py' -v
+          python -m unittest discover -s tests/python -p 'test_v69_ru_en_nbsvm.py' -v
+      - name: Freeze external CSDMC input and evaluate with frozen v69 weights
+        run: |
+          python -u tools/v70_external_transfer.py --model frozen-v69/model.joblib --out research-v70
+          cat research-v70/result.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v70-firstuse-external-english
+          path: |
+            research-v70/firstuse-freeze.json
+            research-v70/policies-before-challenge.json
+            research-v70/result.json
+            research-v70/result.md
+          retention-days: 90
+      - name: Publish aggregate reports only
+        if: success()
+        run: |
+          cp research-v70/result.json /tmp/v70-result.json
+          cp research-v70/result.md /tmp/v70-result.md
+          cp research-v70/firstuse-freeze.json /tmp/v70-freeze.json
+          cp research-v70/policies-before-challenge.json /tmp/v70-policies.json
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/v70-result.json reports/v70-external-result.json
+          cp /tmp/v70-result.md reports/v70-external-result.md
+          cp /tmp/v70-freeze.json reports/v70-external-frozen.json
+          cp /tmp/v70-policies.json reports/v70-external-policies.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v70-external-result.json reports/v70-external-result.md reports/v70-external-frozen.json reports/v70-external-policies.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Document first-use CSDMC external English transfer and CAL-only decisions'
+            git push origin HEAD:mailguard-v48-calibrated
+          fi
