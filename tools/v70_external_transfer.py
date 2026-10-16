@@ -83,7 +83,7 @@ def download_archive(name):
     return raw
 
 def source_rows():
-    rows=[];archive_sha={};stats=Counter();identity_set=set();family_labels={}
+    rows=[];archive_sha={};stats=Counter();identity_set=set();family_labels={};conflicts=set()
     for name,y in ARCHIVES.items():
         archive=download_archive(name)
         archive_sha[name]=digest_bytes(archive)
@@ -108,14 +108,21 @@ def source_rows():
                 if identity in identity_set:
                     stats["source_duplicate"]+=1
                     if family_labels[identity]!=y:
-                        raise ValueError("Conflicting public-source labels")
+                        conflicts.add(identity)
+                        stats["conflicting_label_identity_seen"]+=1
                     continue
                 family_labels[identity]=y
                 identity_set.add(identity)
                 # message text only in process memory, never exported
                 rows.append(dict(y=y,text=canonical,identity=identity,
                                  family=family,source=SOURCE_REPO))
-                stats["retained_"+("spam" if y else "ham")]+=1
+    # Label contradictions invalidate BOTH copies, never preferentially keep
+    # whichever archive appeared first. This happens before any model scoring.
+    if conflicts:
+        rows=[r for r in rows if r["identity"] not in conflicts]
+        stats["excluded_conflicting_identities"]=len(conflicts)
+    stats["retained_spam"]=sum(r["y"] for r in rows)
+    stats["retained_ham"]=sum(1-r["y"] for r in rows)
     if len(rows)<2500 or sum(r["y"]==0 for r in rows)<1000 or sum(r["y"]==1 for r in rows)<500:
         raise ValueError("Source too small for meaningful first-use comparison")
     return rows,archive_sha,dict(stats)
