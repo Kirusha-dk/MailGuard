@@ -1,0 +1,78 @@
+name: MailGuard v71 second-provider frozen 10k English first-use
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths:
+      - tools/v71_second_external_10k.py
+      - tests/python/test_v71_second_external_10k.py
+      - .github/workflows/v71-second-external-10k.yml
+permissions:
+  contents: read
+concurrency:
+  group: mailguard-v71-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  external10k:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    permissions:
+      actions: read
+      contents: write
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download immutable v69 checkpoints
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38859270577
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: mailguard-v69-ru-en-nbsvm-research
+          path: frozen-v69
+      - name: Install unchanged inference stack and verified source readers
+        run: |
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 "datasets>=3.6,<5" "huggingface_hub>=0.33,<2"
+      - name: Verify source loader guards and label-blind frozen sample
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v71_second_external_10k.py' -v
+          python -m unittest discover -s tests/python -p 'test_v70_external_transfer.py' -v
+      - name: Freeze original 10k source sample and score untouched v69
+        run: |
+          python -u tools/v71_second_external_10k.py --model frozen-v69/model.joblib --out research-v71
+          cat research-v71/result.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v71-external-firstuse-10k
+          path: |
+            research-v71/first-use-freeze.json
+            research-v71/result.json
+            research-v71/result.md
+          retention-days: 90
+      - name: Commit summary metrics without source contents
+        if: success()
+        run: |
+          cp research-v71/result.json /tmp/v71-result.json
+          cp research-v71/result.md /tmp/v71-result.md
+          cp research-v71/first-use-freeze.json /tmp/v71-freeze.json
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/v71-result.json reports/v71-second-external-result.json
+          cp /tmp/v71-result.md reports/v71-second-external-result.md
+          cp /tmp/v71-freeze.json reports/v71-second-external-frozen.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v71-second-external-result.json reports/v71-second-external-result.md reports/v71-second-external-frozen.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record second external source fixed 10k first-use transfer metrics'
+            git push origin HEAD:mailguard-v48-calibrated
+          fi
