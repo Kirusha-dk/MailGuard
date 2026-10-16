@@ -1,0 +1,86 @@
+name: MailGuard v73 composite-source fixed 10k frozen v69 versus v72
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths:
+      - tools/v73_third_source_10k.py
+      - tests/python/test_v73_third_source_10k.py
+      - .github/workflows/v73-third-source-10k.yml
+permissions:
+  contents: read
+concurrency:
+  group: mailguard-v73-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  third-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 95
+    permissions:
+      actions: read
+      contents: write
+    env:
+      OMP_NUM_THREADS: '2'
+      OPENBLAS_NUM_THREADS: '2'
+      MKL_NUM_THREADS: '2'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download frozen prior v69 baseline
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38859270577
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: mailguard-v69-ru-en-nbsvm-research
+          path: frozen-v69
+      - name: Download v72 diverse-domain candidate
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38963612260
+          github-token: __TOKEN__
+          name: mailguard-v72-diverse-research
+          path: frozen-v72
+      - name: Install previous immutable inference stack and dataset streaming
+        run: |
+          python -m pip install numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 "datasets>=3.6,<5" "huggingface_hub>=0.33,<2"
+      - name: Unit test label-blind selection and prior screening
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v73_third_source_10k.py' -v
+          python -m unittest discover -s tests/python -p 'test_v72_diverse_english.py' -v
+      - name: Freeze new merged-source 10k and evaluate frozen models
+        run: |
+          python -u tools/v73_third_source_10k.py --old-model frozen-v69/model.joblib --new-model frozen-v72/model.joblib --out research-v73
+          cat research-v73/result.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v73-third-source-10k-aggregates
+          path: |
+            research-v73/new-republisher-freeze-before-scoring.json
+            research-v73/result.json
+            research-v73/result.md
+          retention-days: 90
+      - name: Archive only aggregate first-use republisher findings
+        if: success()
+        run: |
+          cp research-v73/result.json /tmp/v73-result.json
+          cp research-v73/result.md /tmp/v73-result.md
+          cp research-v73/new-republisher-freeze-before-scoring.json /tmp/v73-freeze.json
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/v73-result.json reports/v73-third-source-result.json
+          cp /tmp/v73-result.md reports/v73-third-source-result.md
+          cp /tmp/v73-freeze.json reports/v73-third-source-frozen.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v73-third-source-result.json reports/v73-third-source-result.md reports/v73-third-source-frozen.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record v73 first-use composite-source sample without raw email'
+            git push origin HEAD:mailguard-v48-calibrated
+          fi
