@@ -1,0 +1,139 @@
+{
+  "experiment": "v70 external CSDMC2010 first-use transfer audit",
+  "status": "FROZEN v69 model and CAL-only v70 policy against FIRST-USE external repackaged CSDMC",
+  "modelSHA256": "1a0b228cf86b43d06a62a98e4dc1039bb1788c4eeb14ea77efaa6eb1d9ddb228",
+  "source": {
+    "source": "zrz1996/Spam-Email-Classifier-DataSet",
+    "sourceRevision": "36b5435af66a037a5cd474874950ca38c837e953",
+    "republisherLicense": "MIT on code repo, original corpus rights not independently verified",
+    "originalCorpus": "CSDMC2010, repackaged publicly with preprocessing",
+    "sha256Archives": {
+      "ham.zip": "ae4e7e46387fa98ba3e4dbb2b11618fe63e0d2fd10966ac85707413372ce98c8",
+      "spam.zip": "9d2d5a4f6d85768f53cde4ae7eba365929c8818a43d5ec085cff25815f434247"
+    },
+    "sourceCounts": {
+      "source_duplicate": 273,
+      "conflicting_label_identity_seen": 1,
+      "not_english": 5,
+      "too_short": 3,
+      "excluded_conflicting_identities": 1,
+      "retained_spam": 1305,
+      "retained_ham": 2744
+    },
+    "excludedKnown": {},
+    "eligibleCount": 4049,
+    "spamCount": 1305,
+    "hamCount": 2744,
+    "identityFamilyFingerprint": "6fa6e02167ef1c2ecde66d5eedc332f1d32f543aa55467274163cc1e89891bc4",
+    "firstUseAtScoring": true,
+    "warning": "No previous scoring on this corpus by this experiment; cannot rule out all semantic near-duplicates or historical indirect model exposure. Old repackaged public mail not current/customer production. Not a random 10k cohort."
+  },
+  "policies": {
+    "conservative-0cal-fp": {
+      "candidate": "min-expert",
+      "threshold": 0.7982859870735419,
+      "calTP": 7437,
+      "calSPAM": 10055,
+      "calFP": 0,
+      "calHAM": 12327
+    },
+    "sensitivity-0p05pct-cal-fp": {
+      "candidate": "char",
+      "threshold": 0.7819779146938468,
+      "calTP": 8431,
+      "calSPAM": 10055,
+      "calFP": 6,
+      "calHAM": 12327
+    }
+  },
+  "calibration": {
+    "conservative-0cal-fp": {
+      "n": 22382,
+      "spam": 10055,
+      "ham": 12327,
+      "tp": 7437,
+      "fn": 2618,
+      "fp": 0,
+      "tn": 12327,
+      "recall": 0.7396320238687221,
+      "fpr": 0.0,
+      "fpr95upper": 0.00031153257736082495
+    },
+    "sensitivity-0p05pct-cal-fp": {
+      "n": 22382,
+      "spam": 10055,
+      "ham": 12327,
+      "tp": 8431,
+      "fn": 1624,
+      "fp": 6,
+      "tn": 12321,
+      "recall": 0.8384883142715067,
+      "fpr": 0.0004867364322219518,
+      "fpr95upper": 0.0010616080126257042
+    }
+  },
+  "v69Baseline": {
+    "zero-cal-fp": {
+      "n": 4049,
+      "spam": 1305,
+      "ham": 2744,
+      "tp": 380,
+      "fn": 925,
+      "fp": 1,
+      "tn": 2743,
+      "recall": 0.29118773946360155,
+      "fpr": 0.00036443148688046647,
+      "fpr95upper": 0.002061501460390443
+    },
+    "research-0p1pct-cal-fpr": {
+      "n": 4049,
+      "spam": 1305,
+      "ham": 2744,
+      "tp": 720,
+      "fn": 585,
+      "fp": 9,
+      "tn": 2735,
+      "recall": 0.5517241379310345,
+      "fpr": 0.0032798833819241984,
+      "fpr95upper": 0.006222051774623819
+    }
+  },
+  "v70Policies": {
+    "conservative-0cal-fp": {
+      "n": 4049,
+      "spam": 1305,
+      "ham": 2744,
+      "tp": 463,
+      "fn": 842,
+      "fp": 3,
+      "tn": 2741,
+      "recall": 0.35478927203065136,
+      "fpr": 0.0010932944606413995,
+      "fpr95upper": 0.003209636638308599
+    },
+    "sensitivity-0p05pct-cal-fp": {
+      "n": 4049,
+      "spam": 1305,
+      "ham": 2744,
+      "tp": 741,
+      "fn": 564,
+      "fp": 14,
+      "tn": 2730,
+      "recall": 0.5678160919540229,
+      "fpr": 0.00510204081632653,
+      "fpr95upper": 0.008546156283501
+    }
+  },
+  "customerProductionValidated": false,
+  "claims90OnAny10000Validated": false,
+  "russianEmailQualityValidated": false,
+  "selectionAgainstExternalChallenge": false,
+  "caveats": [
+    "External corpus CSDMC2010, 2010-era republished and processed, not new customer mail.",
+    "Original publisher and original corpus redistribution rights not independently confirmed.",
+    "Exact and prefix-content overlap with v68 sources screened before scoring; semantic near-duplicates and indirect prior exposure cannot be ruled out.",
+    "Only English source. Does not validate Russian email or any arbitrary 10,000-message stream.",
+    "Labels supplied by folder (ham.zip/spam.zip), not independently adjudicated.",
+    "No first-use challenge scores may be used to retune policies; gather another genuinely new source."
+  ]
+}

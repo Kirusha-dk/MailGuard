@@ -1,0 +1,26 @@
+{
+  "source": "zrz1996/Spam-Email-Classifier-DataSet",
+  "sourceRevision": "36b5435af66a037a5cd474874950ca38c837e953",
+  "republisherLicense": "MIT on code repo, original corpus rights not independently verified",
+  "originalCorpus": "CSDMC2010, repackaged publicly with preprocessing",
+  "sha256Archives": {
+    "ham.zip": "ae4e7e46387fa98ba3e4dbb2b11618fe63e0d2fd10966ac85707413372ce98c8",
+    "spam.zip": "9d2d5a4f6d85768f53cde4ae7eba365929c8818a43d5ec085cff25815f434247"
+  },
+  "sourceCounts": {
+    "source_duplicate": 273,
+    "conflicting_label_identity_seen": 1,
+    "not_english": 5,
+    "too_short": 3,
+    "excluded_conflicting_identities": 1,
+    "retained_spam": 1305,
+    "retained_ham": 2744
+  },
+  "excludedKnown": {},
+  "eligibleCount": 4049,
+  "spamCount": 1305,
+  "hamCount": 2744,
+  "identityFamilyFingerprint": "6fa6e02167ef1c2ecde66d5eedc332f1d32f543aa55467274163cc1e89891bc4",
+  "firstUseAtScoring": true,
+  "warning": "No previous scoring on this corpus by this experiment; cannot rule out all semantic near-duplicates or historical indirect model exposure. Old repackaged public mail not current/customer production. Not a random 10k cohort."
+}
