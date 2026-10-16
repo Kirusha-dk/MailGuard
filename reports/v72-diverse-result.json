@@ -1,0 +1,167 @@
+{
+  "version": 72,
+  "modelSHA256": "cc99c9e2b2c1d6e36fdfa0c8404c74191e7cfb3a4f2316cad9722b06146eb737",
+  "oldModelSHA256": "1a0b228cf86b43d06a62a98e4dc1039bb1788c4eeb14ea77efaa6eb1d9ddb228",
+  "evaluation": "RETROSPECTIVE v71 dataset, not first-use",
+  "thresholdSelection": "Only distinct in-domain + CSDMC train-family-disjoint CAL, two-provider caps",
+  "sourceFreeze": {
+    "v68Sources": {
+      "ru": "af298cd351ce1d257ae789571f649d4d94d2cdd6",
+      "en": "deb4cc27dc2754c14cb157aace412727f77b41dd"
+    },
+    "v68Partitions": {
+      "ru": {
+        "train": {
+          "n": 10286,
+          "identityFamilySha256": "00545c54ce305cc3bee8eeeccb0ff084ee84afcdcc5bd8d797c052b416159e8d"
+        },
+        "cal": {
+          "n": 2870,
+          "identityFamilySha256": "653b64afa603616927c551bbf868cd404936c942d0385fcc14bdb09637c8cb29"
+        },
+        "test": {
+          "n": 5000,
+          "identityFamilySha256": "5cacb9d1014c4d1bb657a5a29e72bc390fa54440aa5380c292cd2f2f3316687c"
+        }
+      },
+      "en": {
+        "train": {
+          "n": 70000,
+          "identityFamilySha256": "5059270193f53e2122b9c18363dcd798b84582728faa2adae54f3dbd8ef5d1e1"
+        },
+        "cal": {
+          "n": 22382,
+          "identityFamilySha256": "5510f39f685f16739414d4d7c353e793bb05b662645c7284d23e111375711642"
+        },
+        "test": {
+          "n": 5000,
+          "identityFamilySha256": "63cb85f297e68708bf6b53092604431764cf73cd9dce5aecbf2c9a3ded53c922"
+        }
+      }
+    },
+    "externalSource": "zrz1996/Spam-Email-Classifier-DataSet",
+    "externalArchivesSHA256": {
+      "ham.zip": "ae4e7e46387fa98ba3e4dbb2b11618fe63e0d2fd10966ac85707413372ce98c8",
+      "spam.zip": "9d2d5a4f6d85768f53cde4ae7eba365929c8818a43d5ec085cff25815f434247"
+    },
+    "externalCounts": {
+      "source_duplicate": 273,
+      "conflicting_label_identity_seen": 1,
+      "not_english": 5,
+      "too_short": 3,
+      "excluded_conflicting_identities": 1,
+      "retained_spam": 1305,
+      "retained_ham": 2744
+    },
+    "existingOverlap": {},
+    "externalSplitSeed": "v72-CSDMC-train-cal-family-2026-10-16",
+    "extTrainSize": 2840,
+    "extCalSize": 1209,
+    "extTrainFingerprint": "de0a01d61a804e471aa16770c1ff458394f0607a9dae7d9c1cce2298a6c3e8ab",
+    "extCalFingerprint": "e70dd827fd54d24aeeba5dce11426636a3aee88cbdeee5fbb92babdb707ae049",
+    "extTrainRepeatFactor": 4,
+    "externalFirstUseAlreadyConsumedInV70": true,
+    "priorV71TestAlreadyConsumed": true,
+    "warning": "v72 research only. CSDMC source copyright uncertain; CSDMC already assessed in v70. v71 previously evaluated, retrospective only."
+  },
+  "selection": {
+    "zero-cal-fp": {
+      "candidate": "mean",
+      "cutoff": 1.1042882617852314,
+      "sourceCAL": {
+        "en-known": {
+          "tp": 6085,
+          "spam": 10055,
+          "fp": 0,
+          "ham": 12327,
+          "recall": 0.6051715564395823
+        },
+        "csdmc": {
+          "tp": 200,
+          "spam": 381,
+          "fp": 0,
+          "ham": 828,
+          "recall": 0.5249343832020997
+        }
+      }
+    },
+    "research-0p1pct-cal-fpr": {
+      "candidate": "min-expert",
+      "cutoff": 0.6621606776682146,
+      "sourceCAL": {
+        "en-known": {
+          "tp": 8087,
+          "spam": 10055,
+          "fp": 6,
+          "ham": 12327,
+          "recall": 0.8042764793635008
+        },
+        "csdmc": {
+          "tp": 280,
+          "spam": 381,
+          "fp": 0,
+          "ham": 828,
+          "recall": 0.7349081364829396
+        }
+      }
+    }
+  },
+  "retrospectiveV71Fingerprint": "838cff416c33aff20eb5e63032e896875eb5e57043c7f97bdb601199923ca647",
+  "resultsV69": {
+    "zero-cal-fp": {
+      "n": 10000,
+      "spam": 4758,
+      "ham": 5242,
+      "tp": 2995,
+      "fn": 1763,
+      "fp": 2,
+      "tn": 5240,
+      "recall": 0.6294661622530475,
+      "fpr": 0.00038153376573826786,
+      "fpr95upper": 0.001390158679578655
+    },
+    "research-0p1pct-cal-fpr": {
+      "n": 10000,
+      "spam": 4758,
+      "ham": 5242,
+      "tp": 4026,
+      "fn": 732,
+      "fp": 11,
+      "tn": 5231,
+      "recall": 0.8461538461538461,
+      "fpr": 0.002098435711560473,
+      "fpr95upper": 0.003753921654356767
+    }
+  },
+  "resultsV72": {
+    "zero-cal-fp": {
+      "n": 10000,
+      "spam": 4758,
+      "ham": 5242,
+      "tp": 2876,
+      "fn": 1882,
+      "fp": 1,
+      "tn": 5241,
+      "recall": 0.6044556536359815,
+      "fpr": 0.00019076688286913393,
+      "fpr95upper": 0.0010798650292877239
+    },
+    "research-0p1pct-cal-fpr": {
+      "n": 10000,
+      "spam": 4758,
+      "ham": 5242,
+      "tp": 3864,
+      "fn": 894,
+      "fp": 6,
+      "tn": 5236,
+      "recall": 0.8121059268600253,
+      "fpr": 0.0011446012972148034,
+      "fpr95upper": 0.002495129426389199
+    }
+  },
+  "passedAnyNewSourceFirstUse": false,
+  "hasValidated90PercentAny10k": false,
+  "productionFpr01PercentValidated": false,
+  "russianEmailValidation": false,
+  "licenseUncertainty": true
+}

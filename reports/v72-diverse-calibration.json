@@ -1,0 +1,46 @@
+{
+  "modelSHA256": "cc99c9e2b2c1d6e36fdfa0c8404c74191e7cfb3a4f2316cad9722b06146eb737",
+  "selections": {
+    "zero-cal-fp": {
+      "candidate": "mean",
+      "cutoff": 1.1042882617852314,
+      "sourceCAL": {
+        "en-known": {
+          "tp": 6085,
+          "spam": 10055,
+          "fp": 0,
+          "ham": 12327,
+          "recall": 0.6051715564395823
+        },
+        "csdmc": {
+          "tp": 200,
+          "spam": 381,
+          "fp": 0,
+          "ham": 828,
+          "recall": 0.5249343832020997
+        }
+      }
+    },
+    "research-0p1pct-cal-fpr": {
+      "candidate": "min-expert",
+      "cutoff": 0.6621606776682146,
+      "sourceCAL": {
+        "en-known": {
+          "tp": 8087,
+          "spam": 10055,
+          "fp": 6,
+          "ham": 12327,
+          "recall": 0.8042764793635008
+        },
+        "csdmc": {
+          "tp": 280,
+          "spam": 381,
+          "fp": 0,
+          "ham": 828,
+          "recall": 0.7349081364829396
+        }
+      }
+    }
+  },
+  "noV71SourceTrainedOrCalibrated": true
+}

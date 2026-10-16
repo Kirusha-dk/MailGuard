@@ -1,0 +1,60 @@
+{
+  "v68Sources": {
+    "ru": "af298cd351ce1d257ae789571f649d4d94d2cdd6",
+    "en": "deb4cc27dc2754c14cb157aace412727f77b41dd"
+  },
+  "v68Partitions": {
+    "ru": {
+      "train": {
+        "n": 10286,
+        "identityFamilySha256": "00545c54ce305cc3bee8eeeccb0ff084ee84afcdcc5bd8d797c052b416159e8d"
+      },
+      "cal": {
+        "n": 2870,
+        "identityFamilySha256": "653b64afa603616927c551bbf868cd404936c942d0385fcc14bdb09637c8cb29"
+      },
+      "test": {
+        "n": 5000,
+        "identityFamilySha256": "5cacb9d1014c4d1bb657a5a29e72bc390fa54440aa5380c292cd2f2f3316687c"
+      }
+    },
+    "en": {
+      "train": {
+        "n": 70000,
+        "identityFamilySha256": "5059270193f53e2122b9c18363dcd798b84582728faa2adae54f3dbd8ef5d1e1"
+      },
+      "cal": {
+        "n": 22382,
+        "identityFamilySha256": "5510f39f685f16739414d4d7c353e793bb05b662645c7284d23e111375711642"
+      },
+      "test": {
+        "n": 5000,
+        "identityFamilySha256": "63cb85f297e68708bf6b53092604431764cf73cd9dce5aecbf2c9a3ded53c922"
+      }
+    }
+  },
+  "externalSource": "zrz1996/Spam-Email-Classifier-DataSet",
+  "externalArchivesSHA256": {
+    "ham.zip": "ae4e7e46387fa98ba3e4dbb2b11618fe63e0d2fd10966ac85707413372ce98c8",
+    "spam.zip": "9d2d5a4f6d85768f53cde4ae7eba365929c8818a43d5ec085cff25815f434247"
+  },
+  "externalCounts": {
+    "source_duplicate": 273,
+    "conflicting_label_identity_seen": 1,
+    "not_english": 5,
+    "too_short": 3,
+    "excluded_conflicting_identities": 1,
+    "retained_spam": 1305,
+    "retained_ham": 2744
+  },
+  "existingOverlap": {},
+  "externalSplitSeed": "v72-CSDMC-train-cal-family-2026-10-16",
+  "extTrainSize": 2840,
+  "extCalSize": 1209,
+  "extTrainFingerprint": "de0a01d61a804e471aa16770c1ff458394f0607a9dae7d9c1cce2298a6c3e8ab",
+  "extCalFingerprint": "e70dd827fd54d24aeeba5dce11426636a3aee88cbdeee5fbb92babdb707ae049",
+  "extTrainRepeatFactor": 4,
+  "externalFirstUseAlreadyConsumedInV70": true,
+  "priorV71TestAlreadyConsumed": true,
+  "warning": "v72 research only. CSDMC source copyright uncertain; CSDMC already assessed in v70. v71 previously evaluated, retrospective only."
+}
