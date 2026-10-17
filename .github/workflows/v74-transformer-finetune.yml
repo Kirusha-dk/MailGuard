@@ -32,7 +32,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.12'
       - name: Install Torch CPU and remove broken optional vision bindings
         run: |
           python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.5.1
