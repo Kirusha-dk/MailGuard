@@ -1,0 +1,356 @@
+{
+  "version": 75,
+  "status": "DEVELOPMENT ONLY; 10k TEST RETROSPECTIVE",
+  "source": {
+    "revisions": {
+      "ru": "af298cd351ce1d257ae789571f649d4d94d2cdd6",
+      "en": "deb4cc27dc2754c14cb157aace412727f77b41dd"
+    },
+    "original": {
+      "ru": {
+        "train": {
+          "n": 10286,
+          "identityFamilySha256": "00545c54ce305cc3bee8eeeccb0ff084ee84afcdcc5bd8d797c052b416159e8d"
+        },
+        "cal": {
+          "n": 2870,
+          "identityFamilySha256": "653b64afa603616927c551bbf868cd404936c942d0385fcc14bdb09637c8cb29"
+        },
+        "test": {
+          "n": 5000,
+          "identityFamilySha256": "5cacb9d1014c4d1bb657a5a29e72bc390fa54440aa5380c292cd2f2f3316687c"
+        }
+      },
+      "en": {
+        "train": {
+          "n": 70000,
+          "identityFamilySha256": "5059270193f53e2122b9c18363dcd798b84582728faa2adae54f3dbd8ef5d1e1"
+        },
+        "cal": {
+          "n": 22382,
+          "identityFamilySha256": "5510f39f685f16739414d4d7c353e793bb05b662645c7284d23e111375711642"
+        },
+        "test": {
+          "n": 5000,
+          "identityFamilySha256": "63cb85f297e68708bf6b53092604431764cf73cd9dce5aecbf2c9a3ded53c922"
+        }
+      }
+    },
+    "selected": {
+      "ru": {
+        "train": {
+          "n": 2000,
+          "identityFamilySha256": "ea23f9e7b183990ef412416f2dad468e86dba0699ef098299aaecf99e052c1ef"
+        },
+        "select": {
+          "n": 650,
+          "identityFamilySha256": "d05d6d15f6a29a44cfa6e523420da86eddc42a880004825b8d82f626827ba5b1"
+        },
+        "cal": {
+          "n": 1400,
+          "identityFamilySha256": "f240a10de871827955d21ace3df85cfd1b85b3e6b60d8afbc300d4527193eaa4"
+        },
+        "test": {
+          "n": 5000,
+          "identityFamilySha256": "5cacb9d1014c4d1bb657a5a29e72bc390fa54440aa5380c292cd2f2f3316687c"
+        }
+      },
+      "en": {
+        "train": {
+          "n": 8000,
+          "identityFamilySha256": "4cfe14ce7f3bcbd0aabafa37a6cc891676713cc08e2384ebbfd1f85407ab71fd"
+        },
+        "select": {
+          "n": 2500,
+          "identityFamilySha256": "060abf984aa7890c5a6603adde80787740352bb79d2cccfeb8dd83683b15e0a7"
+        },
+        "cal": {
+          "n": 6000,
+          "identityFamilySha256": "6020f7c26b190f79431b7a2450adc61da9d3c0f105865f9d89c01ff9013f7a8f"
+        },
+        "test": {
+          "n": 5000,
+          "identityFamilySha256": "63cb85f297e68708bf6b53092604431764cf73cd9dce5aecbf2c9a3ded53c922"
+        }
+      }
+    },
+    "oldV74Weights": "95363312973c9a6e1544248fd87665c4c860fbad409aa579a86c11397b35fa78",
+    "oldV69Weights": "1a0b228cf86b43d06a62a98e4dc1039bb1788c4eeb14ea77efaa6eb1d9ddb228",
+    "testPreviouslyMeasured": true,
+    "RussianTrainingFromTelegramNotMail": true
+  },
+  "weightsSha256": "f4c4dfa7a25b7b4daa60af0807a5f404b8969f594cab1b7e59b2842e73771698",
+  "train": {
+    "trainableParameters": 5472002,
+    "trainRows": 10000,
+    "steps": 625,
+    "lossLast50": 0.15791842874139547
+  },
+  "chosenOnSelect": {
+    "ru": {
+      "zero-cal-fp": {
+        "alpha": 0.15,
+        "selectMetrics": {
+          "cutoff": 2.6906991629751587,
+          "fp": 0,
+          "tp": 216,
+          "ham": 432,
+          "spam": 218
+        }
+      },
+      "research-0p1pct-cal-fpr": {
+        "alpha": 0.15,
+        "selectMetrics": {
+          "cutoff": 2.6906991629751587,
+          "fp": 0,
+          "tp": 216,
+          "ham": 432,
+          "spam": 218
+        }
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "alpha": 0.0,
+        "selectMetrics": {
+          "cutoff": 2.923322841100906,
+          "fp": 0,
+          "tp": 911,
+          "ham": 1374,
+          "spam": 1126
+        }
+      },
+      "research-0p1pct-cal-fpr": {
+        "alpha": 0.15,
+        "selectMetrics": {
+          "cutoff": 2.75235017788025,
+          "fp": 1,
+          "tp": 1013,
+          "ham": 1374,
+          "spam": 1126
+        }
+      }
+    }
+  },
+  "calibration": {
+    "ru": {
+      "zero-cal-fp": {
+        "n": 1400,
+        "spam": 479,
+        "ham": 921,
+        "tp": 460,
+        "fn": 19,
+        "fp": 0,
+        "tn": 921,
+        "recall": 0.9603340292275574,
+        "fpr": 0.0,
+        "fpr95upper": 0.004153640371607624
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 1400,
+        "spam": 479,
+        "ham": 921,
+        "tp": 460,
+        "fn": 19,
+        "fp": 0,
+        "tn": 921,
+        "recall": 0.9603340292275574,
+        "fpr": 0.0,
+        "fpr95upper": 0.004153640371607624
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "n": 6000,
+        "spam": 2688,
+        "ham": 3312,
+        "tp": 2349,
+        "fn": 339,
+        "fp": 0,
+        "tn": 3312,
+        "recall": 0.8738839285714286,
+        "fpr": 0.0,
+        "fpr95upper": 0.0011585170365957036
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 6000,
+        "spam": 2688,
+        "ham": 3312,
+        "tp": 2352,
+        "fn": 336,
+        "fp": 3,
+        "tn": 3309,
+        "recall": 0.875,
+        "fpr": 0.0009057971014492754,
+        "fpr95upper": 0.002659912974957511
+      }
+    }
+  },
+  "testByLanguage": {
+    "ru": {
+      "zero-cal-fp": {
+        "n": 5000,
+        "spam": 1690,
+        "ham": 3310,
+        "tp": 1622,
+        "fn": 68,
+        "fp": 0,
+        "tn": 3310,
+        "recall": 0.9597633136094674,
+        "fpr": 0.0,
+        "fpr95upper": 0.0011592162354264214
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 5000,
+        "spam": 1690,
+        "ham": 3310,
+        "tp": 1622,
+        "fn": 68,
+        "fp": 0,
+        "tn": 3310,
+        "recall": 0.9597633136094674,
+        "fpr": 0.0,
+        "fpr95upper": 0.0011592162354264214
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "n": 5000,
+        "spam": 2318,
+        "ham": 2682,
+        "tp": 2038,
+        "fn": 280,
+        "fp": 4,
+        "tn": 2678,
+        "recall": 0.8792062122519413,
+        "fpr": 0.0014914243102162564,
+        "fpr95upper": 0.0038287111678297968
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 5000,
+        "spam": 2318,
+        "ham": 2682,
+        "tp": 2070,
+        "fn": 248,
+        "fp": 4,
+        "tn": 2678,
+        "recall": 0.8930112165660051,
+        "fpr": 0.0014914243102162564,
+        "fpr95upper": 0.0038287111678297968
+      }
+    }
+  },
+  "baselineByLanguage": {
+    "ru": {
+      "zero-cal-fp": {
+        "n": 5000,
+        "spam": 1690,
+        "ham": 3310,
+        "tp": 1603,
+        "fn": 87,
+        "fp": 0,
+        "tn": 3310,
+        "recall": 0.9485207100591716,
+        "fpr": 0.0,
+        "fpr95upper": 0.0011592162354264214
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 5000,
+        "spam": 1690,
+        "ham": 3310,
+        "tp": 1648,
+        "fn": 42,
+        "fp": 6,
+        "tn": 3304,
+        "recall": 0.9751479289940829,
+        "fpr": 0.0018126888217522659,
+        "fpr95upper": 0.003949363187777343
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "n": 5000,
+        "spam": 2318,
+        "ham": 2682,
+        "tp": 1508,
+        "fn": 810,
+        "fp": 0,
+        "tn": 2682,
+        "recall": 0.6505608283002589,
+        "fpr": 0.0,
+        "fpr95upper": 0.0014302626866072885
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 5000,
+        "spam": 2318,
+        "ham": 2682,
+        "tp": 2042,
+        "fn": 276,
+        "fp": 4,
+        "tn": 2678,
+        "recall": 0.8809318377911993,
+        "fpr": 0.0014914243102162564,
+        "fpr95upper": 0.0038287111678297968
+      }
+    }
+  },
+  "testAll": {
+    "zero-cal-fp": {
+      "n": 10000,
+      "spam": 4008,
+      "ham": 5992,
+      "tp": 3660,
+      "fn": 348,
+      "fp": 4,
+      "tn": 5988,
+      "recall": 0.9131736526946108,
+      "fpr": 0.0006675567423230974,
+      "fpr95upper": 0.0017153158445365009
+    },
+    "research-0p1pct-cal-fpr": {
+      "n": 10000,
+      "spam": 4008,
+      "ham": 5992,
+      "tp": 3692,
+      "fn": 316,
+      "fp": 4,
+      "tn": 5988,
+      "recall": 0.9211576846307385,
+      "fpr": 0.0006675567423230974,
+      "fpr95upper": 0.0017153158445365009
+    }
+  },
+  "baselineAll": {
+    "zero-cal-fp": {
+      "n": 10000,
+      "spam": 4008,
+      "ham": 5992,
+      "tp": 3111,
+      "fn": 897,
+      "fp": 0,
+      "tn": 5992,
+      "recall": 0.7761976047904192,
+      "fpr": 0.0,
+      "fpr95upper": 0.0006406871907933489
+    },
+    "research-0p1pct-cal-fpr": {
+      "n": 10000,
+      "spam": 4008,
+      "ham": 5992,
+      "tp": 3690,
+      "fn": 318,
+      "fp": 10,
+      "tn": 5982,
+      "recall": 0.9206586826347305,
+      "fpr": 0.0016688918558077437,
+      "fpr95upper": 0.00306954926706122
+    }
+  },
+  "validatedOnNewIndependentMail": false,
+  "validatedProductionFPR001": false,
+  "languages": [
+    "ru",
+    "en"
+  ],
+  "russianIsTelegram": true
+}

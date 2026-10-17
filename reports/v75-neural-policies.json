@@ -1,0 +1,160 @@
+{
+  "weightsSha256": "f4c4dfa7a25b7b4daa60af0807a5f404b8969f594cab1b7e59b2842e73771698",
+  "alphaChosenOnlyOnSelect": {
+    "ru": {
+      "zero-cal-fp": {
+        "alpha": 0.15,
+        "selectMetrics": {
+          "cutoff": 2.6906991629751587,
+          "fp": 0,
+          "tp": 216,
+          "ham": 432,
+          "spam": 218
+        }
+      },
+      "research-0p1pct-cal-fpr": {
+        "alpha": 0.15,
+        "selectMetrics": {
+          "cutoff": 2.6906991629751587,
+          "fp": 0,
+          "tp": 216,
+          "ham": 432,
+          "spam": 218
+        }
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "alpha": 0.0,
+        "selectMetrics": {
+          "cutoff": 2.923322841100906,
+          "fp": 0,
+          "tp": 911,
+          "ham": 1374,
+          "spam": 1126
+        }
+      },
+      "research-0p1pct-cal-fpr": {
+        "alpha": 0.15,
+        "selectMetrics": {
+          "cutoff": 2.75235017788025,
+          "fp": 1,
+          "tp": 1013,
+          "ham": 1374,
+          "spam": 1126
+        }
+      }
+    }
+  },
+  "scoreNormalizationOnlyOnSelect": {
+    "ru": {
+      "base": {
+        "center": -1.240746513697057,
+        "scale": 0.3217702349848355
+      },
+      "neural": {
+        "center": -8.857192993164062,
+        "scale": 3.149528384208679
+      }
+    },
+    "en": {
+      "base": {
+        "center": -1.515650015981278,
+        "scale": 0.8005820776231825
+      },
+      "neural": {
+        "center": -7.79588770866394,
+        "scale": 3.881717562675476
+      }
+    }
+  },
+  "thresholdOnlyOnDisjointCalibration": {
+    "ru": {
+      "zero-cal-fp": {
+        "cutoff": 4.647465723428806,
+        "fp": 0,
+        "tp": 460,
+        "ham": 921,
+        "spam": 479
+      },
+      "research-0p1pct-cal-fpr": {
+        "cutoff": 4.647465723428806,
+        "fp": 0,
+        "tp": 460,
+        "ham": 921,
+        "spam": 479
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "cutoff": 2.7515005129952175,
+        "fp": 0,
+        "tp": 2349,
+        "ham": 3312,
+        "spam": 2688
+      },
+      "research-0p1pct-cal-fpr": {
+        "cutoff": 2.8116270934671896,
+        "fp": 3,
+        "tp": 2352,
+        "ham": 3312,
+        "spam": 2688
+      }
+    }
+  },
+  "calibrationMetrics": {
+    "ru": {
+      "zero-cal-fp": {
+        "n": 1400,
+        "spam": 479,
+        "ham": 921,
+        "tp": 460,
+        "fn": 19,
+        "fp": 0,
+        "tn": 921,
+        "recall": 0.9603340292275574,
+        "fpr": 0.0,
+        "fpr95upper": 0.004153640371607624
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 1400,
+        "spam": 479,
+        "ham": 921,
+        "tp": 460,
+        "fn": 19,
+        "fp": 0,
+        "tn": 921,
+        "recall": 0.9603340292275574,
+        "fpr": 0.0,
+        "fpr95upper": 0.004153640371607624
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "n": 6000,
+        "spam": 2688,
+        "ham": 3312,
+        "tp": 2349,
+        "fn": 339,
+        "fp": 0,
+        "tn": 3312,
+        "recall": 0.8738839285714286,
+        "fpr": 0.0,
+        "fpr95upper": 0.0011585170365957036
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 6000,
+        "spam": 2688,
+        "ham": 3312,
+        "tp": 2352,
+        "fn": 336,
+        "fp": 3,
+        "tn": 3309,
+        "recall": 0.875,
+        "fpr": 0.0009057971014492754,
+        "fpr95upper": 0.002659912974957511
+      }
+    }
+  },
+  "historicalTestNotUsedForSelection": true
+}

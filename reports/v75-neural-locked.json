@@ -1,0 +1,12 @@
+{
+  "modelSha256": "f4c4dfa7a25b7b4daa60af0807a5f404b8969f594cab1b7e59b2842e73771698",
+  "train": {
+    "trainableParameters": 5472002,
+    "trainRows": 10000,
+    "steps": 625,
+    "lossLast50": 0.15791842874139547
+  },
+  "inputModelSha256": "95363312973c9a6e1544248fd87665c4c860fbad409aa579a86c11397b35fa78",
+  "baselineSha256": "1a0b228cf86b43d06a62a98e4dc1039bb1788c4eeb14ea77efaa6eb1d9ddb228",
+  "maxTokens": 160
+}
