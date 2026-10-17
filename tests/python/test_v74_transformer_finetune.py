@@ -42,9 +42,9 @@ class TransformerResearchTests(unittest.TestCase):
                 self.bert=torch.nn.Module()
                 self.bert.encoder=torch.nn.Module()
                 self.bert.encoder.layer=torch.nn.ModuleList([
-                    torch.nn.Linear(100,100) for _ in range(12)])
-                self.bert.pooler=torch.nn.Linear(100,100)
-                self.classifier=torch.nn.Linear(100,2)
+                    torch.nn.Linear(768,768) for _ in range(12)])
+                self.bert.pooler=torch.nn.Linear(768,768)
+                self.classifier=torch.nn.Linear(768,2)
         model=Fake();count=unlock_trainable(model)
         self.assertGreater(count,1_000_000)
         self.assertFalse(any(p.requires_grad for p in model.bert.encoder.layer[8].parameters()))
