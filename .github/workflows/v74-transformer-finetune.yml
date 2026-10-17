@@ -1,0 +1,84 @@
+name: MailGuard v74 real multilingual Transformer fine-tune and 10k research
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths:
+      - tools/v74_transformer_finetune.py
+      - tests/python/test_v74_transformer_finetune.py
+      - .github/workflows/v74-transformer-finetune.yml
+permissions:
+  contents: read
+concurrency:
+  group: mailguard-v74-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  transformer-cpu:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 115
+    permissions:
+      contents: write
+    env:
+      OMP_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      HF_HUB_DISABLE_XET: '1'
+      HF_HUB_DOWNLOAD_TIMEOUT: '90'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install Torch CPU and remove broken optional vision bindings
+        run: |
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.5.1
+          python -m pip uninstall -y torchvision torchaudio || true
+      - name: Install pinned Transformer scientific dependencies
+        run: |
+          python -m pip install transformers==4.46.3 sentencepiece==0.2.1 safetensors==0.4.5 numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 "datasets>=3.6,<5" "huggingface_hub>=0.33,<1"
+      - name: Verify family split, classifier calibration and gradient trainability
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v74_transformer_finetune.py' -v
+      - name: Fine-tune pretrained Transformer and run historical 10k benchmark
+        run: |
+          python -u tools/v74_transformer_finetune.py --output research-v74
+          cat research-v74/result.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v74-transformer-model-and-retrospective-report
+          path: |
+            research-v74/cohort-frozen.json
+            research-v74/model-locked.json
+            research-v74/calibration-locked.json
+            research-v74/result.json
+            research-v74/result.md
+            research-v74/checkpoint
+          retention-days: 90
+          compression-level: 1
+      - name: Archive only aggregate scores and provenance, not customer email
+        if: success()
+        run: |
+          cp research-v74/result.json /tmp/v74-result.json
+          cp research-v74/result.md /tmp/v74-result.md
+          cp research-v74/cohort-frozen.json /tmp/v74-cohort.json
+          cp research-v74/model-locked.json /tmp/v74-model.json
+          cp research-v74/calibration-locked.json /tmp/v74-calibration.json
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/v74-result.json reports/v74-transformer-result.json
+          cp /tmp/v74-result.md reports/v74-transformer-result.md
+          cp /tmp/v74-cohort.json reports/v74-transformer-frozen.json
+          cp /tmp/v74-model.json reports/v74-transformer-model-lock.json
+          cp /tmp/v74-calibration.json reports/v74-transformer-calibration.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v74-transformer-result.json reports/v74-transformer-result.md reports/v74-transformer-frozen.json reports/v74-transformer-model-lock.json reports/v74-transformer-calibration.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record pretrained RU-EN neural fine-tune and retrospective test without touching v69'
+            git push origin HEAD:mailguard-v48-calibrated
+          fi
