@@ -1,0 +1,295 @@
+{
+  "version": 74,
+  "model": "Multilingual MiniLM (BERT) with XLM-R tokenizer",
+  "fullXLMRoBERTa": false,
+  "finetunedLayers": 3,
+  "pretrainedRevision": "6e8c1ec6b4ec4e3fc6eb7d2cd834fcd582b61daf",
+  "tokenizerRevision": "e73636d4f797dec63c3081bb6ed5c7b0bb3f2089",
+  "weightSHA256": "95363312973c9a6e1544248fd87665c4c860fbad409aa579a86c11397b35fa78",
+  "training": {
+    "trainableParameters": 5472002,
+    "trainRows": 3500,
+    "steps": 438,
+    "lossLast50": 0.15614043355781176
+  },
+  "source": {
+    "status": "RETROSPECTIVE reuse of v68/v69 TEST 10k",
+    "publisherRevisions": {
+      "ru": "af298cd351ce1d257ae789571f649d4d94d2cdd6",
+      "en": "deb4cc27dc2754c14cb157aace412727f77b41dd"
+    },
+    "fullPartitionFingerprints": {
+      "ru": {
+        "train": {
+          "n": 10286,
+          "identityFamilySha256": "00545c54ce305cc3bee8eeeccb0ff084ee84afcdcc5bd8d797c052b416159e8d"
+        },
+        "cal": {
+          "n": 2870,
+          "identityFamilySha256": "653b64afa603616927c551bbf868cd404936c942d0385fcc14bdb09637c8cb29"
+        },
+        "test": {
+          "n": 5000,
+          "identityFamilySha256": "5cacb9d1014c4d1bb657a5a29e72bc390fa54440aa5380c292cd2f2f3316687c"
+        }
+      },
+      "en": {
+        "train": {
+          "n": 70000,
+          "identityFamilySha256": "5059270193f53e2122b9c18363dcd798b84582728faa2adae54f3dbd8ef5d1e1"
+        },
+        "cal": {
+          "n": 22382,
+          "identityFamilySha256": "5510f39f685f16739414d4d7c353e793bb05b662645c7284d23e111375711642"
+        },
+        "test": {
+          "n": 5000,
+          "identityFamilySha256": "63cb85f297e68708bf6b53092604431764cf73cd9dce5aecbf2c9a3ded53c922"
+        }
+      }
+    },
+    "selectedFingerprints": {
+      "ru": {
+        "train": {
+          "n": 1300,
+          "identityFamilySha256": "db88fcdc08ce7eb21511d17207605aa0dff274d140e15ae4f8ec54d1a9eea798"
+        },
+        "cal": {
+          "n": 1600,
+          "identityFamilySha256": "3e6508540d1a02d79f0abb3ef00bada2ff470cf165e577ebd2d3f960b48326a1"
+        },
+        "test": {
+          "n": 5000,
+          "identityFamilySha256": "5cacb9d1014c4d1bb657a5a29e72bc390fa54440aa5380c292cd2f2f3316687c"
+        }
+      },
+      "en": {
+        "train": {
+          "n": 2200,
+          "identityFamilySha256": "ec5d00ed6bfa200d2f5d8e5a1ec7cb47f5d3517fd472f5eae60f6f500f7b406c"
+        },
+        "cal": {
+          "n": 3200,
+          "identityFamilySha256": "e2cee43f1741d4a3ec705a28be2e95488ff85be2ec717f3942a993f497f8da89"
+        },
+        "test": {
+          "n": 5000,
+          "identityFamilySha256": "63cb85f297e68708bf6b53092604431764cf73cd9dce5aecbf2c9a3ded53c922"
+        }
+      }
+    },
+    "pretrainedModel": "microsoft/Multilingual-MiniLM-L12-H384",
+    "tokenizer": "FacebookAI/xlm-roberta-base",
+    "epochs": 1,
+    "maxTokens": 96,
+    "trainPerClass": {
+      "ru": 650,
+      "en": 1100
+    },
+    "calLimit": {
+      "ru": 1600,
+      "en": 3200
+    },
+    "ruDataAreTelegramNotEmail": true,
+    "englishDataNotNewOrigin": true,
+    "noCustomerData": true
+  },
+  "calibration": {
+    "ru": {
+      "zero-cal-fp": {
+        "n": 1600,
+        "spam": 551,
+        "ham": 1049,
+        "tp": 492,
+        "fn": 59,
+        "fp": 0,
+        "tn": 1049,
+        "recall": 0.8929219600725953,
+        "fpr": 0.0,
+        "fpr95upper": 0.003648658388697012
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 1600,
+        "spam": 551,
+        "ham": 1049,
+        "tp": 496,
+        "fn": 55,
+        "fp": 1,
+        "tn": 1048,
+        "recall": 0.9001814882032668,
+        "fpr": 0.0009532888465204957,
+        "fpr95upper": 0.00537998091670141
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "n": 3200,
+        "spam": 1467,
+        "ham": 1733,
+        "tp": 411,
+        "fn": 1056,
+        "fp": 0,
+        "tn": 1733,
+        "recall": 0.28016359918200406,
+        "fpr": 0.0,
+        "fpr95upper": 0.0022117498411757482
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 3200,
+        "spam": 1467,
+        "ham": 1733,
+        "tp": 444,
+        "fn": 1023,
+        "fp": 1,
+        "tn": 1732,
+        "recall": 0.30265848670756645,
+        "fpr": 0.0005770340450086555,
+        "fpr95upper": 0.0032613974801390007
+      }
+    }
+  },
+  "cutoffs": {
+    "ru": {
+      "zero-cal-fp": {
+        "cutoff": 4.300594329833985,
+        "calHAM": 1049,
+        "calSPAM": 551,
+        "calTP": 492,
+        "calFP": 0
+      },
+      "research-0p1pct-cal-fpr": {
+        "cutoff": 3.8205029964447026,
+        "calHAM": 1049,
+        "calSPAM": 551,
+        "calTP": 496,
+        "calFP": 1
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "cutoff": 9.44041156768799,
+        "calHAM": 1733,
+        "calSPAM": 1467,
+        "calTP": 411,
+        "calFP": 0
+      },
+      "research-0p1pct-cal-fpr": {
+        "cutoff": 9.134120941162111,
+        "calHAM": 1733,
+        "calSPAM": 1467,
+        "calTP": 444,
+        "calFP": 1
+      }
+    }
+  },
+  "testByLanguage": {
+    "ru": {
+      "zero-cal-fp": {
+        "n": 5000,
+        "spam": 1690,
+        "ham": 3310,
+        "tp": 1492,
+        "fn": 198,
+        "fp": 1,
+        "tn": 3309,
+        "recall": 0.8828402366863906,
+        "fpr": 0.00030211480362537764,
+        "fpr95upper": 0.0017094127378149057
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 5000,
+        "spam": 1690,
+        "ham": 3310,
+        "tp": 1518,
+        "fn": 172,
+        "fp": 1,
+        "tn": 3309,
+        "recall": 0.8982248520710059,
+        "fpr": 0.00030211480362537764,
+        "fpr95upper": 0.0017094127378149057
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "n": 5000,
+        "spam": 2318,
+        "ham": 2682,
+        "tp": 630,
+        "fn": 1688,
+        "fp": 2,
+        "tn": 2680,
+        "recall": 0.271786022433132,
+        "fpr": 0.0007457121551081282,
+        "fpr95upper": 0.0027150288726444823
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 5000,
+        "spam": 2318,
+        "ham": 2682,
+        "tp": 690,
+        "fn": 1628,
+        "fp": 11,
+        "tn": 2671,
+        "recall": 0.29767040552200175,
+        "fpr": 0.004101416853094705,
+        "fpr95upper": 0.0073296305504844846
+      }
+    }
+  },
+  "testAll": {
+    "zero-cal-fp": {
+      "n": 10000,
+      "spam": 4008,
+      "ham": 5992,
+      "tp": 2122,
+      "fn": 1886,
+      "fp": 3,
+      "tn": 5989,
+      "recall": 0.529441117764471,
+      "fpr": 0.0005006675567423231,
+      "fpr95upper": 0.0014710943311911544
+    },
+    "research-0p1pct-cal-fpr": {
+      "n": 10000,
+      "spam": 4008,
+      "ham": 5992,
+      "tp": 2208,
+      "fn": 1800,
+      "fp": 12,
+      "tn": 5980,
+      "recall": 0.5508982035928144,
+      "fpr": 0.0020026702269692926,
+      "fpr95upper": 0.0034974497404279634
+    }
+  },
+  "baselineV69": {
+    "zero-cal-fp": {
+      "n": 10000,
+      "spam": 4008,
+      "ham": 5992,
+      "tp": 3111,
+      "fn": 897,
+      "fp": 0,
+      "tn": 5992,
+      "recall": 0.7761976047904192,
+      "fpr": 0.0,
+      "fpr95upper": 0.0006406871907933489
+    },
+    "research-0p1pct-cal-fpr": {
+      "n": 10000,
+      "spam": 4008,
+      "ham": 5992,
+      "tp": 3690,
+      "fn": 318,
+      "fp": 10,
+      "tn": 5982,
+      "recall": 0.9206586826347305,
+      "fpr": 0.0016688918558077437,
+      "fpr95upper": 0.00306954926706122
+    }
+  },
+  "evaluation": "Research retrospective: v68-v69 known 10k",
+  "independentNewSourceValidation": false,
+  "validatedProduction90Recall": false,
+  "validatedProduction001FPR": false
+}

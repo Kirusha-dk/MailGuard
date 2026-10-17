@@ -1,0 +1,82 @@
+{
+  "status": "RETROSPECTIVE reuse of v68/v69 TEST 10k",
+  "publisherRevisions": {
+    "ru": "af298cd351ce1d257ae789571f649d4d94d2cdd6",
+    "en": "deb4cc27dc2754c14cb157aace412727f77b41dd"
+  },
+  "fullPartitionFingerprints": {
+    "ru": {
+      "train": {
+        "n": 10286,
+        "identityFamilySha256": "00545c54ce305cc3bee8eeeccb0ff084ee84afcdcc5bd8d797c052b416159e8d"
+      },
+      "cal": {
+        "n": 2870,
+        "identityFamilySha256": "653b64afa603616927c551bbf868cd404936c942d0385fcc14bdb09637c8cb29"
+      },
+      "test": {
+        "n": 5000,
+        "identityFamilySha256": "5cacb9d1014c4d1bb657a5a29e72bc390fa54440aa5380c292cd2f2f3316687c"
+      }
+    },
+    "en": {
+      "train": {
+        "n": 70000,
+        "identityFamilySha256": "5059270193f53e2122b9c18363dcd798b84582728faa2adae54f3dbd8ef5d1e1"
+      },
+      "cal": {
+        "n": 22382,
+        "identityFamilySha256": "5510f39f685f16739414d4d7c353e793bb05b662645c7284d23e111375711642"
+      },
+      "test": {
+        "n": 5000,
+        "identityFamilySha256": "63cb85f297e68708bf6b53092604431764cf73cd9dce5aecbf2c9a3ded53c922"
+      }
+    }
+  },
+  "selectedFingerprints": {
+    "ru": {
+      "train": {
+        "n": 1300,
+        "identityFamilySha256": "db88fcdc08ce7eb21511d17207605aa0dff274d140e15ae4f8ec54d1a9eea798"
+      },
+      "cal": {
+        "n": 1600,
+        "identityFamilySha256": "3e6508540d1a02d79f0abb3ef00bada2ff470cf165e577ebd2d3f960b48326a1"
+      },
+      "test": {
+        "n": 5000,
+        "identityFamilySha256": "5cacb9d1014c4d1bb657a5a29e72bc390fa54440aa5380c292cd2f2f3316687c"
+      }
+    },
+    "en": {
+      "train": {
+        "n": 2200,
+        "identityFamilySha256": "ec5d00ed6bfa200d2f5d8e5a1ec7cb47f5d3517fd472f5eae60f6f500f7b406c"
+      },
+      "cal": {
+        "n": 3200,
+        "identityFamilySha256": "e2cee43f1741d4a3ec705a28be2e95488ff85be2ec717f3942a993f497f8da89"
+      },
+      "test": {
+        "n": 5000,
+        "identityFamilySha256": "63cb85f297e68708bf6b53092604431764cf73cd9dce5aecbf2c9a3ded53c922"
+      }
+    }
+  },
+  "pretrainedModel": "microsoft/Multilingual-MiniLM-L12-H384",
+  "tokenizer": "FacebookAI/xlm-roberta-base",
+  "epochs": 1,
+  "maxTokens": 96,
+  "trainPerClass": {
+    "ru": 650,
+    "en": 1100
+  },
+  "calLimit": {
+    "ru": 1600,
+    "en": 3200
+  },
+  "ruDataAreTelegramNotEmail": true,
+  "englishDataNotNewOrigin": true,
+  "noCustomerData": true
+}

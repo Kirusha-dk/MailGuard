@@ -1,0 +1,91 @@
+{
+  "calibration": {
+    "ru": {
+      "zero-cal-fp": {
+        "n": 1600,
+        "spam": 551,
+        "ham": 1049,
+        "tp": 492,
+        "fn": 59,
+        "fp": 0,
+        "tn": 1049,
+        "recall": 0.8929219600725953,
+        "fpr": 0.0,
+        "fpr95upper": 0.003648658388697012
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 1600,
+        "spam": 551,
+        "ham": 1049,
+        "tp": 496,
+        "fn": 55,
+        "fp": 1,
+        "tn": 1048,
+        "recall": 0.9001814882032668,
+        "fpr": 0.0009532888465204957,
+        "fpr95upper": 0.00537998091670141
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "n": 3200,
+        "spam": 1467,
+        "ham": 1733,
+        "tp": 411,
+        "fn": 1056,
+        "fp": 0,
+        "tn": 1733,
+        "recall": 0.28016359918200406,
+        "fpr": 0.0,
+        "fpr95upper": 0.0022117498411757482
+      },
+      "research-0p1pct-cal-fpr": {
+        "n": 3200,
+        "spam": 1467,
+        "ham": 1733,
+        "tp": 444,
+        "fn": 1023,
+        "fp": 1,
+        "tn": 1732,
+        "recall": 0.30265848670756645,
+        "fpr": 0.0005770340450086555,
+        "fpr95upper": 0.0032613974801390007
+      }
+    }
+  },
+  "cutoffs": {
+    "ru": {
+      "zero-cal-fp": {
+        "cutoff": 4.300594329833985,
+        "calHAM": 1049,
+        "calSPAM": 551,
+        "calTP": 492,
+        "calFP": 0
+      },
+      "research-0p1pct-cal-fpr": {
+        "cutoff": 3.8205029964447026,
+        "calHAM": 1049,
+        "calSPAM": 551,
+        "calTP": 496,
+        "calFP": 1
+      }
+    },
+    "en": {
+      "zero-cal-fp": {
+        "cutoff": 9.44041156768799,
+        "calHAM": 1733,
+        "calSPAM": 1467,
+        "calTP": 411,
+        "calFP": 0
+      },
+      "research-0p1pct-cal-fpr": {
+        "cutoff": 9.134120941162111,
+        "calHAM": 1733,
+        "calSPAM": 1467,
+        "calTP": 444,
+        "calFP": 1
+      }
+    }
+  },
+  "weights": "95363312973c9a6e1544248fd87665c4c860fbad409aa579a86c11397b35fa78"
+}
