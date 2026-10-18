@@ -230,7 +230,7 @@ def run():
     if v74.file_sha(model69)!=v75.V69_SHA or v74.file_sha(chk)!=V75_SHA:
         raise ValueError("Frozen v69/v75 model SHA differs from trained run")
     policy=json.loads(Path(args.policies).read_text())
-    if policy["neuralWeightsSha"]!=V75_SHA or not policy.get("historicalTestNotUsedForSelection"):
+    if policy["weightsSha256"]!=V75_SHA or not policy.get("historicalTestNotUsedForSelection"):
         raise ValueError("v75 policies not frozen prior to original test")
     for p in PROFILES:
         if p not in policy["alphaChosenOnlyOnSelect"]["en"] or p not in policy["thresholdOnlyOnDisjointCalibration"]["en"]:
