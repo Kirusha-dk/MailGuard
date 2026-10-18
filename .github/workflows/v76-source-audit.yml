@@ -1,0 +1,45 @@
+name: MailGuard v76 candidate 2024 source schema audit
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths:
+      - tools/v76_source_audit.py
+      - .github/workflows/v76-source-audit.yml
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check exact fixed source CSV schemas without scoring emails
+        run: python -u tools/v76_source_audit.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v76-academic-source-schema
+          path: reports/v76-source-audit.json
+          retention-days: 90
+      - name: Commit aggregate source schema only
+        if: success()
+        run: |
+          cp reports/v76-source-audit.json /tmp/v76-schema.json
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/v76-schema.json reports/v76-source-audit.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v76-source-audit.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record pre-inference v76 new source schema and digests'
+            git push origin HEAD:mailguard-v48-calibrated
+          fi
