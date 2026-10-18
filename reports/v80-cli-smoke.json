@@ -1,0 +1,117 @@
+{
+  "passed": true,
+  "profiles": {
+    "balanced": {
+      "version": "v80-english-phishing-semantic",
+      "profile": "balanced",
+      "model_sha256": "6aa2e92b2e1ccfd764223eeea5d1c792e5ae15548ad60767be93023d690aa5c9",
+      "files_found": 66,
+      "excluded": {
+        "unsupported_or_short": 3,
+        "duplicates": 2,
+        "conflicting_identities": 1
+      },
+      "metrics": {
+        "n": 60,
+        "spam": 30,
+        "ham": 30,
+        "tp": 30,
+        "fn": 0,
+        "fp": 0,
+        "tn": 30,
+        "recall": 1.0,
+        "fpr": 0.0,
+        "accuracy": 1.0,
+        "fp_per_million_ham_point_estimate": 0.0,
+        "fp_per_million_all_point_estimate": 0.0,
+        "fpr_upper_95_per_million_ham_iid_assumption": 95033.85285530411,
+        "fp_upper_95_per_million_all_iid_assumption": 48702.91331009749,
+        "joint_98_and_10ppm_point_targets_met": true,
+        "joint_98_and_10ppm_all_point_targets_met": true
+      },
+      "by_language": {
+        "en": {
+          "n": 60,
+          "spam": 30,
+          "ham": 30,
+          "tp": 30,
+          "fn": 0,
+          "fp": 0,
+          "tn": 30,
+          "recall": 1.0,
+          "fpr": 0.0,
+          "accuracy": 1.0
+        }
+      },
+      "complete_10000_ru_en_email_test": false,
+      "goal": {
+        "target_spam_recall": 0.98,
+        "target_fp_per_million_all_messages": 10,
+        "observed_joint_goal_on_scored_mail": true,
+        "at_least_one_million_messages_scored": false,
+        "upper_95_fp_all_within_10ppm_iid_assumption": false,
+        "arbitrary_future_mail_guaranteed": false,
+        "note": "Point estimates are not a million-message test. Binomial bounds assume independent representative messages."
+      }
+    },
+    "ten-ppm": {
+      "version": "v80-english-phishing-semantic",
+      "profile": "ten-ppm",
+      "model_sha256": "6aa2e92b2e1ccfd764223eeea5d1c792e5ae15548ad60767be93023d690aa5c9",
+      "files_found": 66,
+      "excluded": {
+        "unsupported_or_short": 3,
+        "duplicates": 2,
+        "conflicting_identities": 1
+      },
+      "metrics": {
+        "n": 60,
+        "spam": 30,
+        "ham": 30,
+        "tp": 5,
+        "fn": 25,
+        "fp": 0,
+        "tn": 30,
+        "recall": 0.16666666666666666,
+        "fpr": 0.0,
+        "accuracy": 0.5833333333333334,
+        "fp_per_million_ham_point_estimate": 0.0,
+        "fp_per_million_all_point_estimate": 0.0,
+        "fpr_upper_95_per_million_ham_iid_assumption": 95033.85285530411,
+        "fp_upper_95_per_million_all_iid_assumption": 48702.91331009749,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "by_language": {
+        "en": {
+          "n": 60,
+          "spam": 30,
+          "ham": 30,
+          "tp": 5,
+          "fn": 25,
+          "fp": 0,
+          "tn": 30,
+          "recall": 0.16666666666666666,
+          "fpr": 0.0,
+          "accuracy": 0.5833333333333334
+        }
+      },
+      "complete_10000_ru_en_email_test": false,
+      "goal": {
+        "target_spam_recall": 0.98,
+        "target_fp_per_million_all_messages": 10,
+        "observed_joint_goal_on_scored_mail": false,
+        "at_least_one_million_messages_scored": false,
+        "upper_95_fp_all_within_10ppm_iid_assumption": false,
+        "arbitrary_future_mail_guaranteed": false,
+        "note": "Point estimates are not a million-message test. Binomial bounds assume independent representative messages."
+      }
+    }
+  },
+  "mime_api_predictions_equal": true,
+  "single_bulk_decisions_equal": true,
+  "maximum_single_bulk_score_difference": 2.2058426196736036e-09,
+  "french_german_russian_abstained": true,
+  "punctuation_duplicates_removed": true,
+  "both_conflicting_labels_excluded": true
+}

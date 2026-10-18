@@ -173,7 +173,7 @@ def parse_eml(raw):
 
 def main(predictor=None, version=None, allowed_languages=('ru', 'en'), description=None,
          prepare_bundle=None, text_supported=None, profile_choices=None, default_profile='low-fp',
-         identity_fn=None):
+         identity_fn=None, summary_extra=None):
     predictor = predictor or predict
     version = version or VERSION
     p = argparse.ArgumentParser(description=description or __doc__)
@@ -237,6 +237,8 @@ def main(predictor=None, version=None, allowed_languages=('ru', 'en'), descripti
         'files_found': len(files), 'excluded': dict(failures), 'metrics': measure(values, labels, 0),
         'by_language': {k: measure(*v, 0) for k, v in by_lang.items()},
         'complete_10000_ru_en_email_test': len(values) == 10000 and not failures['read_errors']}
+    if summary_extra:
+        summary.update(summary_extra(summary))
     (out / 'summary.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2))
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 

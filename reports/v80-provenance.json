@@ -1,0 +1,113 @@
+{
+  "extra_frozen_files_sha256": {
+    "fresh-test.jsonl.gz": "ac1555bdb1ebec97e2eac334f4ccafac459dfaedfd1067e86f89d61e11811c88",
+    "train.jsonl.gz": "18ecc75752657a705a2be39d43d9c4d5d935a1581b223dbfe929d25f6262d5c0",
+    "frozen.json": "c45cd2f0d3263d9e8b4055c527219fb055f81524c728e10ad9716823f8e984f4",
+    "select.jsonl.gz": "e3e58f7e7d9834324da5bfff7b124d23c3e0862c073540da6d2348aeb0d85a3b",
+    "cal.jsonl.gz": "714c645a528483f24ff4b60003cfd835a1c787903c620204dbfd28d6eba3fb01"
+  },
+  "encoder": {
+    "model": "sentence-transformers/all-MiniLM-L6-v2",
+    "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "view": "english-minilm-s7-independent-head1200-tail600-pair128-v1",
+    "source_model_sha256": "4278337fd0ff3c68bfb6291042cad8ab363e1d9fbc43dcb499fe91c871902474",
+    "converted_matrices": 36,
+    "modification": "signed weights rounded to [-64,63]; scales doubled; independent activation quantization",
+    "files": {
+      "model.onnx": "f876f2876d9efb4f0a7f6b0738de257e9e7dcf6671ed1c6175f1688df9822562",
+      "tokenizer.json": "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037",
+      "LICENSE": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    }
+  },
+  "base_model_sha256": "f331dc14cb289a5e27cc96904aad519cc07bc2a400e008ea71acffd200621d72",
+  "source_pins": {
+    "encoder_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "files": [
+      {
+        "url": "https://monkey.org/~jose/phishing/phishing-2015",
+        "sha256": "7523e62a5e6e4ee8134ab8b1a628e423097a7779e1003b28422864aa34f1c319",
+        "file": ".cache/v80/raw/nazario-2015.mbox"
+      },
+      {
+        "url": "https://monkey.org/~jose/phishing/phishing-2016",
+        "sha256": "42393e4d686193bfb879d1608c23fd4d3b698ccd4d73f0e1d2276ba709718483",
+        "file": ".cache/v80/raw/nazario-2016.mbox"
+      },
+      {
+        "url": "https://monkey.org/~jose/phishing/phishing-2017",
+        "sha256": "110fba876b38b44035bf065788952674bc68a7b6879c345a515a9ac844b1d704",
+        "file": ".cache/v80/raw/nazario-2017.mbox"
+      },
+      {
+        "url": "https://monkey.org/~jose/phishing/phishing-2018",
+        "sha256": "83f49cf2a76c7b29b205d22d8778e46848e36af0f15ee1df126a543696acd48d",
+        "file": ".cache/v80/raw/nazario-2018.mbox"
+      },
+      {
+        "url": "https://monkey.org/~jose/phishing/phishing-2019",
+        "sha256": "cab39d6fcb38cf80cdaabb3e6ffd1222777e2fcaac7e8480321b7f729c2e3c0e",
+        "file": ".cache/v80/raw/nazario-2019.mbox"
+      },
+      {
+        "url": "https://monkey.org/~jose/phishing/phishing-2020",
+        "sha256": "99e20bf25f5e8556d37103f2c8140cd75181a62d3df91df8acf9d9aece9f08bb",
+        "file": ".cache/v80/raw/nazario-2020.mbox"
+      },
+      {
+        "url": "https://monkey.org/~jose/phishing/phishing-2021",
+        "sha256": "636707cff42245d1482e4ae8a2c03369717a5e06bf9d1a0f4ec5dcd846661cee",
+        "file": ".cache/v80/raw/nazario-2021.mbox"
+      },
+      {
+        "url": "https://monkey.org/~jose/phishing/phishing-2022",
+        "sha256": "a6291e2cb990204766fce425423949b403cce4ae6a660fc8d08812e40a063fa7",
+        "file": ".cache/v80/raw/nazario-2022.mbox"
+      },
+      {
+        "url": "https://monkey.org/~jose/phishing/phishing-2023",
+        "sha256": "5007f1c1dc91b15e93e988afa3a1cf402e15c88f765d3057be8bfec50dae1fe8",
+        "file": ".cache/v80/raw/nazario-2023.mbox"
+      },
+      {
+        "url": "https://monkey.org/~jose/phishing/phishing-2024",
+        "sha256": "60afa40a2757170093a2bde31ec9cda4e54d33992203ce04bfbbc86d2e5e5b99",
+        "file": ".cache/v80/raw/nazario-2024.mbox"
+      },
+      {
+        "url": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/onnx/model_qint8_avx512_vnni.onnx",
+        "sha256": "4278337fd0ff3c68bfb6291042cad8ab363e1d9fbc43dcb499fe91c871902474",
+        "file": ".cache/v80/encoder/model-source-int8.onnx"
+      },
+      {
+        "url": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/tokenizer.json",
+        "sha256": "be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037",
+        "file": ".cache/v80/encoder/tokenizer.json"
+      },
+      {
+        "url": "https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2/resolve/1110a243fdf4706b3f48f1d95db1a4f5529b4d41/README.md",
+        "sha256": "dcd602d2fd35c203a247304a06fec6654a12f7941b739f9221a064fe8dc3b7f0",
+        "file": ".cache/v80/encoder/README.md"
+      },
+      {
+        "url": "https://www.apache.org/licenses/LICENSE-2.0.txt",
+        "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+        "file": ".cache/v80/encoder/LICENSE"
+      }
+    ]
+  },
+  "independent_encoder_parity": [
+    {
+      "workers": 1,
+      "seconds": 1.8826047249999647,
+      "maximum_difference": 0.0
+    },
+    {
+      "workers": 4,
+      "seconds": 0.6537904429999344,
+      "maximum_difference": 0.0
+    }
+  ],
+  "new_target_recall": 0.98,
+  "new_target_fpr_conservative_ham_denominator": 1e-05,
+  "million_message_test_performed": false
+}
