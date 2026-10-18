@@ -1,0 +1,310 @@
+{
+  "repo": "sniff07/phishing-dataset",
+  "revision": "c21f524c014a49626dc61322a5f7b3194ac5c7d1",
+  "licenseUnverified": true,
+  "originalityUnverified": true,
+  "textNotSaved": true,
+  "modelNotScored": true,
+  "files": [
+    {
+      "name": "final_cleaned_safe_1.csv",
+      "byteCount": 10357034,
+      "sha256": "5dfec12e84f4f91714d169259477f2697be3429849a72d21016dba555fed2c5b",
+      "header": [
+        "body",
+        "subject",
+        "category_numeric",
+        "category_text"
+      ],
+      "rowCount": 4992,
+      "rowWidths": {
+        "4": 4992
+      },
+      "firstSevenCellLengthsOnly": [
+        [
+          5857,
+          67,
+          3,
+          3
+        ],
+        [
+          1194,
+          39,
+          3,
+          3
+        ],
+        [
+          1326,
+          43,
+          3,
+          3
+        ],
+        [
+          2036,
+          17,
+          3,
+          3
+        ],
+        [
+          1212,
+          33,
+          3,
+          3
+        ],
+        [
+          3992,
+          52,
+          3,
+          3
+        ],
+        [
+          2187,
+          28,
+          3,
+          3
+        ]
+      ],
+      "provisionalClass": "ham"
+    },
+    {
+      "name": "final_cleaned_phis1.csv",
+      "byteCount": 9721077,
+      "sha256": "a274fe9efce5deb9cb52d0b823c138d4bc2f23870823c90c82d2871e1841342c",
+      "header": [
+        "body",
+        "subject",
+        "category_numeric",
+        "category_text"
+      ],
+      "rowCount": 4938,
+      "rowWidths": {
+        "4": 4938
+      },
+      "firstSevenCellLengthsOnly": [
+        [
+          1538,
+          24,
+          1,
+          4
+        ],
+        [
+          894,
+          25,
+          1,
+          4
+        ],
+        [
+          1746,
+          25,
+          1,
+          4
+        ],
+        [
+          1125,
+          37,
+          1,
+          4
+        ],
+        [
+          1047,
+          46,
+          1,
+          4
+        ],
+        [
+          737,
+          46,
+          1,
+          4
+        ],
+        [
+          1319,
+          47,
+          1,
+          4
+        ]
+      ],
+      "provisionalClass": "phishing"
+    },
+    {
+      "name": "final_cleaned_phis2.csv",
+      "byteCount": 7115522,
+      "sha256": "55e1f238ec1243237236e7e1ff055b30a5c0820d4ad2000cb7fe739825681170",
+      "header": [
+        "body",
+        "subject",
+        "category_numeric",
+        "category_text"
+      ],
+      "rowCount": 4865,
+      "rowWidths": {
+        "4": 4865
+      },
+      "firstSevenCellLengthsOnly": [
+        [
+          1037,
+          44,
+          1,
+          4
+        ],
+        [
+          740,
+          56,
+          1,
+          4
+        ],
+        [
+          3416,
+          15,
+          1,
+          4
+        ],
+        [
+          686,
+          60,
+          1,
+          4
+        ],
+        [
+          3650,
+          28,
+          1,
+          4
+        ],
+        [
+          1713,
+          29,
+          1,
+          4
+        ],
+        [
+          704,
+          25,
+          1,
+          4
+        ]
+      ],
+      "provisionalClass": "phishing"
+    },
+    {
+      "name": "final_cleaned_phis_3.csv",
+      "byteCount": 7869117,
+      "sha256": "eb059239b03a5190adc3b8655e09108f5b20e470fed675e60bddfc447aaaa140",
+      "header": [
+        "body",
+        "subject",
+        "category_numeric",
+        "category_text"
+      ],
+      "rowCount": 4952,
+      "rowWidths": {
+        "4": 4952
+      },
+      "firstSevenCellLengthsOnly": [
+        [
+          1183,
+          55,
+          1,
+          4
+        ],
+        [
+          588,
+          27,
+          1,
+          4
+        ],
+        [
+          601,
+          27,
+          1,
+          4
+        ],
+        [
+          562,
+          27,
+          1,
+          4
+        ],
+        [
+          586,
+          27,
+          1,
+          4
+        ],
+        [
+          129,
+          3,
+          1,
+          4
+        ],
+        [
+          1130,
+          65,
+          1,
+          4
+        ]
+      ],
+      "provisionalClass": "phishing"
+    },
+    {
+      "name": "final_cleaned_phis_4.csv",
+      "byteCount": 6712147,
+      "sha256": "d510ef99b2a874d3742af372bf2ba6a5b9b3ec6ed742963214116274b8eae93b",
+      "header": [
+        "body",
+        "subject",
+        "category_numeric",
+        "category_text"
+      ],
+      "rowCount": 4957,
+      "rowWidths": {
+        "4": 4957
+      },
+      "firstSevenCellLengthsOnly": [
+        [
+          165,
+          22,
+          1,
+          4
+        ],
+        [
+          211,
+          27,
+          1,
+          4
+        ],
+        [
+          71,
+          23,
+          1,
+          4
+        ],
+        [
+          238,
+          55,
+          1,
+          4
+        ],
+        [
+          36,
+          41,
+          1,
+          4
+        ],
+        [
+          890,
+          29,
+          1,
+          4
+        ],
+        [
+          483,
+          36,
+          1,
+          4
+        ]
+      ],
+      "provisionalClass": "phishing"
+    }
+  ]
+}
