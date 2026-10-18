@@ -1,0 +1,4 @@
+-r requirements-v79.txt
+pyarrow==26.0.0
+datasets>=3.6,<5
+huggingface_hub>=0.33,<1
