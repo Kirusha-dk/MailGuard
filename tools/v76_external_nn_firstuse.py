@@ -34,7 +34,7 @@ EXPECTED={
 "final_cleaned_phis_4.csv":"d510ef99b2a874d3742af372bf2ba6a5b9b3ec6ed742963214116274b8eae93b",
 }
 V75_SHA="f4c4dfa7a25b7b4daa60af0807a5f404b8969f594cab1b7e59b2842e73771698"
-COHORT=10000
+COHORT=9000
 SEED="v76-firstuse-academic-2024-fixed-identity-order"
 PREVIOUS_V73_REV="22fa6d1c1362518821bfb25564654348014303e4"
 PROFILES=v75.PROFILES
@@ -276,7 +276,7 @@ def run():
                 productionRecall90Validated=False,productionFPR001Validated=False)
     (out/"result.json").write_text(json.dumps(report,indent=2))
     lines=["# MailGuard v76 — frozen v75 neural versus v69 on new academic EN source",
-          "", "**First time scoring the 2024 study republisher: 10,000 fixed messages.**",
+          "", "**First time scoring the 2024 study republisher: 9,000 fixed messages.**",
           "No model fitting, threshold, ensemble blending, or source selection based on these TEST outcomes.",
           "",f"Source {audit.SOURCE} pinned revision {audit.REV}.",
           f"Labels: {spam} malicious, {ham} HAM. Prior overlaps excluded: {overlap}.",
@@ -292,7 +292,7 @@ def run():
         "2024 academic publisher mirror; original email origins, label quality and licensing NOT independently verified.",
         "Prior exact and same-prefix overlaps screened versus all known v68/v70/v71/v73. Semantic family overlap is still possible.",
         "English only, cleaned CSV text, not raw customer .eml or Rspamd metadata.",
-        "0.01% FP target NOT validated by 10k; do not tune with this challenge result.",
+        "0.01% FP target NOT validated by 9k; do not tune with this challenge result.",
         "Do not promote a model solely because this result is favorable. No raw emails were committed.",""])
     (out/"result.md").write_text("\n".join(lines))
     print("\n".join(lines),flush=True)
