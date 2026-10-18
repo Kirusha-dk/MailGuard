@@ -1,0 +1,93 @@
+name: MailGuard v76 frozen neural v75 vs v69 on new 10k academic email source
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v48-calibrated]
+    paths:
+      - tools/v76_external_nn_firstuse.py
+      - tests/python/test_v76_external_nn_firstuse.py
+      - .github/workflows/v76-external-neural-firstuse.yml
+permissions:
+  contents: read
+concurrency:
+  group: mailguard-v76-neural-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  independent-source-test:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    permissions:
+      actions: read
+      contents: write
+    env:
+      OMP_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Download frozen v75 Transformer checkpoints, no retraining
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 39028362612
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: mailguard-v75-continued-neural-and-cal-gated-reports
+          path: frozen-v75
+      - name: Download unmodified v69 baseline
+        uses: actions/download-artifact@v4
+        with:
+          run-id: 38859270577
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          name: mailguard-v69-ru-en-nbsvm-research
+          path: frozen-v69
+      - name: Install CPU PyTorch compatible with frozen v75
+        run: |
+          python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.5.1
+          python -m pip uninstall -y torchvision torchaudio || true
+      - name: Install exact neural runtime, public corpus and metrics libraries
+        run: |
+          python -m pip install transformers==4.46.3 sentencepiece==0.2.1 safetensors==0.4.5 numpy==2.5.3 scipy==1.18.1 scikit-learn==1.9.1 joblib==1.6.0 "datasets>=3.6,<5" "huggingface_hub>=0.33,<1"
+      - name: Test source class mapping, overlap screening and policy safety
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v76_external_nn_firstuse.py' -v
+          python -m unittest discover -s tests/python -p 'test_v75_neural_continuation.py' -v
+          test -f frozen-v75/checkpoint/model.safetensors
+          test -f frozen-v69/model.joblib
+      - name: Freeze never-scored 10k academic source and compare frozen models
+        run: |
+          python -u tools/v76_external_nn_firstuse.py --v75 frozen-v75/checkpoint --v69 frozen-v69/model.joblib --output research-v76
+          cat research-v76/result.md >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v76-firstuse-academic-10k-neural-v69
+          path: |
+            research-v76/source-before-first-score.json
+            research-v76/result.json
+            research-v76/result.md
+          retention-days: 90
+      - name: Commit aggregates only; never store raw or individual emails
+        if: success()
+        run: |
+          cp research-v76/source-before-first-score.json /tmp/v76-cohort.json
+          cp research-v76/result.json /tmp/v76-result.json
+          cp research-v76/result.md /tmp/v76-result.md
+          git fetch origin mailguard-v48-calibrated
+          git checkout -B mailguard-v48-calibrated origin/mailguard-v48-calibrated
+          cp /tmp/v76-cohort.json reports/v76-firstuse-frozen.json
+          cp /tmp/v76-result.json reports/v76-firstuse-result.json
+          cp /tmp/v76-result.md reports/v76-firstuse-result.md
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v76-firstuse-frozen.json reports/v76-firstuse-result.json reports/v76-firstuse-result.md
+          if ! git diff --cached --quiet; then
+            git commit -m 'Record first-use 2024 academic mail 10k frozen v75 and v69 comparison'
+            git push origin HEAD:mailguard-v48-calibrated
+          fi
