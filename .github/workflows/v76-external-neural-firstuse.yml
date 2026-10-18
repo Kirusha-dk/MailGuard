@@ -1,4 +1,4 @@
-name: MailGuard v76 frozen neural v75 vs v69 on new 10k academic email source
+name: MailGuard v76 frozen neural v75 vs v69 on new 9k academic email source
 on:
   workflow_dispatch:
   push:
@@ -60,14 +60,14 @@ jobs:
           python -m unittest discover -s tests/python -p 'test_v75_neural_continuation.py' -v
           test -f frozen-v75/checkpoint/model.safetensors
           test -f frozen-v69/model.joblib
-      - name: Freeze never-scored 10k academic source and compare frozen models
+      - name: Freeze never-scored 9k academic source and compare frozen models
         run: |
           python -u tools/v76_external_nn_firstuse.py --v75 frozen-v75/checkpoint --v69 frozen-v69/model.joblib --output research-v76
           cat research-v76/result.md >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mailguard-v76-firstuse-academic-10k-neural-v69
+          name: mailguard-v76-firstuse-academic-9k-neural-v69
           path: |
             research-v76/source-before-first-score.json
             research-v76/result.json
@@ -88,6 +88,6 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -f reports/v76-firstuse-frozen.json reports/v76-firstuse-result.json reports/v76-firstuse-result.md
           if ! git diff --cached --quiet; then
-            git commit -m 'Record first-use 2024 academic mail 10k frozen v75 and v69 comparison'
+            git commit -m 'Record first-use 2024 academic mail 9k frozen v75 and v69 comparison'
             git push origin HEAD:mailguard-v48-calibrated
           fi
