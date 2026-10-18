@@ -41,5 +41,5 @@ class V76FirstUseTests(unittest.TestCase):
         self.assertEqual(row["y"],0)
         self.assertEqual(len(row["identity"]),64)
         self.assertEqual(len(EXPECTED),5)
-        self.assertEqual(COHORT,10000)
+        self.assertEqual(COHORT,9000)
 if __name__=="__main__":unittest.main()
