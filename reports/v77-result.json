@@ -1,0 +1,198 @@
+{
+  "version": "v77-ru-en-cpu",
+  "model_sha256": "7fe0ff5147b7f252cb471e41cf7f46f26537314514cd22f5492c045d9a9a98af",
+  "manifest": {
+    "email_source": "JinqiangDing/seven-phishing-email-datasets",
+    "email_revision": "deb4cc27dc2754c14cb157aace412727f77b41dd",
+    "russian_proxy_source": "alt-gnome/telegram-spam",
+    "russian_proxy_revision": "af298cd351ce1d257ae789571f649d4d94d2cdd6",
+    "seed": "v77-frozen-official-test-2026-10-18",
+    "excluded_conflicting_identities": 15,
+    "split_fingerprints": {
+      "en": {
+        "train": "ebb0da76164594e6cb108b6f385bfcf0c35f43ee2c327c53204ca2095f339ebb",
+        "cal": "0bc708e57c7cb141ce63c37117ec08ad583ff3f7fc6f0a945f7fca22e7daf740"
+      },
+      "ru": {
+        "train": "d083193c796e79f56a979825cc34585bcbf40f10e61631c7e2e3dbaf273db2a9",
+        "cal": "018652e191b7e475295ca65774c53baf25cc6b748a11cb49d687edb6807f9136"
+      }
+    },
+    "test_fingerprint": "6c77bcbf9c8a621852e55f6f490bae5cbd143140f8662b8307225766b6d94656",
+    "test_count": 10000,
+    "train_counts": {
+      "en": 70000,
+      "ru": 13950
+    },
+    "cal_counts": {
+      "en": 12000,
+      "ru": 2513
+    },
+    "test_language_counts": {
+      "ru": 3,
+      "en": 9997
+    },
+    "test_is_real_email": true,
+    "test_is_new_source": false,
+    "test_used_in_older_project_versions_possible": true,
+    "train_cal_test_prefix_family_disjoint": true,
+    "russian_ham_email_validation": false
+  },
+  "policies": {
+    "en": {
+      "low-fp": {
+        "candidate": "mean",
+        "cutoff": 0.8484310662824326,
+        "calibration": {
+          "n": 12000,
+          "spam": 5409,
+          "ham": 6591,
+          "tp": 4582,
+          "fn": 827,
+          "fp": 6,
+          "tn": 6585,
+          "recall": 0.8471066740617489,
+          "fpr": 0.0009103322712790169,
+          "accuracy": 0.9305833333333333
+        },
+        "calibration_fpr_budget": 0.001
+      },
+      "balanced": {
+        "candidate": "mean",
+        "cutoff": 0.3594701942349267,
+        "calibration": {
+          "n": 12000,
+          "spam": 5409,
+          "ham": 6591,
+          "tp": 5221,
+          "fn": 188,
+          "fp": 32,
+          "tn": 6559,
+          "recall": 0.9652431133296357,
+          "fpr": 0.004855105446821423,
+          "accuracy": 0.9816666666666667
+        },
+        "calibration_fpr_budget": 0.005
+      }
+    },
+    "ru": {
+      "low-fp": {
+        "candidate": "mean",
+        "cutoff": 0.0666258674000298,
+        "calibration": {
+          "n": 2513,
+          "spam": 808,
+          "ham": 1705,
+          "tp": 796,
+          "fn": 12,
+          "fp": 1,
+          "tn": 1704,
+          "recall": 0.9851485148514851,
+          "fpr": 0.0005865102639296188,
+          "accuracy": 0.9948269001193792
+        },
+        "calibration_fpr_budget": 0.001
+      },
+      "balanced": {
+        "candidate": "char",
+        "cutoff": -0.32933937009156783,
+        "calibration": {
+          "n": 2513,
+          "spam": 808,
+          "ham": 1705,
+          "tp": 804,
+          "fn": 4,
+          "fp": 8,
+          "tn": 1697,
+          "recall": 0.995049504950495,
+          "fpr": 0.00469208211143695,
+          "accuracy": 0.9952248308794269
+        },
+        "calibration_fpr_budget": 0.005
+      }
+    }
+  },
+  "test_by_language": {
+    "en": {
+      "low-fp": {
+        "n": 9997,
+        "spam": 4551,
+        "ham": 5446,
+        "tp": 3910,
+        "fn": 641,
+        "fp": 6,
+        "tn": 5440,
+        "recall": 0.8591518347615908,
+        "fpr": 0.0011017260374586854,
+        "accuracy": 0.9352805841752526
+      },
+      "balanced": {
+        "n": 9997,
+        "spam": 4551,
+        "ham": 5446,
+        "tp": 4399,
+        "fn": 152,
+        "fp": 32,
+        "tn": 5414,
+        "recall": 0.9666007470885519,
+        "fpr": 0.0058758721997796545,
+        "accuracy": 0.981594478343503
+      }
+    },
+    "ru": {
+      "low-fp": {
+        "n": 3,
+        "spam": 3,
+        "ham": 0,
+        "tp": 1,
+        "fn": 2,
+        "fp": 0,
+        "tn": 0,
+        "recall": 0.3333333333333333,
+        "fpr": null,
+        "accuracy": 0.3333333333333333
+      },
+      "balanced": {
+        "n": 3,
+        "spam": 3,
+        "ham": 0,
+        "tp": 2,
+        "fn": 1,
+        "fp": 0,
+        "tn": 0,
+        "recall": 0.6666666666666666,
+        "fpr": null,
+        "accuracy": 0.6666666666666666
+      }
+    }
+  },
+  "test_all": {
+    "low-fp": {
+      "n": 10000,
+      "spam": 4554,
+      "ham": 5446,
+      "tp": 3911,
+      "fn": 643,
+      "fp": 6,
+      "tn": 5440,
+      "recall": 0.8588054457619675,
+      "fpr": 0.0011017260374586854,
+      "accuracy": 0.9351
+    },
+    "balanced": {
+      "n": 10000,
+      "spam": 4554,
+      "ham": 5446,
+      "tp": 4401,
+      "fn": 153,
+      "fp": 32,
+      "tn": 5414,
+      "recall": 0.9664031620553359,
+      "fpr": 0.0058758721997796545,
+      "accuracy": 0.9815
+    }
+  },
+  "arbitrary_10000_mail_guarantee": false,
+  "russian_email_ham_fpr_validated": false,
+  "warning": "Historical public within-corpus heldout, not new customer/source mail. Russian HAM email absent; RU model trained on Telegram proxy plus scarce real email."
+}

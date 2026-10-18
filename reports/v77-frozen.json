@@ -1,0 +1,37 @@
+{
+  "email_source": "JinqiangDing/seven-phishing-email-datasets",
+  "email_revision": "deb4cc27dc2754c14cb157aace412727f77b41dd",
+  "russian_proxy_source": "alt-gnome/telegram-spam",
+  "russian_proxy_revision": "af298cd351ce1d257ae789571f649d4d94d2cdd6",
+  "seed": "v77-frozen-official-test-2026-10-18",
+  "excluded_conflicting_identities": 15,
+  "split_fingerprints": {
+    "en": {
+      "train": "ebb0da76164594e6cb108b6f385bfcf0c35f43ee2c327c53204ca2095f339ebb",
+      "cal": "0bc708e57c7cb141ce63c37117ec08ad583ff3f7fc6f0a945f7fca22e7daf740"
+    },
+    "ru": {
+      "train": "d083193c796e79f56a979825cc34585bcbf40f10e61631c7e2e3dbaf273db2a9",
+      "cal": "018652e191b7e475295ca65774c53baf25cc6b748a11cb49d687edb6807f9136"
+    }
+  },
+  "test_fingerprint": "6c77bcbf9c8a621852e55f6f490bae5cbd143140f8662b8307225766b6d94656",
+  "test_count": 10000,
+  "train_counts": {
+    "en": 70000,
+    "ru": 13950
+  },
+  "cal_counts": {
+    "en": 12000,
+    "ru": 2513
+  },
+  "test_language_counts": {
+    "ru": 3,
+    "en": 9997
+  },
+  "test_is_real_email": true,
+  "test_is_new_source": false,
+  "test_used_in_older_project_versions_possible": true,
+  "train_cal_test_prefix_family_disjoint": true,
+  "russian_ham_email_validation": false
+}
