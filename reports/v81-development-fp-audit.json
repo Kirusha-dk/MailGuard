@@ -1,0 +1,18 @@
+{
+  "baseline_fp_by_source": {
+    "TREC-06": 10,
+    "TREC-05": 21,
+    "Enron": 7,
+    "CEAS-08": 13,
+    "TREC-07": 7,
+    "Assassin": 3,
+    "GenSpam": 23,
+    "Labelled-email-2010": 2,
+    "Merged-public": 180
+  },
+  "rescued_fp_by_source": {
+    "Enron": 1,
+    "Merged-public": 3
+  },
+  "cal_spam_lost": 0
+}

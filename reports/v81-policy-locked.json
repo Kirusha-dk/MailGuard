@@ -1,0 +1,3951 @@
+{
+  "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+  "policy": {
+    "candidate": "stack-tree",
+    "partition": "dominance",
+    "baseline_cutoff": 0.09974524114863056,
+    "reserve": 0.20453467374444356,
+    "thresholds": {
+      "0": -0.8122671736709551,
+      "1": -2.4718793428979797
+    },
+    "enabled": true
+  },
+  "development": {
+    "selection": {
+      "baseline": {
+        "n": 11288,
+        "spam": 5286,
+        "ham": 6002,
+        "tp": 5195,
+        "fp": 64,
+        "fn": 91,
+        "tn": 5938
+      },
+      "proposed": {
+        "n": 11288,
+        "spam": 5286,
+        "ham": 6002,
+        "tp": 5195,
+        "fp": 64,
+        "fn": 91,
+        "tn": 5938
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0
+    },
+    "calibration": {
+      "baseline": {
+        "n": 46531,
+        "spam": 21323,
+        "ham": 25208,
+        "tp": 20897,
+        "fp": 266,
+        "fn": 426,
+        "tn": 24942
+      },
+      "proposed": {
+        "n": 46531,
+        "spam": 21323,
+        "ham": 25208,
+        "tp": 20897,
+        "fp": 262,
+        "fn": 426,
+        "tn": 24946
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 4,
+      "false_positives_added": 0
+    },
+    "candidates": [
+      {
+        "policy": {
+          "candidate": "embedding-linear",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.3117583973271828,
+          "thresholds": {
+            "0": -2.6241462774804196
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "embedding-linear",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.3117583973271828,
+          "thresholds": {
+            "0": -1.0198789035675322,
+            "1": -2.6241462774804196
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "embedding-linear",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.3117583973271828,
+          "thresholds": {
+            "0": -2.107811774459675,
+            "1": -2.6241462774804196,
+            "2": -2.1925647678949645
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "embedding-rbf",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20541616165978607,
+          "thresholds": {
+            "0": -1.0720218126060408
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "embedding-rbf",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20541616165978607,
+          "thresholds": {
+            "0": -0.7400719571656436,
+            "1": -1.0720218126060408
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "embedding-rbf",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20541616165978607,
+          "thresholds": {
+            "0": -0.6319901793498208,
+            "1": -1.0720218126060408,
+            "2": -0.8179065094208504
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 63,
+            "fn": 91,
+            "tn": 5939
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "stack-tree",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20453467374444356,
+          "thresholds": {
+            "0": -0.6546853523514724
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 58,
+            "fn": 91,
+            "tn": 5944
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 6,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "stack-tree",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20453467374444356,
+          "thresholds": {
+            "0": 1.2988363338374829,
+            "1": -0.6546853523514724
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 55,
+            "fn": 91,
+            "tn": 5947
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 9,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "stack-tree",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20453467374444356,
+          "thresholds": {
+            "0": -0.6546853523514724,
+            "1": 0.28081719744352496,
+            "2": 1.2988363338374829
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 58,
+            "fn": 91,
+            "tn": 5944
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 6,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "semantic-neighbors",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20537840947508812,
+          "thresholds": {
+            "0": -0.4278167486190796
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "semantic-neighbors",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20537840947508812,
+          "thresholds": {
+            "0": -0.18099498748779297,
+            "1": -0.4278167486190796
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "semantic-neighbors",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20537840947508812,
+          "thresholds": {
+            "0": -0.4278167486190796,
+            "1": -0.349784791469574,
+            "2": -0.29650330543518066
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:linear-ham1",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.8716441237494614,
+          "thresholds": {
+            "0": -1.927674626428262
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:linear-ham1",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.8716441237494614,
+          "thresholds": {
+            "0": -0.7462707272330786,
+            "1": -1.927674626428262
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:linear-ham1",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.8716441237494614,
+          "thresholds": {
+            "0": -1.927674626428262,
+            "1": -0.6046386962860115,
+            "2": -0.7462707272330786
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:linear-ham4",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.9000206778922497,
+          "thresholds": {
+            "0": -3.2954968077894593
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:linear-ham4",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.9000206778922497,
+          "thresholds": {
+            "0": -1.577928260372074,
+            "1": -3.2954968077894593
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 62,
+            "fn": 91,
+            "tn": 5940
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 2,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:linear-ham4",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.9000206778922497,
+          "thresholds": {
+            "0": -3.2954968077894593,
+            "1": -1.7877731746180812,
+            "2": -1.577928260372074
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:tree-ham1",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1830817860611771,
+          "thresholds": {
+            "0": -0.2692836552506929
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 60,
+            "fn": 91,
+            "tn": 5942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 4,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:tree-ham1",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1830817860611771,
+          "thresholds": {
+            "0": 0.8331683482350798,
+            "1": -0.2692836552506929
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 58,
+            "fn": 91,
+            "tn": 5944
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 6,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:tree-ham1",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1830817860611771,
+          "thresholds": {
+            "0": -0.2692836552506929,
+            "1": 0.9780332206545521,
+            "2": 0.9404995643475431
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 60,
+            "fn": 91,
+            "tn": 5942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 4,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:tree-ham4",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.19926267143595444,
+          "thresholds": {
+            "0": -1.3183635589816047
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 60,
+            "fn": 91,
+            "tn": 5942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 4,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:tree-ham4",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.19926267143595444,
+          "thresholds": {
+            "0": -0.73750856729904,
+            "1": -1.3183635589816047
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 59,
+            "fn": 91,
+            "tn": 5943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 5,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:tree-ham4",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.19926267143595444,
+          "thresholds": {
+            "0": -1.3183635589816047,
+            "1": -0.22894961297021868,
+            "2": 0.08785998243799448
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 60,
+            "fn": 91,
+            "tn": 5942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 4,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-semantic",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.3119681338255741,
+          "thresholds": {
+            "0": -2.6655408548051214
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-semantic",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.3119681338255741,
+          "thresholds": {
+            "0": -0.6709191519813676,
+            "1": -2.6655408548051214
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-semantic",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.3119681338255741,
+          "thresholds": {
+            "0": -2.365763281846272,
+            "1": -2.6655408548051214,
+            "2": -2.051409245168716
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-semantic-phish",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.01801853658955052,
+          "thresholds": {
+            "0": -0.8536265685646155
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-semantic-phish",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.01801853658955052,
+          "thresholds": {
+            "0": -0.6467010689032854,
+            "1": -0.8536265685646155
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-semantic-phish",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.01801853658955052,
+          "thresholds": {
+            "0": -0.8380857924986106,
+            "1": -0.8536265685646155,
+            "2": -0.7895289639116158
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-word",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1631837314808987,
+          "thresholds": {
+            "0": -0.8346039575154914
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-word",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1631837314808987,
+          "thresholds": {
+            "0": -0.8346039575154914,
+            "1": -0.8064724042096069
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-word",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1631837314808987,
+          "thresholds": {
+            "0": -0.8064724042096069,
+            "1": -0.5935561688114777,
+            "2": -0.8346039575154914
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 63,
+            "fn": 91,
+            "tn": 5939
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-char",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.195840523712846,
+          "thresholds": {
+            "0": -1.6690266853942726
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-char",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.195840523712846,
+          "thresholds": {
+            "0": -0.9447272708727686,
+            "1": -1.6690266853942726
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-char",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.195840523712846,
+          "thresholds": {
+            "0": -1.3925316140577322,
+            "1": -1.6690266853942726,
+            "2": -0.9447272708727686
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-blend",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1433478537335175,
+          "thresholds": {
+            "0": -0.6250634018027399
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-blend",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1433478537335175,
+          "thresholds": {
+            "0": -0.6250634018027399,
+            "1": -0.21707003864970598
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-blend",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1433478537335175,
+          "thresholds": {
+            "0": -0.21707003864970598,
+            "1": -0.30048785492795704,
+            "2": -0.6250634018027399
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 62,
+            "fn": 91,
+            "tn": 5940
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 2,
+          "false_positives_added": 0
+        }
+      }
+    ],
+    "fit_count": 11502,
+    "choose_count": 11288,
+    "reserve_iqr": 0.25,
+    "min_spam_per_region": 100,
+    "anchor_count": 16042,
+    "guarded_candidate_evidence": {
+      "selection": {
+        "baseline": {
+          "n": 11288,
+          "spam": 5286,
+          "ham": 6002,
+          "tp": 5195,
+          "fp": 64,
+          "fn": 91,
+          "tn": 5938
+        },
+        "proposed": {
+          "n": 11288,
+          "spam": 5286,
+          "ham": 6002,
+          "tp": 5195,
+          "fp": 64,
+          "fn": 91,
+          "tn": 5938
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 0,
+        "false_positives_added": 0
+      },
+      "calibration": {
+        "baseline": {
+          "n": 46531,
+          "spam": 21323,
+          "ham": 25208,
+          "tp": 20897,
+          "fp": 266,
+          "fn": 426,
+          "tn": 24942
+        },
+        "proposed": {
+          "n": 46531,
+          "spam": 21323,
+          "ham": 25208,
+          "tp": 20897,
+          "fp": 262,
+          "fn": 426,
+          "tn": 24946
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 4,
+        "false_positives_added": 0
+      }
+    },
+    "disabled_for_insufficient_development_benefit": false,
+    "selection_mode": "joint",
+    "joint_candidates": [
+      {
+        "policy": {
+          "candidate": "embedding-linear",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.3117583973271828,
+          "thresholds": {
+            "0": -2.674174713970772
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "embedding-linear",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.3117583973271828,
+          "thresholds": {
+            "0": -2.674174713970772,
+            "1": -2.6241462774804196
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "embedding-linear",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.3117583973271828,
+          "thresholds": {
+            "0": -2.250733247836506,
+            "1": -2.674174713970772,
+            "2": -2.3742254530886626
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "embedding-rbf",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20541616165978607,
+          "thresholds": {
+            "0": -1.1278848631261347
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "embedding-rbf",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20541616165978607,
+          "thresholds": {
+            "0": -1.1278848631261347,
+            "1": -1.0722488859403099
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "embedding-rbf",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20541616165978607,
+          "thresholds": {
+            "0": -0.8681150810802171,
+            "1": -1.1278848631261347,
+            "2": -0.9781334091136383
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "stack-tree",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20453467374444356,
+          "thresholds": {
+            "0": -2.4718793428979797
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "stack-tree",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20453467374444356,
+          "thresholds": {
+            "0": -0.8122671736709551,
+            "1": -2.4718793428979797
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 262,
+            "fn": 426,
+            "tn": 24946
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 4,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "stack-tree",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20453467374444356,
+          "thresholds": {
+            "0": -2.4718793428979797,
+            "1": -1.4012320981677837,
+            "2": 0.471038476730975
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "semantic-neighbors",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20537840947508812,
+          "thresholds": {
+            "0": -0.4568707346916199
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "semantic-neighbors",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20537840947508812,
+          "thresholds": {
+            "0": -0.3024328947067261,
+            "1": -0.4568707346916199
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "semantic-neighbors",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.20537840947508812,
+          "thresholds": {
+            "0": -0.4278167486190796,
+            "1": -0.4568707346916199,
+            "2": -0.36438000202178955
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:linear-ham1",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.8716441237494614,
+          "thresholds": {
+            "0": -4.367563553112761
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:linear-ham1",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.8716441237494614,
+          "thresholds": {
+            "0": -4.367563553112761,
+            "1": -2.2806916706658287
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:linear-ham1",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.8716441237494614,
+          "thresholds": {
+            "0": -4.367563553112761,
+            "1": -2.723935148714535,
+            "2": -1.8276680919271278
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:linear-ham4",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.9000206778922497,
+          "thresholds": {
+            "0": -5.353283717665026
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:linear-ham4",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.9000206778922497,
+          "thresholds": {
+            "0": -5.353283717665026,
+            "1": -3.685671584843649
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:linear-ham4",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.9000206778922497,
+          "thresholds": {
+            "0": -5.353283717665026,
+            "1": -3.706830122149399,
+            "2": -2.837361515664097
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:tree-ham1",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1830817860611771,
+          "thresholds": {
+            "0": -1.3699897338939413
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:tree-ham1",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1830817860611771,
+          "thresholds": {
+            "0": -1.247456822556795,
+            "1": -1.3699897338939413
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 263,
+            "fn": 426,
+            "tn": 24945
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 3,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:tree-ham1",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1830817860611771,
+          "thresholds": {
+            "0": -1.3699897338939413,
+            "1": -1.1937975022471854,
+            "2": 0.7613115259843187
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:tree-ham4",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.19926267143595444,
+          "thresholds": {
+            "0": -3.16289976837097
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:tree-ham4",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.19926267143595444,
+          "thresholds": {
+            "0": -3.16289976837097,
+            "1": -2.5625813573769674
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-gate:tree-ham4",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.19926267143595444,
+          "thresholds": {
+            "0": -3.16289976837097,
+            "1": -2.514848737018711,
+            "2": -0.2515729774676488
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 265,
+            "fn": 426,
+            "tn": 24943
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 1,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-semantic",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.3119681338255741,
+          "thresholds": {
+            "0": -2.679837420927762
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-semantic",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.3119681338255741,
+          "thresholds": {
+            "0": -1.4156518885218023,
+            "1": -2.679837420927762
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-semantic",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.3119681338255741,
+          "thresholds": {
+            "0": -2.6367345368109287,
+            "1": -2.679837420927762,
+            "2": -2.4917937886487898
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-semantic-phish",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.01801853658955052,
+          "thresholds": {
+            "0": -0.9600363146684496
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-semantic-phish",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.01801853658955052,
+          "thresholds": {
+            "0": -0.652423426551915,
+            "1": -0.9600363146684496
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v80-semantic-phish",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.01801853658955052,
+          "thresholds": {
+            "0": -0.9600363146684496,
+            "1": -0.9328895999068599,
+            "2": -0.9439559277275057
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-word",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1631837314808987,
+          "thresholds": {
+            "0": -1.5179175479531315
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-word",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1631837314808987,
+          "thresholds": {
+            "0": -1.5179175479531315,
+            "1": -1.0653818560257768
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-word",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1631837314808987,
+          "thresholds": {
+            "0": -1.5179175479531315,
+            "1": -0.7983392710957479,
+            "2": -0.8346039575154914
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-char",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.195840523712846,
+          "thresholds": {
+            "0": -1.6690266853942726
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-char",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.195840523712846,
+          "thresholds": {
+            "0": -1.4532505043932944,
+            "1": -1.6690266853942726
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-char",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.195840523712846,
+          "thresholds": {
+            "0": -1.6025281290332383,
+            "1": -1.6690266853942726,
+            "2": -0.9447272708727686
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-blend",
+          "partition": "global",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1433478537335175,
+          "thresholds": {
+            "0": -1.2060386506344882
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-blend",
+          "partition": "dominance",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1433478537335175,
+          "thresholds": {
+            "0": -1.2060386506344882,
+            "1": -0.41195269980295995
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      },
+      {
+        "policy": {
+          "candidate": "v79-blend",
+          "partition": "margin",
+          "baseline_cutoff": 0.09974524114863056,
+          "reserve": 0.1433478537335175,
+          "thresholds": {
+            "0": -1.2060386506344882,
+            "1": -0.8650657683760237,
+            "2": -0.7335484694237879
+          },
+          "enabled": true
+        },
+        "selection": {
+          "baseline": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "proposed": {
+            "n": 11288,
+            "spam": 5286,
+            "ham": 6002,
+            "tp": 5195,
+            "fp": 64,
+            "fn": 91,
+            "tn": 5938
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        },
+        "calibration": {
+          "baseline": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "proposed": {
+            "n": 46531,
+            "spam": 21323,
+            "ham": 25208,
+            "tp": 20897,
+            "fp": 266,
+            "fn": 426,
+            "tn": 24942
+          },
+          "baseline_spam_detections_lost": 0,
+          "spam_detections_gained": 0,
+          "false_positives_removed": 0,
+          "false_positives_added": 0
+        }
+      }
+    ],
+    "calibration_used_for_candidate_choice": true,
+    "calibration_is_independent_performance_estimate": false
+  },
+  "regression_outcomes_used": false,
+  "individual_baseline_tp_preservation_required": true
+}

@@ -1,0 +1,178 @@
+{
+  "passed": true,
+  "extra_audit": {
+    "passed": true,
+    "extra_identities_recomputed": true,
+    "no_overlap_with_any_v79_partition": true,
+    "no_extra_identity_or_prefix_family_leakage": true,
+    "fresh_2024_is_phishing_only": true,
+    "counts": {
+      "train": {
+        "n": 1227,
+        "prefix_groups": 1210
+      },
+      "select": {
+        "n": 176,
+        "prefix_groups": 174
+      },
+      "cal": {
+        "n": 345,
+        "prefix_groups": 336
+      },
+      "fresh-test": {
+        "n": 247,
+        "prefix_groups": 247
+      }
+    }
+  },
+  "all_six_cohorts_identity_and_prefix_disjoint": true,
+  "original_sources_are_not_disjoint": true,
+  "both_evaluation_sets_previously_examined": true,
+  "counts": {
+    "train": {
+      "n": 90680,
+      "spam": 42997,
+      "ham": 47683,
+      "prefix_groups": 85464,
+      "fingerprint": "9f502f8b5767486e348b5ad228149c952484bc35b408a9585314c30d993aa83f",
+      "sources": {
+        "TREC-05": 10674,
+        "Merged-public": 40000,
+        "TREC-07": 11720,
+        "GenSpam": 7881,
+        "Labelled-email-2010": 1168,
+        "CEAS-08": 7007,
+        "Enron": 5421,
+        "TREC-06": 3707,
+        "Assassin": 1263,
+        "Ling": 573,
+        "Nazario-2025": 39,
+        "Nazario-2015": 146,
+        "Nazario-2016": 251,
+        "Nazario-2017": 160,
+        "Nazario-2018": 146,
+        "Nazario-2019": 112,
+        "Nazario-2020": 78,
+        "Nazario-2021": 46,
+        "Nazario-2022": 103,
+        "Nazario-2023": 185
+      }
+    },
+    "select-fit": {
+      "n": 11502,
+      "spam": 5303,
+      "ham": 6199,
+      "prefix_groups": 10623,
+      "fingerprint": "3f2e47f73209fa87bee40b64526182621a2bc0619de494f237508debee955993",
+      "sources": {
+        "Enron": 454,
+        "TREC-07": 790,
+        "CEAS-08": 454,
+        "TREC-05": 750,
+        "TREC-06": 291,
+        "Assassin": 82,
+        "Ling": 38,
+        "GenSpam": 594,
+        "Nazario-2025": 3,
+        "Labelled-email-2010": 87,
+        "Merged-public": 7873,
+        "Nazario-2015": 8,
+        "Nazario-2016": 15,
+        "Nazario-2017": 12,
+        "Nazario-2018": 11,
+        "Nazario-2019": 8,
+        "Nazario-2020": 2,
+        "Nazario-2021": 5,
+        "Nazario-2022": 7,
+        "Nazario-2023": 18
+      }
+    },
+    "select-choose": {
+      "n": 11288,
+      "spam": 5286,
+      "ham": 6002,
+      "prefix_groups": 10648,
+      "fingerprint": "a17a1336f05550ce6c48b85a64a67a281f46d9c1b1f7e2c4c3fd5fa17d9ee5ab",
+      "sources": {
+        "CEAS-08": 475,
+        "Enron": 367,
+        "TREC-05": 761,
+        "TREC-07": 843,
+        "Assassin": 76,
+        "Ling": 29,
+        "TREC-06": 264,
+        "GenSpam": 573,
+        "Nazario-2025": 7,
+        "Labelled-email-2010": 77,
+        "Merged-public": 7726,
+        "Nazario-2015": 12,
+        "Nazario-2016": 18,
+        "Nazario-2017": 10,
+        "Nazario-2018": 12,
+        "Nazario-2019": 10,
+        "Nazario-2020": 4,
+        "Nazario-2021": 1,
+        "Nazario-2022": 7,
+        "Nazario-2023": 16
+      }
+    },
+    "cal": {
+      "n": 46531,
+      "spam": 21323,
+      "ham": 25208,
+      "prefix_groups": 43270,
+      "fingerprint": "d63c4fb87443f97dd9e37e6845166170c26d08babbfdc7d8c3c1fa5226dcd613",
+      "sources": {
+        "TREC-06": 1041,
+        "TREC-05": 3099,
+        "CEAS-08": 1989,
+        "Enron": 1573,
+        "TREC-07": 3603,
+        "Assassin": 386,
+        "Ling": 174,
+        "GenSpam": 2279,
+        "Nazario-2025": 17,
+        "Labelled-email-2010": 328,
+        "Merged-public": 31697,
+        "Nazario-2015": 46,
+        "Nazario-2016": 56,
+        "Nazario-2017": 50,
+        "Nazario-2018": 37,
+        "Nazario-2019": 34,
+        "Nazario-2020": 22,
+        "Nazario-2021": 16,
+        "Nazario-2022": 33,
+        "Nazario-2023": 51
+      }
+    },
+    "regression-100k": {
+      "n": 100000,
+      "spam": 46697,
+      "ham": 53303,
+      "prefix_groups": 98223,
+      "fingerprint": "d5e09fe001068769b0c8010231cc7bd556f8e32e0749caba6d014494d5fa83ee",
+      "sources": {
+        "TREC-05": 22201,
+        "TREC-06": 7944,
+        "CEAS-08": 14143,
+        "GenSpam": 11386,
+        "TREC-07": 23702,
+        "Enron": 11082,
+        "Labelled-email-2010": 5470,
+        "Ling": 1261,
+        "Assassin": 2553,
+        "Nazario-2025": 258
+      }
+    },
+    "regression-2024": {
+      "n": 247,
+      "spam": 247,
+      "ham": 0,
+      "prefix_groups": 247,
+      "fingerprint": "4c8c4a57cabeb4ba72511fedcd993d54a0e538d9da345b8a0f44f9f3b411154a",
+      "sources": {
+        "Nazario-2024": 247
+      }
+    }
+  }
+}
