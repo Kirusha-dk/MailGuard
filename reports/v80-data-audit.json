@@ -1,0 +1,25 @@
+{
+  "passed": true,
+  "extra_identities_recomputed": true,
+  "no_overlap_with_any_v79_partition": true,
+  "no_extra_identity_or_prefix_family_leakage": true,
+  "fresh_2024_is_phishing_only": true,
+  "counts": {
+    "train": {
+      "n": 1227,
+      "prefix_groups": 1210
+    },
+    "select": {
+      "n": 176,
+      "prefix_groups": 174
+    },
+    "cal": {
+      "n": 345,
+      "prefix_groups": 336
+    },
+    "fresh-test": {
+      "n": 247,
+      "prefix_groups": 247
+    }
+  }
+}
