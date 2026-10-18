@@ -83,12 +83,18 @@ def collect_new():
         sha[fname]=hashlib.sha256(raw).hexdigest()
         if sha[fname]!=EXPECTED[fname]:
             raise ValueError("Academic original source changed: "+fname)
+        csv.field_size_limit(1000000)
         reader=csv.DictReader(io.StringIO(raw.decode("utf-8-sig","replace")))
         if list(reader.fieldnames or [])!=["body","subject","category_numeric","category_text"]:
             raise ValueError("CSV publisher schema changed")
         labels=Counter()
         for rec in reader:
             input_stats["raw_rows"]+=1
+            # The publisher includes partially labelled rows; exclude them
+            # rather than inferring ground truth from folder / filename.
+            if not str(rec.get("category_text") or "").strip():
+                input_stats["missing_label"]+=1
+                continue
             row,reason=canonical_row(rec,fname)
             if reason:
                 input_stats[reason]+=1;continue
