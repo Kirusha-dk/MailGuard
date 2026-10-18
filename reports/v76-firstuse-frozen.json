@@ -1,0 +1,56 @@
+{
+  "source": "sniff07/phishing-dataset",
+  "revision": "c21f524c014a49626dc61322a5f7b3194ac5c7d1",
+  "originalsUnverified": true,
+  "licenseUnverified": true,
+  "sourceFilesSha256": {
+    "final_cleaned_safe_1.csv": "5dfec12e84f4f91714d169259477f2697be3429849a72d21016dba555fed2c5b",
+    "final_cleaned_phis1.csv": "a274fe9efce5deb9cb52d0b823c138d4bc2f23870823c90c82d2871e1841342c",
+    "final_cleaned_phis2.csv": "55e1f238ec1243237236e7e1ff055b30a5c0820d4ad2000cb7fe739825681170",
+    "final_cleaned_phis_3.csv": "eb059239b03a5190adc3b8655e09108f5b20e470fed675e60bddfc447aaaa140",
+    "final_cleaned_phis_4.csv": "d510ef99b2a874d3742af372bf2ba6a5b9b3ec6ed742963214116274b8eae93b"
+  },
+  "inputCounts": {
+    "raw_rows": 24704,
+    "missing_label": 1,
+    "duplicate_inside_source": 1571,
+    "non_english": 20,
+    "excluded_conflicting_identities": 0,
+    "unique_eligible": 23112
+  },
+  "publisherClassValues": {
+    "final_cleaned_safe_1.csv": {
+      "(0, 'ham', '0.0')": 4991
+    },
+    "final_cleaned_phis1.csv": {
+      "(1, 'spam', '1')": 4938
+    },
+    "final_cleaned_phis2.csv": {
+      "(1, 'spam', '1')": 4846
+    },
+    "final_cleaned_phis_3.csv": {
+      "(1, 'spam', '1')": 4952
+    },
+    "final_cleaned_phis_4.csv": {
+      "(1, 'spam', '1')": 4956
+    }
+  },
+  "priorSourcesScreened": {
+    "v68_en_ru": 170001,
+    "v70_CSDMC": 4049,
+    "v71": 17616,
+    "v73_merged_rows_scanned": 365448
+  },
+  "priorExclusions": {
+    "exact_prior": 12786,
+    "prefix_prior": 816
+  },
+  "eligibleAfterPrior": 9510,
+  "fixedCount": 9000,
+  "selectedSpam": 4266,
+  "selectedHam": 4734,
+  "selection": "smallest SHA256(v76-firstuse-academic-2024-fixed-identity-order:content_identity), label-blind",
+  "fixedIdentityFamilyFingerprint": "d62a61ade16263755f40348a342f70d5a050f73ea5e8ca383b98088f9c58d196",
+  "rawMessageTextPersisted": false,
+  "warning": "2024 published research CSV, NOT fresh live mail; provenance and rights uncertain. First scoring of this republisher; original-source semantic overlap cannot be ruled out."
+}
