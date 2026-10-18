@@ -1,0 +1,48 @@
+{
+  "exact_content_label_crosscheck": {
+    "original_0_external_1": 9673,
+    "original_1_external_1": 6241
+  },
+  "prefix_label_crosscheck": {
+    "original_0_external_1": 10808,
+    "original_1_external_1": 6565
+  },
+  "conflicting_identity_examples_no_text": [
+    {
+      "identity": "10f32bfa11b1ad35ec50606a1922700697118695f5987f39c5f99ace2d2f306a",
+      "source": "Assassin",
+      "original_label": 0,
+      "external_label": 1
+    },
+    {
+      "identity": "805b5c15804680185695e4f8f1906b7d6303a82f331fb8085257dc9e8062ff6f",
+      "source": "CEAS-08",
+      "original_label": 0,
+      "external_label": 1
+    },
+    {
+      "identity": "f858afa9b8ffc7f5165dd4af132f44a9db54313ffb3b2bb9fb2288142019b1af",
+      "source": "Assassin",
+      "original_label": 0,
+      "external_label": 1
+    },
+    {
+      "identity": "58f48ae98285502ca66d13421e953b9e43d033649103ee645340cf0c9f985423",
+      "source": "Assassin",
+      "original_label": 0,
+      "external_label": 1
+    },
+    {
+      "identity": "32483f40c70a9846ed07ae1914ec14058e2ea1bab02ac11a1ebdf48668facb69",
+      "source": "CEAS-08",
+      "original_label": 0,
+      "external_label": 1
+    }
+  ],
+  "comparison_view": "v77 NFKC/casefold, URLs/addresses/numbers replaced; punctuation retained",
+  "original_email_revision": "deb4cc27dc2754c14cb157aace412727f77b41dd",
+  "external_provider": "sniff07/phishing-dataset",
+  "external_revision": "c21f524c014a49626dc61322a5f7b3194ac5c7d1",
+  "decision": "quarantine provider; no relabelling by model predictions",
+  "limitation": "Canonical matches need not be byte-identical original messages; no independent adjudication of every conflict."
+}

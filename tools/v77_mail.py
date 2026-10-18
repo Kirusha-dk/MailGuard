@@ -171,8 +171,10 @@ def parse_eml(raw):
     return clean(str(message.get('subject') or ''), body)
 
 
-def main():
-    p = argparse.ArgumentParser(description=__doc__)
+def main(predictor=None, version=None, allowed_languages=('ru', 'en'), description=None):
+    predictor = predictor or predict
+    version = version or VERSION
+    p = argparse.ArgumentParser(description=description or __doc__)
     p.add_argument('--model', required=True)
     p.add_argument('--spam', required=True)
     p.add_argument('--ham', required=True)
@@ -191,14 +193,14 @@ def main():
         p.error('Each input folder must contain .eml files')
     out.mkdir(parents=True, exist_ok=False)
     bundle = joblib.load(args.model)
-    values, labels, by_lang = [], [], {'ru': ([], []), 'en': ([], [])}
+    values, labels, by_lang = [], [], {lang: ([], []) for lang in allowed_languages}
     failures = Counter(); seen = {}; conflicts = set(); records = []
     for path, y in files:
         try:
             if path.stat().st_size > 20_000_000:
                 raise ValueError('oversized message')
             text = parse_eml(path.read_bytes())
-            if language(text) is None:
+            if language(text) not in allowed_languages:
                 failures['unsupported_or_short'] += 1
                 continue
             identity = digest(text)
@@ -219,14 +221,14 @@ def main():
         writer.writerow(['identity', 'label', 'language', 'score', 'cutoff', 'predicted'])
         for offset in range(0, len(records), 128):
             batch = records[offset:offset + 128]
-            for row, result in zip(batch, predict(bundle, [r[3] for r in batch], args.profile)):
+            for row, result in zip(batch, predictor(bundle, [r[3] for r in batch], args.profile)):
                 _, y, identity, _ = row
                 value = result['score'] - result['cutoff']
                 values.append(value); labels.append(y)
                 by_lang[result['language']][0].append(value)
                 by_lang[result['language']][1].append(y)
                 writer.writerow([identity, y, result['language'], result['score'], result['cutoff'], int(result['spam'])])
-    summary = {'version': VERSION, 'profile': args.profile,
+    summary = {'version': version, 'profile': args.profile,
         'model_sha256': hashlib.sha256(Path(args.model).read_bytes()).hexdigest(),
         'files_found': len(files), 'excluded': dict(failures), 'metrics': measure(values, labels, 0),
         'by_language': {k: measure(*v, 0) for k, v in by_lang.items()},

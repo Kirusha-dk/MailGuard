@@ -1,0 +1,112 @@
+{
+  "seed": "v78-english-trusted-labels-external-genspam-2026-10-18",
+  "english_only": true,
+  "test_count": 10000,
+  "test_source": "GenSpam (all publisher splits reserved, never used for fitting)",
+  "test_source_url": "http://www.cl.cam.ac.uk/Research/NL/nl-download/GenSpam.tar.gz",
+  "test_archive_sha256": "1e0b8f0eb73f16787df7b11144a2bc8937342d50fbedd124ba9fe379a076895f",
+  "test_source_provenance": {
+    "publisher_messages": {
+      "adapt_GEN.ems": 300,
+      "adapt_SPAM.ems": 300,
+      "test_GEN.ems": 754,
+      "test_SPAM.ems": 797,
+      "train_GEN.ems": 8158,
+      "train_SPAM.ems": 30088
+    },
+    "dedup": {
+      "unsupported_or_short": 4096,
+      "duplicate": 5275,
+      "conflicting_identities_excluded": 4
+    },
+    "eligible": 31022,
+    "classes": {
+      "0": 8603,
+      "1": 22419
+    }
+  },
+  "test_fingerprint": "47b13ce42cc296ffa28a3d099cddd8ac102b73b69008d3e3e8c1e58b9b4e0193",
+  "sampling": "smallest SHA256(seed:content identity), no labels or predictions in ranking",
+  "gen_spam_source_held_out_entirely": true,
+  "prefix_token_groups_disjoint": true,
+  "source_level_test_previously_seen_by_other_project_versions_possible": true,
+  "quarantined_provider": "sniff07/phishing-dataset: 9673 canonical HAM-to-SPAM label conflicts; no rows used",
+  "nazario_2025_sha256": "f1fa7e0fe35c9a16f36d9aa20ade7e1d3908d1d0c1d917b8c53c8aa799ec1c8f",
+  "nazario_counts": {
+    "unsupported_or_short": 8,
+    "duplicate": 46,
+    "conflicting_identities_excluded": 0
+  },
+  "development_dedup": {
+    "duplicate": 12657,
+    "conflicting_identities_excluded": 12
+  },
+  "development_exclusions": {
+    "external_identity_or_prefix_overlap": 7
+  },
+  "counts": {
+    "train": 73939,
+    "select": 15060,
+    "cal": 18000
+  },
+  "split_fingerprints": {
+    "train": "f0d88a94cf36cbea8c2cc386f97f6f9ef1ee2353f7fdc3e41d2615f07cd380c2",
+    "select": "2d650d0083e3594bfc67fc2d042bc1ccdb0d42147dd18949559e678780bab818",
+    "cal": "018f72eb49939f0750bfb901df383e0527121c775f99e0291c2d3ae6ce295ac8"
+  },
+  "source_class_counts": {
+    "train": {
+      "Ling:0": 1350,
+      "Enron:1": 7483,
+      "TREC-07:1": 8044,
+      "TREC-06:1": 2036,
+      "TREC-05:0": 8780,
+      "Enron:0": 7517,
+      "CEAS-08:1": 7246,
+      "Assassin:0": 2265,
+      "TREC-07:0": 6956,
+      "CEAS-08:0": 7754,
+      "TREC-06:0": 6851,
+      "TREC-05:1": 6220,
+      "Assassin:1": 903,
+      "Nazario-2025:1": 292,
+      "Ling:1": 242
+    },
+    "select": {
+      "TREC-05:1": 1680,
+      "TREC-05:0": 2316,
+      "CEAS-08:1": 1261,
+      "TREC-06:0": 1020,
+      "CEAS-08:0": 1440,
+      "Enron:0": 1136,
+      "TREC-07:1": 2157,
+      "Enron:1": 1095,
+      "TREC-07:0": 1917,
+      "Assassin:1": 137,
+      "TREC-06:1": 301,
+      "Ling:0": 203,
+      "Assassin:0": 319,
+      "Ling:1": 34,
+      "Nazario-2025:1": 44
+    },
+    "cal": {
+      "Enron:1": 1390,
+      "Enron:0": 1294,
+      "TREC-06:0": 1218,
+      "TREC-07:1": 2646,
+      "CEAS-08:1": 1520,
+      "TREC-05:0": 2694,
+      "CEAS-08:0": 1667,
+      "TREC-05:1": 2035,
+      "Assassin:1": 152,
+      "TREC-07:0": 2299,
+      "Assassin:0": 382,
+      "Ling:0": 238,
+      "Nazario-2025:1": 53,
+      "TREC-06:1": 356,
+      "Ling:1": 56
+    }
+  },
+  "historical_research_mail_not_live_customer_mail": true,
+  "semantic_near_duplicates_not_fully_excluded": true
+}
