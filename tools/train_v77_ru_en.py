@@ -13,7 +13,6 @@ from pathlib import Path
 import joblib
 import numpy as np
 from scipy.sparse import vstack
-from datasets import load_dataset
 from sklearn.preprocessing import normalize
 from sklearn.svm import LinearSVC
 import v77_mail as runtime
@@ -44,6 +43,7 @@ def acquire(cache):
     if cache.is_file():
         with gzip.open(cache, 'rt') as stream:
             return json.load(stream)
+    from datasets import load_dataset
     data = load_dataset(EMAIL_SOURCE, revision=EMAIL_REVISION)
     all_rows = []
     for split in ('train', 'test'):

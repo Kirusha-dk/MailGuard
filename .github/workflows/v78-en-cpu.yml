@@ -1,0 +1,35 @@
+name: MailGuard v78 English held-out GenSpam research
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  heldout-source:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OMP_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-v77.txt
+      - name: Check English routing, corpus parsing, label conflicts and calibration safety
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v78_en.py' -v
+          python -m unittest discover -s tests/python -p 'test_v77_ru_en.py' -v
+      - name: Fit without GenSpam, lock policies, then score 10000 external English emails
+        run: python -u tools/train_v78_en.py --output reports/v78 --baseline ''
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v78-en-frozen-model-and-aggregates
+          retention-days: 90
+          path: |
+            reports/v78/model.joblib
+            reports/v78/frozen.json
+            reports/v78/result.json

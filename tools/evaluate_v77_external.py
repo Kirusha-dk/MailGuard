@@ -14,7 +14,6 @@ from pathlib import Path
 import joblib
 import v77_mail as runtime
 import v76_source_audit as source
-from v76_external_nn_firstuse import EXPECTED, classify_label
 from train_v77_ru_en import fingerprint
 
 
@@ -47,6 +46,7 @@ def acquire(cache):
     if cache.exists():
         with gzip.open(cache, 'rt') as stream:
             return json.load(stream)
+    from v76_external_nn_firstuse import EXPECTED, classify_label
     rows = []; seen = {}; conflicts = set(); counts = Counter()
     csv.field_size_limit(1000000)
     for name in source.FILES:
@@ -80,6 +80,7 @@ def acquire(cache):
 
 
 def main():
+    from v76_external_nn_firstuse import EXPECTED
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--model', default='reports/v77/model.joblib')
     p.add_argument('--development-cache', default='.cache/v77/rows.json.gz')
