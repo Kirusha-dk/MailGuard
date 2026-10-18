@@ -171,7 +171,9 @@ def parse_eml(raw):
     return clean(str(message.get('subject') or ''), body)
 
 
-def main(predictor=None, version=None, allowed_languages=('ru', 'en'), description=None):
+def main(predictor=None, version=None, allowed_languages=('ru', 'en'), description=None,
+         prepare_bundle=None, text_supported=None, profile_choices=None, default_profile='low-fp',
+         identity_fn=None):
     predictor = predictor or predict
     version = version or VERSION
     p = argparse.ArgumentParser(description=description or __doc__)
@@ -179,7 +181,7 @@ def main(predictor=None, version=None, allowed_languages=('ru', 'en'), descripti
     p.add_argument('--spam', required=True)
     p.add_argument('--ham', required=True)
     p.add_argument('--output', required=True)
-    p.add_argument('--profile', choices=PROFILES, default='low-fp')
+    p.add_argument('--profile', choices=profile_choices or PROFILES, default=default_profile)
     args = p.parse_args()
     roots = [Path(args.ham).resolve(), Path(args.spam).resolve()]
     if any(not root.is_dir() for root in roots) or roots[0] == roots[1] or any(a in b.parents for a in roots for b in roots if a != b):
@@ -193,6 +195,8 @@ def main(predictor=None, version=None, allowed_languages=('ru', 'en'), descripti
         p.error('Each input folder must contain .eml files')
     out.mkdir(parents=True, exist_ok=False)
     bundle = joblib.load(args.model)
+    if prepare_bundle:
+        prepare_bundle(bundle, args)
     values, labels, by_lang = [], [], {lang: ([], []) for lang in allowed_languages}
     failures = Counter(); seen = {}; conflicts = set(); records = []
     for path, y in files:
@@ -200,10 +204,10 @@ def main(predictor=None, version=None, allowed_languages=('ru', 'en'), descripti
             if path.stat().st_size > 20_000_000:
                 raise ValueError('oversized message')
             text = parse_eml(path.read_bytes())
-            if language(text) not in allowed_languages:
+            if language(text) not in allowed_languages or (text_supported and not text_supported(text,bundle)):
                 failures['unsupported_or_short'] += 1
                 continue
-            identity = digest(text)
+            identity = identity_fn(text) if identity_fn else digest(text)
             if identity in seen:
                 failures['duplicates'] += 1
                 if seen[identity] != y:

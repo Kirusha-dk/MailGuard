@@ -1,0 +1,27 @@
+Bundled language identifier: fastText lid.176.ftz
+
+Source and model documentation:
+https://fasttext.cc/docs/en/language-identification.html
+https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.ftz
+
+The official fastText language model is distributed under Creative Commons
+Attribution-ShareAlike 3.0:
+https://creativecommons.org/licenses/by-sa/3.0/
+
+The original lid.176.ftz bytes are included without modification in the
+language_model_bytes field of model.joblib. SHA256:
+8f3472cfe8738a7b6099e8e999c3cbfae0dcd15696aac7d7738a8039db603e83
+
+MailGuard uses the identifier to select English input. It is separate from
+MailGuard's newly trained spam classifiers. The official identifier was
+trained on Wikipedia, Tatoeba and SETimes.
+
+References requested by the fastText authors:
+Armand Joulin, Edouard Grave, Piotr Bojanowski, Tomas Mikolov.
+Bag of Tricks for Efficient Text Classification (2016).
+https://arxiv.org/abs/1607.01759
+
+Armand Joulin, Edouard Grave, Piotr Bojanowski, Matthijs Douze,
+Herve Jegou, Tomas Mikolov. FastText.zip: Compressing text classification
+models (2016).
+https://arxiv.org/abs/1612.03651

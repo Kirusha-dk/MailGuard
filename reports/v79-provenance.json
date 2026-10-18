@@ -1,0 +1,19 @@
+{
+  "source_email_dataset": "JinqiangDing/seven-phishing-email-datasets",
+  "source_email_revision": "deb4cc27dc2754c14cb157aace412727f77b41dd",
+  "labelled_email_source": "https://github.com/realprogrammersusevim/email-dataset",
+  "labelled_email_revision": "84209612df4c55831f074a65b7c137a4b980059d",
+  "genspam_sha256": "1e0b8f0eb73f16787df7b11144a2bc8937342d50fbedd124ba9fe379a076895f",
+  "nazario_2025_sha256": "f1fa7e0fe35c9a16f36d9aa20ade7e1d3908d1d0c1d917b8c53c8aa799ec1c8f",
+  "merged_original_revision": "22fa6d1c1362518821bfb25564654348014303e4",
+  "frozen_file_sha256_before_fitting": {
+    "cal.jsonl.gz": "e02ea07f6d28d873aa896719c611de0e829223287c8fa2fe002a20321fe44ac8",
+    "frozen.json": "f1458091e4b1d8e26caa62cfbec70087b7389317aef0cefe47fb8024ba5117cc",
+    "lid.176.ftz": "8f3472cfe8738a7b6099e8e999c3cbfae0dcd15696aac7d7738a8039db603e83",
+    "select.jsonl.gz": "e623ed2dba635faa8c1ab1d00d9d7a2fe48c5fb3f2533ed5f540eeecfa53f843",
+    "test.jsonl.gz": "cf75e7a247d3f3699de925064af2d4850bcd9eb93514d47d9de6ed38136ff110",
+    "train.jsonl.gz": "484e0dcd51bf4344cd4fa2bbe2017da64f38a3bec81e2f54ee6eec88d09acf9c"
+  },
+  "fresh_v79_fit_excludes_test": true,
+  "older_project_versions_may_have_seen_public_corpora": true
+}
