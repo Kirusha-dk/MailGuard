@@ -1,0 +1,37 @@
+name: MailGuard v77 reproducible CPU RU EN baseline
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  frozen-email-holdout:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      OMP_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-v77.txt
+      - name: Check MIME, Russian encodings, leakage protection and calibration ties
+        run: python -m unittest discover -s tests/python -p 'test_v77_ru_en.py' -v
+      - name: Train only on TRAIN, calibrate only on CAL, freeze then evaluate 10000 emails
+        run: python -u tools/train_v77_ru_en.py --output reports/v77
+      - name: Score separate overlap-screened historical source without changing thresholds
+        run: python -u tools/evaluate_v77_external.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v77-frozen-model-and-metrics
+          retention-days: 90
+          path: |
+            reports/v77/model.joblib
+            reports/v77/frozen.json
+            reports/v77/result.json
+            reports/v77-external/frozen.json
+            reports/v77-external/result.json

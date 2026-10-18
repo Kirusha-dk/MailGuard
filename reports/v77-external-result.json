@@ -1,0 +1,57 @@
+{
+  "version": "v77-ru-en-cpu",
+  "model_sha256": "7fe0ff5147b7f252cb471e41cf7f46f26537314514cd22f5492c045d9a9a98af",
+  "manifest": {
+    "source": "sniff07/phishing-dataset",
+    "revision": "c21f524c014a49626dc61322a5f7b3194ac5c7d1",
+    "file_sha256": {
+      "final_cleaned_safe_1.csv": "5dfec12e84f4f91714d169259477f2697be3429849a72d21016dba555fed2c5b",
+      "final_cleaned_phis1.csv": "a274fe9efce5deb9cb52d0b823c138d4bc2f23870823c90c82d2871e1841342c",
+      "final_cleaned_phis2.csv": "55e1f238ec1243237236e7e1ff055b30a5c0820d4ad2000cb7fe739825681170",
+      "final_cleaned_phis_3.csv": "eb059239b03a5190adc3b8655e09108f5b20e470fed675e60bddfc447aaaa140",
+      "final_cleaned_phis_4.csv": "d510ef99b2a874d3742af372bf2ba6a5b9b3ec6ed742963214116274b8eae93b"
+    },
+    "input_counts": {
+      "raw": 24704,
+      "unlabelled": 1,
+      "duplicate": 1541,
+      "unsupported_or_short": 39
+    },
+    "eligible_before_prior_screen": 23123,
+    "sample_count": 6556,
+    "sample_fingerprint": "865b6e769b0d07a4b23c9a0f8645145427c8017ec321a43a9be30dd9102cc78e",
+    "label_blind_hash_sampling": true,
+    "not_used_for_training_or_thresholds": true,
+    "previously_examined_by_older_versions": true,
+    "english_only": true,
+    "original_message_provenance_unverified": true
+  },
+  "metrics": {
+    "low-fp": {
+      "n": 6556,
+      "spam": 1565,
+      "ham": 4991,
+      "tp": 204,
+      "fn": 1361,
+      "fp": 14,
+      "tn": 4977,
+      "recall": 0.13035143769968052,
+      "fpr": 0.002805049088359046,
+      "accuracy": 0.790268456375839
+    },
+    "balanced": {
+      "n": 6556,
+      "spam": 1565,
+      "ham": 4991,
+      "tp": 681,
+      "fn": 884,
+      "fp": 257,
+      "tn": 4734,
+      "recall": 0.4351437699680511,
+      "fpr": 0.05149268683630535,
+      "accuracy": 0.8259609517998779
+    }
+  },
+  "policies_unchanged": true,
+  "russian_email_validated": false
+}

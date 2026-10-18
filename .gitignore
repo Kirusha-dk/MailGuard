@@ -13,3 +13,7 @@ review-selection.csv
 
 rspamd-data/
 redis-data/
+
+# Python bytecode
+__pycache__/
+*.py[cod]

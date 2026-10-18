@@ -1,0 +1,7 @@
+FROM python:3.12-slim
+WORKDIR /app
+COPY requirements-v77.txt /app/
+RUN pip install --no-cache-dir -r requirements-v77.txt
+COPY tools/v77_mail.py /app/v77_mail.py
+ENV OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=2
+ENTRYPOINT ["python", "/app/v77_mail.py"]
