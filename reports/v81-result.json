@@ -1,0 +1,1258 @@
+{
+  "version": "v81-english-constrained-fp-rescue",
+  "receipt": {
+    "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+    "code_sha256": {
+      "v81_mail.py": "747d57ef607da9022021cdcbaa3a2de441e7ae7884789bb71f1e040ca93fc770",
+      "v81_features.py": "e4f5b1f87ee10fd97d7d9459572869be4af86ec40869f88ab168f034013ccd00",
+      "evaluate_v81_fp.py": "e9e6e2b8835414b93baccab73cab7b06d1691d28a2baa206b0ae0c8d19a7fa02",
+      "train_v81_fp.py": "86c1f72d2fc24ed4cb5fcdb8be069d4e1fc21d4763bc138b5ceb919ca3e71712",
+      "v80_mail.py": "e0799737ab1f207acb604fdd7235a543c0d67dcfbb8557968db40c8d86720993",
+      "v80_encoder.py": "0889665e0ca3dbafa7d512ad877ec88fef19c713fa2ff6bf4fd6e5e474c3045f",
+      "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3"
+    }
+  },
+  "policy": {
+    "candidate": "stack-tree",
+    "partition": "dominance",
+    "baseline_cutoff": 0.09974524114863056,
+    "reserve": 0.20453467374444356,
+    "thresholds": {
+      "0": -0.8122671736709551,
+      "1": -2.4718793428979797
+    },
+    "enabled": true
+  },
+  "development": {
+    "selection": {
+      "baseline": {
+        "n": 11288,
+        "spam": 5286,
+        "ham": 6002,
+        "tp": 5195,
+        "fp": 64,
+        "fn": 91,
+        "tn": 5938
+      },
+      "proposed": {
+        "n": 11288,
+        "spam": 5286,
+        "ham": 6002,
+        "tp": 5195,
+        "fp": 64,
+        "fn": 91,
+        "tn": 5938
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0
+    },
+    "calibration": {
+      "baseline": {
+        "n": 46531,
+        "spam": 21323,
+        "ham": 25208,
+        "tp": 20897,
+        "fp": 266,
+        "fn": 426,
+        "tn": 24942
+      },
+      "proposed": {
+        "n": 46531,
+        "spam": 21323,
+        "ham": 25208,
+        "tp": 20897,
+        "fp": 262,
+        "fn": 426,
+        "tn": 24946
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 4,
+      "false_positives_added": 0
+    },
+    "fit_count": 11502,
+    "choose_count": 11288,
+    "reserve_iqr": 0.25,
+    "min_spam_per_region": 100,
+    "anchor_count": 16042,
+    "guarded_candidate_evidence": {
+      "selection": {
+        "baseline": {
+          "n": 11288,
+          "spam": 5286,
+          "ham": 6002,
+          "tp": 5195,
+          "fp": 64,
+          "fn": 91,
+          "tn": 5938
+        },
+        "proposed": {
+          "n": 11288,
+          "spam": 5286,
+          "ham": 6002,
+          "tp": 5195,
+          "fp": 64,
+          "fn": 91,
+          "tn": 5938
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 0,
+        "false_positives_added": 0
+      },
+      "calibration": {
+        "baseline": {
+          "n": 46531,
+          "spam": 21323,
+          "ham": 25208,
+          "tp": 20897,
+          "fp": 266,
+          "fn": 426,
+          "tn": 24942
+        },
+        "proposed": {
+          "n": 46531,
+          "spam": 21323,
+          "ham": 25208,
+          "tp": 20897,
+          "fp": 262,
+          "fn": 426,
+          "tn": 24946
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 4,
+        "false_positives_added": 0
+      }
+    },
+    "disabled_for_insufficient_development_benefit": false,
+    "selection_mode": "joint",
+    "calibration_used_for_candidate_choice": true,
+    "calibration_is_independent_performance_estimate": false
+  },
+  "regression_total": {
+    "baseline": {
+      "n": 100000,
+      "spam": 46697,
+      "ham": 53303,
+      "tp": 45738,
+      "fp": 586,
+      "tn": 52717,
+      "fn": 959,
+      "recall": 0.9794633488232649,
+      "fpr": 0.010993752696846331,
+      "fp_per_million_ham_point_estimate": 10993.752696846332,
+      "fp_per_million_all_point_estimate": 5860.0,
+      "fpr_upper_95_per_million_ham_iid_assumption": 11766.086177581123,
+      "fp_upper_95_per_million_all_iid_assumption": 6272.819325731206,
+      "joint_98_and_10ppm_point_targets_met": false,
+      "joint_98_and_10ppm_all_point_targets_met": false
+    },
+    "proposed": {
+      "n": 100000,
+      "spam": 46697,
+      "ham": 53303,
+      "tp": 45737,
+      "fp": 584,
+      "tn": 52719,
+      "fn": 960,
+      "recall": 0.97944193417136,
+      "fpr": 0.010956231356584058,
+      "fp_per_million_ham_point_estimate": 10956.231356584058,
+      "fp_per_million_all_point_estimate": 5840.0,
+      "fpr_upper_95_per_million_ham_iid_assumption": 11727.312465100747,
+      "fp_upper_95_per_million_all_iid_assumption": 6252.146124092227,
+      "joint_98_and_10ppm_point_targets_met": false,
+      "joint_98_and_10ppm_all_point_targets_met": false
+    },
+    "baseline_spam_detections_lost": 1,
+    "spam_detections_gained": 0,
+    "false_positives_removed": 2,
+    "false_positives_added": 0
+  },
+  "regression_blocks": [
+    {
+      "block": 1,
+      "receipt": {
+        "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+        "code_sha256": {
+          "v81_mail.py": "747d57ef607da9022021cdcbaa3a2de441e7ae7884789bb71f1e040ca93fc770",
+          "v81_features.py": "e4f5b1f87ee10fd97d7d9459572869be4af86ec40869f88ab168f034013ccd00",
+          "evaluate_v81_fp.py": "e9e6e2b8835414b93baccab73cab7b06d1691d28a2baa206b0ae0c8d19a7fa02",
+          "train_v81_fp.py": "86c1f72d2fc24ed4cb5fcdb8be069d4e1fc21d4763bc138b5ceb919ca3e71712",
+          "v80_mail.py": "e0799737ab1f207acb604fdd7235a543c0d67dcfbb8557968db40c8d86720993",
+          "v80_encoder.py": "0889665e0ca3dbafa7d512ad877ec88fef19c713fa2ff6bf4fd6e5e474c3045f",
+          "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3"
+        },
+        "fingerprint": "78b593c2b755de6bf1f90d4516f8ed1b1f04a943cd1b29531444308049f0b9f4"
+      },
+      "paired": {
+        "baseline": {
+          "n": 10000,
+          "spam": 4728,
+          "ham": 5272,
+          "tp": 4637,
+          "fp": 59,
+          "fn": 91,
+          "tn": 5213,
+          "recall": 0.9807529610829103,
+          "fpr": 0.011191198786039453,
+          "fp_per_million_ham_point_estimate": 11191.198786039453,
+          "fp_per_million_all_point_estimate": 5900.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 13881.68192479061,
+          "fp_upper_95_per_million_all_iid_assumption": 7323.129192957677,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "proposed": {
+          "n": 10000,
+          "spam": 4728,
+          "ham": 5272,
+          "tp": 4637,
+          "fp": 59,
+          "fn": 91,
+          "tn": 5213,
+          "recall": 0.9807529610829103,
+          "fpr": 0.011191198786039453,
+          "fp_per_million_ham_point_estimate": 11191.198786039453,
+          "fp_per_million_all_point_estimate": 5900.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 13881.68192479061,
+          "fp_upper_95_per_million_all_iid_assumption": 7323.129192957677,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 0,
+        "false_positives_added": 0
+      },
+      "lost_spam_identities": []
+    },
+    {
+      "block": 2,
+      "receipt": {
+        "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+        "code_sha256": {
+          "v81_mail.py": "747d57ef607da9022021cdcbaa3a2de441e7ae7884789bb71f1e040ca93fc770",
+          "v81_features.py": "e4f5b1f87ee10fd97d7d9459572869be4af86ec40869f88ab168f034013ccd00",
+          "evaluate_v81_fp.py": "e9e6e2b8835414b93baccab73cab7b06d1691d28a2baa206b0ae0c8d19a7fa02",
+          "train_v81_fp.py": "86c1f72d2fc24ed4cb5fcdb8be069d4e1fc21d4763bc138b5ceb919ca3e71712",
+          "v80_mail.py": "e0799737ab1f207acb604fdd7235a543c0d67dcfbb8557968db40c8d86720993",
+          "v80_encoder.py": "0889665e0ca3dbafa7d512ad877ec88fef19c713fa2ff6bf4fd6e5e474c3045f",
+          "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3"
+        },
+        "fingerprint": "0519ce89969c16f1197fe803d0311917ef88027388ec748a3178abc3732b954d"
+      },
+      "paired": {
+        "baseline": {
+          "n": 10000,
+          "spam": 4731,
+          "ham": 5269,
+          "tp": 4641,
+          "fp": 67,
+          "fn": 90,
+          "tn": 5202,
+          "recall": 0.9809765377298668,
+          "fpr": 0.012715885367242361,
+          "fp_per_million_ham_point_estimate": 12715.885367242361,
+          "fp_per_million_all_point_estimate": 6700.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 15560.853472263043,
+          "fp_upper_95_per_million_all_iid_assumption": 8204.600723855685,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "proposed": {
+          "n": 10000,
+          "spam": 4731,
+          "ham": 5269,
+          "tp": 4641,
+          "fp": 67,
+          "fn": 90,
+          "tn": 5202,
+          "recall": 0.9809765377298668,
+          "fpr": 0.012715885367242361,
+          "fp_per_million_ham_point_estimate": 12715.885367242361,
+          "fp_per_million_all_point_estimate": 6700.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 15560.853472263043,
+          "fp_upper_95_per_million_all_iid_assumption": 8204.600723855685,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 0,
+        "false_positives_added": 0
+      },
+      "lost_spam_identities": []
+    },
+    {
+      "block": 3,
+      "receipt": {
+        "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+        "code_sha256": {
+          "v81_mail.py": "747d57ef607da9022021cdcbaa3a2de441e7ae7884789bb71f1e040ca93fc770",
+          "v81_features.py": "e4f5b1f87ee10fd97d7d9459572869be4af86ec40869f88ab168f034013ccd00",
+          "evaluate_v81_fp.py": "e9e6e2b8835414b93baccab73cab7b06d1691d28a2baa206b0ae0c8d19a7fa02",
+          "train_v81_fp.py": "86c1f72d2fc24ed4cb5fcdb8be069d4e1fc21d4763bc138b5ceb919ca3e71712",
+          "v80_mail.py": "e0799737ab1f207acb604fdd7235a543c0d67dcfbb8557968db40c8d86720993",
+          "v80_encoder.py": "0889665e0ca3dbafa7d512ad877ec88fef19c713fa2ff6bf4fd6e5e474c3045f",
+          "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3"
+        },
+        "fingerprint": "97ba17d52e91e5f7043cfe43f943ac211b382d97eac9b1d108b5f1dcd697ed96"
+      },
+      "paired": {
+        "baseline": {
+          "n": 10000,
+          "spam": 4781,
+          "ham": 5219,
+          "tp": 4687,
+          "fp": 51,
+          "fn": 94,
+          "tn": 5168,
+          "recall": 0.9803388412466011,
+          "fpr": 0.009771986970684038,
+          "fp_per_million_ham_point_estimate": 9771.986970684038,
+          "fp_per_million_all_point_estimate": 5100.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 12324.035774778484,
+          "fp_upper_95_per_million_all_iid_assumption": 6435.876526056884,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "proposed": {
+          "n": 10000,
+          "spam": 4781,
+          "ham": 5219,
+          "tp": 4687,
+          "fp": 51,
+          "fn": 94,
+          "tn": 5168,
+          "recall": 0.9803388412466011,
+          "fpr": 0.009771986970684038,
+          "fp_per_million_ham_point_estimate": 9771.986970684038,
+          "fp_per_million_all_point_estimate": 5100.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 12324.035774778484,
+          "fp_upper_95_per_million_all_iid_assumption": 6435.876526056884,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 0,
+        "false_positives_added": 0
+      },
+      "lost_spam_identities": []
+    },
+    {
+      "block": 4,
+      "receipt": {
+        "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+        "code_sha256": {
+          "v81_mail.py": "747d57ef607da9022021cdcbaa3a2de441e7ae7884789bb71f1e040ca93fc770",
+          "v81_features.py": "e4f5b1f87ee10fd97d7d9459572869be4af86ec40869f88ab168f034013ccd00",
+          "evaluate_v81_fp.py": "e9e6e2b8835414b93baccab73cab7b06d1691d28a2baa206b0ae0c8d19a7fa02",
+          "train_v81_fp.py": "86c1f72d2fc24ed4cb5fcdb8be069d4e1fc21d4763bc138b5ceb919ca3e71712",
+          "v80_mail.py": "e0799737ab1f207acb604fdd7235a543c0d67dcfbb8557968db40c8d86720993",
+          "v80_encoder.py": "0889665e0ca3dbafa7d512ad877ec88fef19c713fa2ff6bf4fd6e5e474c3045f",
+          "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3"
+        },
+        "fingerprint": "6b9d1409076c1e71d83b821d8894ba99e6db09a8602787e5a36f0e5e33f51967"
+      },
+      "paired": {
+        "baseline": {
+          "n": 10000,
+          "spam": 4607,
+          "ham": 5393,
+          "tp": 4521,
+          "fp": 59,
+          "fn": 86,
+          "tn": 5334,
+          "recall": 0.9813327545040156,
+          "fpr": 0.010940107546819951,
+          "fp_per_million_ham_point_estimate": 10940.10754681995,
+          "fp_per_million_all_point_estimate": 5900.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 13570.640152550048,
+          "fp_upper_95_per_million_all_iid_assumption": 7323.129192957677,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "proposed": {
+          "n": 10000,
+          "spam": 4607,
+          "ham": 5393,
+          "tp": 4521,
+          "fp": 59,
+          "fn": 86,
+          "tn": 5334,
+          "recall": 0.9813327545040156,
+          "fpr": 0.010940107546819951,
+          "fp_per_million_ham_point_estimate": 10940.10754681995,
+          "fp_per_million_all_point_estimate": 5900.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 13570.640152550048,
+          "fp_upper_95_per_million_all_iid_assumption": 7323.129192957677,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 0,
+        "false_positives_added": 0
+      },
+      "lost_spam_identities": []
+    },
+    {
+      "block": 5,
+      "receipt": {
+        "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+        "code_sha256": {
+          "v81_mail.py": "747d57ef607da9022021cdcbaa3a2de441e7ae7884789bb71f1e040ca93fc770",
+          "v81_features.py": "e4f5b1f87ee10fd97d7d9459572869be4af86ec40869f88ab168f034013ccd00",
+          "evaluate_v81_fp.py": "e9e6e2b8835414b93baccab73cab7b06d1691d28a2baa206b0ae0c8d19a7fa02",
+          "train_v81_fp.py": "86c1f72d2fc24ed4cb5fcdb8be069d4e1fc21d4763bc138b5ceb919ca3e71712",
+          "v80_mail.py": "e0799737ab1f207acb604fdd7235a543c0d67dcfbb8557968db40c8d86720993",
+          "v80_encoder.py": "0889665e0ca3dbafa7d512ad877ec88fef19c713fa2ff6bf4fd6e5e474c3045f",
+          "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3"
+        },
+        "fingerprint": "50d660c53c1a539d809f65d96308b43208292f8e6751e4bac11cb2fc4323c4e3"
+      },
+      "paired": {
+        "baseline": {
+          "n": 10000,
+          "spam": 4701,
+          "ham": 5299,
+          "tp": 4599,
+          "fp": 74,
+          "fn": 102,
+          "tn": 5225,
+          "recall": 0.9783024888321634,
+          "fpr": 0.013964899037554256,
+          "fp_per_million_ham_point_estimate": 13964.899037554256,
+          "fp_per_million_all_point_estimate": 7400.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 16919.460016447396,
+          "fp_upper_95_per_million_all_iid_assumption": 8971.9337548342,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "proposed": {
+          "n": 10000,
+          "spam": 4701,
+          "ham": 5299,
+          "tp": 4599,
+          "fp": 74,
+          "fn": 102,
+          "tn": 5225,
+          "recall": 0.9783024888321634,
+          "fpr": 0.013964899037554256,
+          "fp_per_million_ham_point_estimate": 13964.899037554256,
+          "fp_per_million_all_point_estimate": 7400.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 16919.460016447396,
+          "fp_upper_95_per_million_all_iid_assumption": 8971.9337548342,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 0,
+        "false_positives_added": 0
+      },
+      "lost_spam_identities": []
+    },
+    {
+      "block": 6,
+      "receipt": {
+        "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+        "code_sha256": {
+          "v81_mail.py": "747d57ef607da9022021cdcbaa3a2de441e7ae7884789bb71f1e040ca93fc770",
+          "v81_features.py": "e4f5b1f87ee10fd97d7d9459572869be4af86ec40869f88ab168f034013ccd00",
+          "evaluate_v81_fp.py": "e9e6e2b8835414b93baccab73cab7b06d1691d28a2baa206b0ae0c8d19a7fa02",
+          "train_v81_fp.py": "86c1f72d2fc24ed4cb5fcdb8be069d4e1fc21d4763bc138b5ceb919ca3e71712",
+          "v80_mail.py": "e0799737ab1f207acb604fdd7235a543c0d67dcfbb8557968db40c8d86720993",
+          "v80_encoder.py": "0889665e0ca3dbafa7d512ad877ec88fef19c713fa2ff6bf4fd6e5e474c3045f",
+          "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3"
+        },
+        "fingerprint": "542f28be00186378daaad04722c386a69a318c254dae8eea454c2bc64080bfd7"
+      },
+      "paired": {
+        "baseline": {
+          "n": 10000,
+          "spam": 4612,
+          "ham": 5388,
+          "tp": 4524,
+          "fp": 55,
+          "fn": 88,
+          "tn": 5333,
+          "recall": 0.9809193408499567,
+          "fpr": 0.010207869339272457,
+          "fp_per_million_ham_point_estimate": 10207.869339272456,
+          "fp_per_million_all_point_estimate": 5500.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 12762.081661011292,
+          "fp_upper_95_per_million_all_iid_assumption": 6880.3009764198805,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "proposed": {
+          "n": 10000,
+          "spam": 4612,
+          "ham": 5388,
+          "tp": 4524,
+          "fp": 55,
+          "fn": 88,
+          "tn": 5333,
+          "recall": 0.9809193408499567,
+          "fpr": 0.010207869339272457,
+          "fp_per_million_ham_point_estimate": 10207.869339272456,
+          "fp_per_million_all_point_estimate": 5500.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 12762.081661011292,
+          "fp_upper_95_per_million_all_iid_assumption": 6880.3009764198805,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 0,
+        "false_positives_added": 0
+      },
+      "lost_spam_identities": []
+    },
+    {
+      "block": 7,
+      "receipt": {
+        "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+        "code_sha256": {
+          "v81_mail.py": "747d57ef607da9022021cdcbaa3a2de441e7ae7884789bb71f1e040ca93fc770",
+          "v81_features.py": "e4f5b1f87ee10fd97d7d9459572869be4af86ec40869f88ab168f034013ccd00",
+          "evaluate_v81_fp.py": "e9e6e2b8835414b93baccab73cab7b06d1691d28a2baa206b0ae0c8d19a7fa02",
+          "train_v81_fp.py": "86c1f72d2fc24ed4cb5fcdb8be069d4e1fc21d4763bc138b5ceb919ca3e71712",
+          "v80_mail.py": "e0799737ab1f207acb604fdd7235a543c0d67dcfbb8557968db40c8d86720993",
+          "v80_encoder.py": "0889665e0ca3dbafa7d512ad877ec88fef19c713fa2ff6bf4fd6e5e474c3045f",
+          "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3"
+        },
+        "fingerprint": "8df4fdd3d85ea731e6f5c6cfbda3848e9e6422d8575b6e187cdfd18b423aaae7"
+      },
+      "paired": {
+        "baseline": {
+          "n": 10000,
+          "spam": 4651,
+          "ham": 5349,
+          "tp": 4568,
+          "fp": 63,
+          "fn": 83,
+          "tn": 5286,
+          "recall": 0.9821543754031391,
+          "fpr": 0.011777902411665733,
+          "fp_per_million_ham_point_estimate": 11777.902411665733,
+          "fp_per_million_all_point_estimate": 6300.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 14506.518921212766,
+          "fp_upper_95_per_million_all_iid_assumption": 7764.5181929084,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "proposed": {
+          "n": 10000,
+          "spam": 4651,
+          "ham": 5349,
+          "tp": 4567,
+          "fp": 63,
+          "fn": 84,
+          "tn": 5286,
+          "recall": 0.9819393678778757,
+          "fpr": 0.011777902411665733,
+          "fp_per_million_ham_point_estimate": 11777.902411665733,
+          "fp_per_million_all_point_estimate": 6300.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 14506.518921212766,
+          "fp_upper_95_per_million_all_iid_assumption": 7764.5181929084,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "baseline_spam_detections_lost": 1,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 0,
+        "false_positives_added": 0
+      },
+      "lost_spam_identities": [
+        "aa8fc53e51d93c4aa6cbaa1448d104da2f65b491341ff1776d25f5c4aaa27609"
+      ]
+    },
+    {
+      "block": 8,
+      "receipt": {
+        "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+        "code_sha256": {
+          "v81_mail.py": "747d57ef607da9022021cdcbaa3a2de441e7ae7884789bb71f1e040ca93fc770",
+          "v81_features.py": "e4f5b1f87ee10fd97d7d9459572869be4af86ec40869f88ab168f034013ccd00",
+          "evaluate_v81_fp.py": "e9e6e2b8835414b93baccab73cab7b06d1691d28a2baa206b0ae0c8d19a7fa02",
+          "train_v81_fp.py": "86c1f72d2fc24ed4cb5fcdb8be069d4e1fc21d4763bc138b5ceb919ca3e71712",
+          "v80_mail.py": "e0799737ab1f207acb604fdd7235a543c0d67dcfbb8557968db40c8d86720993",
+          "v80_encoder.py": "0889665e0ca3dbafa7d512ad877ec88fef19c713fa2ff6bf4fd6e5e474c3045f",
+          "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3"
+        },
+        "fingerprint": "24b54069d7508a541411bc07419f6b1dce283be105fe5a0fa26613bbfde8e71e"
+      },
+      "paired": {
+        "baseline": {
+          "n": 10000,
+          "spam": 4600,
+          "ham": 5400,
+          "tp": 4490,
+          "fp": 56,
+          "fn": 110,
+          "tn": 5344,
+          "recall": 0.9760869565217392,
+          "fpr": 0.01037037037037037,
+          "fp_per_million_ham_point_estimate": 10370.37037037037,
+          "fp_per_million_all_point_estimate": 5600.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 12938.853332933733,
+          "fp_upper_95_per_million_all_iid_assumption": 6991.15107361816,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "proposed": {
+          "n": 10000,
+          "spam": 4600,
+          "ham": 5400,
+          "tp": 4490,
+          "fp": 55,
+          "fn": 110,
+          "tn": 5345,
+          "recall": 0.9760869565217392,
+          "fpr": 0.010185185185185186,
+          "fp_per_million_ham_point_estimate": 10185.185185185186,
+          "fp_per_million_all_point_estimate": 5500.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 12733.758013021534,
+          "fp_upper_95_per_million_all_iid_assumption": 6880.3009764198805,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 1,
+        "false_positives_added": 0
+      },
+      "lost_spam_identities": []
+    },
+    {
+      "block": 9,
+      "receipt": {
+        "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+        "code_sha256": {
+          "v81_mail.py": "747d57ef607da9022021cdcbaa3a2de441e7ae7884789bb71f1e040ca93fc770",
+          "v81_features.py": "e4f5b1f87ee10fd97d7d9459572869be4af86ec40869f88ab168f034013ccd00",
+          "evaluate_v81_fp.py": "e9e6e2b8835414b93baccab73cab7b06d1691d28a2baa206b0ae0c8d19a7fa02",
+          "train_v81_fp.py": "86c1f72d2fc24ed4cb5fcdb8be069d4e1fc21d4763bc138b5ceb919ca3e71712",
+          "v80_mail.py": "e0799737ab1f207acb604fdd7235a543c0d67dcfbb8557968db40c8d86720993",
+          "v80_encoder.py": "0889665e0ca3dbafa7d512ad877ec88fef19c713fa2ff6bf4fd6e5e474c3045f",
+          "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3"
+        },
+        "fingerprint": "27334aa20fdc5a1362f775dff0bbca4479ff14d2501600e3a4edf64a77b8b49a"
+      },
+      "paired": {
+        "baseline": {
+          "n": 10000,
+          "spam": 4703,
+          "ham": 5297,
+          "tp": 4605,
+          "fp": 52,
+          "fn": 98,
+          "tn": 5245,
+          "recall": 0.979162236870083,
+          "fpr": 0.009816877477817633,
+          "fp_per_million_ham_point_estimate": 9816.877477817632,
+          "fp_per_million_all_point_estimate": 5200.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 12352.656247492887,
+          "fp_upper_95_per_million_all_iid_assumption": 6547.1419610077,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "proposed": {
+          "n": 10000,
+          "spam": 4703,
+          "ham": 5297,
+          "tp": 4605,
+          "fp": 51,
+          "fn": 98,
+          "tn": 5246,
+          "recall": 0.979162236870083,
+          "fpr": 0.009628091372474987,
+          "fp_per_million_ham_point_estimate": 9628.091372474986,
+          "fp_per_million_all_point_estimate": 5100.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 12142.790996399233,
+          "fp_upper_95_per_million_all_iid_assumption": 6435.876526056884,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 1,
+        "false_positives_added": 0
+      },
+      "lost_spam_identities": []
+    },
+    {
+      "block": 10,
+      "receipt": {
+        "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+        "code_sha256": {
+          "v81_mail.py": "747d57ef607da9022021cdcbaa3a2de441e7ae7884789bb71f1e040ca93fc770",
+          "v81_features.py": "e4f5b1f87ee10fd97d7d9459572869be4af86ec40869f88ab168f034013ccd00",
+          "evaluate_v81_fp.py": "e9e6e2b8835414b93baccab73cab7b06d1691d28a2baa206b0ae0c8d19a7fa02",
+          "train_v81_fp.py": "86c1f72d2fc24ed4cb5fcdb8be069d4e1fc21d4763bc138b5ceb919ca3e71712",
+          "v80_mail.py": "e0799737ab1f207acb604fdd7235a543c0d67dcfbb8557968db40c8d86720993",
+          "v80_encoder.py": "0889665e0ca3dbafa7d512ad877ec88fef19c713fa2ff6bf4fd6e5e474c3045f",
+          "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3"
+        },
+        "fingerprint": "f6cd71abee890cd5634e9ba77abc7d752a45bc925ac9cf955448ef89e371cd59"
+      },
+      "paired": {
+        "baseline": {
+          "n": 10000,
+          "spam": 4583,
+          "ham": 5417,
+          "tp": 4466,
+          "fp": 50,
+          "fn": 117,
+          "tn": 5367,
+          "recall": 0.9744708706087716,
+          "fpr": 0.009230201218386561,
+          "fp_per_million_ham_point_estimate": 9230.20121838656,
+          "fp_per_million_all_point_estimate": 5000.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 11668.70040904837,
+          "fp_upper_95_per_million_all_iid_assumption": 6324.499770793831,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "proposed": {
+          "n": 10000,
+          "spam": 4583,
+          "ham": 5417,
+          "tp": 4466,
+          "fp": 50,
+          "fn": 117,
+          "tn": 5367,
+          "recall": 0.9744708706087716,
+          "fpr": 0.009230201218386561,
+          "fp_per_million_ham_point_estimate": 9230.20121838656,
+          "fp_per_million_all_point_estimate": 5000.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": 11668.70040904837,
+          "fp_upper_95_per_million_all_iid_assumption": 6324.499770793831,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "baseline_spam_detections_lost": 0,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 0,
+        "false_positives_added": 0
+      },
+      "lost_spam_identities": []
+    }
+  ],
+  "regression_by_source": {
+    "Assassin": {
+      "baseline": {
+        "n": 2553,
+        "spam": 697,
+        "ham": 1856,
+        "tp": 681,
+        "fp": 35,
+        "tn": 1821,
+        "fn": 16,
+        "recall": 0.9770444763271162,
+        "fpr": 0.018857758620689655,
+        "fp_per_million_ham_point_estimate": 18857.758620689656,
+        "fp_per_million_all_point_estimate": 13709.361535448492,
+        "fpr_upper_95_per_million_ham_iid_assumption": 24925.229536627794,
+        "fp_upper_95_per_million_all_iid_assumption": 18135.6486347037,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "proposed": {
+        "n": 2553,
+        "spam": 697,
+        "ham": 1856,
+        "tp": 681,
+        "fp": 35,
+        "tn": 1821,
+        "fn": 16,
+        "recall": 0.9770444763271162,
+        "fpr": 0.018857758620689655,
+        "fp_per_million_ham_point_estimate": 18857.758620689656,
+        "fp_per_million_all_point_estimate": 13709.361535448492,
+        "fpr_upper_95_per_million_ham_iid_assumption": 24925.229536627794,
+        "fp_upper_95_per_million_all_iid_assumption": 18135.6486347037,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0
+    },
+    "CEAS-08": {
+      "baseline": {
+        "n": 14143,
+        "spam": 6303,
+        "ham": 7840,
+        "tp": 6278,
+        "fp": 118,
+        "tn": 7722,
+        "fn": 25,
+        "recall": 0.9960336347770903,
+        "fpr": 0.015051020408163265,
+        "fp_per_million_ham_point_estimate": 15051.020408163266,
+        "fp_per_million_all_point_estimate": 8343.350067171039,
+        "fpr_upper_95_per_million_ham_iid_assumption": 17515.573619086565,
+        "fp_upper_95_per_million_all_iid_assumption": 9714.955166237662,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "proposed": {
+        "n": 14143,
+        "spam": 6303,
+        "ham": 7840,
+        "tp": 6278,
+        "fp": 117,
+        "tn": 7723,
+        "fn": 25,
+        "recall": 0.9960336347770903,
+        "fpr": 0.014923469387755102,
+        "fp_per_million_ham_point_estimate": 14923.469387755102,
+        "fp_per_million_all_point_estimate": 8272.643710669588,
+        "fpr_upper_95_per_million_ham_iid_assumption": 17378.631877260952,
+        "fp_upper_95_per_million_all_iid_assumption": 9638.979793090517,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 1,
+      "false_positives_added": 0
+    },
+    "Enron": {
+      "baseline": {
+        "n": 11082,
+        "spam": 4941,
+        "ham": 6141,
+        "tp": 4862,
+        "fp": 31,
+        "tn": 6110,
+        "fn": 79,
+        "recall": 0.9840113337381097,
+        "fpr": 0.0050480377788633774,
+        "fp_per_million_ham_point_estimate": 5048.037778863378,
+        "fp_per_million_all_point_estimate": 2797.3290019852016,
+        "fpr_upper_95_per_million_ham_iid_assumption": 6806.821493380456,
+        "fp_upper_95_per_million_all_iid_assumption": 3773.4313362299426,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "proposed": {
+        "n": 11082,
+        "spam": 4941,
+        "ham": 6141,
+        "tp": 4862,
+        "fp": 30,
+        "tn": 6111,
+        "fn": 79,
+        "recall": 0.9840113337381097,
+        "fpr": 0.004885197850512946,
+        "fp_per_million_ham_point_estimate": 4885.1978505129455,
+        "fp_per_million_all_point_estimate": 2707.0925825663235,
+        "fpr_upper_95_per_million_ham_iid_assumption": 6620.268631124761,
+        "fp_upper_95_per_million_all_iid_assumption": 3669.9941274921116,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 1,
+      "false_positives_added": 0
+    },
+    "GenSpam": {
+      "baseline": {
+        "n": 11386,
+        "spam": 7234,
+        "ham": 4152,
+        "tp": 7032,
+        "fp": 113,
+        "tn": 4039,
+        "fn": 202,
+        "recall": 0.9720763063312137,
+        "fpr": 0.027215799614643547,
+        "fp_per_million_ham_point_estimate": 27215.799614643547,
+        "fp_per_million_all_point_estimate": 9924.468645705252,
+        "fpr_upper_95_per_million_ham_iid_assumption": 31745.301899724458,
+        "fp_upper_95_per_million_all_iid_assumption": 11593.274651352272,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "proposed": {
+        "n": 11386,
+        "spam": 7234,
+        "ham": 4152,
+        "tp": 7032,
+        "fp": 113,
+        "tn": 4039,
+        "fn": 202,
+        "recall": 0.9720763063312137,
+        "fpr": 0.027215799614643547,
+        "fp_per_million_ham_point_estimate": 27215.799614643547,
+        "fp_per_million_all_point_estimate": 9924.468645705252,
+        "fpr_upper_95_per_million_ham_iid_assumption": 31745.301899724458,
+        "fp_upper_95_per_million_all_iid_assumption": 11593.274651352272,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0
+    },
+    "Labelled-email-2010": {
+      "baseline": {
+        "n": 5470,
+        "spam": 3595,
+        "ham": 1875,
+        "tp": 3513,
+        "fp": 30,
+        "tn": 1845,
+        "fn": 82,
+        "recall": 0.9771905424200278,
+        "fpr": 0.016,
+        "fp_per_million_ham_point_estimate": 16000.0,
+        "fp_per_million_all_point_estimate": 5484.460694698354,
+        "fpr_upper_95_per_million_ham_iid_assumption": 21639.621435035337,
+        "fp_upper_95_per_million_all_iid_assumption": 7431.575822849643,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "proposed": {
+        "n": 5470,
+        "spam": 3595,
+        "ham": 1875,
+        "tp": 3513,
+        "fp": 30,
+        "tn": 1845,
+        "fn": 82,
+        "recall": 0.9771905424200278,
+        "fpr": 0.016,
+        "fp_per_million_ham_point_estimate": 16000.0,
+        "fp_per_million_all_point_estimate": 5484.460694698354,
+        "fpr_upper_95_per_million_ham_iid_assumption": 21639.621435035337,
+        "fp_upper_95_per_million_all_iid_assumption": 7431.575822849643,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0
+    },
+    "Ling": {
+      "baseline": {
+        "n": 1261,
+        "spam": 231,
+        "ham": 1030,
+        "tp": 219,
+        "fp": 3,
+        "tn": 1027,
+        "fn": 12,
+        "recall": 0.948051948051948,
+        "fpr": 0.002912621359223301,
+        "fp_per_million_ham_point_estimate": 2912.621359223301,
+        "fp_per_million_all_point_estimate": 2379.064234734338,
+        "fpr_upper_95_per_million_ham_iid_assumption": 7510.466501013818,
+        "fp_upper_95_per_million_all_iid_assumption": 6137.234521381618,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "proposed": {
+        "n": 1261,
+        "spam": 231,
+        "ham": 1030,
+        "tp": 219,
+        "fp": 3,
+        "tn": 1027,
+        "fn": 12,
+        "recall": 0.948051948051948,
+        "fpr": 0.002912621359223301,
+        "fp_per_million_ham_point_estimate": 2912.621359223301,
+        "fp_per_million_all_point_estimate": 2379.064234734338,
+        "fpr_upper_95_per_million_ham_iid_assumption": 7510.466501013818,
+        "fp_upper_95_per_million_all_iid_assumption": 6137.234521381618,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0
+    },
+    "Nazario-2025": {
+      "baseline": {
+        "n": 258,
+        "spam": 258,
+        "ham": 0,
+        "tp": 238,
+        "fp": 0,
+        "tn": 0,
+        "fn": 20,
+        "recall": 0.9224806201550387,
+        "fpr": null,
+        "fp_per_million_ham_point_estimate": null,
+        "fp_per_million_all_point_estimate": 0.0,
+        "fpr_upper_95_per_million_ham_iid_assumption": null,
+        "fp_upper_95_per_million_all_iid_assumption": 11544.213657238306,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "proposed": {
+        "n": 258,
+        "spam": 258,
+        "ham": 0,
+        "tp": 237,
+        "fp": 0,
+        "tn": 0,
+        "fn": 21,
+        "recall": 0.9186046511627907,
+        "fpr": null,
+        "fp_per_million_ham_point_estimate": null,
+        "fp_per_million_all_point_estimate": 0.0,
+        "fpr_upper_95_per_million_ham_iid_assumption": null,
+        "fp_upper_95_per_million_all_iid_assumption": 11544.213657238306,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "baseline_spam_detections_lost": 1,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0
+    },
+    "TREC-05": {
+      "baseline": {
+        "n": 22201,
+        "spam": 8026,
+        "ham": 14175,
+        "tp": 7862,
+        "fp": 142,
+        "tn": 14033,
+        "fn": 164,
+        "recall": 0.9795664091701969,
+        "fpr": 0.010017636684303352,
+        "fp_per_million_ham_point_estimate": 10017.636684303352,
+        "fp_per_million_all_point_estimate": 6396.108283410657,
+        "fpr_upper_95_per_million_ham_iid_assumption": 11506.107272873634,
+        "fp_upper_95_per_million_all_iid_assumption": 7348.469927786077,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "proposed": {
+        "n": 22201,
+        "spam": 8026,
+        "ham": 14175,
+        "tp": 7862,
+        "fp": 142,
+        "tn": 14033,
+        "fn": 164,
+        "recall": 0.9795664091701969,
+        "fpr": 0.010017636684303352,
+        "fp_per_million_ham_point_estimate": 10017.636684303352,
+        "fp_per_million_all_point_estimate": 6396.108283410657,
+        "fpr_upper_95_per_million_ham_iid_assumption": 11506.107272873634,
+        "fp_upper_95_per_million_all_iid_assumption": 7348.469927786077,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0
+    },
+    "TREC-06": {
+      "baseline": {
+        "n": 7944,
+        "spam": 1546,
+        "ham": 6398,
+        "tp": 1489,
+        "fp": 58,
+        "tn": 6340,
+        "fn": 57,
+        "recall": 0.963130659767141,
+        "fpr": 0.009065332916536417,
+        "fp_per_million_ham_point_estimate": 9065.332916536418,
+        "fp_per_million_all_point_estimate": 7301.10775427996,
+        "fpr_upper_95_per_million_ham_iid_assumption": 11268.639615782135,
+        "fp_upper_95_per_million_all_iid_assumption": 9077.587958365824,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "proposed": {
+        "n": 7944,
+        "spam": 1546,
+        "ham": 6398,
+        "tp": 1489,
+        "fp": 58,
+        "tn": 6340,
+        "fn": 57,
+        "recall": 0.963130659767141,
+        "fpr": 0.009065332916536417,
+        "fp_per_million_ham_point_estimate": 9065.332916536418,
+        "fp_per_million_all_point_estimate": 7301.10775427996,
+        "fpr_upper_95_per_million_ham_iid_assumption": 11268.639615782135,
+        "fp_upper_95_per_million_all_iid_assumption": 9077.587958365824,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0
+    },
+    "TREC-07": {
+      "baseline": {
+        "n": 23702,
+        "spam": 13866,
+        "ham": 9836,
+        "tp": 13564,
+        "fp": 56,
+        "tn": 9780,
+        "fn": 302,
+        "recall": 0.9782201067359008,
+        "fpr": 0.0056933712891419274,
+        "fp_per_million_ham_point_estimate": 5693.371289141927,
+        "fp_per_million_all_point_estimate": 2362.6698168930893,
+        "fpr_upper_95_per_million_ham_iid_assumption": 7107.634717210673,
+        "fp_upper_95_per_million_all_iid_assumption": 2950.796396775087,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "proposed": {
+        "n": 23702,
+        "spam": 13866,
+        "ham": 9836,
+        "tp": 13564,
+        "fp": 56,
+        "tn": 9780,
+        "fn": 302,
+        "recall": 0.9782201067359008,
+        "fpr": 0.0056933712891419274,
+        "fp_per_million_ham_point_estimate": 5693.371289141927,
+        "fp_per_million_all_point_estimate": 2362.6698168930893,
+        "fpr_upper_95_per_million_ham_iid_assumption": 7107.634717210673,
+        "fp_upper_95_per_million_all_iid_assumption": 2950.796396775087,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0
+    }
+  },
+  "phishing_2024_regression": {
+    "receipt": {
+      "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+      "code_sha256": {
+        "v81_mail.py": "747d57ef607da9022021cdcbaa3a2de441e7ae7884789bb71f1e040ca93fc770",
+        "v81_features.py": "e4f5b1f87ee10fd97d7d9459572869be4af86ec40869f88ab168f034013ccd00",
+        "evaluate_v81_fp.py": "e9e6e2b8835414b93baccab73cab7b06d1691d28a2baa206b0ae0c8d19a7fa02",
+        "train_v81_fp.py": "86c1f72d2fc24ed4cb5fcdb8be069d4e1fc21d4763bc138b5ceb919ca3e71712",
+        "v80_mail.py": "e0799737ab1f207acb604fdd7235a543c0d67dcfbb8557968db40c8d86720993",
+        "v80_encoder.py": "0889665e0ca3dbafa7d512ad877ec88fef19c713fa2ff6bf4fd6e5e474c3045f",
+        "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3"
+      },
+      "fingerprint": "4c8c4a57cabeb4ba72511fedcd993d54a0e538d9da345b8a0f44f9f3b411154a"
+    },
+    "paired": {
+      "baseline": {
+        "n": 247,
+        "spam": 247,
+        "ham": 0,
+        "tp": 230,
+        "fp": 0,
+        "fn": 17,
+        "tn": 0,
+        "recall": 0.9311740890688259,
+        "fpr": null,
+        "fp_per_million_ham_point_estimate": null,
+        "fp_per_million_all_point_estimate": 0.0,
+        "fpr_upper_95_per_million_ham_iid_assumption": null,
+        "fp_upper_95_per_million_all_iid_assumption": 12055.217291709921,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "proposed": {
+        "n": 247,
+        "spam": 247,
+        "ham": 0,
+        "tp": 229,
+        "fp": 0,
+        "fn": 18,
+        "tn": 0,
+        "recall": 0.9271255060728745,
+        "fpr": null,
+        "fp_per_million_ham_point_estimate": null,
+        "fp_per_million_all_point_estimate": 0.0,
+        "fpr_upper_95_per_million_ham_iid_assumption": null,
+        "fp_upper_95_per_million_all_iid_assumption": 12055.217291709921,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "baseline_spam_detections_lost": 1,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0
+    },
+    "by_source": {
+      "Nazario-2024": {
+        "baseline": {
+          "n": 247,
+          "spam": 247,
+          "ham": 0,
+          "tp": 230,
+          "fp": 0,
+          "fn": 17,
+          "tn": 0,
+          "recall": 0.9311740890688259,
+          "fpr": null,
+          "fp_per_million_ham_point_estimate": null,
+          "fp_per_million_all_point_estimate": 0.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": null,
+          "fp_upper_95_per_million_all_iid_assumption": 12055.217291709921,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "proposed": {
+          "n": 247,
+          "spam": 247,
+          "ham": 0,
+          "tp": 229,
+          "fp": 0,
+          "fn": 18,
+          "tn": 0,
+          "recall": 0.9271255060728745,
+          "fpr": null,
+          "fp_per_million_ham_point_estimate": null,
+          "fp_per_million_all_point_estimate": 0.0,
+          "fpr_upper_95_per_million_ham_iid_assumption": null,
+          "fp_upper_95_per_million_all_iid_assumption": 12055.217291709921,
+          "joint_98_and_10ppm_point_targets_met": false,
+          "joint_98_and_10ppm_all_point_targets_met": false
+        },
+        "baseline_spam_detections_lost": 1,
+        "spam_detections_gained": 0,
+        "false_positives_removed": 0,
+        "false_positives_added": 0
+      }
+    },
+    "lost_spam_identities": [
+      "0d52461d8a7ddb4f734e9fbf5518dc509ab078da95f0ef614f05a41d47145fb7"
+    ]
+  },
+  "accepted_on_observed_regression": false,
+  "regression_is_a_new_blind_test": false,
+  "million_message_test_performed": false,
+  "arbitrary_future_mail_guarantee": false,
+  "customer_mail_validated": false,
+  "rejected_candidate_must_not_replace_baseline": true,
+  "development_details_file": "v81-policy-locked.json"
+}

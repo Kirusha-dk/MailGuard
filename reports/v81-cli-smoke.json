@@ -1,0 +1,139 @@
+{
+  "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+  "profiles": {
+    "v80-recall-98": {
+      "version": "v81-english-constrained-fp-rescue",
+      "profile": "v80-recall-98",
+      "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+      "files_found": 66,
+      "excluded": {
+        "duplicates": 2,
+        "unsupported_or_short": 3,
+        "conflicting_identities": 1
+      },
+      "metrics": {
+        "n": 60,
+        "spam": 30,
+        "ham": 30,
+        "tp": 30,
+        "fn": 0,
+        "fp": 4,
+        "tn": 26,
+        "recall": 1.0,
+        "fpr": 0.13333333333333333,
+        "accuracy": 0.9333333333333333,
+        "fp_per_million_ham_point_estimate": 133333.33333333334,
+        "fp_per_million_all_point_estimate": 66666.66666666667,
+        "fpr_upper_95_per_million_ham_iid_assumption": 279615.1658934821,
+        "fp_upper_95_per_million_all_iid_assumption": 146097.20545071186,
+        "joint_98_and_10ppm_point_targets_met": false,
+        "joint_98_and_10ppm_all_point_targets_met": false
+      },
+      "by_language": {
+        "en": {
+          "n": 60,
+          "spam": 30,
+          "ham": 30,
+          "tp": 30,
+          "fn": 0,
+          "fp": 4,
+          "tn": 26,
+          "recall": 1.0,
+          "fpr": 0.13333333333333333,
+          "accuracy": 0.9333333333333333
+        }
+      },
+      "complete_10000_ru_en_email_test": false,
+      "goal": {
+        "target_spam_recall": 0.98,
+        "target_fp_per_million_all_messages": 10,
+        "observed_joint_goal_on_scored_mail": false,
+        "at_least_one_million_messages_scored": false,
+        "upper_95_fp_all_within_10ppm_iid_assumption": false,
+        "arbitrary_future_mail_guaranteed": false,
+        "note": "Point estimates are not a million-message test. Binomial bounds assume independent representative messages."
+      }
+    },
+    "fp-rescue": {
+      "version": "v81-english-constrained-fp-rescue",
+      "profile": "fp-rescue",
+      "model_sha256": "b00e7223fbf2b51477a0a956f88a2c27260781cd619a8caa9ca860536f61edef",
+      "files_found": 66,
+      "excluded": {
+        "duplicates": 2,
+        "unsupported_or_short": 3,
+        "conflicting_identities": 1
+      },
+      "metrics": {
+        "n": 60,
+        "spam": 30,
+        "ham": 30,
+        "tp": 30,
+        "fn": 0,
+        "fp": 0,
+        "tn": 30,
+        "recall": 1.0,
+        "fpr": 0.0,
+        "accuracy": 1.0,
+        "fp_per_million_ham_point_estimate": 0.0,
+        "fp_per_million_all_point_estimate": 0.0,
+        "fpr_upper_95_per_million_ham_iid_assumption": 95033.85285530411,
+        "fp_upper_95_per_million_all_iid_assumption": 48702.91331009749,
+        "joint_98_and_10ppm_point_targets_met": true,
+        "joint_98_and_10ppm_all_point_targets_met": true
+      },
+      "by_language": {
+        "en": {
+          "n": 60,
+          "spam": 30,
+          "ham": 30,
+          "tp": 30,
+          "fn": 0,
+          "fp": 0,
+          "tn": 30,
+          "recall": 1.0,
+          "fpr": 0.0,
+          "accuracy": 1.0
+        }
+      },
+      "complete_10000_ru_en_email_test": false,
+      "goal": {
+        "target_spam_recall": 0.98,
+        "target_fp_per_million_all_messages": 10,
+        "observed_joint_goal_on_scored_mail": true,
+        "at_least_one_million_messages_scored": false,
+        "upper_95_fp_all_within_10ppm_iid_assumption": false,
+        "arbitrary_future_mail_guaranteed": false,
+        "note": "Point estimates are not a million-message test. Binomial bounds assume independent representative messages."
+      }
+    }
+  },
+  "single_batch_max_score_difference": 0.0,
+  "cli_api_decisions_equal": true,
+  "final_score_and_metrics_consistent": true,
+  "smoke_is_not_a_generalization_test": true,
+  "paired": {
+    "baseline": {
+      "n": 60,
+      "spam": 30,
+      "ham": 30,
+      "tp": 30,
+      "fp": 4,
+      "fn": 0,
+      "tn": 26
+    },
+    "proposed": {
+      "n": 60,
+      "spam": 30,
+      "ham": 30,
+      "tp": 30,
+      "fp": 0,
+      "fn": 0,
+      "tn": 30
+    },
+    "baseline_spam_detections_lost": 0,
+    "spam_detections_gained": 0,
+    "false_positives_removed": 4,
+    "false_positives_added": 0
+  }
+}
