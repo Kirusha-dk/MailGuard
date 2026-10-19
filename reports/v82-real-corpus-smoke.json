@@ -1,0 +1,19 @@
+{
+  "engineering_test_only": true,
+  "real_public_english_train_and_select": true,
+  "logical_session_dates_simulated": true,
+  "actual_run_date": "2026-10-20",
+  "train_rows": 256,
+  "select_rows": 256,
+  "first_global_optimizer_steps": 4,
+  "second_global_optimizer_steps": 8,
+  "second_session_restored_optimizer": true,
+  "repeated_completed_session_checkpoint_unchanged": true,
+  "changed_internal_adapter_tensors": 24,
+  "production_campaign_or_state_used": false,
+  "test_or_cal_used": false,
+  "quality_gain_demonstrated": false,
+  "independent_quality_test_performed": false,
+  "replayed_invocation_optimizer_steps": 0,
+  "replayed_report_explicitly_identifies_no_training": true
+}

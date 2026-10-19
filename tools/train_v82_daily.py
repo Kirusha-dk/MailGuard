@@ -106,14 +106,15 @@ def main():
         raise ValueError('Checkpoint older than the requested rollback guard')
     if not begin_session(progress, request['session_id'], request['budget_steps']):
         cached = progress.get('last_report')
-        if cached:
-            write_report(args.state, cached)
-        else:
+        if not cached:
             report_path = args.state.parent / 'report.json'
             if (not report_path.is_file() or
                 (request['session_id'] in progress['completed_sessions'] and
                  json.loads(report_path.read_text())['session'] != request['session_id'])):
                 raise ValueError('Legacy completed checkpoint has no matching report; explicit recovery required')
+            cached = json.loads(report_path.read_text())
+        write_report(args.state, dict(cached, invocation_optimizer_steps=0,
+                                     completed_session_replayed=True, checkpoint_restored_in_invocation=True))
         print('Session already completed or training stopped; no optimizer steps executed', flush=True)
         return
     before = trainable_state(model); initial_step = progress['step']
@@ -142,6 +143,7 @@ def main():
     after = trainable_state(model)
     adapter_keys = [k for k in after if k.endswith(('.a', '.b'))]
     report = dict(version=82, campaign=request['campaign'], session=request['session_id'], resumed=resumed,
+                  checkpoint_restored_in_invocation=resumed, completed_session_replayed=False,
                   session_optimizer_steps=session_steps, invocation_optimizer_steps=progress['step'] - initial_step,
                   global_optimizer_steps=progress['step'],
                   epoch=progress['epoch'], cursor=progress['cursor'], completed_sessions=len(progress['completed_sessions']),

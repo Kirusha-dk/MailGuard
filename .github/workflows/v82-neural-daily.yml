@@ -87,7 +87,10 @@ jobs:
           r = json.loads(Path('neural-state/report.json').read_text())
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
               f.write('## English neural training, development only\n\n')
-              f.write(f"Global optimizer steps: {r['global_optimizer_steps']}; resumed: {r['resumed']}.\n\n")
+              restored = r.get('checkpoint_restored_in_invocation', r['resumed'])
+              f.write(f"Global optimizer steps: {r['global_optimizer_steps']}; checkpoint restored: {restored}.\n\n")
+              if 'invocation_optimizer_steps' in r:
+                  f.write(f"Optimizer steps in this invocation: {r['invocation_optimizer_steps']}.\n\n")
               f.write(f"SELECT FP at development-selected ~98% recall: {r['development']['fp']}.\n\n")
               f.write('No production promotion; no independent quality gain or million-mail FP claim. v80 remains unchanged.\n')
           PY
