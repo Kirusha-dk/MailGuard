@@ -82,7 +82,8 @@ def optimizer_and_scheduler(model, total_steps, config=CONFIG):
 
 def new_progress():
     return dict(step=0, epoch=0, cursor=0, completed_sessions=[], active_session=None,
-                active_target=None, best_fp=None, best_loss=None, stalled=0, stopped=False)
+                active_target=None, active_start=None, last_report=None,
+                best_fp=None, best_loss=None, stalled=0, stopped=False)
 
 
 def save_checkpoint(path, model, optimizer, scheduler, progress, metadata):
@@ -115,6 +116,7 @@ def begin_session(progress, session_id, budget):
         raise ValueError('Resume the unfinished session before requesting another')
     if progress['active_session'] is None:
         progress['active_session'] = session_id
+        progress['active_start'] = progress['step']
         progress['active_target'] = progress['step'] + budget
     return True
 

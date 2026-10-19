@@ -35,6 +35,13 @@ def subset(rows, limit):
     return sorted(result, key=lambda r: r['identity'])
 
 
+def write_report(state, report):
+    report = dict(report, checkpoint_sha256=hashlib.sha256(state.read_bytes()).hexdigest())
+    target = state.parent / 'report.json'; pending = target.with_suffix('.partial')
+    pending.write_text(json.dumps(report, indent=2)); pending.replace(target)
+    print(json.dumps(report, indent=2), flush=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--request', type=Path, required=True)
@@ -98,6 +105,15 @@ def main():
     if progress['step'] < request['expected_min_step']:
         raise ValueError('Checkpoint older than the requested rollback guard')
     if not begin_session(progress, request['session_id'], request['budget_steps']):
+        cached = progress.get('last_report')
+        if cached:
+            write_report(args.state, cached)
+        else:
+            report_path = args.state.parent / 'report.json'
+            if (not report_path.is_file() or
+                (request['session_id'] in progress['completed_sessions'] and
+                 json.loads(report_path.read_text())['session'] != request['session_id'])):
+                raise ValueError('Legacy completed checkpoint has no matching report; explicit recovery required')
         print('Session already completed or training stopped; no optimizer steps executed', flush=True)
         return
     before = trainable_state(model); initial_step = progress['step']
@@ -119,24 +135,27 @@ def main():
     else:
         progress['stalled'] += 1
     progress['stopped'] = progress['epoch'] >= CONFIG['max_epochs'] or (progress['epoch'] >= 1 and progress['stalled'] >= 3)
+    session_steps = progress['step'] - progress.get('active_start', initial_step)
     progress['completed_sessions'].append(request['session_id'])
     progress['active_session'] = None; progress['active_target'] = None
-    save()
+    progress['active_start'] = None
     after = trainable_state(model)
     adapter_keys = [k for k in after if k.endswith(('.a', '.b'))]
     report = dict(version=82, campaign=request['campaign'], session=request['session_id'], resumed=resumed,
-                  session_optimizer_steps=progress['step'] - initial_step, global_optimizer_steps=progress['step'],
+                  session_optimizer_steps=session_steps, invocation_optimizer_steps=progress['step'] - initial_step,
+                  global_optimizer_steps=progress['step'],
                   epoch=progress['epoch'], cursor=progress['cursor'], completed_sessions=len(progress['completed_sessions']),
                   stopped=progress['stopped'], train_rows=len(train), select_rows=len(select),
                   trainable_parameters=sum(p.numel() for p in model.parameters() if p.requires_grad),
                   changed_internal_adapter_tensors=sum(not torch.equal(after[k], before[k]) for k in adapter_keys),
                   internal_adapter_delta_l2=math.sqrt(sum(float((after[k] - before[k]).square().sum()) for k in adapter_keys)),
                   mean_training_loss=sum(losses) / len(losses) if losses else None, development=metric,
-                  best_development_fp=progress['best_fp'], checkpoint_sha256=hashlib.sha256(args.state.read_bytes()).hexdigest(),
+                  best_development_fp=progress['best_fp'],
                   pilot_only=metadata['pilot_only'], accepted_for_production=False, production_v80_unchanged=True,
                   test_or_cal_used_for_gradient_or_selection=False, customer_mail_used=False, quality_gain_demonstrated=False)
-    (args.state.parent / 'report.json').write_text(json.dumps(report, indent=2))
-    print(json.dumps(report, indent=2), flush=True)
+    progress['last_report'] = report
+    save()  # The report is recoverable even if publication is interrupted next.
+    write_report(args.state, report)
 
 
 if __name__ == '__main__':

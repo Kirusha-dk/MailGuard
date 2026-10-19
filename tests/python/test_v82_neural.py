@@ -79,10 +79,23 @@ class NeuralContinuationTests(unittest.TestCase):
         progress['step'] = 25
         self.assertTrue(begin_session(progress, 'day-1', 100))
         self.assertEqual(progress['active_target'], 100)
+        self.assertEqual(progress['active_start'], 0)
         with self.assertRaises(ValueError):
             begin_session(progress, 'day-2', 100)
         progress['completed_sessions'].append('day-1'); progress['active_session'] = None
         self.assertFalse(begin_session(progress, 'day-1', 100))
+
+    def test_completed_report_survives_checkpoint_restore(self):
+        bundle = self.make(); progress = new_progress()
+        progress['completed_sessions'] = ['day-1']
+        progress['last_report'] = dict(session='day-1', global_optimizer_steps=100,
+                                       quality_gain_demonstrated=False)
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'checkpoint.pt'
+            save_checkpoint(path, *bundle, progress, self.metadata)
+            restored = restore_checkpoint(path, *self.make(), self.metadata)
+        self.assertEqual(restored['last_report'], progress['last_report'])
+        self.assertFalse(begin_session(restored, 'day-1', 500))
 
 
 if __name__ == '__main__':
