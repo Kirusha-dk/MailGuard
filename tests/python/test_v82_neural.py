@@ -9,7 +9,7 @@ from transformers import BertConfig, BertModel
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'tools'))
 from v82_neural import (CONFIG, NeuralMail, begin_session, new_progress, optimizer_and_scheduler,
-                        restore_checkpoint, run_steps, save_checkpoint, trainable_state)
+                        restore_checkpoint, run_steps, save_checkpoint, trainable_state, validate)
 
 
 class Tokenizer:
@@ -96,6 +96,20 @@ class NeuralContinuationTests(unittest.TestCase):
             restored = restore_checkpoint(path, *self.make(), self.metadata)
         self.assertEqual(restored['last_report'], progress['last_report'])
         self.assertFalse(begin_session(restored, 'day-1', 500))
+
+    def test_development_sources_reconcile_at_one_global_threshold(self):
+        rows = [dict(identity=str(i), text='English letter ' + str(i), y=int(i % 3 == 0),
+                     source='source-' + str(i % 2)) for i in range(300)]
+        model = self.make()[0]
+        metric = validate(model, Tokenizer(), rows, self.config)
+        for key in ('n', 'spam', 'ham', 'tp', 'fp'):
+            self.assertEqual(metric[key], sum(s[key] for s in metric['by_source'].values()))
+        self.assertGreaterEqual(metric['recall'], .98)
+        self.assertFalse(metric['is_independent_test'])
+        with torch.no_grad():
+            model.head.bias.fill_(float('nan'))
+        with self.assertRaisesRegex(ValueError, 'Nonfinite'):
+            validate(model, Tokenizer(), rows, self.config)
 
 
 if __name__ == '__main__':
