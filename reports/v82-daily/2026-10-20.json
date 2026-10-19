@@ -36,5 +36,8 @@
   "production_v80_unchanged": true,
   "test_or_cal_used_for_gradient_or_selection": false,
   "customer_mail_used": false,
-  "quality_gain_demonstrated": false
+  "quality_gain_demonstrated": false,
+  "invocation_optimizer_steps": 0,
+  "completed_session_replayed": true,
+  "checkpoint_restored_in_invocation": true
 }
