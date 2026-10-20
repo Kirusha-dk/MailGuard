@@ -1,0 +1,118 @@
+name: MailGuard v82 read-only development error audit
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v82-neural-month]
+    paths:
+      - research/v82/audit.json
+      - tools/audit_v82_errors.py
+      - tests/python/test_v82_audit.py
+      - .github/workflows/v82-error-audit.yml
+
+permissions:
+  contents: read
+concurrency:
+  group: mailguard-v82-neural-campaign
+  cancel-in-progress: false
+
+jobs:
+  audit-completed-checkpoints:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 95
+    permissions:
+      contents: write
+      actions: read
+    env:
+      OMP_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify paired counts and privacy of reports
+        run: python -m unittest discover -s tests/python -p test_v82_audit.py -v
+      - name: Install pinned CPU audit environment
+        run: |
+          python -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements-v82.txt
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .cache/v82/backbone
+            .cache/v79/frozen
+            .cache/v80/extra
+          key: v82-pinned-english-corpus-and-minilm-1110a243-v1
+      - name: Verify pinned public inputs
+        timeout-minutes: 35
+        run: python -u tools/fetch_v82_inputs.py
+      - name: Find latest continuation artifact and pinned baseline run
+        id: checkpoints
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const request = JSON.parse(fs.readFileSync('research/v82/audit.json', 'utf8'));
+            if (!/^v82-english-[0-9]{8}$/.test(request.campaign)) throw new Error('Invalid campaign');
+            if (!Number.isSafeInteger(request.baseline_run_id) || request.baseline_run_id <= 0) throw new Error('Invalid baseline run');
+            const name = `mailguard-${request.campaign}-state`;
+            const all = await github.paginate(github.rest.actions.listArtifactsForRepo, {...context.repo, per_page: 100});
+            const matches = all.filter(a => a.name === name && !a.expired &&
+              a.workflow_run.head_branch === 'mailguard-v82-neural-month').sort((a,b) => b.id-a.id);
+            if (!matches.length) throw new Error('No continuation state; audit will not create a fresh model');
+            core.setOutput('name', name);
+            core.setOutput('latest', String(matches[0].workflow_run.id));
+            core.setOutput('baseline', String(request.baseline_run_id));
+      - name: Download current completed state
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.checkpoints.outputs.name }}
+          run-id: ${{ steps.checkpoints.outputs.latest }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .cache/v82-audit/current
+      - name: Download pinned 500-step baseline
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.checkpoints.outputs.name }}
+          run-id: ${{ steps.checkpoints.outputs.baseline }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .cache/v82-audit/baseline
+      - name: Audit observed TRAIN and SELECT without optimization
+        timeout-minutes: 65
+        run: |
+          python -u tools/audit_v82_errors.py --request research/v82/audit.json \
+            --state .cache/v82-audit/current/checkpoint.pt \
+            --baseline-state .cache/v82-audit/baseline/checkpoint.pt
+      - name: Save development-only audit and score cache
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v82-development-error-audit-${{ github.run_id }}
+          path: .cache/v82-audit/output/
+          retention-days: 45
+          if-no-files-found: error
+      - name: Commit only the audit summary
+        env:
+          REPORT_BRANCH: mailguard-v82-neural-month
+        run: |
+          cp .cache/v82-audit/output/audit.json /tmp/v82-error-audit.json
+          report_name=$(python - <<'PY'
+          import json
+          r=json.load(open('/tmp/v82-error-audit.json'))
+          print('step-'+str(r['global_optimizer_steps'])+'-'+r['current_checkpoint_sha256'][:12]+'.json')
+          PY
+          )
+          git fetch origin "$REPORT_BRANCH"
+          git checkout -B "$REPORT_BRANCH" "origin/$REPORT_BRANCH"
+          mkdir -p reports/v82-audits
+          cp /tmp/v82-error-audit.json "reports/v82-audits/$report_name"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f "reports/v82-audits/$report_name"
+          if ! git diff --cached --quiet; then
+            git commit -m "Record v82 read-only development error audit"
+            git push origin "$REPORT_BRANCH"
+          fi

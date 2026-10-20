@@ -1,0 +1,8 @@
+{
+  "campaign": "v82-english-20261020",
+  "expected_min_step": 1000,
+  "baseline_run_id": 39332953339,
+  "baseline_step": 500,
+  "train_seen_limit": 10000,
+  "purpose": "Read-only overnight FP/FN audit on observed TRAIN and SELECT; no parameter updates"
+}
