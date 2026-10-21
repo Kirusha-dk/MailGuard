@@ -155,12 +155,17 @@ def main():
         raise ValueError('Cached paired counts do not reproduce the original audit')
     result = analyze(select, sample, values['baseline'], values['current'], values['train_scores'],
                      old_cutoff, new_cutoff)
+    loss_checks = {}
+    for key, report in (('baseline_select', baseline_report), ('current_select', current_report)):
+        loss_checks[key] = dict(expected=report['development']['log_loss'], observed=result[key]['log_loss'],
+                                difference=result[key]['log_loss'] - report['development']['log_loss'])
+    print(json.dumps(dict(log_loss_reproduction=loss_checks)), flush=True)
     for key, report in (('baseline_select', baseline_report), ('current_select', current_report)):
         observed = result[key]['at_locked_development_threshold']
         if any(observed[k] != report['development'][k] for k in ('n', 'spam', 'ham', 'tp', 'fp')):
             raise ValueError('Cached counts do not reproduce daily report')
         if not math.isclose(result[key]['log_loss'], report['development']['log_loss'], abs_tol=1e-9, rel_tol=0):
-            raise ValueError('Cached log loss does not reproduce daily report')
+            raise ValueError('Cached log loss does not reproduce daily report: ' + key + ' ' + json.dumps(loss_checks[key]))
     for key in ('at_locked_development_threshold', 'at_predefined_threshold_0_5',
                 'by_source', 'by_word_count', 'by_character_window'):
         if result['current_seen_train'][key] != reference['seen_train_sample'][key]:
