@@ -6,7 +6,9 @@ on:
     paths:
       - research/v82/audit.json
       - tools/audit_v82_errors.py
+      - tools/summarize_v82_audit_cache.py
       - tests/python/test_v82_audit.py
+      - tests/python/test_v82_audit_cache.py
       - .github/workflows/v82-error-audit.yml
 
 permissions:
@@ -16,7 +18,27 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  read-request:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    outputs:
+      cached_run: ${{ steps.mode.outputs.cached_run }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: mode
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const r = JSON.parse(require('fs').readFileSync('research/v82/audit.json', 'utf8'));
+            if (r.cached_audit_run_id !== undefined &&
+                (!Number.isSafeInteger(r.cached_audit_run_id) || r.cached_audit_run_id <= 0)) {
+              throw new Error('Invalid cached audit run ID');
+            }
+            core.setOutput('cached_run', r.cached_audit_run_id ? String(r.cached_audit_run_id) : '');
+
   audit-completed-checkpoints:
+    needs: read-request
+    if: needs.read-request.outputs.cached_run == ''
     runs-on: ubuntu-24.04
     timeout-minutes: 95
     permissions:
@@ -114,5 +136,81 @@ jobs:
           git add -f "reports/v82-audits/$report_name"
           if ! git diff --cached --quiet; then
             git commit -m "Record v82 read-only development error audit"
+            git push origin "$REPORT_BRANCH"
+          fi
+
+  summarize-existing-scores:
+    needs: read-request
+    if: needs.read-request.outputs.cached_run != ''
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test alignment, preservation threshold, loss and report privacy
+        run: |
+          python -m unittest discover -s tests/python -p 'test_v82_audit*.py' -v
+          python -m pip install numpy==2.3.5
+      - name: Verify the fixed source audit artifact
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const r = JSON.parse(require('fs').readFileSync('research/v82/audit.json', 'utf8'));
+            const run = (await github.rest.actions.getWorkflowRun({...context.repo, run_id: r.cached_audit_run_id})).data;
+            if (run.conclusion !== 'success' || run.head_branch !== 'mailguard-v82-neural-month' ||
+                run.path !== '.github/workflows/v82-error-audit.yml') throw new Error('Unexpected source audit run');
+            const artifacts = (await github.rest.actions.listWorkflowRunArtifacts({...context.repo, run_id: r.cached_audit_run_id})).data.artifacts;
+            const matches = artifacts.filter(a => a.name === `mailguard-v82-development-error-audit-${r.cached_audit_run_id}` && !a.expired);
+            if (matches.length !== 1 || matches[0].digest !== r.cached_artifact_sha256) throw new Error('Unexpected source audit artifact digest');
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v82-development-error-audit-${{ needs.read-request.outputs.cached_run }}
+          run-id: ${{ needs.read-request.outputs.cached_run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .cache/v82-audit/source
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            .cache/v82/backbone
+            .cache/v79/frozen
+            .cache/v80/extra
+          key: v82-pinned-english-corpus-and-minilm-1110a243-v1
+          fail-on-cache-miss: true
+      - name: Complete source and length comparison using already computed scores
+        timeout-minutes: 5
+        run: |
+          python -u tools/summarize_v82_audit_cache.py --request research/v82/audit.json \
+            --cache .cache/v82-audit/source
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v82-cached-audit-summary-${{ github.run_id }}
+          path: .cache/v82-audit-cache-summary.json
+          retention-days: 45
+          if-no-files-found: error
+      - name: Commit only the completed cache summary
+        env:
+          REPORT_BRANCH: mailguard-v82-neural-month
+        run: |
+          cp .cache/v82-audit-cache-summary.json /tmp/v82-cache-summary.json
+          report_name=$(python - <<'PY'
+          import json
+          r=json.load(open('/tmp/v82-cache-summary.json'))
+          print('step-'+str(r['global_optimizer_steps'])+'-'+r['current_checkpoint_sha256'][:12]+'-cache-summary.json')
+          PY
+          )
+          git fetch origin "$REPORT_BRANCH"
+          git checkout -B "$REPORT_BRANCH" "origin/$REPORT_BRANCH"
+          mkdir -p reports/v82-audits
+          cp /tmp/v82-cache-summary.json "reports/v82-audits/$report_name"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f "reports/v82-audits/$report_name"
+          if ! git diff --cached --quiet; then
+            git commit -m "Complete v82 source and length comparison from verified score cache"
             git push origin "$REPORT_BRANCH"
           fi
