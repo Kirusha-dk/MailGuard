@@ -1,0 +1,209 @@
+{
+  "campaign": "v82-english-20261020",
+  "baseline_step": 500,
+  "baseline_run_id": 39332953339,
+  "baseline_checkpoint_sha256": "a5cafb2fface8a35c672e075e41e63fe4551a786b536e4e41a23026299b63f68",
+  "corpus_fingerprints": {
+    "train": "6958e55f52c5b18eb74c85b2e66f796b3a4ef826767487bf9d87066e1f4aee5b",
+    "select": "88acb130d5c5174823ccea518339fd63cceef356945a94225e184ef04110892f"
+  },
+  "source_audit_run_id": 39511734148,
+  "input_sha256": {
+    ".cache/v82-replay/baseline/checkpoint.pt": "a5cafb2fface8a35c672e075e41e63fe4551a786b536e4e41a23026299b63f68",
+    ".cache/v82-replay/source/audit.json": "2901afce85d14fbb7733f8708d6f9af1f4e85bad525c8d92a8ec02a6c4e228e5",
+    ".cache/v82-replay/source/development-scores.npz": "8c09f34e382bffeb0101909df71591ccf1823e5ac2b1fa281510eba0b465e29f"
+  },
+  "original_validate_no_grad": {
+    "at_locked_threshold": {
+      "n": 22790,
+      "spam": 10589,
+      "ham": 12201,
+      "tp": 10378,
+      "fp": 2888,
+      "fn": 211,
+      "tn": 9313,
+      "recall": 0.9800736613466805,
+      "fpr": 0.23670190967953447
+    },
+    "log_loss": 0.24933319292296136,
+    "historical_log_loss": 0.24933327071271927,
+    "log_loss_difference": -7.77897579129494e-08,
+    "log_loss_absolute_tolerance": 1e-09,
+    "source_report_counts_reproduced": true,
+    "source_report_log_loss_reproduced": false
+  },
+  "auditor_inference_mode": {
+    "at_locked_threshold": {
+      "n": 22790,
+      "spam": 10589,
+      "ham": 12201,
+      "tp": 10378,
+      "fp": 2888,
+      "fn": 211,
+      "tn": 9313,
+      "recall": 0.9800736613466805,
+      "fpr": 0.23670190967953447
+    },
+    "log_loss": 0.24933319292296136,
+    "historical_log_loss": 0.24933327071271927,
+    "log_loss_difference": -7.77897579129494e-08,
+    "log_loss_absolute_tolerance": 1e-09,
+    "source_report_counts_reproduced": true,
+    "source_report_log_loss_reproduced": false
+  },
+  "historical_cached_baseline": {
+    "at_locked_threshold": {
+      "n": 22790,
+      "spam": 10589,
+      "ham": 12201,
+      "tp": 10378,
+      "fp": 2888,
+      "fn": 211,
+      "tn": 9313,
+      "recall": 0.9800736613466805,
+      "fpr": 0.23670190967953447
+    },
+    "log_loss": 0.24933319292296136,
+    "historical_log_loss": 0.24933327071271927,
+    "log_loss_difference": -7.77897579129494e-08,
+    "log_loss_absolute_tolerance": 1e-09,
+    "source_report_counts_reproduced": true,
+    "source_report_log_loss_reproduced": false
+  },
+  "context_comparison": {
+    "n": 22790,
+    "exactly_equal_scores": 22790,
+    "max_absolute_score_difference": 0.0,
+    "mean_absolute_score_difference": 0.0,
+    "paired_at_locked_threshold": {
+      "baseline": {
+        "n": 22790,
+        "spam": 10589,
+        "ham": 12201,
+        "tp": 10378,
+        "fp": 2888,
+        "fn": 211,
+        "tn": 9313,
+        "recall": 0.9800736613466805,
+        "fpr": 0.23670190967953447
+      },
+      "current": {
+        "n": 22790,
+        "spam": 10589,
+        "ham": 12201,
+        "tp": 10378,
+        "fp": 2888,
+        "fn": 211,
+        "tn": 9313,
+        "recall": 0.9800736613466805,
+        "fpr": 0.23670190967953447
+      },
+      "baseline_threshold": 0.010192839428782463,
+      "current_threshold": 0.010192839428782463,
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0,
+      "compares_two_v82_development_checkpoints": true,
+      "is_a_v80_regression_check": false
+    }
+  },
+  "no_grad_vs_cached": {
+    "n": 22790,
+    "exactly_equal_scores": 22790,
+    "max_absolute_score_difference": 0.0,
+    "mean_absolute_score_difference": 0.0,
+    "paired_at_locked_threshold": {
+      "baseline": {
+        "n": 22790,
+        "spam": 10589,
+        "ham": 12201,
+        "tp": 10378,
+        "fp": 2888,
+        "fn": 211,
+        "tn": 9313,
+        "recall": 0.9800736613466805,
+        "fpr": 0.23670190967953447
+      },
+      "current": {
+        "n": 22790,
+        "spam": 10589,
+        "ham": 12201,
+        "tp": 10378,
+        "fp": 2888,
+        "fn": 211,
+        "tn": 9313,
+        "recall": 0.9800736613466805,
+        "fpr": 0.23670190967953447
+      },
+      "baseline_threshold": 0.010192839428782463,
+      "current_threshold": 0.010192839428782463,
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0,
+      "compares_two_v82_development_checkpoints": true,
+      "is_a_v80_regression_check": false
+    }
+  },
+  "inference_mode_vs_cached": {
+    "n": 22790,
+    "exactly_equal_scores": 22790,
+    "max_absolute_score_difference": 0.0,
+    "mean_absolute_score_difference": 0.0,
+    "paired_at_locked_threshold": {
+      "baseline": {
+        "n": 22790,
+        "spam": 10589,
+        "ham": 12201,
+        "tp": 10378,
+        "fp": 2888,
+        "fn": 211,
+        "tn": 9313,
+        "recall": 0.9800736613466805,
+        "fpr": 0.23670190967953447
+      },
+      "current": {
+        "n": 22790,
+        "spam": 10589,
+        "ham": 12201,
+        "tp": 10378,
+        "fp": 2888,
+        "fn": 211,
+        "tn": 9313,
+        "recall": 0.9800736613466805,
+        "fpr": 0.23670190967953447
+      },
+      "baseline_threshold": 0.010192839428782463,
+      "current_threshold": 0.010192839428782463,
+      "baseline_spam_detections_lost": 0,
+      "spam_detections_gained": 0,
+      "false_positives_removed": 0,
+      "false_positives_added": 0,
+      "compares_two_v82_development_checkpoints": true,
+      "is_a_v80_regression_check": false
+    }
+  },
+  "inference_context_conclusion": "contexts_identical_on_this_replay",
+  "original_validate_code_sha256": "1e5d29ef03704067752f3c0e654b1cdcad7bb0f98c7fa72df431fbb77b77198d",
+  "replay_code_sha256": "daf68124ce21ebc70c596a03e1b7cc4ebb3708f7003d61dab314b315354f5a1c",
+  "cpu_capability": "AVX2",
+  "torch_version": "2.14.1+cpu",
+  "cpu_threads": 3,
+  "mkldnn_enabled": true,
+  "float32_matmul_precision": "highest",
+  "checkpoint_files_unchanged": true,
+  "source_cache_unchanged": true,
+  "model_parameters_unchanged": true,
+  "rng_unchanged": true,
+  "optimizer_instantiated": false,
+  "optimizer_steps_executed": 0,
+  "scored_select_rows_per_context": 22790,
+  "inference_batches_executed": 1426,
+  "raw_message_text_saved": false,
+  "cal_or_test_opened": false,
+  "labels_automatically_changed": false,
+  "quality_gain_demonstrated": false,
+  "independent_quality_test_performed": false,
+  "production_v80_unchanged": true
+}
