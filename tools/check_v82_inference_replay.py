@@ -14,6 +14,8 @@ def compare_scores(rows, left, right, cutoff):
     deltas = [abs(float(a) - float(b)) for a, b in zip(left, right)]
     transitions = paired(rows, left, right, cutoff, cutoff)
     transitions.pop('first_lost_spam_identities')
+    transitions['compares_two_v82_development_checkpoints'] = False
+    transitions['compares_same_checkpoint_inference_replay'] = True
     return dict(n=len(rows), exactly_equal_scores=sum(d == 0 for d in deltas),
                 max_absolute_score_difference=max(deltas),
                 mean_absolute_score_difference=sum(deltas) / len(rows),

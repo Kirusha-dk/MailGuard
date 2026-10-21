@@ -11,5 +11,7 @@
   "cached_reference_report": "reports/v82-audits/step-1000-c94a687c5168.json",
   "cached_baseline_report": "reports/v82-daily/2026-10-20.json",
   "cached_current_report": "reports/v82-daily/2026-10-21.json",
-  "replay_inference_contexts": true
+  "replay_inference_contexts": true,
+  "execution_complete": true,
+  "completed_replay_run_id": 39530785619
 }

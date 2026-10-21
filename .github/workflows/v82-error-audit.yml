@@ -26,6 +26,7 @@ jobs:
     outputs:
       cached_run: ${{ steps.mode.outputs.cached_run }}
       replay_contexts: ${{ steps.mode.outputs.replay_contexts }}
+      execution_complete: ${{ steps.mode.outputs.execution_complete }}
     steps:
       - uses: actions/checkout@v4
       - id: mode
@@ -42,10 +43,14 @@ jobs:
               throw new Error('Invalid inference replay mode');
             }
             core.setOutput('replay_contexts', r.replay_inference_contexts === true ? 'true' : 'false');
+            if (r.execution_complete !== undefined && typeof r.execution_complete !== 'boolean') {
+              throw new Error('Invalid completion marker');
+            }
+            core.setOutput('execution_complete', r.execution_complete === true ? 'true' : 'false');
 
   audit-completed-checkpoints:
     needs: read-request
-    if: needs.read-request.outputs.cached_run == '' && needs.read-request.outputs.replay_contexts != 'true'
+    if: needs.read-request.outputs.execution_complete != 'true' && needs.read-request.outputs.cached_run == '' && needs.read-request.outputs.replay_contexts != 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 95
     permissions:
@@ -148,7 +153,7 @@ jobs:
 
   summarize-existing-scores:
     needs: read-request
-    if: needs.read-request.outputs.cached_run != '' && needs.read-request.outputs.replay_contexts != 'true'
+    if: needs.read-request.outputs.execution_complete != 'true' && needs.read-request.outputs.cached_run != '' && needs.read-request.outputs.replay_contexts != 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
@@ -227,7 +232,7 @@ jobs:
 
   compare-inference-contexts:
     needs: read-request
-    if: needs.read-request.outputs.replay_contexts == 'true'
+    if: needs.read-request.outputs.execution_complete != 'true' && needs.read-request.outputs.replay_contexts == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 65
     permissions:

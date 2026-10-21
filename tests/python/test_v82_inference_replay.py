@@ -33,6 +33,8 @@ class InferenceReplayTests(unittest.TestCase):
         self.assertEqual(transitions['baseline']['tp'], transitions['current']['tp'])
         self.assertEqual(transitions['baseline_spam_detections_lost'], 1)
         self.assertEqual(transitions['spam_detections_gained'], 1)
+        self.assertFalse(transitions['compares_two_v82_development_checkpoints'])
+        self.assertTrue(transitions['compares_same_checkpoint_inference_replay'])
         self.assertNotIn('SECRET_BODY', json.dumps(result))
 
     def test_invalid_scores_are_rejected_before_comparison(self):

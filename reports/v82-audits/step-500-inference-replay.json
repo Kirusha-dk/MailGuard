@@ -27,8 +27,8 @@
     },
     "log_loss": 0.24933319292296136,
     "historical_log_loss": 0.24933327071271927,
-    "log_loss_difference": -7.77897579129494e-08,
-    "log_loss_absolute_tolerance": 1e-09,
+    "log_loss_difference": -7.77897579129494e-8,
+    "log_loss_absolute_tolerance": 1e-9,
     "source_report_counts_reproduced": true,
     "source_report_log_loss_reproduced": false
   },
@@ -46,8 +46,8 @@
     },
     "log_loss": 0.24933319292296136,
     "historical_log_loss": 0.24933327071271927,
-    "log_loss_difference": -7.77897579129494e-08,
-    "log_loss_absolute_tolerance": 1e-09,
+    "log_loss_difference": -7.77897579129494e-8,
+    "log_loss_absolute_tolerance": 1e-9,
     "source_report_counts_reproduced": true,
     "source_report_log_loss_reproduced": false
   },
@@ -65,16 +65,16 @@
     },
     "log_loss": 0.24933319292296136,
     "historical_log_loss": 0.24933327071271927,
-    "log_loss_difference": -7.77897579129494e-08,
-    "log_loss_absolute_tolerance": 1e-09,
+    "log_loss_difference": -7.77897579129494e-8,
+    "log_loss_absolute_tolerance": 1e-9,
     "source_report_counts_reproduced": true,
     "source_report_log_loss_reproduced": false
   },
   "context_comparison": {
     "n": 22790,
     "exactly_equal_scores": 22790,
-    "max_absolute_score_difference": 0.0,
-    "mean_absolute_score_difference": 0.0,
+    "max_absolute_score_difference": 0,
+    "mean_absolute_score_difference": 0,
     "paired_at_locked_threshold": {
       "baseline": {
         "n": 22790,
@@ -104,15 +104,16 @@
       "spam_detections_gained": 0,
       "false_positives_removed": 0,
       "false_positives_added": 0,
-      "compares_two_v82_development_checkpoints": true,
-      "is_a_v80_regression_check": false
+      "compares_two_v82_development_checkpoints": false,
+      "is_a_v80_regression_check": false,
+      "compares_same_checkpoint_inference_replay": true
     }
   },
   "no_grad_vs_cached": {
     "n": 22790,
     "exactly_equal_scores": 22790,
-    "max_absolute_score_difference": 0.0,
-    "mean_absolute_score_difference": 0.0,
+    "max_absolute_score_difference": 0,
+    "mean_absolute_score_difference": 0,
     "paired_at_locked_threshold": {
       "baseline": {
         "n": 22790,
@@ -142,15 +143,16 @@
       "spam_detections_gained": 0,
       "false_positives_removed": 0,
       "false_positives_added": 0,
-      "compares_two_v82_development_checkpoints": true,
-      "is_a_v80_regression_check": false
+      "compares_two_v82_development_checkpoints": false,
+      "is_a_v80_regression_check": false,
+      "compares_same_checkpoint_inference_replay": true
     }
   },
   "inference_mode_vs_cached": {
     "n": 22790,
     "exactly_equal_scores": 22790,
-    "max_absolute_score_difference": 0.0,
-    "mean_absolute_score_difference": 0.0,
+    "max_absolute_score_difference": 0,
+    "mean_absolute_score_difference": 0,
     "paired_at_locked_threshold": {
       "baseline": {
         "n": 22790,
@@ -180,8 +182,9 @@
       "spam_detections_gained": 0,
       "false_positives_removed": 0,
       "false_positives_added": 0,
-      "compares_two_v82_development_checkpoints": true,
-      "is_a_v80_regression_check": false
+      "compares_two_v82_development_checkpoints": false,
+      "is_a_v80_regression_check": false,
+      "compares_same_checkpoint_inference_replay": true
     }
   },
   "inference_context_conclusion": "contexts_identical_on_this_replay",
@@ -205,5 +208,13 @@
   "labels_automatically_changed": false,
   "quality_gain_demonstrated": false,
   "independent_quality_test_performed": false,
-  "production_v80_unchanged": true
+  "production_v80_unchanged": true,
+  "report_metadata_correction": {
+    "reason": "The shared paired helper labels two v82 checkpoints by default; this experiment compares one fixed checkpoint in two contexts and against its cached scores.",
+    "numerical_results_changed": false,
+    "corrected_without_rescoring": true,
+    "original_report_commit": "6f301f3c86e4996210679818f892aca510800ed3",
+    "unmodified_artifact_run_id": 39530785619,
+    "executed_replay_code_sha256": "daf68124ce21ebc70c596a03e1b7cc4ebb3708f7003d61dab314b315354f5a1c"
+  }
 }
