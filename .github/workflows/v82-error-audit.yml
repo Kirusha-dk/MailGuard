@@ -154,8 +154,8 @@ jobs:
           python-version: '3.12'
       - name: Test alignment, preservation threshold, loss and report privacy
         run: |
-          python -m unittest discover -s tests/python -p 'test_v82_audit*.py' -v
           python -m pip install numpy==2.3.5
+          python -m unittest discover -s tests/python -p 'test_v82_audit*.py' -v
       - name: Verify the fixed source audit artifact
         uses: actions/github-script@v7
         with:
@@ -187,15 +187,18 @@ jobs:
           python -u tools/summarize_v82_audit_cache.py --request research/v82/audit.json \
             --cache .cache/v82-audit/source
       - uses: actions/upload-artifact@v4
+        if: success() || failure()
         with:
           name: mailguard-v82-cached-audit-summary-${{ github.run_id }}
           path: .cache/v82-audit-cache-summary.json
           retention-days: 45
-          if-no-files-found: error
-      - name: Commit only the completed cache summary
+          if-no-files-found: warn
+      - name: Commit cache summary with explicit verification status
+        if: success() || failure()
         env:
           REPORT_BRANCH: mailguard-v82-neural-month
         run: |
+          if [ ! -f .cache/v82-audit-cache-summary.json ]; then exit 0; fi
           cp .cache/v82-audit-cache-summary.json /tmp/v82-cache-summary.json
           report_name=$(python - <<'PY'
           import json
@@ -211,6 +214,6 @@ jobs:
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -f "reports/v82-audits/$report_name"
           if ! git diff --cached --quiet; then
-            git commit -m "Complete v82 source and length comparison from verified score cache"
+            git commit -m "Record v82 cached source and length diagnostics with verification status"
             git push origin "$REPORT_BRANCH"
           fi

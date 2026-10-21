@@ -164,8 +164,6 @@ def main():
         observed = result[key]['at_locked_development_threshold']
         if any(observed[k] != report['development'][k] for k in ('n', 'spam', 'ham', 'tp', 'fp')):
             raise ValueError('Cached counts do not reproduce daily report')
-        if not math.isclose(result[key]['log_loss'], report['development']['log_loss'], abs_tol=1e-9, rel_tol=0):
-            raise ValueError('Cached log loss does not reproduce daily report: ' + key + ' ' + json.dumps(loss_checks[key]))
     for key in ('at_locked_development_threshold', 'at_predefined_threshold_0_5',
                 'by_source', 'by_word_count', 'by_character_window'):
         if result['current_seen_train'][key] != reference['seen_train_sample'][key]:
@@ -180,14 +178,19 @@ def main():
                   current_checkpoint_sha256=reference['current_checkpoint_sha256'],
                   source_input_sha256=original_hashes, analysis_code_sha256=sha(__file__),
                   source_cache_unchanged=True, source_report_counts_reproduced=True,
-                  source_report_log_losses_reproduced=True,
+                  source_report_log_losses_reproduced=all(abs(v['difference']) <= 1e-9 for v in loss_checks.values()),
+                  log_loss_reproduction=loss_checks, log_loss_absolute_tolerance=1e-9,
                   source_audit_checkpoint_files_unchanged=reference['checkpoint_files_unchanged'],
                   checkpoint_files_opened=False, optimizer_steps_executed=0, inference_steps_executed=0,
                   cal_or_test_opened=False, raw_message_text_saved=False,
                   independent_quality_test_performed=False, production_v80_unchanged=True,
                   labels_automatically_changed=False, quality_gain_demonstrated=False)
+    result['status'] = ('verified_cache_summary' if result['source_report_log_losses_reproduced']
+                        else 'diagnostic_only_log_loss_replay_mismatch')
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(result, indent=2))
+    if not result['source_report_log_losses_reproduced']:
+        raise ValueError('Diagnostic saved, but strict log-loss replay check still fails: ' + json.dumps(loss_checks))
     print(json.dumps(dict(cached_analysis_completed=True, step=result['global_optimizer_steps'],
                           preservation=result['preserve_500_step_select_tp'],
                           source_cache_unchanged=True, optimizer_steps_executed=0), indent=2))
