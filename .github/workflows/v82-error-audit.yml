@@ -9,6 +9,8 @@ on:
       - tools/summarize_v82_audit_cache.py
       - tests/python/test_v82_audit.py
       - tests/python/test_v82_audit_cache.py
+      - tools/check_v82_inference_replay.py
+      - tests/python/test_v82_inference_replay.py
       - .github/workflows/v82-error-audit.yml
 
 permissions:
@@ -23,6 +25,7 @@ jobs:
     timeout-minutes: 5
     outputs:
       cached_run: ${{ steps.mode.outputs.cached_run }}
+      replay_contexts: ${{ steps.mode.outputs.replay_contexts }}
     steps:
       - uses: actions/checkout@v4
       - id: mode
@@ -35,10 +38,14 @@ jobs:
               throw new Error('Invalid cached audit run ID');
             }
             core.setOutput('cached_run', r.cached_audit_run_id ? String(r.cached_audit_run_id) : '');
+            if (r.replay_inference_contexts !== undefined && typeof r.replay_inference_contexts !== 'boolean') {
+              throw new Error('Invalid inference replay mode');
+            }
+            core.setOutput('replay_contexts', r.replay_inference_contexts === true ? 'true' : 'false');
 
   audit-completed-checkpoints:
     needs: read-request
-    if: needs.read-request.outputs.cached_run == ''
+    if: needs.read-request.outputs.cached_run == '' && needs.read-request.outputs.replay_contexts != 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 95
     permissions:
@@ -141,7 +148,7 @@ jobs:
 
   summarize-existing-scores:
     needs: read-request
-    if: needs.read-request.outputs.cached_run != ''
+    if: needs.read-request.outputs.cached_run != '' && needs.read-request.outputs.replay_contexts != 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 20
     permissions:
@@ -215,5 +222,97 @@ jobs:
           git add -f "reports/v82-audits/$report_name"
           if ! git diff --cached --quiet; then
             git commit -m "Record v82 cached source and length diagnostics with verification status"
+            git push origin "$REPORT_BRANCH"
+          fi
+
+  compare-inference-contexts:
+    needs: read-request
+    if: needs.read-request.outputs.replay_contexts == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 65
+    permissions:
+      contents: write
+      actions: read
+    env:
+      OMP_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify numerical replay reporting
+        run: python -m unittest discover -s tests/python -p test_v82_inference_replay.py -v
+      - name: Install pinned CPU inference environment
+        run: |
+          python -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements-v82.txt
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            .cache/v82/backbone
+            .cache/v79/frozen
+            .cache/v80/extra
+          key: v82-pinned-english-corpus-and-minilm-1110a243-v1
+          fail-on-cache-miss: true
+      - name: Verify fixed experiment inputs
+        id: fixed
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const r = JSON.parse(require('fs').readFileSync('research/v82/audit.json', 'utf8'));
+            if (!/^v82-english-[0-9]{8}$/.test(r.campaign) ||
+                !Number.isSafeInteger(r.baseline_run_id) || r.baseline_run_id <= 0 || r.baseline_step !== 500) {
+              throw new Error('Invalid fixed baseline request');
+            }
+            const run = (await github.rest.actions.getWorkflowRun({...context.repo, run_id: r.cached_audit_run_id})).data;
+            if (run.conclusion !== 'success' || run.head_branch !== 'mailguard-v82-neural-month' ||
+                run.path !== '.github/workflows/v82-error-audit.yml') throw new Error('Unexpected source audit run');
+            const artifacts = (await github.rest.actions.listWorkflowRunArtifacts({...context.repo, run_id: r.cached_audit_run_id})).data.artifacts;
+            const matches = artifacts.filter(a => a.name === `mailguard-v82-development-error-audit-${r.cached_audit_run_id}` && !a.expired);
+            if (matches.length !== 1 || matches[0].digest !== r.cached_artifact_sha256) throw new Error('Source artifact digest mismatch');
+            core.setOutput('state_name', `mailguard-${r.campaign}-state`);
+            core.setOutput('baseline', String(r.baseline_run_id));
+      - uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v82-development-error-audit-${{ needs.read-request.outputs.cached_run }}
+          run-id: ${{ needs.read-request.outputs.cached_run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .cache/v82-replay/source
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.fixed.outputs.state_name }}
+          run-id: ${{ steps.fixed.outputs.baseline }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .cache/v82-replay/baseline
+      - name: Replay original validate and inference_mode on fixed SELECT
+        timeout-minutes: 45
+        run: |
+          python -u tools/check_v82_inference_replay.py --request research/v82/audit.json \
+            --state .cache/v82-replay/baseline/checkpoint.pt --cache .cache/v82-replay/source
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v82-inference-replay-${{ github.run_id }}
+          path: .cache/v82-replay/output/
+          retention-days: 45
+          if-no-files-found: error
+      - name: Commit only the numerical replay report
+        env:
+          REPORT_BRANCH: mailguard-v82-neural-month
+        run: |
+          cp .cache/v82-replay/output/replay.json /tmp/v82-inference-replay.json
+          git fetch origin "$REPORT_BRANCH"
+          git checkout -B "$REPORT_BRANCH" "origin/$REPORT_BRANCH"
+          mkdir -p reports/v82-audits
+          cp /tmp/v82-inference-replay.json reports/v82-audits/step-500-inference-replay.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v82-audits/step-500-inference-replay.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Record fixed-checkpoint inference context replay without training"
             git push origin "$REPORT_BRANCH"
           fi

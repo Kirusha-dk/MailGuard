@@ -4,11 +4,12 @@
   "baseline_run_id": 39332953339,
   "baseline_step": 500,
   "train_seen_limit": 10000,
-  "purpose": "Complete 500/1000 source and length comparison and TP preservation frontier from existing scores; no inference or parameter updates",
-  "retry": "2026-10-21-cached-diagnostics-export-v3",
+  "purpose": "Read-only fixed checkpoint500 SELECT replay: original validate no_grad vs auditor inference_mode; zero optimizer steps",
+  "retry": "2026-10-21-fixed-500-inference-contexts-v1",
   "cached_audit_run_id": 39511734148,
   "cached_artifact_sha256": "sha256:e62cafd19d62f732ecd0862fee01fd4e6227e3cb49c13722ddb56bea218e9de0",
   "cached_reference_report": "reports/v82-audits/step-1000-c94a687c5168.json",
   "cached_baseline_report": "reports/v82-daily/2026-10-20.json",
-  "cached_current_report": "reports/v82-daily/2026-10-21.json"
+  "cached_current_report": "reports/v82-daily/2026-10-21.json",
+  "replay_inference_contexts": true
 }
