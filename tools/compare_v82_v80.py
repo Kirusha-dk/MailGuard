@@ -8,6 +8,55 @@ from pathlib import Path
 from audit_v82_errors import length_bucket, metric, paired, sha
 
 
+def parameter_hash(model):
+    return hashlib.sha256(b''.join(t.detach().cpu().numpy().tobytes()
+                                  for t in model.state_dict().values())).hexdigest()
+
+
+def initialize_scorer(backbone_path, checkpoint_path, expected_sha):
+    import torch
+    from transformers import AutoModel, AutoTokenizer
+    from v82_neural import CONFIG, NeuralMail, load_trainable
+    global _model, _tokenizer, _parameter_hash, _rng
+    if sha(checkpoint_path) != expected_sha:
+        raise ValueError('Worker checkpoint differs from locked state')
+    torch.set_num_threads(3); torch.manual_seed(CONFIG['seed']); torch.use_deterministic_algorithms(True)
+    _tokenizer = AutoTokenizer.from_pretrained(backbone_path, local_files_only=True)
+    _model = NeuralMail(AutoModel.from_pretrained(backbone_path, local_files_only=True,
+                       use_safetensors=True, attn_implementation='eager'))
+    load_trainable(_model, torch.load(checkpoint_path,map_location='cpu',weights_only=True)['adapter'])
+    _model.eval(); _parameter_hash = parameter_hash(_model); _rng = torch.get_rng_state().clone()
+
+
+def score_chunk(texts):
+    import torch
+    from v82_neural import CONFIG, text_tokenizer
+    values = []
+    with torch.no_grad():
+        for start in range(0,len(texts),32):
+            inputs = text_tokenizer(_tokenizer,texts[start:start+32],CONFIG['max_length'])
+            values.extend(_model(**inputs).sigmoid().tolist())
+    if (parameter_hash(_model) != _parameter_hash or not torch.equal(_rng,torch.get_rng_state()) or
+        any(p.grad is not None for p in _model.parameters())):
+        raise ValueError('Inference worker changed weights, RNG or gradients')
+    return values
+
+
+def neural_parallel(backbone, state, expected_sha, rows, name):
+    import multiprocessing
+    from concurrent.futures import ProcessPoolExecutor
+    # Three CPU workers retain the original 3 threads and batch32 in each process.
+    # 1024 is a multiple of 32: sharding cannot move any original batch boundary.
+    chunks = [[r['text'] for r in rows[start:start+1024]] for start in range(0,len(rows),1024)]
+    values = []
+    with ProcessPoolExecutor(max_workers=min(3,len(chunks)),mp_context=multiprocessing.get_context('spawn'),
+            initializer=initialize_scorer,initargs=(str(backbone),str(state),expected_sha)) as pool:
+        for result in pool.map(score_chunk,chunks):
+            values.extend(result)
+            print(json.dumps(dict(cohort=name,scored=len(values),total=len(rows))),flush=True)
+    return values
+
+
 def compare(rows, old, new, old_cutoff, new_cutoff):
     result = paired(rows, old, new, old_cutoff, new_cutoff)
     result.update(compares_two_v82_development_checkpoints=False,
@@ -114,8 +163,7 @@ def main():
                         use_safetensors=True, attn_implementation='eager'))
     load_trainable(model, checkpoint['adapter']); model.eval()
     def model_hash():
-        return hashlib.sha256(b''.join(t.detach().cpu().numpy().tobytes()
-                                      for t in model.state_dict().values())).hexdigest()
+        return parameter_hash(model)
     parameters_before = model_hash(); rng_before = torch.get_rng_state().clone()
     args.out.mkdir(parents=True, exist_ok=True)
     code_hashes = {name: sha(Path(__file__).with_name(name)) for name in
@@ -152,13 +200,12 @@ def main():
             fast = lexical_parallel(args.v80_model, [r['text'] for r in rows], workers=3)
             # Published recall-98 is purely lexical; semantic columns and gates are irrelevant.
             old = v80_mail.candidate_scores({}, np.column_stack((fast, np.zeros((len(rows), 3)))))['fast-or'].tolist()
-            new = []
+            new = neural_parallel(args.backbone,args.state,request['v82_checkpoint_sha256'],rows,name)
             with torch.no_grad():
-                for start in range(0, len(rows), 32):
-                    inputs = text_tokenizer(tokenizer, [r['text'] for r in rows[start:start+32]], CONFIG['max_length'])
-                    new.extend(model(**inputs).sigmoid().tolist())
-                    if start % 1024 == 0:
-                        print(json.dumps(dict(cohort=name, scored=min(start+32,len(rows)), total=len(rows))), flush=True)
+                inputs = text_tokenizer(tokenizer,[r['text'] for r in rows[:32]],CONFIG['max_length'])
+                serial = model(**inputs).sigmoid().tolist()
+            if serial != new[:32]:
+                raise ValueError('Parallel worker differs from original serial batch32 inference')
             np.savez_compressed(cache, identity=np.array([r['identity'] for r in rows]),
                                 y=np.array([r['y'] for r in rows]), v80=np.array(old), v82=np.array(new))
             meta.write_text(json.dumps(receipt, indent=2))
@@ -191,7 +238,9 @@ def main():
         thresholds_fitted_on_regression=False, raw_message_text_saved=False, labels_automatically_changed=False,
         independent_blind_test=False, passes_regression_gate=gate, accepted_for_production=False,
         production_v80_unchanged=True, cpu_capability=torch.backends.cpu.get_cpu_capability(),
-        torch_version=str(torch.__version__), transformers_version=transformers.__version__, cpu_threads=3)
+        torch_version=str(torch.__version__), transformers_version=transformers.__version__, cpu_threads=3,
+        inference_cpu_workers_max=3, inference_worker_weights_rng_and_gradients_unchanged=True,
+        first_batch_per_cohort_serial_parallel_bitexact=True)
     (args.out / 'comparison.json').write_text(json.dumps(output, indent=2))
     print(json.dumps(dict(comparison_complete=True, regression=total, passes_regression_gate=gate)), flush=True)
 
