@@ -1,0 +1,19 @@
+{
+  "campaign": "v82-english-20261020",
+  "session": "2026-10-23",
+  "v82_run_id": 39906509536,
+  "v82_step": 2000,
+  "v82_checkpoint_sha256": "b22531798c8161aee6612cb03f6ff4a7cfec2f9de804dba193a3b0a52ae99833",
+  "v82_threshold": 0.02332507260143757,
+  "v82_source_report": "reports/v82-daily/2026-10-23.json",
+  "v80_model_sha256": "6aa2e92b2e1ccfd764223eeea5d1c792e5ae15548ad60767be93023d690aa5c9",
+  "v80_base_sha256": "f331dc14cb289a5e27cc96904aad519cc07bc2a400e008ea71acffd200621d72",
+  "v80_profile": "recall-98",
+  "v80_candidate": "fast-or",
+  "v80_threshold": 0.09974524114863056,
+  "cohorts": ["frozen-100000", "Nazario-2024-247"],
+  "thresholds_locked_before_regression_scoring": true,
+  "optimizer_steps_authorized": 0,
+  "production_promotion_authorized": false,
+  "independent_blind_test": false
+}
