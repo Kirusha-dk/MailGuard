@@ -1,0 +1,72 @@
+name: MailGuard v82 read-only CPU replay preflight
+on:
+  push:
+    branches: [mailguard-v82-source-weighting-20261027]
+    paths:
+      - tools/check_v82_replay_preflight.py
+      - tests/python/test_v82_replay_preflight.py
+      - .github/workflows/v82-replay-preflight.yml
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mailguard-v82-neural-campaign
+  cancel-in-progress: false
+jobs:
+  isolate-cpu-replay:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      OMP_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify original batch sampling policy
+        run: python -m unittest discover -s tests/python -p test_v82_replay_preflight.py -v
+      - name: Install unchanged pinned CPU dependencies
+        run: |
+          python -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements-v82.txt
+      - name: Restore inputs already verified by full parent diagnostic
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .cache/v82/backbone
+            .cache/v79/frozen
+            .cache/v80/extra
+          key: v82-pinned-english-corpus-and-minilm-1110a243-v1
+          fail-on-cache-miss: true
+      - name: Download exact parent500
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '12226237483'
+          run-id: '39332953339'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ablation-parent
+          merge-multiple: true
+      - name: Download pinned original audit score cache
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '12309035261'
+          run-id: '39511734148'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: replay-reference
+          merge-multiple: true
+      - name: Compare CPU dispatch modes against original batch scores
+        timeout-minutes: 15
+        run: python -u tools/check_v82_replay_preflight.py
+      - name: Preserve text-free numerical diagnostic
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v82-replay-preflight-${{ github.run_id }}
+          path: preflight-output/
+          retention-days: 45
+          if-no-files-found: warn
