@@ -49,6 +49,7 @@ def main():
     from v82_neural import (CONFIG, NeuralMail, fingerprint, optimizer_and_scheduler,
                             restore_checkpoint, run_steps, save_checkpoint, trainable_state)
     from v82_weighting_scores import evaluate
+    from v82_replay_guard import locked_decision_replay
 
     out = Path('ablation-output'); out.mkdir(exist_ok=True)
     parent = Path('ablation-parent/checkpoint.pt')
@@ -87,6 +88,17 @@ def main():
                          cpu_threads=3, campaign='v82-english-20261020', start_date='2026-10-20',
                          end_date='2026-11-18', train=TRAIN_SHA, select=SELECT_SHA, pilot_only=False)
     tokenizer = AutoTokenizer.from_pretrained(backbone_path, local_files_only=True)
+    reference_path = Path('replay-reference/development-scores.npz')
+    if sha(reference_path) != '8c09f34e382bffeb0101909df71591ccf1823e5ac2b1fa281510eba0b465e29f':
+        raise ValueError('Original audit score cache hash mismatch')
+    if json.loads(Path('replay-reference/audit.json').read_text()) != json.loads(
+            Path('reports/v82-audits/step-1000-c94a687c5168.json').read_text()):
+        raise ValueError('Original audit provenance mismatch')
+    with np.load(reference_path, allow_pickle=False) as cached:
+        if (cached['select_identity'].tolist() != [r['identity'] for r in select] or
+                cached['select_y'].tolist() != [r['y'] for r in select]):
+            raise ValueError('Reference score identity/label alignment mismatch')
+        reference_scores = dict(parent=cached['baseline'].tolist(), control=cached['current'].tolist())
 
     def make():
         backbone = AutoModel.from_pretrained(backbone_path, local_files_only=True,
@@ -100,6 +112,7 @@ def main():
     fork_progress(original)  # Validate lineage before any optimization.
     parent_metric, parent_scores = evaluate(model, tokenizer, select)
     historical = json.loads(Path('reports/v82-daily/2026-10-20.json').read_text())['development']
+    parent_parity = locked_decision_replay(select, reference_scores['parent'], parent_scores, historical['threshold'])
     differences = {k: dict(expected=historical[k], observed=parent_metric[k])
                    for k in ('tp', 'fp', 'n', 'spam', 'ham', 'threshold')
                    if parent_metric[k] != historical[k]}
@@ -107,7 +120,10 @@ def main():
                   differences=differences, cpu_capability=torch.backends.cpu.get_cpu_capability(),
                   mkldnn_enabled=torch.backends.mkldnn.enabled,
                   float32_matmul_precision=torch.get_float32_matmul_precision(),
-                  optimizer_steps_executed=0, parent_checkpoint_unchanged=sha(parent) == PARENT_SHA)
+                  optimizer_steps_executed=0, parent_checkpoint_unchanged=sha(parent) == PARENT_SHA,
+                  at_historical_locked_threshold=parent_parity,
+                  log_loss_delta=parent_metric['log_loss'] - historical['log_loss'],
+                  historical_log_loss_reproduced_within_1e_9=abs(parent_metric['log_loss'] - historical['log_loss']) <= 1e-9)
     (out / 'parent-replay.json').write_text(json.dumps(replay, indent=2))
     np.savez_compressed(out / 'parent-scores.npz', identity=np.array([r['identity'] for r in select]),
                         y=np.array([r['y'] for r in select]), score=np.array(parent_scores))
@@ -116,9 +132,11 @@ def main():
     if request.get('diagnostic_only', False):
         print('Read-only parent replay complete; neither arm trained', flush=True)
         return
-    if any(parent_metric[k] != historical[k] for k in ('tp', 'fp', 'n', 'spam', 'ham', 'threshold')):
-        raise ValueError('Parent SELECT counts or threshold do not reproduce')
+    if (not parent_parity['all_individual_decisions_reproduced'] or
+            any(parent_parity['current'][k] != historical[k] for k in ('n', 'spam', 'ham', 'tp', 'fp'))):
+        raise ValueError('Parent decisions at historical locked threshold do not reproduce')
     metrics, scores = {'parent': parent_metric}, {'parent': parent_scores}
+    locked_thresholds = dict(parent=historical['threshold'])
     del model, optimizer, scheduler
     frozen_hashes = {p: sha(p) for p in ['tools/v82_neural.py', 'tools/train_v82_daily.py',
                      'research/v82/cycle.json']}
@@ -164,13 +182,27 @@ def main():
         (arm_dir / 'report.json').write_text(json.dumps(report, indent=2))
         np.savez_compressed(arm_dir / 'scores.npz', identity=np.array([r['identity'] for r in select]),
                             y=np.array([r['y'] for r in select]), score=np.array(values))
+        if arm == 'control':
+            reference_metric = json.loads(Path('reports/v82-daily/2026-10-21.json').read_text())['development']
+            control_parity = locked_decision_replay(select, reference_scores['control'], values, reference_metric['threshold'])
+            control_parity['fitted_threshold_delta'] = metric['threshold'] - reference_metric['threshold']
+            control_parity['log_loss_delta'] = metric['log_loss'] - reference_metric['log_loss']
+            control_parity['historical_log_loss_reproduced_within_1e_9'] = abs(control_parity['log_loss_delta']) <= 1e-9
+            (out / 'control-replay.json').write_text(json.dumps(control_parity, indent=2))
+            if (not control_parity['all_individual_decisions_reproduced'] or
+                    any(control_parity['current'][k] != reference_metric[k] for k in ('n', 'spam', 'ham', 'tp', 'fp'))):
+                raise ValueError('Control decisions do not reproduce; candidate has not been trained')
+            locked_thresholds[arm] = reference_metric['threshold']
+        else:
+            locked_thresholds[arm] = metric['threshold']
         del model, optimizer, scheduler
 
-    control_ref = json.loads(Path('reports/v82-daily/2026-10-21.json').read_text())['development']
-    reproduced = all(metrics['control'][k] == control_ref[k] for k in ('n', 'spam', 'ham', 'tp', 'fp', 'threshold'))
+    reproduced = control_parity['all_individual_decisions_reproduced']
     result = dict(experiment=EXPERIMENT, parent_sha256=PARENT_SHA,
                   optimizer_steps_per_arm=500, metrics=metrics,
-                  control_historical_counts_and_threshold_reproduced=reproduced,
+                  control_historical_individual_decisions_reproduced=reproduced,
+                  evaluation_locked_thresholds=locked_thresholds,
+                  parent_replay=parent_parity, control_replay=control_parity,
                   parent_historical_log_loss=historical['log_loss'],
                   parent_replayed_log_loss=parent_metric['log_loss'],
                   parent_log_loss_replay_delta=parent_metric['log_loss'] - historical['log_loss'],
@@ -179,13 +211,13 @@ def main():
                   is_independent_test=False, cal_or_test_used=False, raw_message_text_saved=False,
                   accepted_for_production=False, production_v80_unchanged=True)
     for name in scores:
-        result[name] = describe(select, scores[name], metrics[name]['threshold'])
+        result[name] = describe(select, scores[name], locked_thresholds[name])
     for old, new in [('parent', 'control'), ('parent', 'candidate'), ('control', 'candidate')]:
         result[old + '_vs_' + new] = paired(select, scores[old], scores[new],
-                                            metrics[old]['threshold'], metrics[new]['threshold'])
+                                            locked_thresholds[old], locked_thresholds[new])
         result[old + '_vs_' + new + '_fixed_0_5'] = paired(select, scores[old], scores[new], .5, .5)
     result['development_hypothesis_supported'] = bool(
-        reproduced and metrics['candidate']['fp'] < metrics['control']['fp'] and
+        reproduced and result['control_vs_candidate']['current']['fp'] < result['control_vs_candidate']['baseline']['fp'] and
         result['control_vs_candidate']['baseline_spam_detections_lost'] == 0)
     np.savez_compressed(out / 'paired-scores.npz',
                         identity=np.array([r['identity'] for r in select]),

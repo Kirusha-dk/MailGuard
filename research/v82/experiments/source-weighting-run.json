@@ -7,7 +7,8 @@
   "arms": ["control", "candidate"],
   "evaluation": "Frozen SELECT; development only, including per-identity transitions",
   "cpu_only": true,
-  "diagnostic_only": true,
+  "diagnostic_only": false,
+  "replay_policy": "All individual decisions must match pinned audit scores at historical locked thresholds; numerical deltas are retained separately",
   "production_promotion_authorized": false,
   "monthly_campaign_state_modified": false
 }
