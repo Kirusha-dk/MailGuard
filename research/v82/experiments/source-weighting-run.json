@@ -1,0 +1,12 @@
+{
+  "experiment": "v82-source-weighting-20261027",
+  "parent_run_id": 39332953339,
+  "parent_artifact_id": 12226237483,
+  "parent_sha256": "a5cafb2fface8a35c672e075e41e63fe4551a786b536e4e41a23026299b63f68",
+  "optimizer_steps_per_arm": 500,
+  "arms": ["control", "candidate"],
+  "evaluation": "Frozen SELECT; development only, including per-identity transitions",
+  "cpu_only": true,
+  "production_promotion_authorized": false,
+  "monthly_campaign_state_modified": false
+}

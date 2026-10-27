@@ -1,0 +1,84 @@
+name: MailGuard v82 bounded source weighting ablation
+on:
+  push:
+    branches: [mailguard-v82-source-weighting-20261027]
+    paths:
+      - .github/workflows/v82-weighting-ablation.yml
+      - tools/run_v82_weighting_ablation.py
+      - tools/v82_weighting_scores.py
+      - tests/python/test_v82_weighting_ablation.py
+      - research/v82/experiments/source-weighting-run.json
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mailguard-v82-neural-campaign
+  cancel-in-progress: false
+jobs:
+  compare-source-weights:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OMP_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify budget, loss weighting and paired metrics
+        run: python -m unittest discover -s tests/python -p test_v82_weighting_ablation.py -v
+      - name: Install pinned CPU dependencies
+        run: |
+          python -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements-v82.txt
+      - name: Verify original continuation implementation
+        run: python -m unittest discover -s tests/python -p test_v82_neural.py -v
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .cache/v82/backbone
+            .cache/v79/frozen
+            .cache/v80/extra
+          key: v82-pinned-english-corpus-and-minilm-1110a243-v1
+      - name: Acquire checksum-pinned public inputs
+        timeout-minutes: 35
+        run: python -u tools/fetch_v82_inputs.py
+      - name: Download exact parent500, never latest campaign state
+        uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '12226237483'
+          run-id: '39332953339'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: ablation-parent
+          merge-multiple: true
+      - name: Run two bounded forks and paired SELECT evaluation
+        timeout-minutes: 75
+        run: python -u tools/run_v82_weighting_ablation.py
+      - name: Preserve experiment states and text-free results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v82-source-weighting-20261027-experiment
+          path: ablation-output/
+          retention-days: 45
+          if-no-files-found: warn
+      - name: Summarize measured result
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          r = json.loads(Path('ablation-output/comparison.json').read_text())
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+              f.write('## Source weighting experiment — SELECT development only\n\n')
+              f.write('500 optimizer steps per arm; separate lineage. v80 and monthly state unchanged.\n\n')
+              for name, m in r['metrics'].items():
+                  f.write(f"{name}: TP {m['tp']}/{m['spam']}, FP {m['fp']}/{m['ham']}, loss {m['log_loss']:.9f}.\n\n")
+              p = r['control_vs_candidate']
+              f.write(f"Candidate vs control: lost prior TP {p['baseline_spam_detections_lost']}; gained TP {p['spam_detections_gained']}; removed FP {p['false_positives_removed']}; added FP {p['false_positives_added']}.\n")
+              f.write('No production promotion or independent quality claim.\n')
+          PY
