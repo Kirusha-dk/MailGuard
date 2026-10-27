@@ -100,6 +100,22 @@ def main():
     fork_progress(original)  # Validate lineage before any optimization.
     parent_metric, parent_scores = evaluate(model, tokenizer, select)
     historical = json.loads(Path('reports/v82-daily/2026-10-20.json').read_text())['development']
+    differences = {k: dict(expected=historical[k], observed=parent_metric[k])
+                   for k in ('tp', 'fp', 'n', 'spam', 'ham', 'threshold')
+                   if parent_metric[k] != historical[k]}
+    replay = dict(parent_sha256=PARENT_SHA, observed=parent_metric, historical=historical,
+                  differences=differences, cpu_capability=torch.backends.cpu.get_cpu_capability(),
+                  mkldnn_enabled=torch.backends.mkldnn.enabled,
+                  float32_matmul_precision=torch.get_float32_matmul_precision(),
+                  optimizer_steps_executed=0, parent_checkpoint_unchanged=sha(parent) == PARENT_SHA)
+    (out / 'parent-replay.json').write_text(json.dumps(replay, indent=2))
+    np.savez_compressed(out / 'parent-scores.npz', identity=np.array([r['identity'] for r in select]),
+                        y=np.array([r['y'] for r in select]), score=np.array(parent_scores))
+    print(json.dumps(dict(parent_replay_differences=differences,
+                          cpu_capability=replay['cpu_capability'], optimizer_steps_executed=0)), flush=True)
+    if request.get('diagnostic_only', False):
+        print('Read-only parent replay complete; neither arm trained', flush=True)
+        return
     if any(parent_metric[k] != historical[k] for k in ('tp', 'fp', 'n', 'spam', 'ham', 'threshold')):
         raise ValueError('Parent SELECT counts or threshold do not reproduce')
     metrics, scores = {'parent': parent_metric}, {'parent': parent_scores}

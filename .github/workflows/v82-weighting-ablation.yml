@@ -46,8 +46,18 @@ jobs:
             .cache/v80/extra
           key: v82-pinned-english-corpus-and-minilm-1110a243-v1
       - name: Acquire checksum-pinned public inputs
+        id: inputs
         timeout-minutes: 35
         run: python -u tools/fetch_v82_inputs.py
+      - name: Save verified public inputs before experiment checks
+        if: steps.inputs.outcome == 'success'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            .cache/v82/backbone
+            .cache/v79/frozen
+            .cache/v80/extra
+          key: v82-pinned-english-corpus-and-minilm-1110a243-v1
       - name: Download exact parent500, never latest campaign state
         uses: actions/download-artifact@v4
         with:
@@ -72,6 +82,11 @@ jobs:
           python - <<'PY'
           import json, os
           from pathlib import Path
+          if not Path('ablation-output/comparison.json').exists():
+              r = json.loads(Path('ablation-output/parent-replay.json').read_text())
+              with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+                  f.write('Read-only parent diagnostic; zero optimizer steps. Differences: ' + json.dumps(r['differences']) + '\n')
+              raise SystemExit(0)
           r = json.loads(Path('ablation-output/comparison.json').read_text())
           with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
               f.write('## Source weighting experiment — SELECT development only\n\n')

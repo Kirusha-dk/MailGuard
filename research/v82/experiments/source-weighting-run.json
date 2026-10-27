@@ -7,6 +7,7 @@
   "arms": ["control", "candidate"],
   "evaluation": "Frozen SELECT; development only, including per-identity transitions",
   "cpu_only": true,
+  "diagnostic_only": true,
   "production_promotion_authorized": false,
   "monthly_campaign_state_modified": false
 }
