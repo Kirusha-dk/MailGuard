@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace MailGuard.Core.Domain;
 
 public enum MailDecision
@@ -20,13 +22,13 @@ public sealed record ParsedEmail(
 
 public sealed record RspamdSymbol(
     string Name,
-    double Score,
+    [property: JsonRequired] double Score,
     IReadOnlyList<string> Options);
 
 public sealed record RspamdScanResult(
     string Action,
-    double Score,
-    double RequiredScore,
+    [property: JsonRequired] double Score,
+    [property: JsonRequired] double RequiredScore,
     IReadOnlyList<RspamdSymbol> Symbols)
 {
     public bool IsSkipped { get; init; }

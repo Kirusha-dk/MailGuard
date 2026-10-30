@@ -117,3 +117,46 @@ Compose привязаны к loopback. Не копируйте этот про�
 
 Проверки этого изменения выполняются на Linux x86_64. Проверка macOS/Apple Silicon
 и Windows отдельно не проводилась. CI дополнен Python/API/Rspamd smoke-проверками.
+
+## Дифференциальная регрессия C# на публичных письмах
+
+Старый Core (`15e5602`) и исправленный Core прогнаны через один и тот же runner на
+**3000 публичных письмах SpamAssassin 2003: 2500 HAM + 500 SPAM**. Обе версии разобрали
+все письма без ошибок. Разобранное содержимое изменилось у104 писем; признаки — у32,
+из них22 SPAM и10 HAM. Это количество изменённых признаков, а не потерянных TP.
+Числовой [отчёт с хешами входов и результатов](../reports/runtime-hardening-2026-10-30.json)
+не содержит текстов писем. В нём TP/FP-переходы равны null: соответствующего inference
+с реальной `.mg` и замороженным контекстом Rspamd не было. Приёмка для внедрения не установлена.
+
+Подходящего проверенного `.mg`-пакета в доступных файлах и проверенных GitHub
+артефактах/релизах нет. Исторический public-benchmark workflow не имеет успешных
+запусков в просмотренных75 runs; его прежние wrapper-скрипты сейчас отсутствуют.
+Сборка Docker benchmark target сама по себе не подтверждает работоспособность этой
+старой команды обучения. Новая модель вместо отсутствующей не обучалась.
+
+Для повторения скачайте указанные публичные архивы; подготовщик проверяет закреплённые
+SHA256 и записывает только обычные файлы под именами хешей:
+
+```bash
+mkdir -p .cache/runtime-archives
+curl -fL https://spamassassin.apache.org/old/publiccorpus/20030228_easy_ham.tar.bz2 -o .cache/runtime-archives/easy_ham.tar.bz2
+curl -fL https://spamassassin.apache.org/old/publiccorpus/20030228_spam.tar.bz2 -o .cache/runtime-archives/spam.tar.bz2
+python tools/prepare_runtime_regression_corpus.py --archive-dir .cache/runtime-archives --output .cache/runtime-public
+git worktree add --detach ../MailGuard-runtime-baseline 15e5602
+dotnet build tools/runtime_regression/RuntimeRegression.csproj -c Release --no-incremental -p:MailGuardCorePath="$(realpath ../MailGuard-runtime-baseline/src/MailGuard.Core/MailGuard.Core.csproj)" -o .cache/runtime-baseline
+dotnet build tools/runtime_regression/RuntimeRegression.csproj -c Release --no-incremental -o .cache/runtime-candidate
+dotnet .cache/runtime-baseline/RuntimeRegression.dll --input .cache/runtime-public/messages --output .cache/runtime-baseline.jsonl --max-messages 10000
+dotnet .cache/runtime-candidate/RuntimeRegression.dll --input .cache/runtime-public/messages --output .cache/runtime-candidate.jsonl --max-messages 10000
+python tools/compare_runtime_regression.py --baseline .cache/runtime-baseline.jsonl --candidate .cache/runtime-candidate.jsonl --output .cache/runtime-comparison.json
+```
+
+Команды проверены на Linux; в shallow clone сначала потребуется получить commit
+`15e5602`. Используйте новые имена output для повторов. Runner сохраняет только хеши
+и счётчики, отклоняет дубликаты входных идентичностей и отмечает обрезку выборки.
+Опциональный `--model` позволяет сравнить одну `.mg` по одинаковому SHA256, но без
+замороженных результатов Rspamd это остаётся проверкой локальной части, не всего
+развёрнутого конвейера. Для полноценной приёмки нужны соответствующие веса,
+размеченный корпус и одинаковый доверенный SMTP/Rspamd-контекст.
+
+Дополнительный review закрыл отсутствующие обязательные числовые поля кеша,
+неправильный тип wire symbols и нормализацию строковых score/cutoff в Python.

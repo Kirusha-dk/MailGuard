@@ -176,8 +176,10 @@ def checked_predictions(results, count, allowed_languages):
     results = list(results)
     if len(results) != count:
         raise ValueError(f'Predictor returned {len(results)} results for {count} messages')
+    normalized = []
     for result in results:
         if result is None:
+            normalized.append(None)
             continue  # An explicit abstention is excluded, never converted to HAM.
         if not isinstance(result, dict) or result.get('language') not in allowed_languages:
             raise ValueError('Predictor returned an invalid language or result')
@@ -186,7 +188,8 @@ def checked_predictions(results, count, allowed_languages):
             raise ValueError('Predictor returned a nonfinite score or cutoff')
         if not isinstance(result.get('spam'), (bool, np.bool_)) or bool(result['spam']) != (score >= cutoff):
             raise ValueError('Predictor verdict disagrees with its score and cutoff')
-    return results
+        normalized.append(dict(result, score=score, cutoff=cutoff))
+    return normalized
 
 
 def main(predictor=None, version=None, allowed_languages=('ru', 'en'), description=None,

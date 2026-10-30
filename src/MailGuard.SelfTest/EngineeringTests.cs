@@ -85,15 +85,20 @@ internal static class EngineeringTests
             Check((await new RspamdClient(valid).ScanAsync(Array.Empty<byte>())).Score == 1.5, "Culture changed numeric parsing.");
             foreach (var json in new[] { "{}", "[]", "{\"error\":\"private-message\"}",
                 "{\"action\":\"no action\",\"score\":\"NaN\",\"required_score\":6}",
-                "{\"action\":\"no action\",\"score\":1}" })
+                "{\"action\":\"no action\",\"score\":1}",
+                "{\"action\":\"no action\",\"score\":0,\"required_score\":6,\"symbols\":[]}",
+                "{\"action\":\"no action\",\"score\":0,\"required_score\":6,\"symbols\":null}" })
             {
                 using var http = new HttpClient(new ResponseHandler(json)) { BaseAddress = new Uri("http://localhost/") };
                 await Throws<RspamdException>(async () => await new RspamdClient(http).ScanAsync(Array.Empty<byte>()));
             }
             using var failed = new HttpClient(new ResponseHandler("private-message", HttpStatusCode.BadGateway))
                 { BaseAddress = new Uri("http://localhost/") };
+            RspamdException? error = null;
             try { await new RspamdClient(failed).ScanAsync(Array.Empty<byte>()); }
-            catch (RspamdException ex) { Check(!ex.Message.Contains("private-message"), "Backend payload leaked in error."); }
+            catch (RspamdException ex) { error = ex; }
+            Check(error is not null, "HTTP failure was accepted as a scan.");
+            Check(!error!.Message.Contains("private-message"), "Backend payload leaked in error.");
         }
         finally { CultureInfo.CurrentCulture = culture; }
     }
@@ -113,15 +118,24 @@ internal static class EngineeringTests
             await File.WriteAllTextAsync(path, "{}");
             await cache.ScanAsync(raw);
             Check(inner.Calls == 2, "Semantically invalid cached scan was trusted.");
+            var expectedCalls = inner.Calls;
+            foreach (var broken in new[] { "{\"action\":\"no action\",\"symbols\":[]}",
+                "{\"action\":\"no action\",\"score\":0,\"symbols\":[]}",
+                "{\"action\":\"no action\",\"score\":0,\"requiredScore\":6,\"symbols\":[{\"name\":\"TEST\",\"options\":[]}]}" })
+            {
+                await File.WriteAllTextAsync(path, broken);
+                await cache.ScanAsync(raw);
+                Check(inner.Calls == ++expectedCalls, "Cache defaulted a missing numeric field to zero.");
+            }
             using var cancelled = new CancellationTokenSource();
             cancelled.Cancel();
             await Throws<OperationCanceledException>(async () => await cache.ScanAsync(raw, cancelled.Token));
-            Check(inner.Calls == 2, "Cancelled request reached backend.");
+            Check(inner.Calls == expectedCalls, "Cancelled request reached backend.");
             var other = Encoding.UTF8.GetBytes("second mail");
             var key = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes("default\n").Concat(other).ToArray())).ToLowerInvariant();
             await File.WriteAllTextAsync(Path.Combine(directory, key[..2]), "blocks-cache-directory");
             await cache.ScanAsync(other); // Successful scan survives an unwritable cache.
-            Check(inner.Calls == 3, "Cache IO test did not scan.");
+            Check(inner.Calls == expectedCalls + 1, "Cache IO test did not scan.");
             Check(!Directory.GetFiles(directory, "*.tmp-*", SearchOption.AllDirectories).Any(), "Temporary cache files leaked.");
         }
         finally { Directory.Delete(directory, recursive: true); }

@@ -101,9 +101,10 @@ public sealed class RspamdClient : IRspamdScanner
         var required = GetDouble(root, "required_score");
 
         var symbols = new List<RspamdSymbol>();
-        if (root.TryGetProperty("symbols", out var symbolsNode)
-            && symbolsNode.ValueKind == JsonValueKind.Object)
+        if (root.TryGetProperty("symbols", out var symbolsNode))
         {
+            if (symbolsNode.ValueKind != JsonValueKind.Object)
+                throw new InvalidDataException("Invalid Rspamd symbols collection.");
             foreach (var property in symbolsNode.EnumerateObject())
             {
                 var symbolNode = property.Value;

@@ -62,6 +62,14 @@ class RuntimeHardeningTests(unittest.TestCase):
             self.assertFalse((root / 'out/summary.json').exists())
             self.assertFalse((root / 'out/predictions.csv').exists())
 
+    def test_numeric_string_scores_are_normalized_before_accounting(self):
+        result = dict(score='1.0', cutoff='0.0', language='en', spam=True)
+        with tempfile.TemporaryDirectory() as directory:
+            out = self.run_cli(Path(directory), lambda *args: [result, result])
+            summary = json.loads((out / 'summary.json').read_text())
+            self.assertEqual(summary['files_scored'], 2)
+            self.assertEqual(summary['metrics']['tp'], 1)
+
     def test_goal_uses_ham_denominator_even_in_spam_heavy_corpus(self):
         metric = dict(n=1000100, spam=1000000, ham=100, tp=990000, fn=10000, fp=1, tn=99)
         result = summary_extra({'metrics': metric})

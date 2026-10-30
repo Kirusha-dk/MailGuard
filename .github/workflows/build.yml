@@ -49,12 +49,15 @@ jobs:
       - name: Build and check local runtime
         run: |
           dotnet build MailGuard.sln -c Release
+          dotnet build tools/runtime_regression/RuntimeRegression.csproj -c Release
           dotnet run --project src/MailGuard.SelfTest -c Release --no-build
           python -m unittest discover -s tests/integration -p test_api_runtime.py -v
+          python -m unittest discover -s tests/integration -p test_runtime_regression_cli.py -v
       - name: Check Python runtime parity and report accounting
         run: |
           python -m unittest discover -s tests/python -p test_runtime_hardening.py -v
           python -m unittest discover -s tests/python -p test_rspamd_runtime_check.py -v
+          python -m unittest discover -s tests/python -p test_runtime_regression.py -v
           python -m unittest discover -s tests/python -p test_v77_ru_en.py -v
           python -m unittest discover -s tests/python -p test_v79_en.py -v
           python -m unittest discover -s tests/python -p test_v80_en.py -v
