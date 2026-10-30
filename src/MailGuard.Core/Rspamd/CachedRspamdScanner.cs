@@ -27,6 +27,7 @@ public sealed class CachedRspamdScanner : IRspamdScanner
         byte[] rawMessage,
         CancellationToken cancellationToken = default)
     {
+        cancellationToken.ThrowIfCancellationRequested();
         var key = ComputeKey(rawMessage, _cacheNamespace);
         var path = Path.Combine(_cacheDirectory, key[..2], key + ".json");
 
@@ -37,10 +38,13 @@ public sealed class CachedRspamdScanner : IRspamdScanner
                 await using var read = File.OpenRead(path);
                 var cached = await JsonSerializer.DeserializeAsync<RspamdScanResult>(
                     read, _json, cancellationToken);
-                if (cached is not null)
+                if (cached is not null && !string.IsNullOrWhiteSpace(cached.Action)
+                    && double.IsFinite(cached.Score) && double.IsFinite(cached.RequiredScore)
+                    && cached.Symbols is not null && cached.Symbols.All(s => s is not null
+                        && s.Name is not null && double.IsFinite(s.Score) && s.Options is not null))
                     return cached;
             }
-            catch
+            catch (Exception ex) when (ex is JsonException or IOException or UnauthorizedAccessException)
             {
                 // Corrupted cache entries are ignored and rebuilt.
             }
@@ -48,27 +52,34 @@ public sealed class CachedRspamdScanner : IRspamdScanner
 
         var result = await _inner.ScanAsync(rawMessage, cancellationToken);
 
-        var directory = Path.GetDirectoryName(path)!;
-        Directory.CreateDirectory(directory);
         var temp = path + ".tmp-" + Guid.NewGuid().ToString("N");
-
-        await using (var write = File.Create(temp))
+        try
         {
-            await JsonSerializer.SerializeAsync(
-                write, result, _json, cancellationToken);
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            await using (var write = File.Create(temp))
+            {
+                await JsonSerializer.SerializeAsync(write, result, _json, cancellationToken);
+            }
+            cancellationToken.ThrowIfCancellationRequested();
+            File.Move(temp, path, true);
         }
-
-        File.Move(temp, path, true);
+        catch (Exception ex) when (ex is IOException or UnauthorizedAccessException)
+        {
+            // A cache failure must not discard a successful scan.
+        }
+        finally
+        {
+            try { File.Delete(temp); }
+            catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) { }
+        }
         return result;
     }
 
     private static string ComputeKey(byte[] rawMessage, string cacheNamespace)
     {
-        using var sha = SHA256.Create();
-        var prefix = Encoding.UTF8.GetBytes(cacheNamespace + "\n");
-        var data = new byte[prefix.Length + rawMessage.Length];
-        Buffer.BlockCopy(prefix, 0, data, 0, prefix.Length);
-        Buffer.BlockCopy(rawMessage, 0, data, prefix.Length, rawMessage.Length);
-        return Convert.ToHexString(sha.ComputeHash(data)).ToLowerInvariant();
+        using var sha = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
+        sha.AppendData(Encoding.UTF8.GetBytes(cacheNamespace + "\n"));
+        sha.AppendData(rawMessage);
+        return Convert.ToHexString(sha.GetHashAndReset()).ToLowerInvariant();
     }
 }

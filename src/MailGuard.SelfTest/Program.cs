@@ -15,6 +15,7 @@ var tests = new List<(string Name, Func<Task> Run)>
     ("model serializer", TestSerializer),
     ("rspamd protection", TestRspamdProtection)
 };
+tests.AddRange(EngineeringTests.All);
 
 var passed = 0;
 foreach (var test in tests)

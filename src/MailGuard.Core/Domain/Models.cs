@@ -27,7 +27,11 @@ public sealed record RspamdScanResult(
     string Action,
     double Score,
     double RequiredScore,
-    IReadOnlyList<RspamdSymbol> Symbols);
+    IReadOnlyList<RspamdSymbol> Symbols)
+{
+    public bool IsSkipped { get; init; }
+    public string? PassthroughModule { get; init; }
+}
 
 public sealed record FeatureExplanation(
     string Feature,

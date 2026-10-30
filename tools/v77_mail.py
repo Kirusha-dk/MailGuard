@@ -8,6 +8,7 @@ import csv
 import hashlib
 import html
 import json
+import math
 import re
 import unicodedata
 from collections import Counter
@@ -103,7 +104,7 @@ def candidates(experts, texts):
 
 def measure(values, truth, cutoff):
     values, truth = np.asarray(values), np.asarray(truth)
-    if values.shape != truth.shape or not np.isfinite(values).all():
+    if values.ndim != 1 or truth.ndim != 1 or values.shape != truth.shape or not np.isfinite(values).all() or not math.isfinite(cutoff):
         raise ValueError('Invalid score/label arrays')
     if not set(np.unique(truth)) <= {0, 1}:
         raise ValueError('Binary labels required')
@@ -171,6 +172,23 @@ def parse_eml(raw):
     return clean(str(message.get('subject') or ''), body)
 
 
+def checked_predictions(results, count, allowed_languages):
+    results = list(results)
+    if len(results) != count:
+        raise ValueError(f'Predictor returned {len(results)} results for {count} messages')
+    for result in results:
+        if result is None:
+            continue  # An explicit abstention is excluded, never converted to HAM.
+        if not isinstance(result, dict) or result.get('language') not in allowed_languages:
+            raise ValueError('Predictor returned an invalid language or result')
+        score, cutoff = float(result['score']), float(result['cutoff'])
+        if not math.isfinite(score) or not math.isfinite(cutoff) or not math.isfinite(score - cutoff):
+            raise ValueError('Predictor returned a nonfinite score or cutoff')
+        if not isinstance(result.get('spam'), (bool, np.bool_)) or bool(result['spam']) != (score >= cutoff):
+            raise ValueError('Predictor verdict disagrees with its score and cutoff')
+    return results
+
+
 def main(predictor=None, version=None, allowed_languages=('ru', 'en'), description=None,
          prepare_bundle=None, text_supported=None, profile_choices=None, default_profile='low-fp',
          identity_fn=None, summary_extra=None):
@@ -203,7 +221,11 @@ def main(predictor=None, version=None, allowed_languages=('ru', 'en'), descripti
         try:
             if path.stat().st_size > 20_000_000:
                 raise ValueError('oversized message')
-            text = parse_eml(path.read_bytes())
+            with path.open('rb') as message:
+                raw = message.read(20_000_001)
+            if len(raw) > 20_000_000:
+                raise ValueError('oversized message')
+            text = parse_eml(raw)
             if language(text) not in allowed_languages or (text_supported and not text_supported(text,bundle)):
                 failures['unsupported_or_short'] += 1
                 continue
@@ -220,12 +242,17 @@ def main(predictor=None, version=None, allowed_languages=('ru', 'en'), descripti
             print('Cannot read:', path.name, type(exc).__name__)
     records = [r for r in records if r[2] not in conflicts]
     failures['conflicting_identities'] = len(conflicts)
-    with (out / 'predictions.csv').open('w', newline='', encoding='utf-8') as stream:
+    with (out / 'predictions.csv.partial').open('w', newline='', encoding='utf-8') as stream:
         writer = csv.writer(stream)
         writer.writerow(['identity', 'label', 'language', 'score', 'cutoff', 'predicted'])
         for offset in range(0, len(records), 128):
             batch = records[offset:offset + 128]
-            for row, result in zip(batch, predictor(bundle, [r[3] for r in batch], args.profile)):
+            results = checked_predictions(predictor(bundle, [r[3] for r in batch], args.profile),
+                                          len(batch), allowed_languages)
+            for row, result in zip(batch, results):
+                if result is None:
+                    failures['prediction_abstentions'] += 1
+                    continue
                 _, y, identity, _ = row
                 value = result['score'] - result['cutoff']
                 values.append(value); labels.append(y)
@@ -234,12 +261,15 @@ def main(predictor=None, version=None, allowed_languages=('ru', 'en'), descripti
                 writer.writerow([identity, y, result['language'], result['score'], result['cutoff'], int(result['spam'])])
     summary = {'version': version, 'profile': args.profile,
         'model_sha256': hashlib.sha256(Path(args.model).read_bytes()).hexdigest(),
-        'files_found': len(files), 'excluded': dict(failures), 'metrics': measure(values, labels, 0),
+        'files_found': len(files), 'files_scored': len(values), 'files_unscored': len(files) - len(values),
+        'excluded': dict(failures), 'metrics': measure(values, labels, 0),
         'by_language': {k: measure(*v, 0) for k, v in by_lang.items()},
         'complete_10000_ru_en_email_test': len(values) == 10000 and not failures['read_errors']}
     if summary_extra:
         summary.update(summary_extra(summary))
-    (out / 'summary.json').write_text(json.dumps(summary, ensure_ascii=False, indent=2))
+    (out / 'summary.json.partial').write_text(json.dumps(summary, ensure_ascii=False, indent=2), encoding='utf-8')
+    (out / 'predictions.csv.partial').replace(out / 'predictions.csv')
+    (out / 'summary.json.partial').replace(out / 'summary.json')
     print(json.dumps(summary, ensure_ascii=False, indent=2))
 
 

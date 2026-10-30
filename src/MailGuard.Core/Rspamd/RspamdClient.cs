@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Globalization;
 using System.Text.Json;
 using MailGuard.Core.Domain;
 
@@ -34,10 +35,17 @@ public sealed class RspamdClient : IRspamdScanner
         var json = await response.Content.ReadAsStringAsync(cancellationToken);
 
         if (!response.IsSuccessStatusCode)
-            throw new InvalidOperationException(
-                $"Rspamd returned {(int)response.StatusCode}: {json}");
+            throw new RspamdException(
+                $"Rspamd returned HTTP {(int)response.StatusCode}.");
 
-        return ParseResponse(json);
+        try
+        {
+            return ParseResponse(json);
+        }
+        catch (Exception ex) when (ex is JsonException or InvalidDataException)
+        {
+            throw new RspamdException("Rspamd returned an invalid scan response.", ex);
+        }
     }
 
     public async Task LearnSpamAsync(
@@ -70,8 +78,14 @@ public sealed class RspamdClient : IRspamdScanner
         var body = await response.Content.ReadAsStringAsync(cancellationToken);
 
         if (!response.IsSuccessStatusCode)
-            throw new InvalidOperationException(
-                $"Rspamd {endpoint} returned {(int)response.StatusCode}: {body}");
+            throw new RspamdException(
+                $"Rspamd {endpoint} returned HTTP {(int)response.StatusCode}.");
+
+        if (body.TrimStart().StartsWith('{'))
+        {
+            using var document = JsonDocument.Parse(body);
+            RejectError(document.RootElement);
+        }
     }
 
     private static RspamdScanResult ParseResponse(string json)
@@ -79,7 +93,10 @@ public sealed class RspamdClient : IRspamdScanner
         using var doc = JsonDocument.Parse(json);
         var root = doc.RootElement;
 
+        RejectError(root);
         var action = GetString(root, "action");
+        if (string.IsNullOrWhiteSpace(action))
+            throw new InvalidDataException("Missing Rspamd action.");
         var score = GetDouble(root, "score");
         var required = GetDouble(root, "required_score");
 
@@ -90,6 +107,8 @@ public sealed class RspamdClient : IRspamdScanner
             foreach (var property in symbolsNode.EnumerateObject())
             {
                 var symbolNode = property.Value;
+                if (symbolNode.ValueKind != JsonValueKind.Object)
+                    throw new InvalidDataException("Invalid Rspamd symbol.");
                 var symbolScore = GetDouble(symbolNode, "score");
                 var options = new List<string>();
 
@@ -109,7 +128,12 @@ public sealed class RspamdClient : IRspamdScanner
             }
         }
 
-        return new RspamdScanResult(action, score, required, symbols);
+        return new RspamdScanResult(action, score, required, symbols)
+        {
+            IsSkipped = root.TryGetProperty("is_skipped", out var skipped) && skipped.ValueKind == JsonValueKind.True,
+            PassthroughModule = root.TryGetProperty("passthrough_module", out var passthrough)
+                && passthrough.ValueKind == JsonValueKind.String ? passthrough.GetString() : null
+        };
     }
 
     private static string GetString(JsonElement node, string name)
@@ -119,17 +143,27 @@ public sealed class RspamdClient : IRspamdScanner
 
         return value.ValueKind == JsonValueKind.String
             ? value.GetString() ?? string.Empty
-            : value.ToString();
+            : throw new InvalidDataException($"Invalid Rspamd {name}.");
+    }
+
+    private static void RejectError(JsonElement root)
+    {
+        if (root.ValueKind != JsonValueKind.Object ||
+            (root.TryGetProperty("error", out var error) && error.ValueKind != JsonValueKind.Null))
+            throw new InvalidDataException("Rspamd reported a protocol error.");
     }
 
     private static double GetDouble(JsonElement node, string name)
     {
-        if (!node.TryGetProperty(name, out var value))
-            return 0;
-
-        if (value.ValueKind == JsonValueKind.Number && value.TryGetDouble(out var number))
-            return number;
-
-        return double.TryParse(value.ToString(), out number) ? number : 0;
+        if (node.TryGetProperty(name, out var value))
+        {
+            if (value.ValueKind == JsonValueKind.Number && value.TryGetDouble(out var number) && double.IsFinite(number))
+                return number;
+            if (value.ValueKind == JsonValueKind.String &&
+                double.TryParse(value.GetString(), NumberStyles.Float, CultureInfo.InvariantCulture, out number) &&
+                double.IsFinite(number))
+                return number;
+        }
+        throw new InvalidDataException($"Missing or invalid Rspamd {name}.");
     }
 }
