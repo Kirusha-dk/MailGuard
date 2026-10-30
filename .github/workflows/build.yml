@@ -32,3 +32,46 @@ jobs:
 
       - name: Build benchmark image
         run: docker build --target benchmark -t mailguard/benchmark:ci .
+
+  runtime-contracts:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned lightweight runtime test dependencies
+        run: python -m pip install -r requirements-v79.txt
+      - name: Build and check local runtime
+        run: |
+          dotnet build MailGuard.sln -c Release
+          dotnet build tools/runtime_regression/RuntimeRegression.csproj -c Release
+          dotnet run --project src/MailGuard.SelfTest -c Release --no-build
+          python -m unittest discover -s tests/integration -p test_api_runtime.py -v
+          python -m unittest discover -s tests/integration -p test_runtime_regression_cli.py -v
+      - name: Check Python runtime parity and report accounting
+        run: |
+          python -m unittest discover -s tests/python -p test_runtime_hardening.py -v
+          python -m unittest discover -s tests/python -p test_rspamd_runtime_check.py -v
+          python -m unittest discover -s tests/python -p test_runtime_regression.py -v
+          python -m unittest discover -s tests/python -p test_v77_ru_en.py -v
+          python -m unittest discover -s tests/python -p test_v79_en.py -v
+          python -m unittest discover -s tests/python -p test_v80_en.py -v
+          python -m unittest discover -s tests/python -p test_v81_fp.py -v
+      - name: Start isolated benchmark Rspamd
+        run: docker compose -p mailguard-ci up -d redis rspamd
+      - name: Validate Rspamd and synthetic protocol check
+        run: |
+          docker compose -p mailguard-ci exec -T rspamd rspamadm configtest
+          for attempt in $(seq 1 30); do
+            if python tools/check_rspamd_runtime.py; then break; fi
+            sleep 1
+          done
+          python tools/check_rspamd_runtime.py --smoke-test
+      - name: Stop isolated services
+        if: always()
+        run: docker compose -p mailguard-ci down
