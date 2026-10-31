@@ -1,0 +1,87 @@
+{
+  "analysis": "Current TRAIN HAM frequency versus configured source-balanced HAM loss mass",
+  "training_code_sha256": "ba44e0861a326ec51014653c8cd60f3f84a6c2855b516a0965ab742efcf0bfa0",
+  "frozen_manifest_sha256": "f1458091e4b1d8e26caa62cfbec70087b7389317aef0cefe47fb8024ba5117cc",
+  "input_partition": "TRAIN metadata only",
+  "train_ham": 47683,
+  "source_groups": {
+    "Assassin": {
+      "train_ham": 898,
+      "train_ham_fraction": 0.01883270767359436,
+      "per_example_ham_weight_before_mean_normalization": 11.135857461024498,
+      "effective_ham_loss_mass_before_mean_normalization": 10000.0,
+      "fraction_of_all_ham_loss_mass": 0.10059552551102527
+    },
+    "CEAS-08": {
+      "train_ham": 3713,
+      "train_ham_fraction": 0.07786842270830274,
+      "per_example_ham_weight_before_mean_normalization": 2.6932399676811203,
+      "effective_ham_loss_mass_before_mean_normalization": 10000.0,
+      "fraction_of_all_ham_loss_mass": 0.10059552551102527
+    },
+    "Enron": {
+      "train_ham": 2956,
+      "train_ham_fraction": 0.061992743745150264,
+      "per_example_ham_weight_before_mean_normalization": 3.3829499323410013,
+      "effective_ham_loss_mass_before_mean_normalization": 10000.0,
+      "fraction_of_all_ham_loss_mass": 0.10059552551102527
+    },
+    "GenSpam": {
+      "train_ham": 2758,
+      "train_ham_fraction": 0.05784032044963614,
+      "per_example_ham_weight_before_mean_normalization": 3.625815808556925,
+      "effective_ham_loss_mass_before_mean_normalization": 10000.0,
+      "fraction_of_all_ham_loss_mass": 0.10059552551102527
+    },
+    "Labelled-email-2010": {
+      "train_ham": 392,
+      "train_ham_fraction": 0.008220959251724934,
+      "per_example_ham_weight_before_mean_normalization": 24.0,
+      "effective_ham_loss_mass_before_mean_normalization": 9408.0,
+      "fraction_of_all_ham_loss_mass": 0.09464027040077258
+    },
+    "Ling": {
+      "train_ham": 466,
+      "train_ham_fraction": 0.009772875028836272,
+      "per_example_ham_weight_before_mean_normalization": 21.459227467811157,
+      "effective_ham_loss_mass_before_mean_normalization": 10000.0,
+      "fraction_of_all_ham_loss_mass": 0.10059552551102527
+    },
+    "Merged-public": {
+      "train_ham": 22051,
+      "train_ham_fraction": 0.46244992974435334,
+      "per_example_ham_weight_before_mean_normalization": 0.4534941725998821,
+      "effective_ham_loss_mass_before_mean_normalization": 10000.0,
+      "fraction_of_all_ham_loss_mass": 0.10059552551102527
+    },
+    "TREC-05": {
+      "train_ham": 6920,
+      "train_ham_fraction": 0.14512509699473608,
+      "per_example_ham_weight_before_mean_normalization": 1.4450867052023122,
+      "effective_ham_loss_mass_before_mean_normalization": 10000.0,
+      "fraction_of_all_ham_loss_mass": 0.10059552551102527
+    },
+    "TREC-06": {
+      "train_ham": 2935,
+      "train_ham_fraction": 0.06155233521380785,
+      "per_example_ham_weight_before_mean_normalization": 3.4071550255536627,
+      "effective_ham_loss_mass_before_mean_normalization": 10000.0,
+      "fraction_of_all_ham_loss_mass": 0.10059552551102527
+    },
+    "TREC-07": {
+      "train_ham": 4594,
+      "train_ham_fraction": 0.09634460918985802,
+      "per_example_ham_weight_before_mean_normalization": 2.1767522855898997,
+      "effective_ham_loss_mass_before_mean_normalization": 10000.0,
+      "fraction_of_all_ham_loss_mass": 0.10059552551102527
+    }
+  },
+  "formula": "min(12, 5000 / count(source, label)) * (2 if HAM else 1); global mean normalization cancels in within-HAM shares",
+  "extra_phishing_corpus_adds_no_ham": true,
+  "causal_effect_on_false_positives_measured": false,
+  "weights_changed": false,
+  "optimizer_steps_executed": 0,
+  "cal_or_test_used": false,
+  "quality_gain_demonstrated": false,
+  "production_v80_unchanged": true
+}
