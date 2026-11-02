@@ -1,4 +1,4 @@
-name: MailGuard v82 read-only Nazario 2026 evaluation
+name: MailGuard v82 read-only fixed CAL evaluation
 on:
   push:
     branches: [mailguard-v82-external-20261102]
@@ -49,7 +49,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: mailguard-v82-nazario2026-step7000
+          name: mailguard-v82-cal-step7000
           path: external-output/
           retention-days: 45
           if-no-files-found: warn
