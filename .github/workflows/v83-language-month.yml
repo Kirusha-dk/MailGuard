@@ -1,0 +1,117 @@
+name: MailGuard v83 bounded RU ES language sessions
+on:
+  push:
+    branches: [mailguard-v83-ru-es-pilot-20261030]
+    paths:
+      - research/v83/ru.json
+      - research/v83/es.json
+      - tools/train_v83_language.py
+      - tools/fetch_v83_inputs.py
+      - tools/fetch_v83_sources.py
+      - tools/v83_data.py
+      - .github/workflows/v83-language-month.yml
+permissions:
+  contents: read
+  actions: read
+jobs:
+  language:
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ru, es]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 80
+    concurrency:
+      group: mailguard-v83-${{ matrix.language }}-20261102
+      cancel-in-progress: false
+    env:
+      OMP_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      HF_HUB_DISABLE_XET: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r requirements-v79.txt
+      - name: Verify data and budget guards
+        run: |
+          python -m unittest discover -s tests/python -p test_v83_data.py -v
+          python -m unittest discover -s tests/python -p test_v83_language.py -v
+      - name: Prepare and audit language email data
+        id: corpus
+        env:
+          LANG_CODE: ${{ matrix.language }}
+        run: |
+          python -u tools/fetch_v83_inputs.py --language "$LANG_CODE"
+          python - <<'PY'
+          import os,json
+          from pathlib import Path
+          lang=os.environ['LANG_CODE']; root=Path('.cache/v83')/lang
+          path=root/'manifest.json' if (root/'manifest.json').exists() else root/'data-audit.json'
+          audit=json.loads(path.read_text())
+          if audit.get('training_ready'):
+              locked=json.loads(Path('research/v83/'+lang+'-frozen.json').read_text())
+              if audit!=locked:raise ValueError('Frozen source manifest differs from committed lock')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('ready='+str(audit.get('training_ready',False)).lower()+'\n')
+          Path('language-audit').mkdir(exist_ok=True)
+          (Path('language-audit')/'data-audit.json').write_text(json.dumps(audit,indent=2))
+          with open(os.environ['GITHUB_STEP_SUMMARY'],'a') as f:
+              f.write('Language '+lang+': training_ready='+str(audit.get('training_ready',False))+'\n\n')
+              if not audit.get('training_ready'):f.write('BLOCKED: no approved sufficient labelled native email corpus; zero optimizer steps.\n')
+          PY
+      - name: Install pinned neural environment
+        if: steps.corpus.outputs.ready == 'true'
+        run: |
+          python -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements-v82.txt
+          python -m unittest discover -s tests/python -p test_v83_language.py -v
+      - uses: actions/cache@v4
+        if: steps.corpus.outputs.ready == 'true'
+        with:
+          path: .cache/v83/backbone
+          key: v83-multilingual-minilm-e8f8c211-v1
+      - name: Verify multilingual backbone
+        if: steps.corpus.outputs.ready == 'true'
+        run: python -u tools/fetch_v83_inputs.py --language ${{ matrix.language }} --backbone-only
+      - name: Find previous language checkpoint
+        if: steps.corpus.outputs.ready == 'true'
+        id: prior
+        uses: actions/github-script@v7
+        env:
+          LANG_CODE: ${{ matrix.language }}
+        with:
+          script: |
+            const fs=require('fs');
+            const r=JSON.parse(fs.readFileSync('research/v83/'+process.env.LANG_CODE+'.json','utf8'));
+            const name='mailguard-'+r.campaign+'-state';core.setOutput('name',name);
+            const all=await github.paginate(github.rest.actions.listArtifactsForRepo,{...context.repo,per_page:100});
+            const matches=all.filter(a=>a.name===name&&!a.expired).sort((a,b)=>b.id-a.id);
+            if(!matches.length&&r.expected_min_step>0)throw new Error('Required state missing; cold restart forbidden');
+            core.setOutput('run',matches.length?String(matches[0].workflow_run.id):'');
+      - uses: actions/download-artifact@v4
+        if: steps.prior.outputs.run != ''
+        with:
+          name: ${{ steps.prior.outputs.name }}
+          run-id: ${{ steps.prior.outputs.run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: language-state/${{ matrix.language }}
+      - name: Continue bounded language session
+        if: steps.corpus.outputs.ready == 'true'
+        run: python -u tools/train_v83_language.py --language ${{ matrix.language }} --request research/v83/${{ matrix.language }}.json
+        timeout-minutes: 45
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v83-${{ matrix.language }}-data-audit-${{ github.run_id }}
+          path: language-audit/
+          retention-days: 90
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.prior.outputs.name != ''
+        with:
+          name: ${{ steps.prior.outputs.name }}
+          path: language-state/${{ matrix.language }}/
+          retention-days: 90
+          if-no-files-found: warn
