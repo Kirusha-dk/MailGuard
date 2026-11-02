@@ -1,0 +1,55 @@
+name: MailGuard v82 read-only Nazario 2026 evaluation
+on:
+  push:
+    branches: [mailguard-v82-external-20261102]
+    paths: [tools/evaluate_v82_nazario2026.py, .github/workflows/v82-external-2026.yml]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: mailguard-v82-external-20261102
+  cancel-in-progress: false
+jobs:
+  evaluate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      OMP_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      HF_HUB_DISABLE_XET: '1'
+      TOKENIZERS_PARALLELISM: 'false'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m py_compile tools/evaluate_v82_nazario2026.py
+      - run: |
+          python -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements-v82.txt
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .cache/v82/backbone
+            .cache/v79/frozen
+            .cache/v80/extra
+          key: v82-pinned-english-corpus-and-minilm-1110a243-v1
+      - run: python -u tools/fetch_v82_inputs.py
+        timeout-minutes: 35
+      - uses: actions/download-artifact@v4
+        with:
+          artifact-ids: '13118507680'
+          run-id: '41393066422'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: external-state
+          merge-multiple: true
+      - run: python -u tools/evaluate_v82_nazario2026.py
+        timeout-minutes: 40
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v82-nazario2026-step7000
+          path: external-output/
+          retention-days: 45
+          if-no-files-found: warn
