@@ -1,0 +1,33 @@
+{
+  "prior_run_id": 41510740479,
+  "run_id": 41592310836,
+  "request_commit": "9dbbec141ef71c408fb01ab1e031cbc5c9960617",
+  "prior_checkpoint_sha256": "a2fedc0ae2b0b66f8de65f5ebc4957a1f42c33d4320d05e86294140382750ab7",
+  "checkpoint_sha256": "6bc0cb97f150b9e7f9da86cf08586588a1d9e043a7bbf5f086eac28856663557",
+  "checkpoint_metadata_exactly_preserved": true,
+  "optimizer_adam_steps_before": [
+    100
+  ],
+  "optimizer_adam_steps_after": [
+    200
+  ],
+  "scheduler_steps_before": 100,
+  "scheduler_steps_after": 200,
+  "rng_persisted_and_advanced": true,
+  "cursor_before": 800,
+  "cursor_after": 744,
+  "epoch_before": 0,
+  "epoch_after": 1,
+  "all_48_internal_adapters_changed": true,
+  "restoration_implementation": "v82_neural.restore_checkpoint restores Adam, scheduler, RNG, adapter, progress after strict metadata equality",
+  "prior_development_log_loss": 0.6332128131740029,
+  "current_development_log_loss": 0.44322532398002035,
+  "es_frozen_manifest_exact": true,
+  "artifact_zip_digests_verified": true,
+  "guards_and_data_tests_passed": true,
+  "neural_continuation_test_passed": true,
+  "request_published_with_expected_sha": "5acbafc4c792b6b0dcaa43a12a90b3cf133cdea4",
+  "force_push": false,
+  "english_request_weights_and_schedule_modified": false,
+  "duplicate_tasks_created": false
+}
