@@ -1,0 +1,85 @@
+{
+  "input_lock": {
+    "count": 30000,
+    "requested": 30000,
+    "spam": 30000,
+    "ham": 0,
+    "checkpoint_sha256": "1566901303dde37cbbeec93e22cc5d513e3bc2248dff79e6a0f171215f6a197f",
+    "global_optimizer_steps": 8000,
+    "threshold": 0.03910822421312332,
+    "source_url": "https://untroubled.org/spam/2012.7z",
+    "source_archive_sha256": "65bdb680fe95f3d2f52d24d99af7b7d6490c03fc5508313e8f5edefb4672de41",
+    "language_filter": "pinned fastText en>=0.8; English-script gate",
+    "sample_rule": "Source filenames ordered by SHA256(seed:relative_path); first30000 eligible distinct identities and families; no classifier scores",
+    "seed": "v82-firstuse30k-english-2012-20261104",
+    "cohort_fingerprint": "2ad3718dc2258526b0455864a54a15d2ee59dd3e178b4d35733be09cff4b0e1d",
+    "exclusions": {
+      "files_considered": 763789,
+      "non_english_or_short_excluded": 641969,
+      "previous_project_exposure_excluded": 17365,
+      "new_cohort_duplicate_family_excluded": 50327,
+      "new_cohort_legacy_duplicate_excluded": 22843,
+      "non_email_excluded": 1261,
+      "raw_length_excluded": 22,
+      "v82_or_old_regression_overlap_excluded": 2
+    },
+    "current_partition_hashes": {
+      ".cache/v79/frozen/train.jsonl.gz": "abbde12f9fcce2d61ed90d36f11f75147f3679892122dcc4889afb8e638cd950",
+      ".cache/v79/frozen/select.jsonl.gz": "56deb635c6c34e5f736cf7d98dc7e57bf7a0bdc6a487a318e06a649e05714f88",
+      ".cache/v79/frozen/cal.jsonl.gz": "687b00cc47c67aff5521ae4c89bb064c1795457c5d9b8e60034a9523c42e40de",
+      ".cache/v79/frozen/test.jsonl.gz": "55d07a43733e2e25f5871ebc076da9958bff396fdb0d8cca725b2b0fdda03560",
+      ".cache/v80/extra/train.jsonl.gz": "143a3ff6b7f076113b4189453daff2b6d351fbe2d80b2cb60f37437c6f68b1eb",
+      ".cache/v80/extra/select.jsonl.gz": "869f6f4389d6c7a90169128660d2a8806aacdf63c3d35f8ceb581fc379afc385",
+      ".cache/v80/extra/cal.jsonl.gz": "8407fd2292a6a247354a02eee8b8318b34f23ea31e6e29ca80cc5c31614d393e",
+      ".cache/v80/extra/fresh-test.jsonl.gz": "0a85bc14a98c456f37d1037a3c51b7a7a631a96df997264e1571d1f0ded5450b"
+    },
+    "prior_exclusion_evidence": {
+      "legacy_database_sha256": "17d0418fc6088176adc03ac623a8f0349da983c2b756295b82e47e9faded2011",
+      "legacy_blocked_keys": 3486848,
+      "extra_prior_evaluated_rows": 500000,
+      "extra_prior_shards": {
+        "0": 100000,
+        "1": 100000,
+        "2": 100000,
+        "3": 100000,
+        "4": 100000
+      }
+    },
+    "new_source_year_relative_to_old500k": true,
+    "new_publisher": false,
+    "exact_current_training_overlap": 0,
+    "current_select_cal_test_overlap": 0,
+    "previous_scored500k_overlap": 0,
+    "legacy_exclusion_key_overlap": 0,
+    "semantic_near_duplicates_fully_excluded": false,
+    "source_labels": "Spam trap, not individually adjudicated",
+    "false_positive_rate_evaluable": false,
+    "first_use_freeze_before_model_inference": true
+  },
+  "metrics": {
+    "n": 30000,
+    "spam": 30000,
+    "ham": 0,
+    "tp": 29360,
+    "fp": 0,
+    "fn": 640,
+    "tn": 0,
+    "recall": 0.9786666666666667,
+    "fpr": null
+  },
+  "optimizer_steps_executed": 0,
+  "checkpoint_unchanged": true,
+  "parameters_rng_and_gradients_unchanged": true,
+  "threshold_refitted": false,
+  "false_positive_rate_evaluable": false,
+  "accuracy_on_general_mail": null,
+  "first_use_against_tracked_prior_datasets": true,
+  "independent_new_publisher_test": false,
+  "limitations": [
+    "Spam-only cohort: recall can be measured, HAM false positives cannot",
+    "Historical2012 real mail from a previously used spam-trap provider",
+    "Trap labels are weak labels; exact/template exclusions do not prove complete semantic independence"
+  ],
+  "accepted_for_production": false,
+  "customer_mail_used": false
+}
