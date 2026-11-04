@@ -1,0 +1,59 @@
+{
+  "experiment": "frozen_spanish_adapter_on_augmented_korean_preview",
+  "date": "2026-11-04",
+  "source": {
+    "repository": "joohans/korean-phishing-email",
+    "revision": "b8af3cc78ee0c6b475819169053304842f952587",
+    "url": "https://huggingface.co/datasets/joohans/korean-phishing-email/resolve/b8af3cc78ee0c6b475819169053304842f952587/data/korean_phishing_samples.jsonl",
+    "sha256": "dde0e7bfb84b4b972e6490ccf6cba5e11b64ed0fa35fd6640985025185722f15",
+    "license": "Apache-2.0",
+    "rows": 30,
+    "original_positive_labels": 15,
+    "original_negative_labels": 15,
+    "provenance": "Publisher describes Korean augmentation; native-email origin not established",
+    "text_only_no_mime_or_separate_subject": true
+  },
+  "model": {
+    "trained_language": "es",
+    "campaign": "v83-es-20261102",
+    "step": 300,
+    "checkpoint_sha256": "b3693d61f8154b3085082d93afddd3654754efae0bf38ffce242cf4e78a0be70",
+    "backbone_revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42"
+  },
+  "korean_language_gate": {
+    "method": "pinned fastText lid.176.ftz",
+    "minimum_confidence": 0.8,
+    "eligible": 30,
+    "abstentions": 0
+  },
+  "preview_at_locked_threshold_0_5": {
+    "n": 30,
+    "spam": 15,
+    "ham": 15,
+    "tp": 14,
+    "fp": 4,
+    "fn": 1,
+    "tn": 11,
+    "recall": 0.9333333333333333,
+    "fpr": 0.26666666666666666,
+    "fp_per_million_ham": 266666.6666666667,
+    "threshold": 0.5
+  },
+  "optimizer_steps_executed": 0,
+  "checkpoint_unchanged": true,
+  "adapters_unchanged": true,
+  "backbone_unchanged": true,
+  "training_ready": false,
+  "korean_model_trained": false,
+  "native_email_validation": false,
+  "is_independent_native_email_test": false,
+  "threshold_tuned_on_preview": false,
+  "es_train_select_test_opened": false,
+  "customer_mail_used": false,
+  "accepted_for_production": false,
+  "limitations": [
+    "Tiny augmented preview, not representative Korean email",
+    "Frozen Spanish adapters: this measures a diagnostic cross-language probe, not Korean fine-tuning",
+    "Not enough labelled native mail for separate TRAIN/SELECT/TEST; no training gate bypass"
+  ]
+}
