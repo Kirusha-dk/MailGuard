@@ -1,4 +1,4 @@
-"""Isolated, bounded RU/ES multilingual LoRA pilot; no English campaign mutation."""
+"""Isolated, bounded RU/ES/TR multilingual LoRA pilot; no English campaign mutation."""
 import argparse
 from collections import Counter
 import datetime as dt
@@ -24,7 +24,7 @@ def sha(path):
 
 def validate_request(request, language, today=None):
     today = today or dt.datetime.now(dt.timezone.utc).date()
-    if language not in ('ru', 'es') or request.get('language') != language:
+    if language not in ('ru', 'es', 'tr') or request.get('language') != language:
         raise ValueError('Request language does not match the isolated pilot')
     campaign = request.get('campaign')
     if not isinstance(campaign, str) or not campaign.startswith('v83-'):
@@ -145,7 +145,7 @@ def main():
 
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--request', type=Path, required=True)
-    parser.add_argument('--language', choices=('ru', 'es'), required=True)
+    parser.add_argument('--language', choices=('ru', 'es', 'tr'), required=True)
     parser.add_argument('--state', type=Path)
     parser.add_argument('--data', type=Path)
     parser.add_argument('--backbone', type=Path, default=Path('.cache/v83/backbone'))

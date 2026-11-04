@@ -15,7 +15,7 @@ import re
 
 from v77_mail import clean
 
-LANGUAGES = frozenset(('ru', 'es'))
+LANGUAGES = frozenset(('ru', 'es', 'tr'))
 SPLIT_SEED = 'v83-ru-es-20261030'
 MIN_LANGUAGE_PROBABILITY = .8
 WORDS = re.compile(r'[^\W_]+', re.UNICODE)
@@ -24,7 +24,7 @@ PLACEHOLDERS = frozenset(('numbertoken', 'urltoken', 'emailtoken'))
 
 def _language(language):
     if language not in LANGUAGES:
-        raise ValueError('Expected Russian or Spanish language code')
+        raise ValueError('Expected Russian, Spanish or Turkish language code')
 
 
 def normalize(subject, body):

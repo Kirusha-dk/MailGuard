@@ -1,0 +1,114 @@
+{
+  "automatically_relabelled": false,
+  "counts": {
+    "select": {
+      "ham": 114,
+      "n": 203,
+      "spam": 89
+    },
+    "test": {
+      "ham": 114,
+      "n": 206,
+      "spam": 92
+    },
+    "train": {
+      "ham": 549,
+      "n": 1000,
+      "spam": 451
+    }
+  },
+  "customer_mail_used": false,
+  "fingerprints": {
+    "select": "bbcec4f3eef530ae72638ff076070dbe7fecd953d1b4afd247da41ead1903d4e",
+    "test": "bc1a063a787b74dbc678db101dd36eb595b1f231d0463bfcd5d080a15c3883d3",
+    "train": "8089cdcd240399536dbd65464fba0aa0277379eef19938a449f2cafb42a1905e"
+  },
+  "independent_source_test": false,
+  "lang_lid": {
+    "label_blind": true,
+    "method": "caller-supplied pinned fastText detector",
+    "minimum_probability": 0.8,
+    "target_language": "tr"
+  },
+  "language": "tr",
+  "normalization": "v77_mail.clean; Unicode first45-word family; 30chars/10 non-placeholder word minimum",
+  "optimizer_steps_executed": 0,
+  "required_class_minimums": {
+    "select": 30,
+    "test": 30,
+    "train": 100
+  },
+  "source": {
+    "feature_allowlist": [
+      "email_text"
+    ],
+    "name": "Two public native Turkish email sources",
+    "normalizer_deduplicates_across_sources": true,
+    "source_rights_note": "UCI CC-BY4.0; additional publisher requests citation but gives no standard licence. Research pilot only; source terms must accompany any final package.",
+    "sources": [
+      {
+        "attribution": "Turkish Spam V01 (2019), UCI Machine Learning Repository; https://doi.org/10.24432/C5WG7F",
+        "count_discrepancy": "Pinned export has329 labelled spam,496 labelled HAM, and one unlabelled footer; no missing label was invented",
+        "csv_sha256": "2ddc3bcdc69a087432b2e8a66a338721ec7114f6eb3ba6ade013ca0165505ab3",
+        "feature_allowlist": [
+          "Text"
+        ],
+        "labelled_rows": 825,
+        "license": "CC-BY-4.0",
+        "name": "UCI Turkish Spam V01",
+        "negative_class": "legitimate_email",
+        "original_ham": 496,
+        "original_label_map": {
+          "ham": 0,
+          "spam": 1
+        },
+        "original_spam": 329,
+        "parsing": {
+          "excluded_footer": 1,
+          "rejoined_extra_fields": 124
+        },
+        "positive_class": "spam",
+        "publisher_description_counts": {
+          "ham": 496,
+          "spam": 330
+        },
+        "sha256": "3d3c7e4254e607059a901b47bf9cac1a06429bb0b7bbfad5e22e80f84c0b6e29",
+        "url": "https://archive.ics.uci.edu/static/public/530/turkish+spam+v01.zip",
+        "version": 1
+      },
+      {
+        "attribution": "Simsek, H. and Aydemir, E. (2022), Classification of Unwanted E-Mails (Spam) with Turkish Text by Different Algorithms in Weka Program; https://doi.org/10.55195/jscai.1104694",
+        "excluded_arff_copy": true,
+        "license": "Unspecified standard licence; publisher requires article citation for use",
+        "name": "Turkish Mail Dataset Normal/Spam",
+        "original_ham": 502,
+        "original_label_map": {
+          "norm*.txt": 0,
+          "spam*.txt": 1
+        },
+        "original_spam": 515,
+        "provenance": "Original publisher: mail sent to and from20 accounts; native Turkish titles/content exported as text",
+        "raw_mail_redistribution": false,
+        "sha256": "dc6d8f2e4b7ae8ace77b54521760f10940fd677238a39fb9f33578259c85a250",
+        "url": "https://www.kaggle.com/api/v1/datasets/download/emrahaydemr/turkish-mail-dataset-normalspam?datasetVersionNumber=1",
+        "version": 1
+      }
+    ],
+    "synthetic_or_translated": false
+  },
+  "split_policy": {
+    "families_disjoint": true,
+    "family_hash_buckets": "train 0..69; select 70..84; test 85..99",
+    "seed": "v83-ru-es-20261030",
+    "selection_uses_outcomes": false
+  },
+  "stats": {
+    "conflicting_identities_excluded": 1,
+    "duplicates": 67,
+    "input_rows": 1842,
+    "language_excluded": 307,
+    "retained_rows": 1409,
+    "unsupported_or_short": 58
+  },
+  "training_ready": true
+}

@@ -1,14 +1,16 @@
-name: MailGuard v83 bounded RU ES language sessions
+name: MailGuard v83 bounded RU ES TR language sessions
 on:
   push:
     branches: [mailguard-v83-ru-es-pilot-20261030]
     paths:
       - research/v83/ru.json
       - research/v83/es.json
+      - research/v83/tr.json
       - tools/train_v83_language.py
       - tools/fetch_v83_inputs.py
       - tools/fetch_v83_sources.py
       - tools/v83_data.py
+      - tests/python/test_v83_sources.py
       - .github/workflows/v83-language-month.yml
 permissions:
   contents: read
@@ -18,7 +20,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: [ru, es]
+        language: [ru, es, tr]
     runs-on: ubuntu-24.04
     timeout-minutes: 80
     concurrency:
@@ -39,6 +41,7 @@ jobs:
       - name: Verify data and budget guards
         run: |
           python -m unittest discover -s tests/python -p test_v83_data.py -v
+          python -m unittest discover -s tests/python -p test_v83_sources.py -v
           python -m unittest discover -s tests/python -p test_v83_language.py -v
       - name: Prepare and audit language email data
         id: corpus

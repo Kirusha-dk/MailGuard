@@ -1,4 +1,4 @@
-"""Prepare separate RU/ES pilot inputs; never substitute chats or invent labels."""
+"""Prepare separate RU/ES/TR pilot inputs; never substitute chats or invent labels."""
 import argparse
 import hashlib
 import json
@@ -54,7 +54,7 @@ def backbone(root):
 
 def prepare(language, root):
     import fasttext
-    from fetch_v83_sources import fetch_spanish
+    from fetch_v83_sources import fetch_spanish, fetch_turkish
     from v83_data import freeze
     output = root / language
     if output.exists():
@@ -68,7 +68,7 @@ def prepare(language, root):
         output.mkdir(parents=True)
         (output / 'data-audit.json').write_text(json.dumps(audit, indent=2) + '\n')
         return audit
-    rows, source = fetch_spanish(root / 'raw')
+    rows, source = (fetch_turkish(root / 'raw') if language == 'tr' else fetch_spanish(root / 'raw'))
     lid_path = root / 'raw/lid.176.ftz'
     fetch('https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.ftz', lid_path, LID_SHA, limit=2_000_000)
     lid = fasttext.load_model(str(lid_path))
@@ -83,7 +83,7 @@ def prepare(language, root):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--language', choices=['ru', 'es'], required=True)
+    parser.add_argument('--language', choices=['ru', 'es', 'tr'], required=True)
     parser.add_argument('--root', type=Path, default=Path('.cache/v83'))
     parser.add_argument('--backbone-only', action='store_true')
     args = parser.parse_args()
