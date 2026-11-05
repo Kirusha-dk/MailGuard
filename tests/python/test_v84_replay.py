@@ -11,7 +11,7 @@ from torch import nn
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'tools'))
 from v84_replay import begin_session, check_request, confusion, make_order, new_progress, run_steps
-from v84_replay_data import Pool
+from v84_replay_data import Pool, EmailSubstitution
 
 
 def request():
@@ -41,6 +41,13 @@ def state(rs):
 
 
 class ReplayTest(unittest.TestCase):
+    def test_email_fast_path_preserves_normalization(self):
+        import v77_mail
+        optimized=EmailSubstitution(v77_mail.ADDRESS)
+        for value in ('a'*10000,'already emailtoken normalized','a+b@example.com',
+                      'a+b@one.com+z@two.co.uk','text name@sub.example.org tail'):
+            self.assertEqual(optimized.sub(' emailtoken ',value),v77_mail.ADDRESS.sub(' emailtoken ',value))
+
     def test_date_window_future_and_budget(self):
         check_request(request(),dt.date(2026,11,5))
         for update in ({'session_id':'2026-11-06'},{'budget_rows':100000},{'expected_min_step':0}):

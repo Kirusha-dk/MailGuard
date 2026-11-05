@@ -76,10 +76,10 @@ manifest. A64-step checkpoint milestone and the remaining daily work share the
 same original50k/3125 budget. Artifacts contain only state/weights/aggregates;
 normalized public training text is confined to the runner cache.
 
-Seven engineering tests pass: exact interrupted optimizer/scheduler/RNG/cursor
+Eight engineering tests pass: exact interrupted optimizer/scheduler/RNG/cursor
 restoration, fixed-parameter preservation, original-target preservation, date
 and rollback guards,50k scheduling uniqueness, known-error prioritization,
-selection/conflict exclusion and HAM metric denominators. Invented fixtures in
+selection/conflict exclusion, HAM metric denominators and byte-equivalent email-normalization fast paths. Invented fixtures in
 these tests do not measure email quality. Real expanded-corpus training and
 six-month operation are **not yet verified**.
 

@@ -29,6 +29,15 @@ SOURCE_SHA = '65bdb680fe95f3d2f52d24d99af7b7d6490c03fc5508313e8f5edefb4672de41'
 ERROR_ZIP_SHA = '5dfc274f7d984940a0a8938a8171eaae4d6b1bcd55c2f36d90c3351e2528e9ab'
 
 
+class EmailSubstitution:
+    """An exact no-op fast path; the email pattern requires a literal @."""
+    def __init__(self, pattern):
+        self.pattern = pattern
+
+    def sub(self, replacement, text, count=0):
+        return self.pattern.sub(replacement,text,count=count) if '@' in text else text
+
+
 def sha(path):
     with Path(path).open('rb') as f:
         return hashlib.file_digest(f, 'sha256').hexdigest()
@@ -145,6 +154,10 @@ def error_rows(path, archive, work):
 
 
 def freeze(args):
+    import v77_mail
+    # Already normalized v64 excerpts usually contain emailtoken, not @.
+    # Avoid quadratic regex scans through long alphanumeric runs in that case.
+    v77_mail.ADDRESS = EmailSubstitution(v77_mail.ADDRESS)
     old_train = []; select = []; retired = []
     for root, ref in ((Path('.cache/v79/frozen'), 'reports/v79-frozen.json'),
                       (Path('.cache/v80/extra'), 'reports/v80-extra-frozen.json')):
