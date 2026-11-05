@@ -1,0 +1,10 @@
+{
+  "campaign": "v84-en-replay-20261105",
+  "start_date": "2026-11-05",
+  "end_date": "2027-05-04",
+  "session_id": "2026-11-05",
+  "budget_rows": 50000,
+  "budget_steps": 3125,
+  "expected_min_step": 8500,
+  "stage": "prepare"
+}
