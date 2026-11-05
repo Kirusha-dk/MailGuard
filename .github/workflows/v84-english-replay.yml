@@ -219,7 +219,9 @@ jobs:
                   for root in ('replay-state','research/v84'):
                       for p in Path(root).rglob('*'):
                           if p.is_file():z.write(p,str(p))
-                  for p in ('docs/v84-english-replay.md','.cache/v82/backbone/manifest.json'):
+                  for p in ('docs/v84-english-replay.md','docs/v84-source-attribution.md',
+                            'reports/v79-frozen.json','reports/v80-extra-frozen.json',
+                            'reports/v64-transfer-result.json','.cache/v82/backbone/manifest.json'):
                       z.write(p,p)
           PY
           if test -f v84-experiment-package.zip; then

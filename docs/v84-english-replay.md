@@ -93,3 +93,19 @@ if both cache and source artifacts become unavailable, stop and report missing
 inputs rather than change data or restart weights. Verify actual runner progress
 and throughput, and preserve final state/best adapters/metadata at any early stop
 or the end of the window. Do not claim daily50k completion until confirmed.
+
+## Activated controller
+
+One enabled controller: Automation_597c9b42f8388191b72b0e7e3bcd5ae1.
+Morning flexible schedule08:00–09:00 Europe/Moscow,6 November2026 through
+4 May2027 inclusive,180 scheduled occurrences following the initial5 November
+session. Stop earlier at exposure/epoch/early-stop limits and preserve final
+experimental package; do not automatically renew the campaign.
+
+Execution PR: https://github.com/Kirusha-dk/MailGuard/pull/10 .
+Initial run: https://github.com/Kirusha-dk/MailGuard/actions/runs/42025999444 .
+Each run's actual checkpoint, rows and optimizer steps are authoritative.
+Use [skip ci] for documentation-only bookkeeping commits on this PR: a PR path
+filter can otherwise see the whole PR diff and enqueue an unwanted replay.
+The controller changes cycle.json only when it intends a bounded training run.
+Source attribution accompanies packages: [source notes](v84-source-attribution.md).
