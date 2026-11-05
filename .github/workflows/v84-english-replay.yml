@@ -52,13 +52,24 @@ jobs:
           test -f .cache/v80/extra/frozen.json
           test -f .cache/v82/backbone/manifest.json
           python -u tools/fetch_v82_inputs.py
-      - uses: actions/download-artifact@v4
-        with:
-          name: mailguard-v82-english-20261020-state
-          run-id: '41973548171'
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          path: .cache/v84/warmstart
-      - uses: actions/cache@v4
+      - name: Restore the pinned parent from durable bootstrap or original artifact
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p .cache/v84/warmstart
+          if gh release view v84-bootstrap-20261105 >/dev/null 2>&1; then
+            gh release download v84-bootstrap-20261105 --pattern v84-parent-v82-step8500.zip --dir .cache/v84
+          else
+            gh api repos/${{ github.repository }}/actions/artifacts/13391817394/zip > .cache/v84/v84-parent-v82-step8500.zip
+          fi
+          python - <<'PY'
+          import hashlib,zipfile
+          from pathlib import Path
+          p=Path('.cache/v84/v84-parent-v82-step8500.zip')
+          if hashlib.sha256(p.read_bytes()).hexdigest()!='dd33b5c9853ab6a0abf31983adec418d365b3baff2072057d822f50894c52089':raise ValueError('Parent artifact drift')
+          with zipfile.ZipFile(p) as z:z.extractall('.cache/v84/warmstart')
+          PY
+      - uses: actions/cache/restore@v4
         id: replay-data
         with:
           path: .cache/v84/corpus
@@ -78,7 +89,12 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           mkdir -p .cache/v84/errors .cache/v84/raw
-          gh api repos/${{ github.repository }}/actions/artifacts/13362841375/zip > .cache/v84/errors/result.zip
+          if gh release view v84-bootstrap-20261105 >/dev/null 2>&1; then
+            gh release download v84-bootstrap-20261105 --pattern v84-consumed-audit.zip --dir .cache/v84/errors
+            mv .cache/v84/errors/v84-consumed-audit.zip .cache/v84/errors/result.zip
+          else
+            gh api repos/${{ github.repository }}/actions/artifacts/13362841375/zip > .cache/v84/errors/result.zip
+          fi
           curl -fsSL --retry 2 --max-time 240 https://untroubled.org/spam/2012.7z -o .cache/v84/raw/2012.7z
           python -u tools/v84_replay_data.py
       - name: Read stage and validate frozen manifest
@@ -97,6 +113,28 @@ jobs:
           if stage=='train' and json.loads(Path('research/v84/frozen.json').read_text())!=json.loads(Path('.cache/v84/corpus/manifest.json').read_text()):raise ValueError('Frozen corpus changed')
           with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('value='+stage+'\n')
           PY
+      - uses: actions/cache/save@v4
+        if: steps.replay-data.outputs.cache-hit != 'true'
+        with:
+          path: .cache/v84/corpus
+          key: v84-en-replay-frozen-20261105-v1
+      - name: Preserve immutable parent and audit metadata before artifact expiry
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! gh release view v84-bootstrap-20261105 >/dev/null 2>&1; then
+            mkdir -p .cache/v84/errors
+            if ! test -f .cache/v84/errors/result.zip; then
+              gh api repos/${{ github.repository }}/actions/artifacts/13362841375/zip > .cache/v84/errors/result.zip
+            fi
+            cp .cache/v84/errors/result.zip .cache/v84/v84-consumed-audit.zip
+            python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          if hashlib.sha256(Path('.cache/v84/v84-consumed-audit.zip').read_bytes()).hexdigest()!='5dfc274f7d984940a0a8938a8171eaae4d6b1bcd55c2f36d90c3351e2528e9ab':raise ValueError('Consumed audit drift')
+          PY
+            gh release create v84-bootstrap-20261105 .cache/v84/v84-parent-v82-step8500.zip .cache/v84/v84-consumed-audit.zip research/v84/frozen.json --prerelease --target mailguard-v84-english-replay-20261105 --title "Experimental v84 immutable parent and provenance" --notes-file docs/v84-release-notes.md
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: mailguard-v84-en-20261105-data-audit
@@ -116,7 +154,12 @@ jobs:
               const runs=await github.rest.actions.listWorkflowRuns({...context.repo,workflow_id:'v84-english-replay.yml',per_page:100});
               const past=runs.data.workflow_runs.filter(r=>r.id!==context.runId&&r.head_branch==='mailguard-v84-english-replay-20261105'&&r.status==='completed');
               const fs=require('fs');const r=JSON.parse(fs.readFileSync('research/v84/cycle.json'));
-              if(r.expected_min_step!==8500||r.session_id!==r.start_date||past.some(x=>x.conclusion==='failure'))throw new Error('Continuation checkpoint missing; no restart');
+              if(r.expected_min_step!==8500||r.session_id!==r.start_date)throw new Error('Continuation checkpoint missing; no restart');
+              for(const run of past){
+                const jobs=await github.rest.actions.listJobsForWorkflowRun({...context.repo,run_id:run.id,per_page:100});
+                const attempted=jobs.data.jobs.some(j=>j.steps.some(s=>s.name==='Execute first64 steps inside the original daily target'&&s.conclusion!=='skipped'&&s.started_at));
+                if(attempted)throw new Error('Earlier training invocation has no surviving checkpoint; refusing restart');
+              }
               core.setOutput('name','');core.setOutput('run','');
             }
       - uses: actions/download-artifact@v4
@@ -181,5 +224,7 @@ jobs:
           PY
           if test -f v84-experiment-package.zip; then
             session=$(python -c "import json; print(json.load(open('replay-state/report.json'))['session'])")
-            gh release create "v84-experiment-$session" v84-experiment-package.zip --prerelease --target mailguard-v84-english-replay-20261105 --title "Experimental v84 checkpoint $session" --notes-file docs/v84-release-notes.md
+            if ! gh release view "v84-experiment-$session" >/dev/null 2>&1; then
+              gh release create "v84-experiment-$session" v84-experiment-package.zip --prerelease --target mailguard-v84-english-replay-20261105 --title "Experimental v84 checkpoint $session" --notes-file docs/v84-release-notes.md
+            fi
           fi

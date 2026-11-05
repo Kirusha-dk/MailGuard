@@ -6,5 +6,5 @@
   "budget_rows": 50000,
   "budget_steps": 3125,
   "expected_min_step": 8500,
-  "stage": "prepare"
+  "stage": "train"
 }

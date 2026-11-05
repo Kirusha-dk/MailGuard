@@ -1,4 +1,4 @@
-# v84 English replay: prepared experiment, not activated
+# v84 English replay: separately authorized bounded campaign
 
 User-authorized design: expand the English corpus, reuse previously evaluated
 public emails (especially errors), target up to50,000 distinct rows per date,
@@ -6,12 +6,16 @@ and allow up to six calendar months. Proposed bounded window5 November2026
 through4 May2027 inclusive. Early stopping and finite exposure limits can stop
 much earlier; the duration is not a promise of six months of useful training.
 
-Current stage is **prepare**, not completed training or an active daily service.
-No new controller/cron/task has been created. The latest RU/ES/TR instruction
-preserves the original v82 request/schedule/weights and prohibits new tasks;
-activation of an English replay controller is therefore left pending. The
-existing v82 monthly campaign remains unchanged. This branch is a separate
-experiment, not a modification to its checkpoint metadata or original schedule.
+Activation authorized5 November2026. A separate daily v84 controller runs within
+the bounded window while original v82 and the RU/ES/TR controller remain unchanged.
+Only one v84 controller is permitted. The initial training invocation must be
+verified from its actual Actions checkpoint; activation is not proof that a
+50,000-row session completed.
+
+Frozen corpus:358,657 TRAIN (223,550 SPAM/135,107 HAM),22,790 SELECT.
+All640 recovered original false negatives are retained. This is an expansion
+from90,680 v82 TRAIN rows, not a million-row corpus. New independent test
+quality has not been measured.
 
 ## Data conversion and honest evaluation
 
@@ -67,7 +71,7 @@ completed sessions following an epoch, or at the exposure/pass cap. Never
 repeat a completed date, request a future date or silently restart a missing
 checkpoint. CPU-only invocations are bounded, not continuous services.
 
-## Prepared workflow and remaining activation work
+## Activation and verification
 
 The draft workflow uses a draft PR into the existing external-experiment branch
 to restore its exact public reference-data cache. It has no schedule trigger.
@@ -80,11 +84,12 @@ Eight engineering tests pass: exact interrupted optimizer/scheduler/RNG/cursor
 restoration, fixed-parameter preservation, original-target preservation, date
 and rollback guards,50k scheduling uniqueness, known-error prioritization,
 selection/conflict exclusion, HAM metric denominators and byte-equivalent email-normalization fast paths. Invented fixtures in
-these tests do not measure email quality. Real expanded-corpus training and
-six-month operation are **not yet verified**.
+these tests do not measure email quality. Actual optimizer progress and daily results must be verified from Actions.
+A six-month date window is not six months of completed training.
 
-Before activation: commit and reproduce the actual frozen manifest, verify the
-runner cache/CPU throughput and real optimizer milestone, establish durable
-parent/bootstrap storage before source artifact expiry, and resolve the
-controller scope against the latest instruction preserving v82/no new tasks.
-Do not claim daily50k training or a million-row corpus until actually confirmed.
+The frozen manifest is committed. Bootstrap parent/audit metadata are preserved
+as a prerelease before training. Corpus caches must match the frozen manifest;
+if both cache and source artifacts become unavailable, stop and report missing
+inputs rather than change data or restart weights. Verify actual runner progress
+and throughput, and preserve final state/best adapters/metadata at any early stop
+or the end of the window. Do not claim daily50k completion until confirmed.
