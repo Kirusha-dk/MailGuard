@@ -1,0 +1,14 @@
+{
+  "language": "es",
+  "campaign": "v83-es-20261102",
+  "step": 321,
+  "checkpoint_sha256": "de136399827c1b01c32c8d0feb3c5d22d4d3f6c202ed3a30d1dff58b4f60219f",
+  "source_run_id": 41984131163,
+  "state_artifact_id": 13395815717,
+  "state_artifact_name": "mailguard-v83-es-20261102-state",
+  "training_commit": "a5eb106f6f7421bb0d74647622bd00827b38800d",
+  "release_tag": "mailguard-v83-es-20261102-final",
+  "metadata_path": "reports/v83-daily/es-2026-11-05-package-metadata.json",
+  "verification_path": "reports/v83-daily/es-2026-11-05-verification.json",
+  "expected_package_sha256": "5cbfecfe0e93228f80b218b1c2d3fa5bdb2ea7032ab16a26dcf62f4278d34d06"
+}
