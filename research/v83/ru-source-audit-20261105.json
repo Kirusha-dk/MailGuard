@@ -145,5 +145,42 @@
       "Create provenance, label map, language filter, split and frozen manifest before changing data gate or requests.",
       "Treat new corpus as a new explicit data version, never as continuation under changed old metadata."
     ]
+  },
+  "large_scale_followup": {
+    "requested_scale": "Several million authentic unique emails; no approved corpus of that scale established yet",
+    "webis_gmane_19": {
+      "source_url": "https://webis.de/data/webis-gmane-19.html",
+      "record_url": "https://zenodo.org/records/3766984",
+      "paper_url": "https://aclanthology.org/2020.acl-main.108/",
+      "publisher_reported_all_language_email_count": 153310330,
+      "confirmed_russian_email_count": null,
+      "spam_ham_annotations_established": false,
+      "zenodo_access_right_observed": "restricted",
+      "public_download_files_observed": 0,
+      "internet_archive_access_restricted": true,
+      "paper_release_policy": "Access solely to researchers and academic institutions; no further distribution for non-academic purposes (section5).",
+      "downloaded_email_count": 0,
+      "training_rows_accepted": 0
+    },
+    "alt_index_inventory": {
+      "community": 312,
+      "sisyphus": 310,
+      "devel": 313,
+      "unit": "Distinct downloadable monthly .txt.gz links in current public index; not message counts",
+      "total_month_archives": 935,
+      "russian_unique_ham_total": null,
+      "duplicate_or_crosspost_overlap_not_measured": true
+    },
+    "pangeanic": {
+      "source_url": "https://pangeanic.com/data-for-ai/business-email-datasets",
+      "vendor_claim_russian_messages_delivered_in_past": 500000,
+      "available_native_email_inventory_verified": false,
+      "free_public_download": false,
+      "purpose_built_content_may_be_included": true,
+      "contacted": false,
+      "purchased": false
+    },
+    "synthetic_multimillion_email_corpora_excluded": true,
+    "scope": "Source inventory and access check only, zero model training; overall source size must not be reported as native-RU HAM size."
   }
 }
