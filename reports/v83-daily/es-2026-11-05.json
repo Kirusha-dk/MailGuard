@@ -78,5 +78,14 @@
   "state_artifact_zip_sha256": "2187b9382216e9af28850ab55aa36bfd6aca16b132d77877e145214654313207",
   "remaining_optimizer_steps_to3epochs": 0,
   "verification_optimizer_steps": 0,
-  "select_metrics_independently_recomputed": true
+  "select_metrics_independently_recomputed": true,
+  "durable_experimental_package": {
+    "release_url": "https://github.com/Kirusha-dk/MailGuard/releases/tag/mailguard-v83-es-20261102-final",
+    "asset_url": "https://github.com/Kirusha-dk/MailGuard/releases/download/mailguard-v83-es-20261102-final/mailguard-v83-stopped-experiment.zip",
+    "sha256": "5cbfecfe0e93228f80b218b1c2d3fa5bdb2ea7032ab16a26dcf62f4278d34d06",
+    "archive_run_id": 41985863763,
+    "published_and_download_verified": true,
+    "prerelease": true,
+    "raw_mail_included": false
+  }
 }
