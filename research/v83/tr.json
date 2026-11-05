@@ -3,7 +3,7 @@
   "campaign": "v83-tr-20261104",
   "start_date": "2026-11-04",
   "end_date": "2026-12-03",
-  "session_id": "2026-11-04",
+  "session_id": "2026-11-05",
   "budget_steps": 100,
-  "expected_min_step": 0
+  "expected_min_step": 100
 }
