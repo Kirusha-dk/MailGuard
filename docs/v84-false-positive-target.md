@@ -1,6 +1,6 @@
 # False-positive investigation — 2026-11-05
 
-User requested a reduction toward 100 false positives on the existing 12,201-HAM SELECT. This corresponds to FPR 0.8196%, not 10 per million. No such result has been demonstrated. SELECT is development and cannot establish independent transfer.
+User requested a reduction toward 100 false positives on the existing 12,201-HAM SELECT. This corresponds to FPR 0.8196%, not 10 per million. The recovered November6 audit measured100 FP at83.7662% recall on the November5 checkpoint;100 FP together with98% recall has not been demonstrated. SELECT is development and cannot establish independent transfer. Full verified results: [FP-budget audit](../reports/v84-audits/2026-11-05-fp-budget.md).
 
 Verified daily aggregates:
 
@@ -19,5 +19,7 @@ The existing threshold is selected for ~98% recall, with no hard FP cap. Raising
 The audit was started locally on the exact completed checkpoint SHA256 `71c7cfbe41d0c0b3b8369dc60d3970b6ce3b75d155f76d6240304dffae5a9425`. The environment restart left no running process or completed output on November6; the last confirmed progress was 6,176 / 22,790 rows and no scores had been persisted. This is an interrupted audit, not a completed result. Do not claim a verified 100-FP candidate until final JSON passes report-count and checkpoint-hash checks. The existing workflow now recovers the November5 audit once from that exact completed checkpoint, before November6 gradients, with a 30-minute ceiling; an audit failure does not prevent the independently validated training continuation. Score prefixes are saved atomically every256 rows, included in the state artifact, and checked against checkpoint and row identities on retry. No new cron or controller is used. No independent test was performed.
 
 Completed daily v84 evaluations now also save hashes, sources, labels and probabilities in state artifacts, with a checkpoint-hash metadata sidecar. Exploratory FP-budget operating points are computed from those existing predictions without extra inference or gradients. This reporting addition changes neither optimizer/scheduler/RNG/cursor restoration, sampling, training loss, fixed parent threshold, fitted98 rule, nor early stopping. The frozen manifest is unchanged.
+
+Recovery completed successfully in run42168514797. The100-FP point has TP8,870 /FN1,719 /TN12,101, recall83.7662%; all22,790 cached row identities, labels, sources and confusion counts were independently verified. No gradients were executed by the audit. The earlier pending status is resolved.
 
 Run: https://github.com/Kirusha-dk/MailGuard/actions/runs/42025999444 . The original v82 and other language campaigns are unchanged. Current training already applies extra HAM cost and extra cost to observed TRAIN errors; that does not guarantee 100 FP. Further training experiments must prioritize verified difficult TRAIN HAM without placing SELECT errors into gradients, preserve state and frozen data, and measure recall as well as FPR. A change in sampling or loss requires an explicit experiment rather than pretending it is identical continuation.
