@@ -125,7 +125,8 @@ def main():
         retired_tests_used_as_training=True,new_independent_test_performed=False,
         development=None,stopped=False)
     if done:
-        metrics=development(model,tokenizer,select,text_tokenizer);report['development']=metrics
+        metrics=development(model,tokenizer,select,text_tokenizer,
+                            score_cache=args.state.parent/'select-scores.npz');report['development']=metrics
         improved=(metrics['fp'],metrics['log_loss'])<(progress['best_fp'],progress['best_loss'])
         if improved:
             progress.update(best_fp=metrics['fp'],best_loss=metrics['log_loss'],stalled=0)
@@ -140,6 +141,12 @@ def main():
                       best_development_fp=progress['best_fp'],early_stop_stalled=progress['stalled'])
         progress['last_report']=report; save()
     report['checkpoint_sha256']=sha(args.state)
+    if done:
+        (args.state.parent/'select-scores-metadata.json').write_text(json.dumps(dict(
+            checkpoint_sha256=report['checkpoint_sha256'],
+            global_optimizer_steps=progress['step'],session=request['session_id'],
+            select_fingerprint=manifest['select_fingerprint'],is_development=True,
+            is_independent_test=False,optimizer_steps_for_evaluation=0),indent=2)+'\n')
     (args.state.parent/'report.json').write_text(json.dumps(report,indent=2)+'\n')
     print(json.dumps(report,indent=2),flush=True)
 

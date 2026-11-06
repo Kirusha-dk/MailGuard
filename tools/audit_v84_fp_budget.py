@@ -8,7 +8,7 @@ import torch
 from transformers import AutoModel, AutoTokenizer
 
 from v82_neural import NeuralMail, load_trainable, text_tokenizer
-from v84_replay import confusion
+from v84_replay import confusion, fp_budget_points
 from v84_replay_data import fingerprint, read_rows, sha
 
 
@@ -42,10 +42,34 @@ def main():
     load_trainable(model, saved['adapter'])
     model.eval()
     values = []
+    if args.scores.is_file():
+        with np.load(args.scores, allow_pickle=False) as cached:
+            if str(cached['checkpoint_sha256']) != before:
+                raise ValueError('Score cache belongs to another checkpoint')
+            values = cached['scores'].tolist()
+            if (len(values) > len(rows) or cached['identity'].tolist() !=
+                    [r['identity'] for r in rows[:len(values)]] or
+                    cached['y'].tolist() != [r['y'] for r in rows[:len(values)]] or
+                    not np.isfinite(values).all()):
+                raise ValueError('Invalid partial score cache')
+        print(f'Restored {len(values)} scores from the same checkpoint', flush=True)
+    args.scores.parent.mkdir(parents=True, exist_ok=True)
+
+    def save_scores():
+        temporary = args.scores.with_suffix('.partial.npz')
+        np.savez_compressed(temporary, scores=np.asarray(values),
+            y=np.array([r['y'] for r in rows[:len(values)]]),
+            source=np.array([r['source'] for r in rows[:len(values)]]),
+            identity=np.array([r['identity'] for r in rows[:len(values)]]),
+            checkpoint_sha256=np.array(before))
+        temporary.replace(args.scores)
+
     with torch.inference_mode():
-        for start in range(0, len(rows), 32):
+        for start in range(len(values), len(rows), 32):
             values.extend(model(**text_tokenizer(tokenizer,
                 [r['text'] for r in rows[start:start + 32]], 192)).sigmoid().tolist())
+            if len(values) % 256 == 0 or len(values) == len(rows):
+                save_scores()
             if start % 2048 == 0:
                 print(f'Scored {len(values)}/{len(rows)} SELECT rows; optimizer steps=0', flush=True)
     y = np.array([r['y'] for r in rows])
@@ -62,15 +86,8 @@ def main():
             by_source={s: confusion(y[source == s], scores[source == s], float(threshold))
                        for s in sorted(set(source))})
 
-    # Smallest strictly greater-than-(budget+1)th highest HAM score.
-    # Predictions use >=; nextafter excludes the tied boundary conservatively.
-    ham_descending = np.sort(scores[y == 0])[::-1]
-    frontier = {}
-    for budget in (1000, 500, 250, 100, 50, 10, 0):
-        threshold = float(np.nextafter(ham_descending[budget], np.inf))
-        result = describe(threshold)
-        assert result['fp'] <= budget
-        frontier[str(budget)] = result
+    frontier = {budget: describe(point['threshold'])
+                for budget, point in fp_budget_points(y, scores).items()}
     result = dict(run_url='https://github.com/Kirusha-dk/MailGuard/actions/runs/42025999444',
         checkpoint_sha256=before, global_optimizer_steps=saved['progress']['step'],
         is_development=True, is_independent_test=False,
@@ -84,9 +101,7 @@ def main():
         checkpoint_unchanged=sha(checkpoint) == before,
         note='FP budget thresholds fitted to SELECT HAM labels; exploratory development only. No source-specific exemptions, relabeling, optimizer, or production changes.')
     assert result['checkpoint_unchanged']
-    args.scores.parent.mkdir(parents=True, exist_ok=True)
-    np.savez_compressed(args.scores, y=y, scores=scores, source=source,
-        identity=np.array([r['identity'] for r in rows]), checkpoint_sha256=np.array(before))
+    save_scores()
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, indent=2) + '\n')
     print(json.dumps({k: {name: r[name] for name in ('threshold', 'tp', 'fp', 'fn', 'tn', 'recall', 'fpr')}

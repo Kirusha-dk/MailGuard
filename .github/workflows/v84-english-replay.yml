@@ -169,6 +169,37 @@ jobs:
           run-id: ${{ steps.previous.outputs.run }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           path: replay-state
+      - name: Recover interrupted November5 FP-budget audit without gradients
+        if: steps.stage.outputs.value == 'train'
+        continue-on-error: true
+        timeout-minutes: 30
+        run: |
+          python - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          state=Path('replay-state');report=state/'report.json'
+          if not report.is_file():
+            print('No completed previous checkpoint to audit');raise SystemExit(0)
+          r=json.loads(report.read_text())
+          output=state/'historical-audits/2026-11-05-fp-budget.json'
+          if output.is_file():
+            a=json.loads(output.read_text())
+            if a['checkpoint_sha256']!='71c7cfbe41d0c0b3b8369dc60d3970b6ce3b75d155f76d6240304dffae5a9425' or not a['original_report_counts_reproduced']:
+              raise ValueError('Historical audit identity mismatch')
+            print('Verified historical audit already preserved; no repeated inference')
+          elif r['session']=='2026-11-05' and r['session_complete'] and r['global_optimizer_steps']==11625:
+            subprocess.run(['python','-u','tools/audit_v84_fp_budget.py','--state',str(state),
+              '--output',str(output),'--scores',str(state/'historical-audits/2026-11-05-select-scores.npz')],check=True)
+          else:
+            print('Current checkpoint differs from November5; no substitution for old audit')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.stage.outputs.value == 'train'
+        with:
+          name: mailguard-v84-en-20261105-fp-budget-audit
+          path: replay-state/historical-audits/
+          retention-days: 90
+          if-no-files-found: warn
       - name: Execute first64 steps inside the original daily target
         if: steps.stage.outputs.value == 'train'
         timeout-minutes: 15
@@ -201,7 +232,13 @@ jobs:
             const head=await github.rest.git.getRef({...context.repo,ref:'heads/'+branch});const expected=head.data.object.sha;
             const base=await github.rest.git.getCommit({...context.repo,commit_sha:expected});
             const blob=await github.rest.git.createBlob({...context.repo,content:JSON.stringify(r,null,2)+'\n',encoding:'utf-8'});
-            const tree=await github.rest.git.createTree({...context.repo,base_tree:base.data.tree.sha,tree:[{path:'reports/v84-daily/'+r.session+'.json',mode:'100644',type:'blob',sha:blob.data.sha}]});
+            const entries=[{path:'reports/v84-daily/'+r.session+'.json',mode:'100644',type:'blob',sha:blob.data.sha}];
+            const auditPath='replay-state/historical-audits/2026-11-05-fp-budget.json';
+            if(fs.existsSync(auditPath)){
+              const audit=await github.rest.git.createBlob({...context.repo,content:fs.readFileSync(auditPath,'utf8'),encoding:'utf-8'});
+              entries.push({path:'reports/v84-audits/2026-11-05-fp-budget.json',mode:'100644',type:'blob',sha:audit.data.sha});
+            }
+            const tree=await github.rest.git.createTree({...context.repo,base_tree:base.data.tree.sha,tree:entries});
             const commit=await github.rest.git.createCommit({...context.repo,message:'Record completed v84 replay '+r.session,tree:tree.data.sha,parents:[expected]});
             const actual=await github.rest.git.getRef({...context.repo,ref:'heads/'+branch});if(actual.data.object.sha!==expected)throw new Error('Branch changed; report remains in artifact');
             await github.rest.git.updateRef({...context.repo,ref:'heads/'+branch,sha:commit.data.sha,force:false});

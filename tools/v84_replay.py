@@ -156,7 +156,28 @@ def confusion(labels, scores, threshold):
                 fpr=fp/ham if ham else None, fp_per_million_ham=fp/ham*1e6 if ham else None)
 
 
-def development(model, tokenizer, rows, tokenize):
+def fp_budget_points(labels, scores, budgets=(1000, 500, 250, 100, 50, 10, 0)):
+    """Exploratory SELECT fits, with conservative handling of tied HAM scores."""
+    import numpy as np
+    y = np.asarray(labels); s = np.asarray(scores, dtype=np.float64)
+    if y.shape != s.shape or not np.isfinite(s).all():
+        raise ValueError('Invalid FP-budget inputs')
+    ham_descending = np.sort(s[y == 0])[::-1]
+    if not len(ham_descending):
+        return {}
+    result = {}
+    for budget in budgets:
+        if type(budget) is not int or not 0 <= budget < len(ham_descending):
+            raise ValueError('Invalid FP budget')
+        threshold = float(np.nextafter(ham_descending[budget], np.inf))
+        point = confusion(y, s, threshold)
+        if point['fp'] > budget:
+            raise ValueError('FP budget exceeded')
+        result[str(budget)] = point
+    return result
+
+
+def development(model, tokenizer, rows, tokenize, score_cache=None):
     import numpy as np
     model.eval(); values = []
     with torch.no_grad():
@@ -168,8 +189,13 @@ def development(model, tokenizer, rows, tokenize):
     cutoff = float(spam[int(math.floor(.02*len(spam)))])
     result = confusion(y, s, cutoff)
     clipped = np.clip(s, 1e-7, 1-1e-7)
+    if score_cache is not None:
+        np.savez_compressed(score_cache, y=y, scores=s,
+            source=np.array([r['source'] for r in rows]),
+            identity=np.array([r['identity'] for r in rows]))
     result.update(log_loss=float(-(y*np.log(clipped)+(1-y)*np.log(1-clipped)).mean()),
         fixed_parent_threshold=confusion(y, s, FIXED_THRESHOLD),
+        fp_budget_operating_points=fp_budget_points(y, s),
         is_development=True, is_independent_test=False,
         threshold_selected_on_same_development=True,
         by_source={source: confusion([r['y'] for r in rows if r['source']==source],

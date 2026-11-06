@@ -10,7 +10,7 @@ import torch
 from torch import nn
 
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'tools'))
-from v84_replay import begin_session, check_request, confusion, make_order, new_progress, run_steps
+from v84_replay import begin_session, check_request, confusion, fp_budget_points, make_order, new_progress, run_steps
 from v84_replay_data import Pool, EmailSubstitution
 
 
@@ -112,6 +112,18 @@ class ReplayTest(unittest.TestCase):
         self.assertEqual((m['tp'],m['fp'],m['fn'],m['tn']),(1,1,1,1))
         self.assertEqual(m['fpr'],.5)
         self.assertIsNone(confusion([1],[.9],.5)['fpr'])
+
+    def test_fp_budget_ties_are_excluded_and_tradeoff_is_reported(self):
+        labels = [0, 0, 0, 0, 1, 1, 1]
+        scores = [.9, .8, .8, .1, .95, .85, .2]
+        points = fp_budget_points(labels, scores, budgets=(0, 1, 2))
+        self.assertEqual((points['0']['fp'], points['0']['tp']), (0, 1))
+        self.assertEqual((points['2']['fp'], points['2']['tp']), (1, 2))
+        self.assertEqual(points['2']['fp'] + points['2']['tn'], 4)
+        self.assertEqual(points, fp_budget_points(labels[::-1], scores[::-1], budgets=(0, 1, 2)))
+        self.assertEqual(fp_budget_points([1], [.5], budgets=(0,)), {})
+        with self.assertRaises(ValueError):
+            fp_budget_points([0], [float('nan')], budgets=(0,))
 
 
 if __name__=='__main__':unittest.main()
