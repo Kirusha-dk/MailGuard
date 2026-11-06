@@ -1,0 +1,38 @@
+{
+  "es": {
+    "step": 321,
+    "epoch": 3,
+    "cursor": 0,
+    "stopped": true,
+    "checkpoint_sha256": "de136399827c1b01c32c8d0feb3c5d22d4d3f6c202ed3a30d1dff58b4f60219f",
+    "adam_scheduler_rng_cursor_present": true,
+    "optimizer_parameter_states": 50,
+    "active_session": null,
+    "completed_sessions": [
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04",
+      "2026-11-05"
+    ],
+    "expected_lora_matrices": 48
+  },
+  "tr": {
+    "step": 200,
+    "epoch": 1,
+    "cursor": 600,
+    "stopped": false,
+    "checkpoint_sha256": "f69e753bbb0b02e157ffe126b04ca1af7e1c4708ab26f1543a8a85461dc3d1f7",
+    "adam_scheduler_rng_cursor_present": true,
+    "optimizer_parameter_states": 50,
+    "active_session": null,
+    "completed_sessions": [
+      "2026-11-04",
+      "2026-11-05"
+    ],
+    "expected_lora_matrices": 48
+  },
+  "ru": {
+    "training_ready": false,
+    "optimizer_steps": 0
+  }
+}
