@@ -1,14 +1,14 @@
 {
-  "language": "es",
-  "campaign": "v83-es-20261102",
-  "step": 321,
-  "checkpoint_sha256": "de136399827c1b01c32c8d0feb3c5d22d4d3f6c202ed3a30d1dff58b4f60219f",
-  "source_run_id": 41984131163,
-  "state_artifact_id": 13395815717,
-  "state_artifact_name": "mailguard-v83-es-20261102-state",
-  "training_commit": "a5eb106f6f7421bb0d74647622bd00827b38800d",
-  "release_tag": "mailguard-v83-es-20261102-final",
-  "metadata_path": "reports/v83-daily/es-2026-11-05-package-metadata.json",
-  "verification_path": "reports/v83-daily/es-2026-11-05-verification.json",
-  "expected_package_sha256": "5cbfecfe0e93228f80b218b1c2d3fa5bdb2ea7032ab16a26dcf62f4278d34d06"
+  "language": "tr",
+  "campaign": "v83-tr-20261104",
+  "step": 375,
+  "checkpoint_sha256": "45231c50e42425c533b4fc4353f36073b305e5ace3e42b74573e79673876abee",
+  "source_run_id": 42348559504,
+  "state_artifact_id": 13564672665,
+  "state_artifact_name": "mailguard-v83-tr-20261104-state",
+  "training_commit": "98757980c1d40d497c78c0e70a5bae03655b1fb0",
+  "release_tag": "mailguard-v83-tr-20261104-final",
+  "metadata_path": "reports/v83-daily/tr-2026-11-07-package-metadata.json",
+  "verification_path": "reports/v83-daily/tr-2026-11-07-verification.json",
+  "expected_package_sha256": "1eaa034210f4c8dcef5cf9571da31e8903a9fbfe128aaa0f4264a2a549d13fa9"
 }
