@@ -1,0 +1,16 @@
+{
+  "automation_id": "Automation_597c9b42f8388191b72b0e7e3bcd5ae1",
+  "title": "MailGuard — английская v84",
+  "enabled": true,
+  "timezone": "Europe/Moscow",
+  "schedule": "BEGIN:VEVENT\nDTSTART;TZID=Europe/Moscow:20261106T080000\nRRULE:FREQ=DAILY;COUNT=180\nEND:VEVENT",
+  "timing_mode": "flexible_schedule",
+  "campaign": "v84-en-replay-20261105",
+  "start_date": "2026-11-05",
+  "end_date": "2027-05-04",
+  "pr_url": "https://github.com/Kirusha-dk/MailGuard/pull/10",
+  "first_run_url": "https://github.com/Kirusha-dk/MailGuard/actions/runs/42025999444",
+  "v82_controller_unchanged": true,
+  "ru_es_tr_controller_unchanged": true,
+  "only_one_v84_controller": true
+}
