@@ -1,0 +1,21 @@
+{
+  "verification_code_sha256": "71d079f5642cef857c8cee30a99789fd48ed964ddbc09983c9712e35af0e6246",
+  "verified_cohorts": [
+    "Nazario-2024-247",
+    "block-01",
+    "block-02",
+    "block-03",
+    "block-04",
+    "block-05",
+    "block-06",
+    "block-07",
+    "block-08",
+    "block-09",
+    "block-10"
+  ],
+  "numpy_cache_counts_and_individual_transitions_reproduced": true,
+  "published_v80_per_block_and_aggregate_source_counts_reproduced": true,
+  "score_cache_has_only_hash_identities_labels_and_scores": true,
+  "all_11_cohorts_complete": true,
+  "comparison_report_sha256": "ae623ac26129a1c97b8ee52d0d3023c42d5e24598357b51b9f864557677ff071"
+}

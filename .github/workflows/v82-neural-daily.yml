@@ -1,0 +1,122 @@
+name: MailGuard v82 bounded English neural continuation
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v82-neural-month]
+    paths:
+      - research/v82/cycle.json
+      - tools/v82_neural.py
+      - tools/train_v82_daily.py
+      - tools/fetch_v82_inputs.py
+      - requirements-v82.txt
+      - .github/workflows/v82-neural-daily.yml
+
+permissions:
+  contents: read
+concurrency:
+  group: mailguard-v82-neural-campaign
+  cancel-in-progress: false
+
+jobs:
+  continue-neural-training:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    permissions:
+      contents: write
+      actions: read
+    env:
+      OMP_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_TELEMETRY: '1'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install bounded CPU training environment
+        run: |
+          python -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements-v82.txt
+      - name: Verify exact continuation and frozen original weights
+        run: python -m unittest discover -s tests/python -p test_v82_neural.py -v
+      - uses: actions/cache@v4
+        with:
+          path: |
+            .cache/v82/backbone
+            .cache/v79/frozen
+            .cache/v80/extra
+          key: v82-pinned-english-corpus-and-minilm-1110a243-v1
+      - name: Acquire and verify pinned public inputs
+        timeout-minutes: 35
+        run: python -u tools/fetch_v82_inputs.py
+      - name: Find previous campaign checkpoint
+        uses: actions/github-script@v7
+        id: previous
+        with:
+          script: |
+            const fs = require('fs');
+            const request = JSON.parse(fs.readFileSync('research/v82/cycle.json', 'utf8'));
+            if (!/^v82-english-[0-9]{8}$/.test(request.campaign)) throw new Error('Invalid campaign');
+            const name = `mailguard-${request.campaign}-state`;
+            core.setOutput('name', name);
+            const artifacts = await github.paginate(github.rest.actions.listArtifactsForRepo,
+              {...context.repo, per_page: 100});
+            const matches = artifacts.filter(a => a.name === name && !a.expired)
+              .sort((a,b) => b.id - a.id);
+            if (!matches.length && request.expected_min_step > 0) throw new Error('Required checkpoint missing');
+            core.setOutput('run', matches.length ? String(matches[0].workflow_run.id) : '');
+      - name: Restore optimizer, adapters and data cursor
+        if: steps.previous.outputs.run != ''
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.previous.outputs.name }}
+          run-id: ${{ steps.previous.outputs.run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: neural-state
+      - name: Continue one bounded training session
+        timeout-minutes: 55
+        run: python -u tools/train_v82_daily.py --request research/v82/cycle.json
+      - name: Summarize development observations
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          r = json.loads(Path('neural-state/report.json').read_text())
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as f:
+              f.write('## English neural training, development only\n\n')
+              restored = r.get('checkpoint_restored_in_invocation', r['resumed'])
+              f.write(f"Global optimizer steps: {r['global_optimizer_steps']}; checkpoint restored: {restored}.\n\n")
+              if 'invocation_optimizer_steps' in r:
+                  f.write(f"Optimizer steps in this invocation: {r['invocation_optimizer_steps']}.\n\n")
+              f.write(f"SELECT FP at development-selected ~98% recall: {r['development']['fp']}.\n\n")
+              f.write('No production promotion; no independent quality gain or million-mail FP claim. v80 remains unchanged.\n')
+          PY
+      - name: Persist continuation state, including interrupted training
+        if: always() && steps.previous.outputs.name != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.previous.outputs.name }}
+          path: neural-state/
+          retention-days: 45
+          if-no-files-found: warn
+      - name: Commit only the small development report
+        if: success()
+        env:
+          REPORT_BRANCH: mailguard-v82-neural-month
+        run: |
+          cp neural-state/report.json /tmp/v82-development-report.json
+          session=$(python -c "import json; print(json.load(open('neural-state/report.json'))['session'])")
+          git fetch origin "$REPORT_BRANCH"
+          git checkout -B "$REPORT_BRANCH" "origin/$REPORT_BRANCH"
+          mkdir -p reports/v82-daily
+          cp /tmp/v82-development-report.json "reports/v82-daily/$session.json"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f "reports/v82-daily/$session.json"
+          if ! git diff --cached --quiet; then
+            git commit -m "Record v82 neural development session $session"
+            git push origin "$REPORT_BRANCH"
+          fi

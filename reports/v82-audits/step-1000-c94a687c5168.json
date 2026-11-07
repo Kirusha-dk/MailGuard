@@ -1,0 +1,1908 @@
+{
+  "campaign": "v82-english-20261020",
+  "global_optimizer_steps": 1000,
+  "current_checkpoint_sha256": "c94a687c5168fd9635abaa615a007bcb6be3aa3a7855deea5e24e1bb7ebe1f9a",
+  "corpus_fingerprints": {
+    "train": "6958e55f52c5b18eb74c85b2e66f796b3a4ef826767487bf9d87066e1f4aee5b",
+    "select": "88acb130d5c5174823ccea518339fd63cceef356945a94225e184ef04110892f"
+  },
+  "seen_train_sample_fingerprint": "3d0c2b00e7c060cf7287d08cbcd891593a61b38fdd0bd411fed0d8f09e95caf8",
+  "backbone_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "train_seen_population": 16000,
+  "seen_train_sample": {
+    "at_locked_development_threshold": {
+      "n": 10000,
+      "spam": 4683,
+      "ham": 5317,
+      "tp": 4603,
+      "fp": 888,
+      "fn": 80,
+      "tn": 4429,
+      "recall": 0.9829169335895793,
+      "fpr": 0.1670114726349445
+    },
+    "at_predefined_threshold_0_5": {
+      "n": 10000,
+      "spam": 4683,
+      "ham": 5317,
+      "tp": 4245,
+      "fp": 178,
+      "fn": 438,
+      "tn": 5139,
+      "recall": 0.9064702114029468,
+      "fpr": 0.033477524920067704
+    },
+    "threshold": 0.01255636103451252,
+    "by_source": {
+      "Assassin": {
+        "n": 130,
+        "spam": 29,
+        "ham": 101,
+        "tp": 29,
+        "fp": 20,
+        "fn": 0,
+        "tn": 81,
+        "recall": 1.0,
+        "fpr": 0.19801980198019803
+      },
+      "CEAS-08": {
+        "n": 739,
+        "spam": 364,
+        "ham": 375,
+        "tp": 363,
+        "fp": 35,
+        "fn": 1,
+        "tn": 340,
+        "recall": 0.9972527472527473,
+        "fpr": 0.09333333333333334
+      },
+      "Enron": {
+        "n": 621,
+        "spam": 295,
+        "ham": 326,
+        "tp": 291,
+        "fp": 36,
+        "fn": 4,
+        "tn": 290,
+        "recall": 0.9864406779661017,
+        "fpr": 0.11042944785276074
+      },
+      "GenSpam": {
+        "n": 896,
+        "spam": 567,
+        "ham": 329,
+        "tp": 563,
+        "fp": 81,
+        "fn": 4,
+        "tn": 248,
+        "recall": 0.9929453262786596,
+        "fpr": 0.24620060790273557
+      },
+      "Labelled-email-2010": {
+        "n": 120,
+        "spam": 76,
+        "ham": 44,
+        "tp": 76,
+        "fp": 10,
+        "fn": 0,
+        "tn": 34,
+        "recall": 1.0,
+        "fpr": 0.22727272727272727
+      },
+      "Ling": {
+        "n": 74,
+        "spam": 19,
+        "ham": 55,
+        "tp": 19,
+        "fp": 2,
+        "fn": 0,
+        "tn": 53,
+        "recall": 1.0,
+        "fpr": 0.03636363636363636
+      },
+      "Merged-public": {
+        "n": 4372,
+        "spam": 1916,
+        "ham": 2456,
+        "tp": 1879,
+        "fp": 488,
+        "fn": 37,
+        "tn": 1968,
+        "recall": 0.9806889352818372,
+        "fpr": 0.1986970684039088
+      },
+      "Nazario-2015": {
+        "n": 12,
+        "spam": 12,
+        "ham": 0,
+        "tp": 12,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2016": {
+        "n": 34,
+        "spam": 34,
+        "ham": 0,
+        "tp": 34,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2017": {
+        "n": 11,
+        "spam": 11,
+        "ham": 0,
+        "tp": 11,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2018": {
+        "n": 8,
+        "spam": 8,
+        "ham": 0,
+        "tp": 8,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2019": {
+        "n": 13,
+        "spam": 13,
+        "ham": 0,
+        "tp": 13,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2020": {
+        "n": 8,
+        "spam": 8,
+        "ham": 0,
+        "tp": 8,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2021": {
+        "n": 6,
+        "spam": 6,
+        "ham": 0,
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2022": {
+        "n": 15,
+        "spam": 15,
+        "ham": 0,
+        "tp": 15,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2023": {
+        "n": 14,
+        "spam": 14,
+        "ham": 0,
+        "tp": 14,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2025": {
+        "n": 3,
+        "spam": 3,
+        "ham": 0,
+        "tp": 3,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "TREC-05": {
+        "n": 1227,
+        "spam": 430,
+        "ham": 797,
+        "tp": 418,
+        "fp": 144,
+        "fn": 12,
+        "tn": 653,
+        "recall": 0.9720930232558139,
+        "fpr": 0.1806775407779172
+      },
+      "TREC-06": {
+        "n": 393,
+        "spam": 88,
+        "ham": 305,
+        "tp": 87,
+        "fp": 20,
+        "fn": 1,
+        "tn": 285,
+        "recall": 0.9886363636363636,
+        "fpr": 0.06557377049180328
+      },
+      "TREC-07": {
+        "n": 1304,
+        "spam": 775,
+        "ham": 529,
+        "tp": 754,
+        "fp": 52,
+        "fn": 21,
+        "tn": 477,
+        "recall": 0.9729032258064516,
+        "fpr": 0.09829867674858223
+      }
+    },
+    "by_word_count": {
+      "001-030": {
+        "n": 861,
+        "spam": 544,
+        "ham": 317,
+        "tp": 543,
+        "fp": 164,
+        "fn": 1,
+        "tn": 153,
+        "recall": 0.9981617647058824,
+        "fpr": 0.5173501577287066
+      },
+      "031-080": {
+        "n": 2074,
+        "spam": 1146,
+        "ham": 928,
+        "tp": 1138,
+        "fp": 202,
+        "fn": 8,
+        "tn": 726,
+        "recall": 0.9930191972076788,
+        "fpr": 0.21767241379310345
+      },
+      "081-200": {
+        "n": 3287,
+        "spam": 1552,
+        "ham": 1735,
+        "tp": 1529,
+        "fp": 183,
+        "fn": 23,
+        "tn": 1552,
+        "recall": 0.9851804123711341,
+        "fpr": 0.10547550432276658
+      },
+      "201-500": {
+        "n": 2483,
+        "spam": 917,
+        "ham": 1566,
+        "tp": 886,
+        "fp": 180,
+        "fn": 31,
+        "tn": 1386,
+        "recall": 0.9661941112322792,
+        "fpr": 0.11494252873563218
+      },
+      "501+": {
+        "n": 1295,
+        "spam": 524,
+        "ham": 771,
+        "tp": 507,
+        "fp": 159,
+        "fn": 17,
+        "tn": 612,
+        "recall": 0.9675572519083969,
+        "fpr": 0.20622568093385213
+      }
+    },
+    "by_character_window": {
+      "head-tail": {
+        "n": 2592,
+        "spam": 1024,
+        "ham": 1568,
+        "tp": 992,
+        "fp": 263,
+        "fn": 32,
+        "tn": 1305,
+        "recall": 0.96875,
+        "fpr": 0.1677295918367347
+      },
+      "whole-text": {
+        "n": 7408,
+        "spam": 3659,
+        "ham": 3749,
+        "tp": 3611,
+        "fp": 625,
+        "fn": 48,
+        "tn": 3124,
+        "recall": 0.9868816616561902,
+        "fpr": 0.1667111229661243
+      }
+    },
+    "highest_scoring_false_positives": [
+      {
+        "identity": "180ac63a647a449b2fa1704ff38ae7efbd946149bf8e0554b190644cfcb66f33",
+        "source": "TREC-05",
+        "score": 0.996911346912384,
+        "characters": 1505,
+        "words": 233,
+        "url_placeholders": 7
+      },
+      {
+        "identity": "d2dcaa5c528fda9b13a1a6e1a6aaf9256a360c7101dcb39b0966a5e124953a85",
+        "source": "Merged-public",
+        "score": 0.9963200092315674,
+        "characters": 348,
+        "words": 62,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "87c440562c3dd6e36e4900d2102a33dad1148b256bd58a942a5b51244cf3bdcc",
+        "source": "TREC-06",
+        "score": 0.9961050748825073,
+        "characters": 7905,
+        "words": 1191,
+        "url_placeholders": 4
+      },
+      {
+        "identity": "075bcd6be859f85a845472561bbc9acb47d0bd3300eada9618e4c8e919d50522",
+        "source": "Enron",
+        "score": 0.9958815574645996,
+        "characters": 1224,
+        "words": 250,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "47ccf1a82d6e853233b7ef85a83cbb97cb9d171959da6380c025c4ac63245876",
+        "source": "Merged-public",
+        "score": 0.9931793212890625,
+        "characters": 813,
+        "words": 126,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "7f20aa3ca564aeb5ef345dc52791633ecb603749206d40692f9ddf3fa0b89f36",
+        "source": "TREC-07",
+        "score": 0.9928527474403381,
+        "characters": 888,
+        "words": 150,
+        "url_placeholders": 1
+      },
+      {
+        "identity": "6a0468735db70c441f982f0e0b49f538d0d9d69b9a902f5a4685802b4302ca8f",
+        "source": "TREC-05",
+        "score": 0.9922352433204651,
+        "characters": 1147,
+        "words": 174,
+        "url_placeholders": 2
+      },
+      {
+        "identity": "7af37920fee47159ed0709a6f4b1321f82c8276a7b20bcfcc4d9156c62f28ec2",
+        "source": "GenSpam",
+        "score": 0.9921952486038208,
+        "characters": 1056,
+        "words": 191,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "81537abb6c415c5171253462f0003f40b16ba236092bb46bcdb0b756c19fe763",
+        "source": "Merged-public",
+        "score": 0.9915952086448669,
+        "characters": 87,
+        "words": 9,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "ba728acf87246ed3bc147e86088a8a01b514833d366aa09f5e322c673b05e966",
+        "source": "Merged-public",
+        "score": 0.9903624653816223,
+        "characters": 1707,
+        "words": 296,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "2be82c317843e44f99b155085d4ae66213ddb10d8edec9c2ec1067301e7d370a",
+        "source": "Ling",
+        "score": 0.989740252494812,
+        "characters": 2360,
+        "words": 484,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "255bf04de298fe39290cd5b7065e189e9b1e6c8436f3afd84aa578502abfb91a",
+        "source": "CEAS-08",
+        "score": 0.9894983768463135,
+        "characters": 62,
+        "words": 8,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "b47ffdbec86b6ea78fe55056b24c11e077f4afbdeb9652347ad08a14574c9f2b",
+        "source": "TREC-05",
+        "score": 0.9894383549690247,
+        "characters": 5428,
+        "words": 775,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "cc5f4d70b243ad60206c50543186b53a080bf403a8fc52de0873be4662bad74e",
+        "source": "GenSpam",
+        "score": 0.9882730841636658,
+        "characters": 232,
+        "words": 37,
+        "url_placeholders": 1
+      },
+      {
+        "identity": "199d96cbde64ead625ab31e35d44785229fd1f8cafbfbc63e90286fbfa52ebc4",
+        "source": "Merged-public",
+        "score": 0.9871468544006348,
+        "characters": 641,
+        "words": 125,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "b42611081c96b04ff0ba4b2d6a7e7b240bd39ed3cd937fecaca4fd5d5b4627c9",
+        "source": "Merged-public",
+        "score": 0.9860929846763611,
+        "characters": 95,
+        "words": 16,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "fa1592d45c566126b00f275fe16c026c628474b767bf8038fdd3a78da0d268dd",
+        "source": "Merged-public",
+        "score": 0.9857105612754822,
+        "characters": 1143,
+        "words": 167,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "3381300086bdda10d12de68e6ee3a49764ff8fdc829ac1f8f18ef4a1dc0a3179",
+        "source": "TREC-05",
+        "score": 0.985572874546051,
+        "characters": 1870,
+        "words": 307,
+        "url_placeholders": 2
+      },
+      {
+        "identity": "bc719231803ac47a4270cab51d42b4e01730a198638aacbaa6c0163d8b0d794b",
+        "source": "Merged-public",
+        "score": 0.9851630330085754,
+        "characters": 3664,
+        "words": 417,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "f9c988f95ddc04f953e88fa4c1c9c3a504e8ec2ad341333c422bdb42a2b5776a",
+        "source": "TREC-05",
+        "score": 0.9844205975532532,
+        "characters": 1090,
+        "words": 181,
+        "url_placeholders": 1
+      },
+      {
+        "identity": "0b61983ff8b195116d33aed18628a5538f5255fd318910ac40065a0a42ceaebb",
+        "source": "TREC-05",
+        "score": 0.9839450716972351,
+        "characters": 538,
+        "words": 94,
+        "url_placeholders": 3
+      },
+      {
+        "identity": "d3c7e6eaccb42484d140262c80d6f0fb0780d3159788f1367addfaa6c21b5305",
+        "source": "Merged-public",
+        "score": 0.9836424589157104,
+        "characters": 4831,
+        "words": 869,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "2643e2584d6c86aebccc3ccf35fea89c846f6d8916a2eed5d2fb4e1b6af6bb1e",
+        "source": "GenSpam",
+        "score": 0.983551561832428,
+        "characters": 207,
+        "words": 38,
+        "url_placeholders": 1
+      },
+      {
+        "identity": "fc02ccfb14600c5b51523ee8b245152c844917ec76686f96ea541adddd3fd499",
+        "source": "Merged-public",
+        "score": 0.9830812811851501,
+        "characters": 392,
+        "words": 61,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "cae76fe877600fd1dd187f0b6c28eaf3fe6a4ccbb274ad007d14465c3a114025",
+        "source": "CEAS-08",
+        "score": 0.9826252460479736,
+        "characters": 104,
+        "words": 16,
+        "url_placeholders": 1
+      },
+      {
+        "identity": "55c2df3f69555c6a12287e113d1ea52d2f2271e6ac48f590d89fda78989e9686",
+        "source": "Merged-public",
+        "score": 0.9822590351104736,
+        "characters": 1063,
+        "words": 155,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "b5c0bb5f5a50deefa89e185732dce5663dc73cce89674a58e11e638d83208612",
+        "source": "Merged-public",
+        "score": 0.9816665649414062,
+        "characters": 100,
+        "words": 13,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "f7d8ca2218916749e231330f904d8aa242d4f41e0a983d203bafc82b3fd9c1fc",
+        "source": "Merged-public",
+        "score": 0.9795185923576355,
+        "characters": 1202,
+        "words": 201,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "839d1fbd79ee57e2964b5206dbc4ad26206f5e49ba98ff502a18ba89e955a737",
+        "source": "GenSpam",
+        "score": 0.9774608612060547,
+        "characters": 75,
+        "words": 12,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "afd84e62710bae542b0683dfe14cdb9218aefc49aaf0d9514b6847504eec262b",
+        "source": "Merged-public",
+        "score": 0.9768983125686646,
+        "characters": 4640,
+        "words": 771,
+        "url_placeholders": 0
+      }
+    ],
+    "lowest_scoring_missed_spam": [
+      {
+        "identity": "d1e74025f4554a6a40d1929f1f5a1d2196b25035d19f70a2b794803c4a98a9b8",
+        "source": "Merged-public",
+        "score": 0.0012155459262430668,
+        "characters": 1603,
+        "words": 264,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "b0e744ca62bfb8cdfc755e4453d44c4a386d1ae6c0ce0f61b1ceceb0409fc63e",
+        "source": "TREC-05",
+        "score": 0.001261043595150113,
+        "characters": 5411,
+        "words": 784,
+        "url_placeholders": 1
+      },
+      {
+        "identity": "201485799edcf43f897afb21fb49df3d25f38cad5fb8c162869775d60ac95abb",
+        "source": "TREC-07",
+        "score": 0.0015406397869810462,
+        "characters": 1793,
+        "words": 293,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "ca5135118729e40b28d4145ddb5000ba3331e9e45c692258c602676d8c9f8a94",
+        "source": "TREC-07",
+        "score": 0.0017245132476091385,
+        "characters": 691,
+        "words": 118,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "818b61ec7471f3ffaf6fa66e740e1a78487e25ba66bfb246681e8805018cc6bc",
+        "source": "TREC-05",
+        "score": 0.001763473148457706,
+        "characters": 993,
+        "words": 168,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "25383f442bfb54562a8e10d6864d4d40565a80233e18231f2b13429a7d56ff02",
+        "source": "Merged-public",
+        "score": 0.0018692599842324853,
+        "characters": 5191,
+        "words": 813,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "4c3e172766d318f5bb5c6f86756ce110e91242d7507f5c457d696bc468067138",
+        "source": "Merged-public",
+        "score": 0.0020439939107745886,
+        "characters": 684,
+        "words": 123,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "f6ca15972042534580a028cef9edbecf71eb09ef3f05a2ddb2e0e65211d23a0f",
+        "source": "TREC-07",
+        "score": 0.0020631784573197365,
+        "characters": 1107,
+        "words": 199,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "5597015f0282ed034a5235daf0f697ac4ed8779c73035b77b94331af7f2da28b",
+        "source": "TREC-07",
+        "score": 0.0020740574691444635,
+        "characters": 1863,
+        "words": 317,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "0101500961f04765f7c9e25b545ee7a8e1fb8b43c8ab6dda4273d3eeb66f4e82",
+        "source": "GenSpam",
+        "score": 0.0020897674839943647,
+        "characters": 800,
+        "words": 134,
+        "url_placeholders": 4
+      },
+      {
+        "identity": "c85b65723a079bb8a3cb6371630e6e8e53fab38ff26273ec24e2328320266257",
+        "source": "TREC-07",
+        "score": 0.0021395802032202482,
+        "characters": 2175,
+        "words": 390,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "3d5d716d3b316496cded4d5c4089c5a74c69c326856f6d8b0f9f3a3a3aee82c6",
+        "source": "Merged-public",
+        "score": 0.0021623261272907257,
+        "characters": 7798,
+        "words": 1091,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "605fd7f729891de74f9c901803999553db69f71c303da6a7143dc8c543688ecd",
+        "source": "TREC-07",
+        "score": 0.0022548683919012547,
+        "characters": 733,
+        "words": 110,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "7beafb9d03a1ba716a4914c9834f49bc2f6bd8d59ec27f57cb3dcc23f01589b2",
+        "source": "Merged-public",
+        "score": 0.002286959905177355,
+        "characters": 16854,
+        "words": 1977,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "6cc83c0dbf576f0cf07ea8d1fa93ad9805ed38b04ca401da0c76702959bf51b3",
+        "source": "Merged-public",
+        "score": 0.0023191110230982304,
+        "characters": 3937,
+        "words": 587,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "c69e804ba4bb385f84cd27240230b35a99ea89cda0767e16f7154a616555945f",
+        "source": "TREC-07",
+        "score": 0.0023327621165663004,
+        "characters": 545,
+        "words": 88,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "f0188116bf3ff166903ae00bb8b9f1261c3ce19a4f6b7367a6aad7dd7f6f2ffc",
+        "source": "TREC-05",
+        "score": 0.002547370968386531,
+        "characters": 1438,
+        "words": 212,
+        "url_placeholders": 1
+      },
+      {
+        "identity": "a1f26cbbf6e7ebebd03ea924bf85ba72654283862115ed0686983586eb740e95",
+        "source": "TREC-06",
+        "score": 0.0026284167543053627,
+        "characters": 5608,
+        "words": 745,
+        "url_placeholders": 3
+      },
+      {
+        "identity": "ffd6dce0479eb7ff27be9d9d3110aca9fb0f15cab1d7deb34b06668eb1cb27bf",
+        "source": "TREC-05",
+        "score": 0.0026423740200698376,
+        "characters": 4550,
+        "words": 692,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "5559ee730da3123227ad412947375849e3e9ecaf085916b7158ddc57e89ff8d6",
+        "source": "Merged-public",
+        "score": 0.0029335650615394115,
+        "characters": 14916,
+        "words": 1860,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "f6beac8b304551e1a986a338db18cb9d451527b7b6657bc0579e379cb9c400cc",
+        "source": "TREC-07",
+        "score": 0.002964508254081011,
+        "characters": 2072,
+        "words": 325,
+        "url_placeholders": 1
+      },
+      {
+        "identity": "f5e2dd57e9f08292b0cdb3209a812dd5b9f5385710ffc09a60e9d8bb17e55637",
+        "source": "Merged-public",
+        "score": 0.003117480780929327,
+        "characters": 2059,
+        "words": 297,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "9d081afeb2a4ad5d6d2f0ff749224c1e31c37cec4b88845237f63415e8aa9ebe",
+        "source": "TREC-07",
+        "score": 0.0033026295714080334,
+        "characters": 1158,
+        "words": 194,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "863109018f96252c00122c26aa8fa5ee49a2a58b9fa0ff7fb70ff0e31feea159",
+        "source": "TREC-07",
+        "score": 0.003934676758944988,
+        "characters": 774,
+        "words": 124,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "fbbb7267d97a7a8738f28498655496374d2dc7b868ac801c5077d38c1d66ec0e",
+        "source": "TREC-07",
+        "score": 0.003992957063019276,
+        "characters": 498,
+        "words": 83,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "2bfa761087170af98f7cb511164c08e8f084ee6919fa6cbfb80a2bcf361a594b",
+        "source": "GenSpam",
+        "score": 0.0040773325599730015,
+        "characters": 5802,
+        "words": 847,
+        "url_placeholders": 36
+      },
+      {
+        "identity": "eb7f19531b25eaa7e7e820ed9bc4ff320651236f24b036176db51214f883b96d",
+        "source": "Enron",
+        "score": 0.0040812864899635315,
+        "characters": 3111,
+        "words": 610,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "0228aa3024fd6c57a42930a5be88b6e8fc6decf3d0c669fdbed23392850aafd0",
+        "source": "Merged-public",
+        "score": 0.004358465317636728,
+        "characters": 1759,
+        "words": 287,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "b2f2b415e4f10b3f1d5855bada4c3b200ec063182b5c144a6b20bd6b0244b56b",
+        "source": "GenSpam",
+        "score": 0.004439139738678932,
+        "characters": 4613,
+        "words": 843,
+        "url_placeholders": 41
+      },
+      {
+        "identity": "1477e5468851dc8ede58d83d0bf3c326c71255cea0ce80f5c3c826c00f07a519",
+        "source": "Merged-public",
+        "score": 0.004470387008041143,
+        "characters": 228,
+        "words": 46,
+        "url_placeholders": 0
+      }
+    ]
+  },
+  "select": {
+    "at_locked_development_threshold": {
+      "n": 22790,
+      "spam": 10589,
+      "ham": 12201,
+      "tp": 10378,
+      "fp": 2326,
+      "fn": 211,
+      "tn": 9875,
+      "recall": 0.9800736613466805,
+      "fpr": 0.19064011146627324
+    },
+    "at_predefined_threshold_0_5": {
+      "n": 22790,
+      "spam": 10589,
+      "ham": 12201,
+      "tp": 9516,
+      "fp": 566,
+      "fn": 1073,
+      "tn": 11635,
+      "recall": 0.8986684295023137,
+      "fpr": 0.04638964019342677
+    },
+    "threshold": 0.01255636103451252,
+    "by_source": {
+      "Assassin": {
+        "n": 158,
+        "spam": 45,
+        "ham": 113,
+        "tp": 45,
+        "fp": 23,
+        "fn": 0,
+        "tn": 90,
+        "recall": 1.0,
+        "fpr": 0.20353982300884957
+      },
+      "CEAS-08": {
+        "n": 929,
+        "spam": 439,
+        "ham": 490,
+        "tp": 437,
+        "fp": 53,
+        "fn": 2,
+        "tn": 437,
+        "recall": 0.9954441913439636,
+        "fpr": 0.10816326530612246
+      },
+      "Enron": {
+        "n": 821,
+        "spam": 400,
+        "ham": 421,
+        "tp": 398,
+        "fp": 56,
+        "fn": 2,
+        "tn": 365,
+        "recall": 0.995,
+        "fpr": 0.1330166270783848
+      },
+      "GenSpam": {
+        "n": 1167,
+        "spam": 764,
+        "ham": 403,
+        "tp": 755,
+        "fp": 104,
+        "fn": 9,
+        "tn": 299,
+        "recall": 0.9882198952879581,
+        "fpr": 0.25806451612903225
+      },
+      "Labelled-email-2010": {
+        "n": 164,
+        "spam": 104,
+        "ham": 60,
+        "tp": 102,
+        "fp": 7,
+        "fn": 2,
+        "tn": 53,
+        "recall": 0.9807692307692307,
+        "fpr": 0.11666666666666667
+      },
+      "Ling": {
+        "n": 67,
+        "spam": 12,
+        "ham": 55,
+        "tp": 11,
+        "fp": 0,
+        "fn": 1,
+        "tn": 55,
+        "recall": 0.9166666666666666,
+        "fpr": 0.0
+      },
+      "Merged-public": {
+        "n": 15599,
+        "spam": 6953,
+        "ham": 8646,
+        "tp": 6801,
+        "fp": 1820,
+        "fn": 152,
+        "tn": 6826,
+        "recall": 0.9781389328347476,
+        "fpr": 0.21050196622715706
+      },
+      "Nazario-2015": {
+        "n": 20,
+        "spam": 20,
+        "ham": 0,
+        "tp": 20,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2016": {
+        "n": 33,
+        "spam": 33,
+        "ham": 0,
+        "tp": 33,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2017": {
+        "n": 22,
+        "spam": 22,
+        "ham": 0,
+        "tp": 22,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2018": {
+        "n": 23,
+        "spam": 23,
+        "ham": 0,
+        "tp": 23,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2019": {
+        "n": 18,
+        "spam": 18,
+        "ham": 0,
+        "tp": 18,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2020": {
+        "n": 6,
+        "spam": 6,
+        "ham": 0,
+        "tp": 6,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2021": {
+        "n": 6,
+        "spam": 6,
+        "ham": 0,
+        "tp": 5,
+        "fp": 0,
+        "fn": 1,
+        "tn": 0,
+        "recall": 0.8333333333333334,
+        "fpr": null
+      },
+      "Nazario-2022": {
+        "n": 14,
+        "spam": 14,
+        "ham": 0,
+        "tp": 14,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "Nazario-2023": {
+        "n": 34,
+        "spam": 34,
+        "ham": 0,
+        "tp": 32,
+        "fp": 0,
+        "fn": 2,
+        "tn": 0,
+        "recall": 0.9411764705882353,
+        "fpr": null
+      },
+      "Nazario-2025": {
+        "n": 10,
+        "spam": 10,
+        "ham": 0,
+        "tp": 10,
+        "fp": 0,
+        "fn": 0,
+        "tn": 0,
+        "recall": 1.0,
+        "fpr": null
+      },
+      "TREC-05": {
+        "n": 1511,
+        "spam": 556,
+        "ham": 955,
+        "tp": 543,
+        "fp": 186,
+        "fn": 13,
+        "tn": 769,
+        "recall": 0.9766187050359713,
+        "fpr": 0.19476439790575917
+      },
+      "TREC-06": {
+        "n": 555,
+        "spam": 125,
+        "ham": 430,
+        "tp": 124,
+        "fp": 31,
+        "fn": 1,
+        "tn": 399,
+        "recall": 0.992,
+        "fpr": 0.07209302325581396
+      },
+      "TREC-07": {
+        "n": 1633,
+        "spam": 1005,
+        "ham": 628,
+        "tp": 979,
+        "fp": 46,
+        "fn": 26,
+        "tn": 582,
+        "recall": 0.9741293532338309,
+        "fpr": 0.0732484076433121
+      }
+    },
+    "by_word_count": {
+      "001-030": {
+        "n": 1949,
+        "spam": 1075,
+        "ham": 874,
+        "tp": 1065,
+        "fp": 440,
+        "fn": 10,
+        "tn": 434,
+        "recall": 0.9906976744186047,
+        "fpr": 0.5034324942791762
+      },
+      "031-080": {
+        "n": 4929,
+        "spam": 2748,
+        "ham": 2181,
+        "tp": 2736,
+        "fp": 490,
+        "fn": 12,
+        "tn": 1691,
+        "recall": 0.9956331877729258,
+        "fpr": 0.2246675836772123
+      },
+      "081-200": {
+        "n": 7414,
+        "spam": 3447,
+        "ham": 3967,
+        "tp": 3387,
+        "fp": 520,
+        "fn": 60,
+        "tn": 3447,
+        "recall": 0.9825935596170583,
+        "fpr": 0.13108142172926646
+      },
+      "201-500": {
+        "n": 5601,
+        "spam": 2184,
+        "ham": 3417,
+        "tp": 2088,
+        "fp": 430,
+        "fn": 96,
+        "tn": 2987,
+        "recall": 0.9560439560439561,
+        "fpr": 0.12584138132865086
+      },
+      "501+": {
+        "n": 2897,
+        "spam": 1135,
+        "ham": 1762,
+        "tp": 1102,
+        "fp": 446,
+        "fn": 33,
+        "tn": 1316,
+        "recall": 0.9709251101321585,
+        "fpr": 0.25312145289443816
+      }
+    },
+    "by_character_window": {
+      "head-tail": {
+        "n": 5965,
+        "spam": 2414,
+        "ham": 3551,
+        "tp": 2332,
+        "fp": 733,
+        "fn": 82,
+        "tn": 2818,
+        "recall": 0.9660314830157415,
+        "fpr": 0.20642072655589974
+      },
+      "whole-text": {
+        "n": 16825,
+        "spam": 8175,
+        "ham": 8650,
+        "tp": 8046,
+        "fp": 1593,
+        "fn": 129,
+        "tn": 7057,
+        "recall": 0.9842201834862385,
+        "fpr": 0.18416184971098265
+      }
+    },
+    "highest_scoring_false_positives": [
+      {
+        "identity": "a2d1e3a0602b853a9e95381505f516bead5f7d44df1abec30bf9202b6aa5a3ca",
+        "source": "Merged-public",
+        "score": 0.9973669648170471,
+        "characters": 116,
+        "words": 13,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "480353ed7f2a5e6e1085934b5a749f4223cbd6e3a95aae95b362aad579ae8ab7",
+        "source": "Merged-public",
+        "score": 0.997265100479126,
+        "characters": 273,
+        "words": 42,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "b08fdb6f2111a8bbabce59885bcbdc32e761830bc8a99f77716764910d9e5a49",
+        "source": "TREC-06",
+        "score": 0.9966121315956116,
+        "characters": 124,
+        "words": 25,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "c41112ff14da998baf3142ca73c9d999fd52c85c59ee435ab8ca78c28746dbeb",
+        "source": "Merged-public",
+        "score": 0.9960816502571106,
+        "characters": 2709,
+        "words": 406,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "cb467288ca9bc6c7fbca684b6fd44cd7b66f7c7248d82daa21fab201ab500e18",
+        "source": "Merged-public",
+        "score": 0.9957439303398132,
+        "characters": 501,
+        "words": 91,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "45dac107406759560bac2bee68202e70e44df2d0ecc8777a7261aa69a59c776a",
+        "source": "Merged-public",
+        "score": 0.99564528465271,
+        "characters": 182,
+        "words": 19,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "e618ee487258edf9988f51b10320ce6fe1f2d2449019e40cc5128271679ad96d",
+        "source": "Merged-public",
+        "score": 0.9951947331428528,
+        "characters": 1727,
+        "words": 270,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "e1ec766dc577c42aaa62f8a83c56d8c6b4d3427382be8cd4a642963b5b8034dc",
+        "source": "Enron",
+        "score": 0.994864284992218,
+        "characters": 2070,
+        "words": 425,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "16795b781455c209dfa6f2bc1675d7a2b53e6e7c6f15511ddb66e3521c444852",
+        "source": "Merged-public",
+        "score": 0.9947023987770081,
+        "characters": 274,
+        "words": 44,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "2b10346322eb01787ac21b36b8546f27d6ef8e098b20f68a424579ea94a27276",
+        "source": "Merged-public",
+        "score": 0.9942025542259216,
+        "characters": 213,
+        "words": 28,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "07833cea7da17475c036c7cbe480961c634a8b5ce3c0178240ba0b9dc7a72a4e",
+        "source": "Merged-public",
+        "score": 0.994141161441803,
+        "characters": 2027,
+        "words": 279,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "c7ccc21b15196c46176ee86df7148da8bea1e003accc785edc194b94a34de6e0",
+        "source": "Merged-public",
+        "score": 0.9934576153755188,
+        "characters": 301,
+        "words": 56,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "774e9a4aad47246913ed2029abdc5dfef7d56c954334f31c7bcd44c72f026f78",
+        "source": "Merged-public",
+        "score": 0.9933688044548035,
+        "characters": 1501,
+        "words": 246,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "dd5e9dfeb2d629e3fbe421f1a70df4de01724c16f7e0de48fa39a88ba708384d",
+        "source": "Merged-public",
+        "score": 0.9932637214660645,
+        "characters": 1065,
+        "words": 188,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "1908b0b164145087135baa9ed66e4066f1522d42c40faa0e9c121fffc8dd4a81",
+        "source": "Merged-public",
+        "score": 0.9929392337799072,
+        "characters": 1720,
+        "words": 283,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "80200b53aeec846dccdb4f42829fa79286c5a437e173a84926d5f35fdab2979e",
+        "source": "Merged-public",
+        "score": 0.9928117394447327,
+        "characters": 400,
+        "words": 64,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "57fd96b3f700d5a854ff8c5120604fef97161a658a6c24f26139ea7706a08d24",
+        "source": "Merged-public",
+        "score": 0.9927916526794434,
+        "characters": 369,
+        "words": 68,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "3641e58c405d582b962de6aecdbdfb03b46481e1c91c23dd2c56693b648392a8",
+        "source": "Labelled-email-2010",
+        "score": 0.9923118948936462,
+        "characters": 4445,
+        "words": 667,
+        "url_placeholders": 1
+      },
+      {
+        "identity": "9f3c58161e5674b7ffa81da7535491fb7b3bda08d5654fae18d9b50a6829e17f",
+        "source": "Merged-public",
+        "score": 0.9922415018081665,
+        "characters": 2242,
+        "words": 363,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "66229ad2cdfec967642500f8dd1573ff5105ef941edebff2d59f2794eb8e2dd9",
+        "source": "Merged-public",
+        "score": 0.9920781254768372,
+        "characters": 188,
+        "words": 30,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "c56b071c04bfdd257c8c9ba659673f875fbb51a3ef69dbde71b2e62519677505",
+        "source": "Merged-public",
+        "score": 0.9918971657752991,
+        "characters": 695,
+        "words": 116,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "c4ad55de7aa96e430178390ee12fe986cc9e78cf34a97d3bab5ecb541430b6b8",
+        "source": "Merged-public",
+        "score": 0.9917241930961609,
+        "characters": 2188,
+        "words": 372,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "671b9ad654885ca7b7b85b45ff6bcc7ba7fd3d0dd62d1cae24e1456cc761898c",
+        "source": "TREC-07",
+        "score": 0.9916712045669556,
+        "characters": 650,
+        "words": 91,
+        "url_placeholders": 3
+      },
+      {
+        "identity": "930ab3c3aa13f79b187b0c00aefc776368ee1ac245ce7698709caafae49152c2",
+        "source": "Merged-public",
+        "score": 0.9906550049781799,
+        "characters": 3673,
+        "words": 487,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "de6235c2db825bd5d78cc30a76062c435b82dea07f7776f1a0606a8b70fc3aa7",
+        "source": "Merged-public",
+        "score": 0.9906296133995056,
+        "characters": 2197,
+        "words": 305,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "9b8c64db814e345a01f343dbd36bd8e85fa58fc6ed4d67f48bb56a6d79cfdc9f",
+        "source": "Merged-public",
+        "score": 0.990526556968689,
+        "characters": 335,
+        "words": 45,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "969a0ef2063fbb85dbd069e8e050bb1f316f7a18801aa4fcf543d0572e53ca75",
+        "source": "Merged-public",
+        "score": 0.9904962778091431,
+        "characters": 2736,
+        "words": 468,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "34c27dc196579765f3fb29da119cf890b42f8f2cf5b3e03e16717032c2c1e910",
+        "source": "Merged-public",
+        "score": 0.9899705052375793,
+        "characters": 224,
+        "words": 46,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "f493b18dcc5f8cfacdb84b192e82820561dc1cb23acb9b57575f2a949d0b77ff",
+        "source": "Merged-public",
+        "score": 0.989924430847168,
+        "characters": 1380,
+        "words": 215,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "fd139a9928974b8f055adce0c43a31441c3151a7fce461797b92c21220375557",
+        "source": "Merged-public",
+        "score": 0.9897163510322571,
+        "characters": 4774,
+        "words": 620,
+        "url_placeholders": 0
+      }
+    ],
+    "lowest_scoring_missed_spam": [
+      {
+        "identity": "d85084c1a78a939fb33b0f29a3bb599b96f9bf20da99a35401dbbf6f46547025",
+        "source": "Merged-public",
+        "score": 0.001187093323096633,
+        "characters": 5100,
+        "words": 583,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "d1edf543eb62f256a70ef98c09d5e2a7107b60c695a187c0f7a46d07a2237b7b",
+        "source": "TREC-05",
+        "score": 0.0012390009360387921,
+        "characters": 1731,
+        "words": 243,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "e13cf06467252c73831381370fb1d292c5557c918e5c99a07f00f561b12041e4",
+        "source": "Merged-public",
+        "score": 0.0012506941566243768,
+        "characters": 2608,
+        "words": 463,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "70dcc1c878e92b18c7baef408349e1b8abec923d7811a8676f0433eb0f2bb725",
+        "source": "Merged-public",
+        "score": 0.001258225180208683,
+        "characters": 948,
+        "words": 156,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "7b527965c504fb77480bcc734eed12d8595db87813dc0f676274633d4e94db9d",
+        "source": "Merged-public",
+        "score": 0.0012729535810649395,
+        "characters": 5677,
+        "words": 658,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "d8f363ca9bc68a426e51cb43b4297545ad8f5808cc3b59e6e8c1f4afcc4fa89f",
+        "source": "Merged-public",
+        "score": 0.0012854309752583504,
+        "characters": 2728,
+        "words": 434,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "f753efc3f51b145cb89f506d678ab39d8b7a6b1d9903eadfa1f7d22a55105748",
+        "source": "Merged-public",
+        "score": 0.001393033191561699,
+        "characters": 2561,
+        "words": 362,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "48d2f9f972941b9663af714d7b27a9a31dff58f40ca4be5f2e3838aac7184178",
+        "source": "Merged-public",
+        "score": 0.0013997755013406277,
+        "characters": 523,
+        "words": 69,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "848921924895a0b9f87d9836361d3ba327bff901b984ce2253506143259b9b91",
+        "source": "Merged-public",
+        "score": 0.0014300947077572346,
+        "characters": 7860,
+        "words": 1182,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "9ad69937eb094511417eaf8807b5187f1b5bb91600ed712f56d81a4a70757f38",
+        "source": "Merged-public",
+        "score": 0.0014658999862149358,
+        "characters": 2637,
+        "words": 418,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "e010f10257488646deb527bf958c250df7f13f26dd22559964767d4e68aec96d",
+        "source": "Merged-public",
+        "score": 0.001466674148105085,
+        "characters": 7887,
+        "words": 1212,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "311656a5d6c171a125ffc13101c567cfba5d5d03cfcbbf794bdc12bb1da50a67",
+        "source": "GenSpam",
+        "score": 0.0014766965759918094,
+        "characters": 525,
+        "words": 100,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "14672966d4b5caeda86293bdcad775e9bba3a1a7c625bed77c31cc1da47b9fe4",
+        "source": "Merged-public",
+        "score": 0.0014931927435100079,
+        "characters": 1734,
+        "words": 273,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "4ce66f1906652367042171e40a54923a160d828a8f7cf6329d62a571b299b1c1",
+        "source": "Merged-public",
+        "score": 0.0015655242605134845,
+        "characters": 414,
+        "words": 70,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "964c4cc70c21598d03fabfd145e2f1403ea34148ffe9fd91cf640ba93b163a70",
+        "source": "Merged-public",
+        "score": 0.0016121546505019069,
+        "characters": 1676,
+        "words": 273,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "f60231cef27c2c9f280b662cca1fb23c0d818fd1a377008620c691758fd64255",
+        "source": "Merged-public",
+        "score": 0.001687637297436595,
+        "characters": 1867,
+        "words": 323,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "f948c03f7267914020b0f808d7bdf96053cfd4d345a4bc7703a8407265e87409",
+        "source": "Merged-public",
+        "score": 0.0017202915623784065,
+        "characters": 778,
+        "words": 115,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "f7d450e5c894cdc706884a6493b7d132d6927bcddccb59a27ad3792c32b8db6c",
+        "source": "Merged-public",
+        "score": 0.0017261846223846078,
+        "characters": 3184,
+        "words": 385,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "e71fb4c6cc4e332ee660bd5c2cca022a587f800835895761de47f73f074e923c",
+        "source": "Merged-public",
+        "score": 0.0017426444683223963,
+        "characters": 1869,
+        "words": 324,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "a87f5639feb6c6c88d838b967ae4b9bdd134157c640ca82bba9b9f91c7ed266c",
+        "source": "Merged-public",
+        "score": 0.001745510962791741,
+        "characters": 720,
+        "words": 134,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "34edcbbca9f776bf772b61ebfd6ce5c7f91882fbe145f7c0041bc4662189798b",
+        "source": "TREC-05",
+        "score": 0.0017633488168939948,
+        "characters": 1582,
+        "words": 278,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "cb0ebea4a31c55cfa0a03e95662b1356a550f67e2e6195e0478618e40d21e328",
+        "source": "Merged-public",
+        "score": 0.00178226747084409,
+        "characters": 162,
+        "words": 23,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "ae43a03e4c28a8b4c3d0e58f53f86b050ac4edee740acc646e1c975dd10867f4",
+        "source": "Merged-public",
+        "score": 0.0017935170326381922,
+        "characters": 4262,
+        "words": 507,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "e2623b814346fce7e0472f77d516407284574205862819000cb0c2c4fe93b9a9",
+        "source": "Merged-public",
+        "score": 0.0018336138455197215,
+        "characters": 1791,
+        "words": 321,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "2a1fd996177b7e0a1243ce70a4ef4f66ef0324fea16c98d79f95b06e129f33aa",
+        "source": "Merged-public",
+        "score": 0.001899627735838294,
+        "characters": 1920,
+        "words": 321,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "2d59beddc10a5d9b75dc36d8e70af12bd8d759c820afee3e375b2b31c24a1ef0",
+        "source": "Merged-public",
+        "score": 0.001937057008035481,
+        "characters": 1511,
+        "words": 247,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "8b9d29d1b9a7dd851ff93e60a0dac33370c3a52b4234b67b981681287acab031",
+        "source": "TREC-05",
+        "score": 0.0019382807658985257,
+        "characters": 1335,
+        "words": 220,
+        "url_placeholders": 1
+      },
+      {
+        "identity": "ef472219392fbf440f7bd045437816f8a7955810c0ed7b9f3fff2e41fc342f4a",
+        "source": "TREC-07",
+        "score": 0.0019433523993939161,
+        "characters": 767,
+        "words": 121,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "6bf332ffbcdd78035a403e7b5973d9d1189114d72122d385446a7f8084138eba",
+        "source": "Merged-public",
+        "score": 0.001975112361833453,
+        "characters": 2829,
+        "words": 456,
+        "url_placeholders": 0
+      },
+      {
+        "identity": "df44fb8ec1c065fe425406c78f17612928fb2d10c140b9402dca61d27654b854",
+        "source": "Merged-public",
+        "score": 0.001975255087018013,
+        "characters": 849,
+        "words": 119,
+        "url_placeholders": 0
+      }
+    ]
+  },
+  "source_report": {
+    "n": 22790,
+    "spam": 10589,
+    "ham": 12201,
+    "tp": 10378,
+    "fp": 2326,
+    "recall": 0.9800736613466805,
+    "fp_per_million_ham": 190640.11146627323,
+    "threshold": 0.01255636103451252,
+    "log_loss": 0.21456529508900488,
+    "by_source": {
+      "Assassin": {
+        "n": 158,
+        "spam": 45,
+        "ham": 113,
+        "tp": 45,
+        "fp": 23,
+        "recall": 1.0,
+        "fp_per_million_ham": 203539.82300884958
+      },
+      "CEAS-08": {
+        "n": 929,
+        "spam": 439,
+        "ham": 490,
+        "tp": 437,
+        "fp": 53,
+        "recall": 0.9954441913439636,
+        "fp_per_million_ham": 108163.26530612246
+      },
+      "Enron": {
+        "n": 821,
+        "spam": 400,
+        "ham": 421,
+        "tp": 398,
+        "fp": 56,
+        "recall": 0.995,
+        "fp_per_million_ham": 133016.6270783848
+      },
+      "GenSpam": {
+        "n": 1167,
+        "spam": 764,
+        "ham": 403,
+        "tp": 755,
+        "fp": 104,
+        "recall": 0.9882198952879581,
+        "fp_per_million_ham": 258064.51612903224
+      },
+      "Labelled-email-2010": {
+        "n": 164,
+        "spam": 104,
+        "ham": 60,
+        "tp": 102,
+        "fp": 7,
+        "recall": 0.9807692307692307,
+        "fp_per_million_ham": 116666.66666666667
+      },
+      "Ling": {
+        "n": 67,
+        "spam": 12,
+        "ham": 55,
+        "tp": 11,
+        "fp": 0,
+        "recall": 0.9166666666666666,
+        "fp_per_million_ham": 0.0
+      },
+      "Merged-public": {
+        "n": 15599,
+        "spam": 6953,
+        "ham": 8646,
+        "tp": 6801,
+        "fp": 1820,
+        "recall": 0.9781389328347476,
+        "fp_per_million_ham": 210501.96622715704
+      },
+      "Nazario-2015": {
+        "n": 20,
+        "spam": 20,
+        "ham": 0,
+        "tp": 20,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2016": {
+        "n": 33,
+        "spam": 33,
+        "ham": 0,
+        "tp": 33,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2017": {
+        "n": 22,
+        "spam": 22,
+        "ham": 0,
+        "tp": 22,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2018": {
+        "n": 23,
+        "spam": 23,
+        "ham": 0,
+        "tp": 23,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2019": {
+        "n": 18,
+        "spam": 18,
+        "ham": 0,
+        "tp": 18,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2020": {
+        "n": 6,
+        "spam": 6,
+        "ham": 0,
+        "tp": 6,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2021": {
+        "n": 6,
+        "spam": 6,
+        "ham": 0,
+        "tp": 5,
+        "fp": 0,
+        "recall": 0.8333333333333334,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2022": {
+        "n": 14,
+        "spam": 14,
+        "ham": 0,
+        "tp": 14,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2023": {
+        "n": 34,
+        "spam": 34,
+        "ham": 0,
+        "tp": 32,
+        "fp": 0,
+        "recall": 0.9411764705882353,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2025": {
+        "n": 10,
+        "spam": 10,
+        "ham": 0,
+        "tp": 10,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "TREC-05": {
+        "n": 1511,
+        "spam": 556,
+        "ham": 955,
+        "tp": 543,
+        "fp": 186,
+        "recall": 0.9766187050359713,
+        "fp_per_million_ham": 194764.39790575916
+      },
+      "TREC-06": {
+        "n": 555,
+        "spam": 125,
+        "ham": 430,
+        "tp": 124,
+        "fp": 31,
+        "recall": 0.992,
+        "fp_per_million_ham": 72093.02325581395
+      },
+      "TREC-07": {
+        "n": 1633,
+        "spam": 1005,
+        "ham": 628,
+        "tp": 979,
+        "fp": 46,
+        "recall": 0.9741293532338309,
+        "fp_per_million_ham": 73248.4076433121
+      }
+    },
+    "threshold_selected_on_same_development": true,
+    "is_independent_test": false,
+    "million_message_test_performed": false
+  },
+  "raw_message_text_saved": false,
+  "optimizer_steps_executed": 0,
+  "cal_or_test_opened": false,
+  "independent_quality_test_performed": false,
+  "quality_gain_demonstrated": false,
+  "production_v80_unchanged": true,
+  "labels_automatically_changed": false,
+  "source_report_counts_reproduced": true,
+  "baseline_step": 500,
+  "baseline_checkpoint_sha256": "a5cafb2fface8a35c672e075e41e63fe4551a786b536e4e41a23026299b63f68",
+  "paired_select": {
+    "baseline": {
+      "n": 22790,
+      "spam": 10589,
+      "ham": 12201,
+      "tp": 10378,
+      "fp": 2888,
+      "fn": 211,
+      "tn": 9313,
+      "recall": 0.9800736613466805,
+      "fpr": 0.23670190967953447
+    },
+    "current": {
+      "n": 22790,
+      "spam": 10589,
+      "ham": 12201,
+      "tp": 10378,
+      "fp": 2326,
+      "fn": 211,
+      "tn": 9875,
+      "recall": 0.9800736613466805,
+      "fpr": 0.19064011146627324
+    },
+    "baseline_threshold": 0.010192839428782463,
+    "current_threshold": 0.01255636103451252,
+    "baseline_spam_detections_lost": 42,
+    "spam_detections_gained": 42,
+    "false_positives_removed": 668,
+    "false_positives_added": 106,
+    "first_lost_spam_identities": [
+      "1e5d151d5a75d054efd9d938356cadc6fe97679b3ee4c580320870ab1ab5c354",
+      "b311e824b3ac6ae68831eea266b320bb29de7874c650784dea5a197093611cfe",
+      "5a3e5fe470478e137b154b8d054db0457371079f32272be763e33c388409b584",
+      "7cd6606326b5d5499cd9127eff21cffbec33a578ae95fae1507c900fbe5c8927",
+      "6be17dec60e92c28a26db07300147baa41a43299ce08277d08ebfce512483b80",
+      "092669a967a18488706105d55cbf4eade0a912ffd45620ed57cd5e31e5faecd1",
+      "cadeb1ac1aabd6984927162a65109a2f217519d4489d9693673ba4a849ad9cf1",
+      "76809a19bc18655b6833a7168b6576795b0bc64fdaead19829bc8829398f699c",
+      "101d555e32ed8f471b6938590a9a6e03219ca43d99bad489cda7b626b8672772",
+      "03e94c356f4925bcb1632dadfdaf3256c200d344a2539d91cf85c5c42c40d026",
+      "b8705d2683f946616d6dcf87ce2c325866ae0d90f77f9609d5846cab436155dc",
+      "4c1ccc56f4c2ef5100ab5d900addaa9ed7f0c24e0201a5fda26bb7f4b6ed7a71",
+      "660d11026ece2b7f177aea0a2858b9552946e3e7b4f167f90b9a815e15b69ee7",
+      "82ca413462a7c34452498605adf96aa757328236f1ed0cd625f5e741248773ca",
+      "9d45aa0a2d1e9d110723b500b26a618837a1eb09f2eedede09ae1519feceb4cd",
+      "07567d631cd8bdaab66f62bd2aa71f83f0c8790ebebaa3d23df7401668bbd3bf",
+      "8b4191e79131c7e816af090babc908d21405c1934c2c2b6fbaaa6af43e784d38",
+      "cbf3b3527cb686aae23503a0b9d8cb321270b910ef0a409da1b563f72010d27b",
+      "4f5820c8c37c3279de9ba55a3e8c4f1b5ad656e9c0142c0e306973f6fa01f22e",
+      "f68da47ba11171a5f92d4652cb9c85430f675036ae936b444d5abd1912be8b76",
+      "58e278a803efcc58bbc9a40ce12c50aaf94f82ea6e6ec8c16ed9071d744556b5",
+      "f66a3906e4700077d3d86892a483c7776e59278da193832641685318a617942a",
+      "4e70acb3d8176573f63f41da15e3cb48f08412cce951195d757847c908c0ea98",
+      "bead6a281b77389140e8ca816949451f0a7a621927cc33775abe172a9a950466",
+      "77656ec314242609598db77ee56b215d1924420171786c4949f7d703cdd1ad69",
+      "d7f7b98d38862dadb796c2a1ff6b0c1c8a93f475462a20ccc6d0ed4334787fdb",
+      "b15e2bc1dce697caab5b90630083035099c1464f168f4dfc5ea50f607857e3f5",
+      "564b783f7043941af123a85860d24b2a63c174fff65798da08150af4bc72a143",
+      "ef294a776334b1e405338c3cd1e2f88364a9f639a1ce7fc29c70ad0ac0512da6",
+      "73a8d9c87022023a251a85b4a784d6710d2e84e7e2857b1e530ce72a3b15aec5"
+    ],
+    "compares_two_v82_development_checkpoints": true,
+    "is_a_v80_regression_check": false
+  },
+  "checkpoint_files_unchanged": true,
+  "audit_code_sha256": "3fdac91f34c09dd78edff63963ff5747ea2def8d8658a787c47b6dc86c9a9774"
+}
