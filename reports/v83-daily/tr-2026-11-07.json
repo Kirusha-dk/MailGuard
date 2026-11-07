@@ -96,10 +96,20 @@
   "state_artifact_zip_sha256": "83ec2c6597049dedab6f83d28d6b2b2036a7e94c48bb9f8fb8be15f36e1a52be",
   "durable_experimental_package": {
     "release_url": "https://github.com/Kirusha-dk/MailGuard/releases/tag/mailguard-v83-tr-20261104-final",
+    "archive_run_id": 42349018098,
+    "archive_run_url": "https://github.com/Kirusha-dk/MailGuard/actions/runs/42349018098",
     "sha256": "1eaa034210f4c8dcef5cf9571da31e8903a9fbfe128aaa0f4264a2a549d13fa9",
-    "published_and_download_verified": false,
-    "prepared_and_inner_hashes_verified": true,
+    "size_bytes": 2462032,
     "prerelease": true,
-    "raw_mail_included": false
-  }
+    "draft": false,
+    "published_and_download_verified": true,
+    "all_inner_hashes_verified": true,
+    "best_adapter_matches_checkpoint375": true,
+    "full_optimizer_scheduler_rng_cursor_checkpoint_present": true,
+    "pinned_backbone_manifest_verified": true,
+    "both_sources_and_required_citation_preserved": true,
+    "raw_mail_included": false,
+    "verification_optimizer_steps": 0
+  },
+  "post_stop_expected_min_step": 375
 }

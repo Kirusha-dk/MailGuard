@@ -127,3 +127,13 @@ ES остаётся stopped321, RU training_ready=false. Единый управ
 отчёты приstop, без повторного обучения дат и без новых кампаний. Долговременный
 TR пакет публикуется существующим archival workflow, tag
 mailguard-v83-tr-20261104-final; факт публикации и digest проверять отдельно.
+
+Долговременный TR пакет опубликован и скачан обратно в archival run42349018098:
+SHA2561eaa034210f4c8dcef5cf9571da31e8903a9fbfe128aaa0f4264a2a549d13fa9,
+tag mailguard-v83-tr-20261104-final. Best adapter375, полный state и
+metadata/ATTRIBUTION/pinned backbone проверены; сырых писем нет.
+Послеstop expected_min_step375 закреплён с [skip ci] без нового run.
+Raw replay TR может содержать исторические session steps75 и48 изменений
+за7 ноября: при следующих дневных отчётах новые steps/LoRA changes равны0.
+Единый управляющий остаётся для обязательных отчётов и gate RU; остановленные
+ES/TR больше не обучать, окна не продлевать и новую кампанию не создавать.
