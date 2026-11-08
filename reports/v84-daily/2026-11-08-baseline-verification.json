@@ -1,0 +1,46 @@
+{
+  "source_run_url": "https://github.com/Kirusha-dk/MailGuard/actions/runs/42341473248",
+  "artifact_id": 13565160328,
+  "artifact_zip_sha256": "b695a497beba831d169d7b86b25f517e5077e3a90f3aa6dde007b423ce75fb88",
+  "checkpoint_sha256": "62cc1930ceb6a389c7470e428ea5c9a94261404bbd2e2eaa062e132aa9fc7f6f",
+  "completed_session": "2026-11-07",
+  "global_optimizer_steps": 17875,
+  "phase_optimizer_steps": 9375,
+  "last_session_rows": 50000,
+  "last_session_optimizer_steps": 3125,
+  "active_session": null,
+  "completed_dates": [
+    "2026-11-05",
+    "2026-11-06",
+    "2026-11-07"
+  ],
+  "stopped": false,
+  "epoch": 0,
+  "cursor": 150000,
+  "all_26_adam_states_and_scheduler_verified": true,
+  "rng_present": true,
+  "order_and_exposures_reconciled": true,
+  "lifetime_exposure_sum": 285968,
+  "max_row_exposures": 3,
+  "changed_lora_matrices_vs_previous_completed_checkpoint": 24,
+  "trainer_frozen_backbone_assertion": true,
+  "all_22790_cached_rows_verified": true,
+  "all_confusion_matrices_source_breakdowns_and_thresholds_verified": true,
+  "paired_development_change": {
+    "fixed_parent": {
+      "lost_previous_tp": 33,
+      "gained_tp": 45,
+      "removed_fp": 156,
+      "added_fp": 59
+    },
+    "fitted98": {
+      "lost_previous_tp": 36,
+      "gained_tp": 36,
+      "removed_fp": 173,
+      "added_fp": 49
+    }
+  },
+  "verification_optimizer_steps": 0,
+  "verification_new_inference_rows": 0,
+  "next_eligible_session": "2026-11-08"
+}
