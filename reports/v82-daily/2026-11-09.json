@@ -1,0 +1,225 @@
+{
+  "version": 82,
+  "campaign": "v82-english-20261020",
+  "session": "2026-11-09",
+  "resumed": true,
+  "checkpoint_restored_in_invocation": true,
+  "completed_session_replayed": false,
+  "session_optimizer_steps": 500,
+  "invocation_optimizer_steps": 500,
+  "global_optimizer_steps": 10500,
+  "epoch": 1,
+  "cursor": 77312,
+  "completed_sessions": 21,
+  "stopped": false,
+  "train_rows": 90680,
+  "select_rows": 22790,
+  "trainable_parameters": 74113,
+  "changed_internal_adapter_tensors": 24,
+  "internal_adapter_delta_l2": 0.4148193557619812,
+  "mean_training_loss": 0.10173451737361029,
+  "development": {
+    "n": 22790,
+    "spam": 10589,
+    "ham": 12201,
+    "tp": 10378,
+    "fp": 880,
+    "recall": 0.9800736613466805,
+    "fp_per_million_ham": 72125.23563642324,
+    "threshold": 0.0944821760058403,
+    "log_loss": 0.1143645225144309,
+    "by_source": {
+      "Assassin": {
+        "n": 158,
+        "spam": 45,
+        "ham": 113,
+        "tp": 45,
+        "fp": 6,
+        "recall": 1.0,
+        "fp_per_million_ham": 53097.345132743365
+      },
+      "CEAS-08": {
+        "n": 929,
+        "spam": 439,
+        "ham": 490,
+        "tp": 436,
+        "fp": 24,
+        "recall": 0.9931662870159453,
+        "fp_per_million_ham": 48979.59183673469
+      },
+      "Enron": {
+        "n": 821,
+        "spam": 400,
+        "ham": 421,
+        "tp": 395,
+        "fp": 14,
+        "recall": 0.9875,
+        "fp_per_million_ham": 33254.1567695962
+      },
+      "GenSpam": {
+        "n": 1167,
+        "spam": 764,
+        "ham": 403,
+        "tp": 751,
+        "fp": 23,
+        "recall": 0.9829842931937173,
+        "fp_per_million_ham": 57071.960297766745
+      },
+      "Labelled-email-2010": {
+        "n": 164,
+        "spam": 104,
+        "ham": 60,
+        "tp": 102,
+        "fp": 5,
+        "recall": 0.9807692307692307,
+        "fp_per_million_ham": 83333.33333333333
+      },
+      "Ling": {
+        "n": 67,
+        "spam": 12,
+        "ham": 55,
+        "tp": 11,
+        "fp": 0,
+        "recall": 0.9166666666666666,
+        "fp_per_million_ham": 0.0
+      },
+      "Merged-public": {
+        "n": 15599,
+        "spam": 6953,
+        "ham": 8646,
+        "tp": 6809,
+        "fp": 743,
+        "recall": 0.9792895153171293,
+        "fp_per_million_ham": 85935.6928059218
+      },
+      "Nazario-2015": {
+        "n": 20,
+        "spam": 20,
+        "ham": 0,
+        "tp": 20,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2016": {
+        "n": 33,
+        "spam": 33,
+        "ham": 0,
+        "tp": 33,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2017": {
+        "n": 22,
+        "spam": 22,
+        "ham": 0,
+        "tp": 22,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2018": {
+        "n": 23,
+        "spam": 23,
+        "ham": 0,
+        "tp": 23,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2019": {
+        "n": 18,
+        "spam": 18,
+        "ham": 0,
+        "tp": 18,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2020": {
+        "n": 6,
+        "spam": 6,
+        "ham": 0,
+        "tp": 6,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2021": {
+        "n": 6,
+        "spam": 6,
+        "ham": 0,
+        "tp": 5,
+        "fp": 0,
+        "recall": 0.8333333333333334,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2022": {
+        "n": 14,
+        "spam": 14,
+        "ham": 0,
+        "tp": 13,
+        "fp": 0,
+        "recall": 0.9285714285714286,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2023": {
+        "n": 34,
+        "spam": 34,
+        "ham": 0,
+        "tp": 32,
+        "fp": 0,
+        "recall": 0.9411764705882353,
+        "fp_per_million_ham": null
+      },
+      "Nazario-2025": {
+        "n": 10,
+        "spam": 10,
+        "ham": 0,
+        "tp": 10,
+        "fp": 0,
+        "recall": 1.0,
+        "fp_per_million_ham": null
+      },
+      "TREC-05": {
+        "n": 1511,
+        "spam": 556,
+        "ham": 955,
+        "tp": 542,
+        "fp": 46,
+        "recall": 0.9748201438848921,
+        "fp_per_million_ham": 48167.5392670157
+      },
+      "TREC-06": {
+        "n": 555,
+        "spam": 125,
+        "ham": 430,
+        "tp": 122,
+        "fp": 9,
+        "recall": 0.976,
+        "fp_per_million_ham": 20930.232558139534
+      },
+      "TREC-07": {
+        "n": 1633,
+        "spam": 1005,
+        "ham": 628,
+        "tp": 983,
+        "fp": 10,
+        "recall": 0.9781094527363184,
+        "fp_per_million_ham": 15923.566878980891
+      }
+    },
+    "threshold_selected_on_same_development": true,
+    "is_independent_test": false,
+    "million_message_test_performed": false
+  },
+  "best_development_fp": 880,
+  "pilot_only": false,
+  "accepted_for_production": false,
+  "production_v80_unchanged": true,
+  "test_or_cal_used_for_gradient_or_selection": false,
+  "customer_mail_used": false,
+  "quality_gain_demonstrated": false,
+  "checkpoint_sha256": "7e737502729f15f89c2c19f48c7d8f829c99f776b2f55d8f65a26534880b38c1"
+}

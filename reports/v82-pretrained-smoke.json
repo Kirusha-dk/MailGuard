@@ -1,0 +1,13 @@
+{
+  "pretrained_model": "sentence-transformers/all-MiniLM-L6-v2",
+  "revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+  "engineering_test_only": true,
+  "synthetic_examples": 4,
+  "quality_gain_demonstrated": false,
+  "optimizer_steps": 6,
+  "trainable_parameters": 74113,
+  "changed_internal_adapter_tensors": 24,
+  "internal_adapter_delta_l2": 0.13557598411409943,
+  "base_weight_unchanged": true,
+  "resume_max_absolute_difference": 0.0
+}

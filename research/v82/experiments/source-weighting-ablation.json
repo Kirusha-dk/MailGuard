@@ -1,0 +1,44 @@
+{
+  "status": "prepared_not_executed",
+  "purpose": "Isolate the effect of inverse source/class frequency weighting on development FP and individual spam detection retention",
+  "baseline_evidence": "reports/v82-audits/train-ham-loss-allocation.json",
+  "campaign_policy": "Separate experimental fork with its own lineage metadata, artifacts and budget; do not modify or impersonate the monthly campaign",
+  "parent": {
+    "run_id": 39332953339,
+    "global_step": 500,
+    "checkpoint_sha256": "a5cafb2fface8a35c672e075e41e63fe4551a786b536e4e41a23026299b63f68"
+  },
+  "arms": {
+    "control": "Existing inverse source/class frequency weights and ham_cost=2",
+    "candidate": "Remove inverse source/class frequency factors; keep ham_cost=2 and global mean normalization"
+  },
+  "controls": [
+    "same verified parent adapters, AdamW, scheduler and RNG",
+    "same first 500 continuation steps and TRAIN row order",
+    "same batch size, tokenizer, max_length, backbone, rank, learning rate and CPU environment",
+    "each fork records verified parent metadata plus its own explicit changed objective; do not bypass monthly metadata checks"
+  ],
+  "budget_proposal": {
+    "optimizer_steps_per_arm": 500,
+    "cpu_only": true,
+    "automatic_execution_enabled": false
+  },
+  "evaluation": {
+    "partition": "Frozen SELECT only; development, not independent",
+    "report": [
+      "FP/FN, log loss, fixed 0.5 threshold and separately fitted development ~98% threshold",
+      "per-identity lost/gained TP and removed/added FP versus both parent and control",
+      "source and length breakdown"
+    ],
+    "do_not_infer": "Equal aggregate TP is not zero loss of prior individual detections"
+  },
+  "acceptance": "No product promotion from this ablation. Later v80 per-identity no-loss plus FP decrease and independent evaluation remain required",
+  "exclusions": [
+    "CAL",
+    "previous 100000 regression messages",
+    "Nazario-2024",
+    "customer mail"
+  ],
+  "expected_improvement_claimed": false,
+  "monthly_state_unchanged": true
+}
