@@ -1,0 +1,30 @@
+{
+  "run_id": 41898769031,
+  "request_commit": "5fce8843fdbee56170f3744089eb129f8541a805",
+  "publication_expected_sha": "26a2cfa697e3fdca66fc673da8f519437d808a20",
+  "force_push": false,
+  "turkish_cold_start_authorized_first_session": true,
+  "turkish_optimizer_steps": 100,
+  "turkish_checkpoint_sha256": "de69f3195b1be57e475befe1d8cf33044adb7420c247ba1bc26c7274869486ba",
+  "adam_step": 100,
+  "scheduler_step": 100,
+  "epoch": 0,
+  "cursor": 800,
+  "completed_sessions": [
+    "2026-11-04"
+  ],
+  "internal_lora_changed": 48,
+  "original_backbone_frozen": true,
+  "frozen_turkish_manifest_exact": true,
+  "es_replay_new_optimizer_steps": 0,
+  "es_checkpoint_bitwise_unchanged": true,
+  "es_global_steps": 300,
+  "es_state_artifact_id": 13356793635,
+  "ru_optimizer_steps": 0,
+  "ru_audit_artifact_id": 13357321922,
+  "english_v82_modified": false,
+  "shared_tests_passed": 17,
+  "existing_automation_extended_no_duplicate_controller": true,
+  "test_used_for_training_or_selection": false,
+  "customer_mail_used": false
+}

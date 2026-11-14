@@ -1,0 +1,186 @@
+{
+  "date_utc": "2026-11-05",
+  "language": "ru",
+  "purpose": "Find authentic native-Russian legitimate email candidates without private inbox access",
+  "training_ready": false,
+  "optimizer_steps_executed": 0,
+  "training_requests_changed": false,
+  "reason": "Real public email candidates found; only12 assistant-reviewed legitimate examples, remaining labels, source-use terms and thread-separated frozen split not finalized.",
+  "sources_downloaded_and_parsed": [
+    {
+      "source_url": "https://lists.altlinux.org/pipermail/community/2010-January.txt.gz",
+      "compressed_sha256": "bf50c60a18dd43ce980c1dfeb7f0c4a1613054549e25b1bf422f69278d174d79",
+      "compressed_bytes": 290895,
+      "messages": 955,
+      "ru_ge_0_8": 486,
+      "counts_before_dedup_and_annotation": true,
+      "source_kind": "Public Mailman/Pipermail email archive, not SMS/chat or translations",
+      "all_messages_automatically_labelled_ham": false
+    },
+    {
+      "source_url": "https://lists.altlinux.org/pipermail/community/2025-January.txt.gz",
+      "compressed_sha256": "0576b5c770ea31a9b988631e5045d92d87b5d1d9f2bf878c605d49c05a987447",
+      "compressed_bytes": 5786,
+      "messages": 22,
+      "ru_ge_0_8": 12,
+      "counts_before_dedup_and_annotation": true,
+      "source_kind": "Public Mailman/Pipermail email archive, not SMS/chat or translations",
+      "all_messages_automatically_labelled_ham": false
+    },
+    {
+      "source_url": "https://lists.altlinux.org/pipermail/community/2020-January.txt.gz",
+      "compressed_sha256": "b8beccb9220ba780e3c62117475e950479fbd375b3955fc0839e104892e25f33",
+      "compressed_bytes": 2727,
+      "messages": 7,
+      "ru_ge_0_8": 1,
+      "counts_before_dedup_and_annotation": true,
+      "source_kind": "Public Mailman/Pipermail email archive, not SMS/chat or translations",
+      "all_messages_automatically_labelled_ham": false
+    },
+    {
+      "source_url": "https://lists.altlinux.org/pipermail/devel/2015-January.txt.gz",
+      "compressed_sha256": "e98d0a8ba9ac7beab4f08f5a95bb446dfede163c0a3f988a5ce730aafb02937e",
+      "compressed_bytes": 21771,
+      "messages": 62,
+      "ru_ge_0_8": 29,
+      "counts_before_dedup_and_annotation": true,
+      "source_kind": "Public Mailman/Pipermail email archive, not SMS/chat or translations",
+      "all_messages_automatically_labelled_ham": false
+    },
+    {
+      "source_url": "https://lists.altlinux.org/pipermail/devel/2025-January.txt.gz",
+      "compressed_sha256": "7a849dec8f0436c46d7dd382a2d8eb5f46451c9135c044ffdfb976184ea23079",
+      "compressed_bytes": 4705,
+      "messages": 9,
+      "ru_ge_0_8": 1,
+      "counts_before_dedup_and_annotation": true,
+      "source_kind": "Public Mailman/Pipermail email archive, not SMS/chat or translations",
+      "all_messages_automatically_labelled_ham": false
+    }
+  ],
+  "main_candidate_pool": {
+    "source_url": "https://lists.altlinux.org/pipermail/community/2010-January.txt.gz",
+    "index_url": "https://lists.altlinux.org/pipermail/community/2010-January/date.html",
+    "archive_index_message_count": 955,
+    "parsed_message_count": 955,
+    "ru_ge_0_8": 486,
+    "unique_full_normalized_identities": 478,
+    "unique_prefix_families": 476,
+    "distinct_normalized_subjects_diagnostic": 119,
+    "normalized_subjects_are_not_validated_thread_groups": true,
+    "supervised_ham_count": 12,
+    "reviewed_selection_count": 16,
+    "other_reviewed_selection_examples_deferred": 4,
+    "remaining_language_candidates_without_assigned_label": 474,
+    "review_seed": "ru-source-review-20261105",
+    "review_selection": "One first archive example per normalized subject, SHA256(seed:raw_sha256) order, first16;12 substantive technical questions/replies retained after reading full normalized subject/body. Other4 not assigned a label.",
+    "label_map": {
+      "0": "legitimate",
+      "1": "spam"
+    },
+    "not_a_frozen_training_manifest": true
+  },
+  "procedure": {
+    "archive_parser": "Python mailbox.mbox.iterkeys/get_bytes (avoids non-ASCII Mailman envelope from-line decoding); v77_mail.parse_eml for MIME/legacy charset handling",
+    "lid_model_sha256": "8f3472cfe8738a7b6099e8e999c3cbfae0dcd15696aac7d7738a8039db603e83",
+    "language_filter": "Pinned fastText lid.176.ftz top1 __label__ru with probability>=0.8 on whitespace-flattened first10000 normalized subject/body chars; no email spam classifier used",
+    "code_sha256": {
+      "v77_mail.py": "8bcbf9eff0874428c0b569e16b4d5184affbb6ae3d7df4c77318905407ff66b3",
+      "v78_data.py": "d04a8c73da2ab3b821aa04bc64b94a50e989e75b0b47fea84147c5e56a96396e"
+    },
+    "identity_and_prefix_family": "v78_data.identifiers on complete v77_mail.parse_eml output; counts do not certify absence of thread/quoted-text leakage",
+    "no_gradient_or_email_spam_classifier_evaluation": true
+  },
+  "other_confirmed_public_email_archives": [
+    {
+      "url": "https://lists.debian.org/debian-russian/2025/01/threads.html",
+      "messages_in_index": 3,
+      "finding": "Two visible native-Russian support posts plus a Chinese Google-account subject; demonstrates why archive membership must not assign HAM automatically. Bodies not downloaded or labelled.",
+      "policy_url": "https://www.debian.org/MailingLists/"
+    },
+    {
+      "url": "https://www.postgresql.org/list/pgsql-ru-general/2015-01/",
+      "messages_in_index": 15,
+      "finding": "Public Russian PostgreSQL support discussions; source index checked, bodies not downloaded or labelled.",
+      "policy_url": "https://www.postgresql.org/about/policies/privacy/",
+      "policy_scope": "Author permits permanent public archival; this is not a separately verified training/commercial redistribution license."
+    }
+  ],
+  "rejected_candidate": {
+    "source": "Bektemir96az96/Uzbek_and_Russian_Phishing_dataset",
+    "revision": "28a9c20a73c26a2868f7812cb50a0c975ff7331e",
+    "file": "phishing_legitimate_dataset.csv",
+    "sha256": "198f33e09f533b71ca44edb6a1334c313765fc966727931f4ba494bffdf90cb7",
+    "declared_license": "apache-2.0",
+    "rows": 100000,
+    "cyrillic_rows": 50000,
+    "cyrillic_labels": {
+      "0": 25000,
+      "1": 25000
+    },
+    "normalized_url_number_templates": 6,
+    "top_counts": [
+      8414,
+      8375,
+      8354,
+      8323,
+      8323,
+      8211
+    ],
+    "reason": "Russian rows reduce to6 exact URL/number-normalized templates, including a test-message template. Row-level native email provenance is not established; cannot use as authentic native-email HAM.",
+    "training_rows_accepted": 0
+  },
+  "conditions_and_limits": {
+    "alt_mail_content_license": "No explicit blanket mail-text training/redistribution license established from inspected list-info/index; do not substitute software/wiki licensing.",
+    "private_customer_mail_used": false,
+    "raw_text_in_git": false,
+    "training_approved": false,
+    "domain": "Historical technical mailing-list conversation; not representative of all modern transactional/business/personal mail.",
+    "archive_transformations": "Pipermail can obfuscate addresses, append archive footer and remove attachments; archive subject/body are not identical to raw received EML.",
+    "next_required": [
+      "Finish source-use conditions assessment.",
+      "Review and annotate remaining candidates; keep uncertain and spam examples separate.",
+      "Deduplicate and group entire reply threads/quoted material; partition without looking at classifier scores.",
+      "Combine with approved native-RU SPAM; meet per-class training/development/test gates.",
+      "Create provenance, label map, language filter, split and frozen manifest before changing data gate or requests.",
+      "Treat new corpus as a new explicit data version, never as continuation under changed old metadata."
+    ]
+  },
+  "large_scale_followup": {
+    "requested_scale": "Several million authentic unique emails; no approved corpus of that scale established yet",
+    "webis_gmane_19": {
+      "source_url": "https://webis.de/data/webis-gmane-19.html",
+      "record_url": "https://zenodo.org/records/3766984",
+      "paper_url": "https://aclanthology.org/2020.acl-main.108/",
+      "publisher_reported_all_language_email_count": 153310330,
+      "confirmed_russian_email_count": null,
+      "spam_ham_annotations_established": false,
+      "zenodo_access_right_observed": "restricted",
+      "public_download_files_observed": 0,
+      "internet_archive_access_restricted": true,
+      "paper_release_policy": "Access solely to researchers and academic institutions; no further distribution for non-academic purposes (section5).",
+      "downloaded_email_count": 0,
+      "training_rows_accepted": 0
+    },
+    "alt_index_inventory": {
+      "community": 312,
+      "sisyphus": 310,
+      "devel": 313,
+      "unit": "Distinct downloadable monthly .txt.gz links in current public index; not message counts",
+      "total_month_archives": 935,
+      "russian_unique_ham_total": null,
+      "duplicate_or_crosspost_overlap_not_measured": true
+    },
+    "pangeanic": {
+      "source_url": "https://pangeanic.com/data-for-ai/business-email-datasets",
+      "vendor_claim_russian_messages_delivered_in_past": 500000,
+      "available_native_email_inventory_verified": false,
+      "free_public_download": false,
+      "purpose_built_content_may_be_included": true,
+      "contacted": false,
+      "purchased": false
+    },
+    "synthetic_multimillion_email_corpora_excluded": true,
+    "scope": "Source inventory and access check only, zero model training; overall source size must not be reported as native-RU HAM size."
+  }
+}
