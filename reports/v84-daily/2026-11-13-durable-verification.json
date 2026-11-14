@@ -1,0 +1,16 @@
+{
+  "release_url": "https://github.com/Kirusha-dk/MailGuard/releases/tag/v84-experiment-2026-11-12",
+  "source_run_id": 43161154950,
+  "zip_sha256": "550bcd0627f16a20c0696b3dc6b9e362ff208048f346ea2f57195097a8623f75",
+  "checkpoint_sha256": "f5357c03d2dc7d4a89133690a7e32933595512f5980d7ab342198e7119b341cb",
+  "global_optimizer_steps": 30375,
+  "completed_dates": 7,
+  "all_state_files_bitwise_match_latest_artifact": true,
+  "best_adapters_and_development_preserved": true,
+  "metadata_in_checkpoint_verified": true,
+  "pinned_backbone_manifest_matches": true,
+  "source_attribution_preserved": true,
+  "frozen_corpus_matches": true,
+  "raw_mail_included": false,
+  "verification_optimizer_steps": 0
+}
