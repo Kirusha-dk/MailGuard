@@ -12,7 +12,22 @@ public static class ModelSerializer
         if (!string.IsNullOrWhiteSpace(directory))
             Directory.CreateDirectory(directory);
 
-        using var stream = File.Create(path);
+        Validate(model);
+        var temp = Path.GetFullPath(path) + ".tmp-" + Guid.NewGuid().ToString("N");
+        try
+        {
+            Write(temp, model);
+            File.Move(temp, path, overwrite: true);
+        }
+        finally
+        {
+            if (File.Exists(temp)) File.Delete(temp);
+        }
+    }
+
+    private static void Write(string temp, MailGuardModel model)
+    {
+        using var stream = File.Create(temp);
         using var writer = new BinaryWriter(stream, Encoding.UTF8, leaveOpen: false);
 
         writer.Write(Magic);
@@ -44,7 +59,7 @@ public static class ModelSerializer
         if (magic != Magic)
         {
             throw new InvalidDataException(
-                "This model is incompatible with the current MailGuard 0.4.x format. Retrain it with the current version.");
+                "Expected a compatible MailGuard 0.4.x .mg package. Python v80/v82 models require their own runtime; do not restart training to replace missing weights.");
         }
 
         var version = reader.ReadString();
@@ -54,6 +69,9 @@ public static class ModelSerializer
         var hamThreshold = reader.ReadDouble();
         var protectRspamd = reader.ReadBoolean();
 
+        if (dimension <= 1024 || dimension > (1 << 24) || (dimension & (dimension - 1)) != 0 ||
+            (long)dimension * sizeof(float) > stream.Length - stream.Position)
+            throw new InvalidDataException("Invalid model dimension or truncated weights.");
         var weights = new double[dimension];
         for (var i = 0; i < dimension; i++)
             weights[i] = reader.ReadSingle();
@@ -67,13 +85,31 @@ public static class ModelSerializer
         };
 
         var exactCount = reader.ReadInt32();
+        if (exactCount < 0 || exactCount > stream.Length - stream.Position)
+            throw new InvalidDataException("Invalid training hash count.");
         for (var i = 0; i < exactCount; i++)
             model.TrainingExactHashes.Add(reader.ReadString());
 
         var simCount = reader.ReadInt32();
+        if (simCount < 0 || (long)simCount * sizeof(ulong) > stream.Length - stream.Position)
+            throw new InvalidDataException("Invalid similarity hash count.");
         for (var i = 0; i < simCount; i++)
             model.TrainingSimHashes.Add(reader.ReadUInt64());
 
+        if (stream.Position != stream.Length)
+            throw new InvalidDataException("Unexpected data after the model.");
+        Validate(model);
         return model;
+    }
+
+    private static void Validate(MailGuardModel model)
+    {
+        var dimension = model.Classifier.Dimension;
+        if (dimension <= 1024 || dimension > (1 << 24) || (dimension & (dimension - 1)) != 0 ||
+            !double.IsFinite(model.Classifier.Bias) ||
+            model.Classifier.Weights.Any(w => !float.IsFinite((float)w)) ||
+            !double.IsFinite(model.SpamThreshold) || !double.IsFinite(model.HamThreshold) ||
+            model.HamThreshold < 0 || model.HamThreshold > 1 || model.SpamThreshold < model.HamThreshold)
+            throw new InvalidDataException("Invalid model parameters or thresholds.");
     }
 }
