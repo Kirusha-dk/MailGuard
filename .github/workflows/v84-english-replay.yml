@@ -1,0 +1,269 @@
+name: MailGuard v84 bounded English replay
+on:
+  pull_request:
+    branches: [mailguard-v82-external-20261102]
+    paths:
+      - research/v84/cycle.json
+      - research/v84/frozen.json
+      - tools/v84_replay.py
+      - tools/v84_replay_data.py
+      - tools/train_v84_replay.py
+      - tests/python/test_v84_replay.py
+      - .github/workflows/v84-english-replay.yml
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: mailguard-v84-english-replay
+  cancel-in-progress: false
+jobs:
+  replay:
+    if: github.head_ref == 'mailguard-v84-english-replay-20261105'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    env:
+      OMP_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned CPU environment
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y p7zip-full
+          python -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements-v82.txt
+          python -m unittest discover -s tests/python -p test_v84_replay.py -v
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            .cache/v82/backbone
+            .cache/v79/frozen
+            .cache/v80/extra
+          key: v82-pinned-english-corpus-and-minilm-1110a243-v1
+      - name: Require exact pinned reference data
+        run: |
+          test -f .cache/v79/frozen/frozen.json
+          test -f .cache/v80/extra/frozen.json
+          test -f .cache/v82/backbone/manifest.json
+          python -u tools/fetch_v82_inputs.py
+      - name: Restore the pinned parent from durable bootstrap or original artifact
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p .cache/v84/warmstart
+          if gh release view v84-bootstrap-20261105 >/dev/null 2>&1; then
+            gh release download v84-bootstrap-20261105 --pattern v84-parent-v82-step8500.zip --dir .cache/v84
+          else
+            gh api repos/${{ github.repository }}/actions/artifacts/13391817394/zip > .cache/v84/v84-parent-v82-step8500.zip
+          fi
+          python - <<'PY'
+          import hashlib,zipfile
+          from pathlib import Path
+          p=Path('.cache/v84/v84-parent-v82-step8500.zip')
+          if hashlib.sha256(p.read_bytes()).hexdigest()!='dd33b5c9853ab6a0abf31983adec418d365b3baff2072057d822f50894c52089':raise ValueError('Parent artifact drift')
+          with zipfile.ZipFile(p) as z:z.extractall('.cache/v84/warmstart')
+          PY
+      - uses: actions/cache/restore@v4
+        id: replay-data
+        with:
+          path: .cache/v84/corpus
+          key: v84-en-replay-frozen-20261105-v1
+      - uses: actions/download-artifact@v4
+        if: steps.replay-data.outputs.cache-hit != 'true'
+        with:
+          pattern: v64-new500k-input-*
+          run-id: '38635836571'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .cache/v84/old-tests
+          merge-multiple: true
+      - name: Freeze expanded corpus and retire consumed test sets
+        if: steps.replay-data.outputs.cache-hit != 'true'
+        timeout-minutes: 70
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p .cache/v84/errors .cache/v84/raw
+          if gh release view v84-bootstrap-20261105 >/dev/null 2>&1; then
+            gh release download v84-bootstrap-20261105 --pattern v84-consumed-audit.zip --dir .cache/v84/errors
+            mv .cache/v84/errors/v84-consumed-audit.zip .cache/v84/errors/result.zip
+          else
+            gh api repos/${{ github.repository }}/actions/artifacts/13362841375/zip > .cache/v84/errors/result.zip
+          fi
+          curl -fsSL --retry 2 --max-time 240 https://untroubled.org/spam/2012.7z -o .cache/v84/raw/2012.7z
+          python -u tools/v84_replay_data.py
+      - name: Read stage and validate frozen manifest
+        id: stage
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads(Path('research/v84/cycle.json').read_text())
+          from sys import path
+          path.insert(0,'tools')
+          from v84_replay import check_request
+          check_request(r)
+          stage=r['stage']
+          if stage not in ('prepare','train'):raise ValueError('Unknown stage')
+          if stage=='train' and json.loads(Path('research/v84/frozen.json').read_text())!=json.loads(Path('.cache/v84/corpus/manifest.json').read_text()):raise ValueError('Frozen corpus changed')
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:f.write('value='+stage+'\n')
+          PY
+      - uses: actions/cache/save@v4
+        if: steps.replay-data.outputs.cache-hit != 'true'
+        with:
+          path: .cache/v84/corpus
+          key: v84-en-replay-frozen-20261105-v1
+      - name: Preserve immutable parent and audit metadata before artifact expiry
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ! gh release view v84-bootstrap-20261105 >/dev/null 2>&1; then
+            mkdir -p .cache/v84/errors
+            if ! test -f .cache/v84/errors/result.zip; then
+              gh api repos/${{ github.repository }}/actions/artifacts/13362841375/zip > .cache/v84/errors/result.zip
+            fi
+            cp .cache/v84/errors/result.zip .cache/v84/v84-consumed-audit.zip
+            python - <<'PY'
+          import hashlib
+          from pathlib import Path
+          if hashlib.sha256(Path('.cache/v84/v84-consumed-audit.zip').read_bytes()).hexdigest()!='5dfc274f7d984940a0a8938a8171eaae4d6b1bcd55c2f36d90c3351e2528e9ab':raise ValueError('Consumed audit drift')
+          PY
+            gh release create v84-bootstrap-20261105 .cache/v84/v84-parent-v82-step8500.zip .cache/v84/v84-consumed-audit.zip research/v84/frozen.json --prerelease --target mailguard-v84-english-replay-20261105 --title "Experimental v84 immutable parent and provenance" --notes-file docs/v84-release-notes.md
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v84-en-20261105-data-audit
+          path: .cache/v84/corpus/manifest.json
+          retention-days: 90
+      - name: Find exact continuation or require first explicit migration
+        if: steps.stage.outputs.value == 'train'
+        id: previous
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const names=['mailguard-v84-en-20261105-state','mailguard-v84-en-20261105-progress'];
+            const all=await github.paginate(github.rest.actions.listArtifactsForRepo,{...context.repo,per_page:100});
+            const candidates=all.filter(a=>names.includes(a.name)&&!a.expired).sort((a,b)=>b.id-a.id);
+            if(candidates.length){core.setOutput('name',candidates[0].name);core.setOutput('run',String(candidates[0].workflow_run.id));}
+            else{
+              const runs=await github.rest.actions.listWorkflowRuns({...context.repo,workflow_id:'v84-english-replay.yml',per_page:100});
+              const past=runs.data.workflow_runs.filter(r=>r.id!==context.runId&&r.head_branch==='mailguard-v84-english-replay-20261105'&&r.status==='completed');
+              const fs=require('fs');const r=JSON.parse(fs.readFileSync('research/v84/cycle.json'));
+              if(r.expected_min_step!==8500||r.session_id!==r.start_date)throw new Error('Continuation checkpoint missing; no restart');
+              for(const run of past){
+                const jobs=await github.rest.actions.listJobsForWorkflowRun({...context.repo,run_id:run.id,per_page:100});
+                const attempted=jobs.data.jobs.some(j=>j.steps.some(s=>s.name==='Execute first64 steps inside the original daily target'&&s.conclusion!=='skipped'&&s.started_at));
+                if(attempted)throw new Error('Earlier training invocation has no surviving checkpoint; refusing restart');
+              }
+              core.setOutput('name','');core.setOutput('run','');
+            }
+      - uses: actions/download-artifact@v4
+        if: steps.previous.outputs.run != ''
+        with:
+          name: ${{ steps.previous.outputs.name }}
+          run-id: ${{ steps.previous.outputs.run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: replay-state
+      - name: Recover interrupted November5 FP-budget audit without gradients
+        if: steps.stage.outputs.value == 'train'
+        continue-on-error: true
+        timeout-minutes: 30
+        run: |
+          python - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          state=Path('replay-state');report=state/'report.json'
+          if not report.is_file():
+            print('No completed previous checkpoint to audit');raise SystemExit(0)
+          r=json.loads(report.read_text())
+          output=state/'historical-audits/2026-11-05-fp-budget.json'
+          if output.is_file():
+            a=json.loads(output.read_text())
+            if a['checkpoint_sha256']!='71c7cfbe41d0c0b3b8369dc60d3970b6ce3b75d155f76d6240304dffae5a9425' or not a['original_report_counts_reproduced']:
+              raise ValueError('Historical audit identity mismatch')
+            print('Verified historical audit already preserved; no repeated inference')
+          elif r['session']=='2026-11-05' and r['session_complete'] and r['global_optimizer_steps']==11625:
+            subprocess.run(['python','-u','tools/audit_v84_fp_budget.py','--state',str(state),
+              '--output',str(output),'--scores',str(state/'historical-audits/2026-11-05-select-scores.npz')],check=True)
+          else:
+            print('Current checkpoint differs from November5; no substitution for old audit')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.stage.outputs.value == 'train'
+        with:
+          name: mailguard-v84-en-20261105-fp-budget-audit
+          path: replay-state/historical-audits/
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Execute first64 steps inside the original daily target
+        if: steps.stage.outputs.value == 'train'
+        timeout-minutes: 15
+        run: python -u tools/train_v84_replay.py --allow-initial-migration --max-steps-this-invocation 64
+      - uses: actions/upload-artifact@v4
+        if: steps.stage.outputs.value == 'train'
+        with:
+          name: mailguard-v84-en-20261105-progress
+          path: replay-state/
+          retention-days: 90
+      - name: Finish the same50000-row session with exact optimizer and RNG restoration
+        if: steps.stage.outputs.value == 'train'
+        timeout-minutes: 210
+        run: python -u tools/train_v84_replay.py
+      - uses: actions/upload-artifact@v4
+        if: always() && steps.stage.outputs.value == 'train'
+        with:
+          name: mailguard-v84-en-20261105-state
+          path: replay-state/
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Commit only completed development aggregates with a fast-forward lease
+        if: steps.stage.outputs.value == 'train' && success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs=require('fs');const r=JSON.parse(fs.readFileSync('replay-state/report.json'));
+            if(!r.session_complete)throw new Error('Not a completed session');
+            const branch='mailguard-v84-english-replay-20261105';
+            const head=await github.rest.git.getRef({...context.repo,ref:'heads/'+branch});const expected=head.data.object.sha;
+            const base=await github.rest.git.getCommit({...context.repo,commit_sha:expected});
+            const blob=await github.rest.git.createBlob({...context.repo,content:JSON.stringify(r,null,2)+'\n',encoding:'utf-8'});
+            const entries=[{path:'reports/v84-daily/'+r.session+'.json',mode:'100644',type:'blob',sha:blob.data.sha}];
+            const auditPath='replay-state/historical-audits/2026-11-05-fp-budget.json';
+            if(fs.existsSync(auditPath)){
+              const audit=await github.rest.git.createBlob({...context.repo,content:fs.readFileSync(auditPath,'utf8'),encoding:'utf-8'});
+              entries.push({path:'reports/v84-audits/2026-11-05-fp-budget.json',mode:'100644',type:'blob',sha:audit.data.sha});
+            }
+            const tree=await github.rest.git.createTree({...context.repo,base_tree:base.data.tree.sha,tree:entries});
+            const commit=await github.rest.git.createCommit({...context.repo,message:'Record completed v84 replay '+r.session,tree:tree.data.sha,parents:[expected]});
+            const actual=await github.rest.git.getRef({...context.repo,ref:'heads/'+branch});if(actual.data.object.sha!==expected)throw new Error('Branch changed; report remains in artifact');
+            await github.rest.git.updateRef({...context.repo,ref:'heads/'+branch,sha:commit.data.sha,force:false});
+      - name: Preserve experiment checkpoint package beyond artifact expiry
+        if: steps.stage.outputs.value == 'train' && success()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PY'
+          import json,zipfile
+          from pathlib import Path
+          r=json.loads(Path('replay-state/report.json').read_text())
+          if r.get('stopped') or r.get('completed_sessions',0)%7==0 or r['session']=='2027-05-04':
+              with zipfile.ZipFile('v84-experiment-package.zip','w',compression=zipfile.ZIP_DEFLATED) as z:
+                  for root in ('replay-state','research/v84'):
+                      for p in Path(root).rglob('*'):
+                          if p.is_file():z.write(p,str(p))
+                  for p in ('docs/v84-english-replay.md','docs/v84-source-attribution.md',
+                            'reports/v79-frozen.json','reports/v80-extra-frozen.json',
+                            'reports/v64-transfer-result.json','.cache/v82/backbone/manifest.json'):
+                      z.write(p,p)
+          PY
+          if test -f v84-experiment-package.zip; then
+            session=$(python -c "import json; print(json.load(open('replay-state/report.json'))['session'])")
+            if ! gh release view "v84-experiment-$session" >/dev/null 2>&1; then
+              gh release create "v84-experiment-$session" v84-experiment-package.zip --prerelease --target mailguard-v84-english-replay-20261105 --title "Experimental v84 checkpoint $session" --notes-file docs/v84-release-notes.md
+            fi
+          fi

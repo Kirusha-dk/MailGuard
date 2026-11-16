@@ -1,0 +1,95 @@
+{
+  "version": 85,
+  "campaign": "v85-en-hard-20261116",
+  "sources": [
+    {
+      "name": "CSDMC2010-mirror-ham",
+      "filename": "csdmc-ham.zip",
+      "url": "https://raw.githubusercontent.com/zrz1996/Spam-Email-Classifier-DataSet/36b5435af66a037a5cd474874950ca38c837e953/ham.zip",
+      "sha256": "ae4e7e46387fa98ba3e4dbb2b11618fe63e0d2fd10966ac85707413372ce98c8",
+      "label": 0
+    },
+    {
+      "name": "CSDMC2010-mirror-spam",
+      "filename": "csdmc-spam.zip",
+      "url": "https://raw.githubusercontent.com/zrz1996/Spam-Email-Classifier-DataSet/36b5435af66a037a5cd474874950ca38c837e953/spam.zip",
+      "sha256": "9d2d5a4f6d85768f53cde4ae7eba365929c8818a43d5ec085cff25815f434247",
+      "label": 1
+    },
+    {
+      "name": "IWSPA-AP-2018-training",
+      "filename": "iwspa.zip",
+      "url": "https://raw.githubusercontent.com/BarathiGanesh-HB/IWSPA-AP/d854f44ec2f26d8110bed9450869ac97e19db754/data/IWSPA-AP-traindata.zip",
+      "sha256": "a1c65c95ac42d723fbebd1ee4f633824e4883c27d0973be4738b34f2e2fdd931"
+    }
+  ],
+  "counts": {
+    "train": {
+      "n": 2637,
+      "spam": 352,
+      "ham": 2285
+    },
+    "select": {
+      "n": 699,
+      "spam": 89,
+      "ham": 610
+    },
+    "test": {
+      "n": 630,
+      "spam": 65,
+      "ham": 565
+    }
+  },
+  "fingerprints": {
+    "train": "a072a1d2203c55f632292a11ad294d99ea7cb48b98b585946cc5c410d34fdfe6",
+    "select": "45fd30eb016c3eece08ae229f7ad0008d4677895053cb33d5c28d5bff8fad2e0",
+    "test": "0922035a85e1698c2bb91cf9d0c829ccf710b31070bd033f729cebac2a123d73"
+  },
+  "stats": {
+    "csdmc_mime_envelope_view": 606,
+    "input:CSDMC2010:0": 2949,
+    "csdmc_plain_subject_body_view": 3721,
+    "non_english": 2296,
+    "duplicate": 391,
+    "short": 28,
+    "input:CSDMC2010:1": 1378,
+    "input:IWSPA-AP-2018:0": 5092,
+    "input:IWSPA-AP-2018:1": 629,
+    "old_train_rows": 358657,
+    "old_select_rows": 22790,
+    "conflicting_families": 0,
+    "overlap_or_conflict_rows_removed": 3367
+  },
+  "language_model_sha256": "8f3472cfe8738a7b6099e8e999c3cbfae0dcd15696aac7d7738a8039db603e83",
+  "exclusion_v84_frozen": "v84-en-replay-20261105-v1",
+  "old_manifest_sha256": "864a055b798bd9d802fb5bb03ffbc7df83b4fe9c682ad45c736ea87b02ef4d97",
+  "old_train_and_select_excluded_by_identity_family_and20word_windows": true,
+  "split_seed": "v85-en-hard-20261116-v1",
+  "split_before_model_scores": true,
+  "quote_components_disjoint": true,
+  "training_ready": true,
+  "customer_mail_used": false,
+  "raw_mail_in_git": false,
+  "scope": "CSDMC spam/ham plus IWSPA phishing/legitimate email; not proof of universal spam detection",
+  "rights": "CSDMC mirror MIT applies to repository software; upstream mail-text rights not separately established. IWSPA mirror no standard license found; research pilot only, no raw redistribution. Preserve source attribution and uncertainty.",
+  "csdmc_count_note": "Pinned mirror actually contains2949 HAM/1378 SPAM; README says2929 HAM. Counts inherited from explicit directory labels, discrepancy preserved.",
+  "by_source_class": {
+    "train": {
+      "CSDMC2010:0": 20,
+      "CSDMC2010:1": 32,
+      "IWSPA-AP-2018:0": 2265,
+      "IWSPA-AP-2018:1": 320
+    },
+    "select": {
+      "CSDMC2010:1": 9,
+      "IWSPA-AP-2018:0": 610,
+      "IWSPA-AP-2018:1": 80
+    },
+    "test": {
+      "CSDMC2010:0": 4,
+      "CSDMC2010:1": 3,
+      "IWSPA-AP-2018:0": 561,
+      "IWSPA-AP-2018:1": 62
+    }
+  }
+}

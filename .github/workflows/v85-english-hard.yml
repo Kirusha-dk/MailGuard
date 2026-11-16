@@ -1,0 +1,168 @@
+name: MailGuard v85 isolated English error-focused pilot
+on:
+  pull_request:
+    branches: [mailguard-v82-external-20261102]
+    paths:
+      - research/v85/**
+      - tools/v85_hard_data.py
+      - tools/train_v85_hard.py
+      - tests/python/test_v85_hard.py
+      - .github/workflows/v85-english-hard.yml
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: mailguard-v85-en-hard-20261116
+  cancel-in-progress: false
+jobs:
+  pilot:
+    if: github.head_ref == 'mailguard-v85-english-hard-mining-20261116'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      OMP_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned CPU environment
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y p7zip-full
+          python -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements-v82.txt
+          python -m unittest discover -s tests/python -p test_v85_hard.py -v
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            .cache/v82/backbone
+            .cache/v79/frozen
+            .cache/v80/extra
+          key: v82-pinned-english-corpus-and-minilm-1110a243-v1
+      - name: Require exact pinned reference data
+        run: |
+          test -f .cache/v79/frozen/frozen.json
+          test -f .cache/v80/extra/frozen.json
+          test -f .cache/v82/backbone/manifest.json
+          python -u tools/fetch_v82_inputs.py
+      - name: Restore the pinned parent from durable bootstrap or original artifact
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p .cache/v84/warmstart
+          if gh release view v84-bootstrap-20261105 >/dev/null 2>&1; then
+            gh release download v84-bootstrap-20261105 --pattern v84-parent-v82-step8500.zip --dir .cache/v84
+          else
+            gh api repos/${{ github.repository }}/actions/artifacts/13391817394/zip > .cache/v84/v84-parent-v82-step8500.zip
+          fi
+          python - <<'PY'
+          import hashlib,zipfile
+          from pathlib import Path
+          p=Path('.cache/v84/v84-parent-v82-step8500.zip')
+          if hashlib.sha256(p.read_bytes()).hexdigest()!='dd33b5c9853ab6a0abf31983adec418d365b3baff2072057d822f50894c52089':raise ValueError('Parent artifact drift')
+          with zipfile.ZipFile(p) as z:z.extractall('.cache/v84/warmstart')
+          PY
+      - uses: actions/cache/restore@v4
+        id: replay-data
+        with:
+          path: .cache/v84/corpus
+          key: v84-en-replay-frozen-20261105-v1
+      - uses: actions/download-artifact@v4
+        if: steps.replay-data.outputs.cache-hit != 'true'
+        with:
+          pattern: v64-new500k-input-*
+          run-id: '38635836571'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .cache/v84/old-tests
+          merge-multiple: true
+      - name: Freeze expanded corpus and retire consumed test sets
+        if: steps.replay-data.outputs.cache-hit != 'true'
+        timeout-minutes: 70
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p .cache/v84/errors .cache/v84/raw
+          if gh release view v84-bootstrap-20261105 >/dev/null 2>&1; then
+            gh release download v84-bootstrap-20261105 --pattern v84-consumed-audit.zip --dir .cache/v84/errors
+            mv .cache/v84/errors/v84-consumed-audit.zip .cache/v84/errors/result.zip
+          else
+            gh api repos/${{ github.repository }}/actions/artifacts/13362841375/zip > .cache/v84/errors/result.zip
+          fi
+          curl -fsSL --retry 2 --max-time 240 https://untroubled.org/spam/2012.7z -o .cache/v84/raw/2012.7z
+          python -u tools/v84_replay_data.py
+      - name: Restore immutable own English parent
+        uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v84-en-20261105-state
+          run-id: '43812589689'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .cache/v85/parent
+      - name: Freeze additional labelled public emails before scoring
+        run: python -u tools/v85_hard_data.py
+      - name: Find own pilot state or forbid a lost-state restart
+        id: priorpilot
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const all=await github.paginate(github.rest.actions.listArtifactsForRepo,{...context.repo,per_page:100});
+            const matches=all.filter(a=>a.name==='mailguard-v85-en-hard-20261116-state'&&!a.expired).sort((a,b)=>b.id-a.id);
+            core.setOutput('run',matches.length?String(matches[0].workflow_run.id):'');
+            if(!matches.length){
+              const runs=await github.rest.actions.listWorkflowRuns({...context.repo,workflow_id:'v85-english-hard.yml',per_page:100});
+              for(const r of runs.data.workflow_runs.filter(r=>r.id!==context.runId&&r.head_branch==='mailguard-v85-english-hard-mining-20261116')){
+                const jobs=await github.rest.actions.listJobsForWorkflowRun({...context.repo,run_id:r.id,per_page:100});
+                if(jobs.data.jobs.some(j=>j.steps.some(s=>s.name==='Run isolated100-step error-focused pilot'&&s.started_at&&s.conclusion!=='skipped')))throw new Error('Pilot attempted but own checkpoint lost; no cold restart');
+              }
+            }
+      - uses: actions/download-artifact@v4
+        if: steps.priorpilot.outputs.run != ''
+        with:
+          name: mailguard-v85-en-hard-20261116-state
+          run-id: ${{ steps.priorpilot.outputs.run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: hard-state
+      - name: Run isolated100-step error-focused pilot
+        run: python -u tools/train_v85_hard.py --parent .cache/v85/parent/checkpoint.pt
+        timeout-minutes: 35
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v85-en-hard-20261116-state
+          path: hard-state/
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Record small aggregates without another training run
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs=require('fs');const branch='mailguard-v85-english-hard-mining-20261116';
+            const head=await github.rest.git.getRef({...context.repo,ref:'heads/'+branch});const expected=head.data.object.sha;
+            const base=await github.rest.git.getCommit({...context.repo,commit_sha:expected});
+            const tree=await github.rest.git.createTree({...context.repo,base_tree:base.data.tree.sha,tree:[
+              {path:'reports/v85-pilot/result.json',mode:'100644',type:'blob',content:fs.readFileSync('hard-state/report.json','utf8')},
+              {path:'reports/v85-pilot/mining.json',mode:'100644',type:'blob',content:fs.readFileSync('hard-state/mining.json','utf8')} ]});
+            const commit=await github.rest.git.createCommit({...context.repo,message:'[skip ci] Record isolated v85 pilot actual error counts and development results',tree:tree.data.sha,parents:[expected]});
+            const actual=await github.rest.git.getRef({...context.repo,ref:'heads/'+branch});if(actual.data.object.sha!==expected)throw new Error('Branch changed; report remains in artifact');
+            await github.rest.git.updateRef({...context.repo,ref:'heads/'+branch,sha:commit.data.sha,force:false});
+      - name: Preserve isolated experimental package without raw email
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PYCODE'
+          import zipfile
+          from pathlib import Path
+          with zipfile.ZipFile('v85-en-hard-pilot.zip','w',compression=zipfile.ZIP_DEFLATED) as z:
+              for p in Path('hard-state').rglob('*'):
+                  if p.is_file():z.write(p,str(p))
+              for p in ('research/v85/frozen.json','research/v85/pilot.json','docs/v85-english-hard-pilot.md','.cache/v82/backbone/manifest.json'):
+                  z.write(p,p)
+              z.write('.cache/v85/parent/checkpoint.pt','parent-v84-step42875.pt')
+          PYCODE
+          if ! gh release view v85-en-hard-20261116-pilot >/dev/null 2>&1; then
+            gh release create v85-en-hard-20261116-pilot v85-en-hard-pilot.zip --prerelease --target mailguard-v85-english-hard-mining-20261116 --title 'Experimental English error-focused100-step pilot' --notes-file docs/v85-english-hard-pilot.md
+          fi
