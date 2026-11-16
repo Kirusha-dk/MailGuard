@@ -17,7 +17,7 @@ def scores(model,tok,rows):
  return np.asarray(v)
 def metrics(rows,s):
  y=np.array([r['y'] for r in rows]);fixed=confusion(y,s,FIXED_THRESHOLD);cut=float(np.sort(s[y==1])[math.floor(.02*sum(y))]) if int(sum(y))>=100 else None
- return dict(partition='SELECT',development=True,independent_test=False,fixed_parent=fixed,fitted98=(confusion(y,s,cut) if cut is not None else None),fitted98_status=('development_fit' if cut is not None else 'insufficient_spam_support'),fitted98_selected_on_same_select=(cut is not None),fp_budget=fp_budget_points(y,s))
+ return dict(partition='SELECT',development=True,independent_test=False,fixed_parent=fixed,fitted98=(confusion(y,s,cut) if cut is not None else None),fitted98_status=('development_fit' if cut is not None else 'insufficient_spam_support'),fitted98_selected_on_same_select=(cut is not None),fp_budget=fp_budget_points(y,s,budgets=tuple(n for n in (1000,500,250,100,50,10,0) if n<int((y==0).sum()))))
 def hard_order(y,s,ids,steps):
  wrong=(s>=FIXED_THRESHOLD)!=np.asarray(y,dtype=bool)
  hard=sorted(np.flatnonzero(wrong).tolist(),key=lambda i:hashlib.sha256(('hard:'+ids[i]).encode()).hexdigest())

@@ -59,5 +59,5 @@ HAM-budget thresholds are fitted on that same SELECT and not independent proof.
 No10ppm claim, no automatic model replacement. Preserve candidate AND parent,
 checkpoint, optimizer/RNG/scheduler, baselines, mining counts, exact backbone
 manifest, frozen metadata and this attribution in an experimental prerelease.
-Two engineering tests cover error selection, correct support, determinism and
-canonical exposure cap. Their fixtures are not training data or quality evidence.
+Three engineering tests cover error selection, correct support, determinism and
+canonical exposure cap, small-HAM FP budgets and insufficient fitted98 support. Their fixtures are not training data or quality evidence.

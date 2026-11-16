@@ -12,5 +12,13 @@
   "correct_support": true,
   "independent_of_v84_frozen_campaign": true,
   "scheduled_controller_created": false,
-  "accepted_for_production": false
+  "accepted_for_production": false,
+  "retry": 1,
+  "preparation_only_attempt": {
+    "run_id": 43878215883,
+    "status": "cancelled",
+    "training_step_conclusion": "skipped",
+    "optimizer_steps": 0,
+    "reason": "Fix oversized FP budget for610 HAM before training"
+  }
 }

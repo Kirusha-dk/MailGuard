@@ -3,7 +3,7 @@ import sys,unittest
 from pathlib import Path
 import numpy as np
 sys.path.insert(0,str(Path(__file__).resolve().parents[2]/'tools'))
-from train_v85_hard import hard_order
+from train_v85_hard import hard_order,metrics
 class HardMiningTests(unittest.TestCase):
  def test_errors_receive_priority_with_correct_support_and_cap(self):
   # FP HAM at index0 and FN SPAM at index1; remaining rows classified correctly.
@@ -11,6 +11,12 @@ class HardMiningTests(unittest.TestCase):
   order,wrong=hard_order(y,s,ids,10)
   self.assertEqual(list(np.flatnonzero(wrong)),[0,1]);self.assertEqual(order[:6],[order[0],order[1]]*3)
   counts=np.bincount(order,minlength=len(y));self.assertEqual(counts[0],3);self.assertEqual(counts[1],3);self.assertTrue((counts[2:]<=1).all());self.assertTrue((counts[2:]>0).any());self.assertEqual(order,hard_order(y,s,ids,10)[0])
+ def test_small_development_set_suppresses_fitted98_and_oversized_fp_budgets(self):
+  rows=[dict(y=1)]*89+[dict(y=0)]*610
+  result=metrics(rows,np.linspace(0.,1.,699))
+  self.assertIsNone(result['fitted98']);self.assertEqual(result['fitted98_status'],'insufficient_spam_support')
+  self.assertNotIn('1000',result['fp_budget']);self.assertEqual(result['fixed_parent']['ham'],610)
+  self.assertTrue(all(v['fp']<=int(k) for k,v in result['fp_budget'].items()))
  def test_target_does_not_repeat_correct_rows(self):
   ids=[str(i) for i in range(100)];order,wrong=hard_order([0]*100,np.zeros(100),ids,2)
   self.assertEqual(len(order),32);self.assertEqual(len(set(order)),32);self.assertFalse(wrong.any())
