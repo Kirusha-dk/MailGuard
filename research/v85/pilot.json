@@ -1,0 +1,16 @@
+{
+  "campaign": "v85-en-hard-20261116",
+  "parent_campaign": "v84-en-replay-20261105",
+  "parent_global_step": 42875,
+  "parent_checkpoint_sha256": "3b77371c3d413a7dc90f66ae69d0744c93e1b5a4f17631e9517b51d5878e0f79",
+  "parent_artifact_id": 14204729215,
+  "parent_run_id": 43812589689,
+  "budget_optimizer_steps": 100,
+  "max_canonical_presentations": 3,
+  "error_selection_partition": "TRAIN",
+  "error_threshold": 0.04897100105881691,
+  "correct_support": true,
+  "independent_of_v84_frozen_campaign": true,
+  "scheduled_controller_created": false,
+  "accepted_for_production": false
+}
