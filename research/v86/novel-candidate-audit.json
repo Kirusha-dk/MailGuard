@@ -1,0 +1,57 @@
+{
+  "input_files": [
+    {
+      "sha256": "c5be0873ae696497c1c219bab5307818a3842c962ade7aeeafe25a187683b1fa"
+    },
+    {
+      "sha256": "96d451e242b610121feda924a4b984af895d5114ca29decb79efdfc3343573d7"
+    },
+    {
+      "sha256": "3d6bd219a357f74c5f73804b68eb781d127d80a72cffcc8d85711a2541836c22"
+    },
+    {
+      "sha256": "6999058e5eff6c87c1c79bd11fdd9de9dc0d82913d9396a2336544a4a8c4fc46"
+    }
+  ],
+  "stats": {
+    "input_rows": 114884,
+    "duplicate_identity": 1
+  },
+  "unique_input_rows": 114883,
+  "excluded_rows": 6241,
+  "novel_candidate_rows": 108642,
+  "by_class": {
+    "1": 108544,
+    "0": 98
+  },
+  "by_source_class": {
+    "SpamArchive-2020:1": 25850,
+    "SpamArchive-2019:1": 9486,
+    "SpamArchive-2018:1": 7185,
+    "SpamArchive-2011:1": 29241,
+    "SpamArchive-2023:1": 7465,
+    "SpamArchive-2022:1": 12601,
+    "SpamArchive-2021:1": 10227,
+    "SpamArchive-2025:1": 3524,
+    "SpamArchive-2024:1": 2921,
+    "TREC-06-original-mirror:0": 96,
+    "TREC-06-original-mirror:1": 44,
+    "Zenodo-8339691-Nigerian_5.csv:0": 2
+  },
+  "candidate_fingerprint": "0098d0a7c795fed231c7b56cf23a2123aa2c5991131c03c1d63b985636d16aa6",
+  "prior_counts": {
+    "v84:train": 358657,
+    "v84:select": 22790,
+    "v85:train": 2637,
+    "v85:select": 699,
+    "v85:test": 630
+  },
+  "old_identity_family_and20word_window_exclusion_performed": true,
+  "semantic_near_duplicates_fully_excluded": false,
+  "splits_frozen": false,
+  "training_ready": false,
+  "classifier_scoring_performed": false,
+  "optimizer_steps": 0,
+  "raw_mail_published": false,
+  "customer_mail_used": false
+}

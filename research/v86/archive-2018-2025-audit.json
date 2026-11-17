@@ -1,0 +1,129 @@
+{
+  "sources": [
+    {
+      "year": 2018,
+      "url": "https://untroubled.org/spam/2018.7z",
+      "bytes": 19972310,
+      "sha256": "e5fe01925ce1a7ac52a7e9045c9dfad3cedf1294edecfc7efba56f857ba1bc5d"
+    },
+    {
+      "year": 2019,
+      "url": "https://untroubled.org/spam/2019.7z",
+      "bytes": 20727696,
+      "sha256": "9b44477fbe9d1643712c78ba8544c05337b80aa87dcab71a09222c8e3d1b8595"
+    },
+    {
+      "year": 2020,
+      "url": "https://untroubled.org/spam/2020.7z",
+      "bytes": 36813845,
+      "sha256": "a2baa235678171a7b44853b70e610b4c19311cc459f935235f0932648289a589"
+    },
+    {
+      "year": 2021,
+      "url": "https://untroubled.org/spam/2021.7z",
+      "bytes": 22550575,
+      "sha256": "7fcc8b458ba531ef63ad3a084ad8c28cbf0fffb651d7e5fba6bd87e0a9264a0b"
+    },
+    {
+      "year": 2022,
+      "url": "https://untroubled.org/spam/2022.7z",
+      "bytes": 19533792,
+      "sha256": "171f343cc3d359357142374fe98d642f5d95017f07b3e8abe81ba8fe8bd1e1ec"
+    },
+    {
+      "year": 2023,
+      "url": "https://untroubled.org/spam/2023.7z",
+      "bytes": 29183084,
+      "sha256": "6032850eff57eefec70208c5e568c73aa3ef1ab7e9d9122eaf67ce77ad4c29d6"
+    },
+    {
+      "year": 2024,
+      "url": "https://untroubled.org/spam/2024.7z",
+      "bytes": 15080579,
+      "sha256": "1de672fd034cec6c34944da0fa68d02dc31254340b68696a9013e7ceeb74d238"
+    },
+    {
+      "year": 2025,
+      "url": "https://untroubled.org/spam/2025.7z",
+      "bytes": 18471207,
+      "sha256": "3d3ad01f6eb7f90bad6a51d653847e2a8f3818e7abdc17efac9d9da021b3860e"
+    }
+  ],
+  "stats": {
+    "archive_files": 217944,
+    "parsed": 217926,
+    "short": 49952,
+    "english": 107094,
+    "duplicate_identity": 25856,
+    "non_english": 60880,
+    "oversized": 18
+  },
+  "by_year": {
+    "2018": {
+      "short": 44329,
+      "english": 10792,
+      "unique_english": 7811,
+      "duplicate_identity": 2981,
+      "non_english": 22140
+    },
+    "2019": {
+      "english": 14287,
+      "unique_english": 9732,
+      "short": 2201,
+      "duplicate_identity": 4555,
+      "non_english": 7369
+    },
+    "2020": {
+      "english": 35930,
+      "unique_english": 26388,
+      "non_english": 11039,
+      "duplicate_identity": 9542,
+      "short": 2037
+    },
+    "2021": {
+      "non_english": 4941,
+      "english": 13074,
+      "duplicate_identity": 2626,
+      "unique_english": 10448,
+      "short": 592
+    },
+    "2022": {
+      "non_english": 5202,
+      "english": 14358,
+      "unique_english": 12673,
+      "duplicate_identity": 1685,
+      "short": 315
+    },
+    "2023": {
+      "short": 182,
+      "non_english": 2609,
+      "english": 9107,
+      "unique_english": 7561,
+      "duplicate_identity": 1546
+    },
+    "2024": {
+      "english": 3958,
+      "unique_english": 3004,
+      "non_english": 2549,
+      "duplicate_identity": 954,
+      "short": 85
+    },
+    "2025": {
+      "non_english": 5031,
+      "english": 5588,
+      "unique_english": 3621,
+      "duplicate_identity": 1967,
+      "short": 211
+    }
+  },
+  "canonical_unique_english": 81238,
+  "full_archives_scanned": true,
+  "old_overlap_checked": false,
+  "training_ready": false,
+  "customer_mail_used": false,
+  "label_map": {
+    "spam_trap": 1
+  },
+  "labels_are_weak": true,
+  "source_conditions": "Publisher grants unrestricted use at https://untroubled.org/spam/; no HAM labels supplied."
+}

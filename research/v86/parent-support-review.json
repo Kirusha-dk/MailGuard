@@ -1,0 +1,38 @@
+{
+  "review_date": "2026-11-17",
+  "source_run": 44026491168,
+  "artifact_id": 14307413784,
+  "artifact_zip_sha256": "0a9a1ba5e71ca9bdfd01333fe654757dec273e5ef714cb79ac87a6e62aaaa3c7",
+  "checkpoint_sha256": "2e62947281989573c47e322e2dd372a9d0690750f4490c9238f9f962ef17e685",
+  "global_optimizer_steps": 46000,
+  "phase_optimizer_steps": 37500,
+  "last_completed_date": "2026-11-17",
+  "active_session": null,
+  "optimizer_states": 26,
+  "rng_present": true,
+  "parent_stopped": false,
+  "old_ham_with_lifetime_budget": 92890,
+  "remaining_old_ham_presentations": 113027,
+  "remaining_exposure_histogram": {
+    "1": 72753,
+    "2": 20137
+  },
+  "old_ham_by_source": {
+    "TREC-05": 16937,
+    "GenSpam": 12329,
+    "TREC-07": 11774,
+    "Merged-public": 20325,
+    "CEAS-08": 9323,
+    "Enron": 7318,
+    "TREC-06": 7576,
+    "Assassin": 2233,
+    "Published-ASCII-mail": 1813,
+    "Ling": 1236,
+    "Labelled-email-2010": 2026
+  },
+  "old_ham_is_not_new_mail": true,
+  "old_select_not_proposed_for_training": true,
+  "old_ham_replay_not_authorized_yet": true,
+  "optimizer_steps_performed_for_this_review": 0,
+  "model_inference_performed": false
+}

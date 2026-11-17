@@ -1,0 +1,99 @@
+{
+  "sources": [
+    {
+      "year": 2018,
+      "url": "https://untroubled.org/spam/2018.7z",
+      "bytes": 19972310,
+      "sha256": "e5fe01925ce1a7ac52a7e9045c9dfad3cedf1294edecfc7efba56f857ba1bc5d",
+      "member_scan_limit": null,
+      "label": 1,
+      "label_quality": "inherited weak spam-trap label",
+      "conditions": "https://untroubled.org/spam/ grants unrestricted use; preserve publisher attribution; no HAM supplied"
+    },
+    {
+      "year": 2019,
+      "url": "https://untroubled.org/spam/2019.7z",
+      "bytes": 20727696,
+      "sha256": "9b44477fbe9d1643712c78ba8544c05337b80aa87dcab71a09222c8e3d1b8595",
+      "member_scan_limit": null,
+      "label": 1,
+      "label_quality": "inherited weak spam-trap label",
+      "conditions": "https://untroubled.org/spam/ grants unrestricted use; preserve publisher attribution; no HAM supplied"
+    },
+    {
+      "year": 2020,
+      "url": "https://untroubled.org/spam/2020.7z",
+      "bytes": 36813845,
+      "sha256": "a2baa235678171a7b44853b70e610b4c19311cc459f935235f0932648289a589",
+      "member_scan_limit": null,
+      "label": 1,
+      "label_quality": "inherited weak spam-trap label",
+      "conditions": "https://untroubled.org/spam/ grants unrestricted use; preserve publisher attribution; no HAM supplied"
+    },
+    {
+      "year": 2021,
+      "url": "https://untroubled.org/spam/2021.7z",
+      "bytes": 22550575,
+      "sha256": "7fcc8b458ba531ef63ad3a084ad8c28cbf0fffb651d7e5fba6bd87e0a9264a0b",
+      "member_scan_limit": null,
+      "label": 1,
+      "label_quality": "inherited weak spam-trap label",
+      "conditions": "https://untroubled.org/spam/ grants unrestricted use; preserve publisher attribution; no HAM supplied"
+    },
+    {
+      "year": 2022,
+      "url": "https://untroubled.org/spam/2022.7z",
+      "bytes": 19533792,
+      "sha256": "171f343cc3d359357142374fe98d642f5d95017f07b3e8abe81ba8fe8bd1e1ec",
+      "member_scan_limit": null,
+      "label": 1,
+      "label_quality": "inherited weak spam-trap label",
+      "conditions": "https://untroubled.org/spam/ grants unrestricted use; preserve publisher attribution; no HAM supplied"
+    },
+    {
+      "year": 2023,
+      "url": "https://untroubled.org/spam/2023.7z",
+      "bytes": 29183084,
+      "sha256": "6032850eff57eefec70208c5e568c73aa3ef1ab7e9d9122eaf67ce77ad4c29d6",
+      "member_scan_limit": null,
+      "label": 1,
+      "label_quality": "inherited weak spam-trap label",
+      "conditions": "https://untroubled.org/spam/ grants unrestricted use; preserve publisher attribution; no HAM supplied"
+    },
+    {
+      "year": 2024,
+      "url": "https://untroubled.org/spam/2024.7z",
+      "bytes": 15080579,
+      "sha256": "1de672fd034cec6c34944da0fa68d02dc31254340b68696a9013e7ceeb74d238",
+      "member_scan_limit": null,
+      "label": 1,
+      "label_quality": "inherited weak spam-trap label",
+      "conditions": "https://untroubled.org/spam/ grants unrestricted use; preserve publisher attribution; no HAM supplied"
+    },
+    {
+      "year": 2025,
+      "url": "https://untroubled.org/spam/2025.7z",
+      "bytes": 18471207,
+      "sha256": "3d3ad01f6eb7f90bad6a51d653847e2a8f3818e7abdc17efac9d9da021b3860e",
+      "member_scan_limit": null,
+      "label": 1,
+      "label_quality": "inherited weak spam-trap label",
+      "conditions": "https://untroubled.org/spam/ grants unrestricted use; preserve publisher attribution; no HAM supplied"
+    },
+    {
+      "year": 2011,
+      "url": "https://untroubled.org/spam/2011.7z",
+      "bytes": 99868817,
+      "sha256": "6fcc71c318a8c2dde649f236b5812dc2ea38bc08ac059b11b74040e633cb1bcd",
+      "member_scan_limit": 200000,
+      "selection": "First 200000 archive members, fixed before classifier scores; not a full-archive count",
+      "label": 1,
+      "label_quality": "inherited weak spam-trap label",
+      "conditions": "https://untroubled.org/spam/ grants unrestricted use; preserve publisher attribution; no HAM supplied"
+    }
+  ],
+  "language_model_sha256": "8f3472cfe8738a7b6099e8e999c3cbfae0dcd15696aac7d7738a8039db603e83",
+  "english_probability_min": 0.8,
+  "raw_member_limit_bytes": 2097152,
+  "customer_mail_used": false
+}

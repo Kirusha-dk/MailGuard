@@ -1,0 +1,19 @@
+{
+  "input_rows": 14132,
+  "new_after_prior_identity_family_and20word_window_exclusion": 140,
+  "new_by_class": {
+    "1": 44,
+    "0": 96
+  },
+  "prior_counts": {
+    "v84:train": 358657,
+    "v84:select": 22790,
+    "v85:train": 2637,
+    "v85:select": 699,
+    "v85:test": 630
+  },
+  "excluded_rows": 13992,
+  "old_overlap_checked": true,
+  "training_ready": false,
+  "count_note": "Counts corrected from all five completed exclusion-log lines; original script keyed both corpus directories by basename, overwriting aggregate labels only. Exclusion itself streamed all five partitions."
+}

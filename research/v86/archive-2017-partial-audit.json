@@ -1,0 +1,12 @@
+{
+  "examined": 60000,
+  "english_ge0_8": 1320,
+  "non_english_or_uncertain": 34290,
+  "short": 24390,
+  "unique_english": 1043,
+  "seconds": 230,
+  "status": "partial_scan_stopped_before_full_inventory",
+  "full_archive_scanned": false,
+  "training_ready": false,
+  "reason": "Switch to bounded complete 2018-2025 archives; prefix scan is not a completed corpus"
+}
