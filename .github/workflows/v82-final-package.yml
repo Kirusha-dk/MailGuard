@@ -128,17 +128,16 @@ jobs:
           ]:
               shutil.copy2(src, package / 'metadata' / Path(src).name)
 
-          readme = '''# MailGuard v82 English neural campaign — experimental archive
-
-This archive preserves the best development-selected adapters at optimizer step 10500
-and the final stopped continuation state at step 12000, including AdamW, scheduler,
-RNG and data cursor inside checkpoint.pt.
-
-Status: EXPERIMENTAL. Stable v80 remains unchanged. The ~98% recall threshold was
-selected on the same development SELECT set; this is not an independent result.
-The 10 FP per million HAM target and the zero-lost-v80-TP acceptance condition were
-not demonstrated. No raw email messages are included.
-'''
+          readme = (
+              '# MailGuard v82 English neural campaign — experimental archive\\n\\n'
+              'This archive preserves the best development-selected adapters at optimizer step 10500\\n'
+              'and the final stopped continuation state at step 12000, including AdamW, scheduler,\\n'
+              'RNG and data cursor inside checkpoint.pt.\\n\\n'
+              'Status: EXPERIMENTAL. Stable v80 remains unchanged. The ~98% recall threshold was\\n'
+              'selected on the same development SELECT set; this is not an independent result.\\n'
+              'The 10 FP per million HAM target and the zero-lost-v80-TP acceptance condition were\\n'
+              'not demonstrated. No raw email messages are included.\\n'
+          )
           (package / 'README.md').write_text(readme)
 
           payload = []
