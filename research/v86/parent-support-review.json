@@ -32,7 +32,9 @@
   },
   "old_ham_is_not_new_mail": true,
   "old_select_not_proposed_for_training": true,
-  "old_ham_replay_not_authorized_yet": true,
+  "old_ham_replay_not_authorized_yet": false,
   "optimizer_steps_performed_for_this_review": 0,
-  "model_inference_performed": false
+  "model_inference_performed": false,
+  "subsequent_user_approval": "2026-11-18",
+  "review_is_readonly_parent_snapshot": true
 }

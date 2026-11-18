@@ -1,7 +1,7 @@
 {
   "version": "v86-en-100000-candidate-cohort-20261117-v1",
   "date": "2026-11-17",
-  "role": "candidate source cohort only; not approved TRAIN",
+  "role": "Approved new-core provenance registry; full training split is in frozen.json",
   "rows": 100000,
   "spam": 99902,
   "ham": 98,
@@ -28,8 +28,6 @@
   "classifiers_scored": false,
   "optimizer_steps": 0,
   "candidate_cohort_frozen": true,
-  "training_split_frozen": false,
-  "training_ready": false,
   "new_independent_test_performed": false,
   "old_v84_train_and_select_and_all_v85_splits_excluded": true,
   "semantic_near_duplicates_fully_excluded": false,
@@ -38,5 +36,9 @@
   "source_catalog_sha256": "2fa3d1203e85907ab062d736725ca11f2fec1b28d0352e6ecb817928a1bce7ad",
   "language_model_sha256": "8f3472cfe8738a7b6099e8e999c3cbfae0dcd15696aac7d7738a8039db603e83",
   "customer_mail_used": false,
-  "raw_mail_in_git_or_artifacts": false
+  "raw_mail_in_git_or_artifacts": false,
+  "approved_on": "2026-11-18",
+  "included_in_approved_frozen_train": true,
+  "overall_training_manifest": "research/v86/frozen.json",
+  "measurement_scope": "Data preparation snapshot; live training steps are recorded in reports/v86-daily"
 }

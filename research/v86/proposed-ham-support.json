@@ -1,5 +1,5 @@
 {
-  "role": "Proposed previously seen HAM support; not new mail and not authorized TRAIN yet",
+  "role": "Approved previously seen HAM support, not new mail",
   "rows": 92890,
   "remaining_presentations": 113027,
   "canonical_fingerprint": "b986575be75a74ee3518a17a4226be4ccd9fa0128890ca3b0bc5919af71f6c97",
@@ -22,10 +22,13 @@
   "inherited_exposures_from_actual_parent": true,
   "max_lifetime_presentations": 3,
   "never_uses_old_select_for_gradients": true,
-  "training_ready": false,
   "optimizer_steps": 0,
   "combined_with_new_cohort_rows": 192890,
   "combined_spam": 99902,
   "combined_ham": 92988,
-  "proposed_not_activated": true
+  "proposed_not_activated": false,
+  "user_approved_on": "2026-11-18",
+  "included_in_approved_frozen_train": true,
+  "budget_is_at_pinned_parent_snapshot": true,
+  "overall_training_manifest": "research/v86/frozen.json"
 }
