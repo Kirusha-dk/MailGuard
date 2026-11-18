@@ -5,7 +5,7 @@
   "stage": "train",
   "training_ready": true,
   "activated": true,
-  "scheduled": false,
+  "scheduled": true,
   "requested_training_rows": 100000,
   "requested_window_days": 30,
   "start_date": "2026-11-18",
@@ -48,5 +48,9 @@
   "ham_support_user_approved": true,
   "approval_date": "2026-11-18",
   "budget_rows": 8000,
-  "independent_test_available": false
+  "independent_test_available": false,
+  "automation_id": "Automation_f14c4175ce848191bab9953fec356eab",
+  "daily_report_timezone": "Europe/Moscow",
+  "first_run_id": 44323525290,
+  "first_run_source_commit": "edcae574f7f15c893c29b2ba2229aa916034a1fa"
 }
