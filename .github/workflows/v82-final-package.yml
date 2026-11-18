@@ -1,0 +1,253 @@
+name: MailGuard v82 final durable experimental package
+on:
+  workflow_dispatch:
+  push:
+    branches: [mailguard-v82-neural-month]
+    paths:
+      - research/v82/final-package.json
+      - .github/workflows/v82-final-package.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mailguard-v82-neural-campaign
+  cancel-in-progress: false
+
+jobs:
+  package-completed-campaign:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      actions: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REPORT_BRANCH: mailguard-v82-neural-month
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify frozen runs and artifacts
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const r = JSON.parse(fs.readFileSync('research/v82/final-package.json', 'utf8'));
+            if (r.campaign !== 'v82-english-20261020' ||
+                r.start_date !== '2026-10-20' || r.end_date !== '2026-11-18' ||
+                r.status !== 'experimental' || r.optimizer_steps_authorized !== 0 ||
+                r.production_promotion_authorized !== false || r.stable_v80_unchanged !== true) {
+              throw new Error('Unsafe or unexpected final-package request');
+            }
+            for (const key of ['best', 'final']) {
+              const x = r[key];
+              const run = (await github.rest.actions.getWorkflowRun({...context.repo, run_id: x.run_id})).data;
+              if (run.conclusion !== 'success' || run.head_branch !== 'mailguard-v82-neural-month' ||
+                  run.path !== '.github/workflows/v82-neural-daily.yml') {
+                throw new Error('Unexpected neural workflow run for ' + key);
+              }
+              const artifacts = (await github.rest.actions.listWorkflowRunArtifacts(
+                {...context.repo, run_id: x.run_id})).data.artifacts;
+              const matches = artifacts.filter(a => a.id === x.artifact_id &&
+                a.name === x.artifact_name && !a.expired && a.digest === x.artifact_digest);
+              if (matches.length !== 1) throw new Error('Pinned state artifact mismatch for ' + key);
+            }
+
+      - name: Download best development state
+        uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v82-english-20261020-state
+          run-id: 42567147835
+          github-token: ${{ github.token }}
+          path: frozen/best
+
+      - name: Download final stopped state
+        uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v82-english-20261020-state
+          run-id: 43164289500
+          github-token: ${{ github.token }}
+          path: frozen/final
+
+      - name: Validate states and build manifest
+        run: |
+          python - <<'PY'
+          import hashlib, json, shutil
+          from pathlib import Path
+
+          request = json.loads(Path('research/v82/final-package.json').read_text())
+          allowed = {'checkpoint.pt', 'best-adapter.safetensors', 'best-development.json', 'report.json'}
+
+          def sha(path):
+              h = hashlib.sha256()
+              with open(path, 'rb') as f:
+                  for block in iter(lambda: f.read(1024 * 1024), b''):
+                      h.update(block)
+              return h.hexdigest()
+
+          def verify(label):
+              root = Path('frozen') / label
+              files = {p.name for p in root.iterdir() if p.is_file()}
+              dirs = [p for p in root.iterdir() if p.is_dir()]
+              if dirs or files != allowed:
+                  raise SystemExit(f'Unexpected {label} artifact contents: files={sorted(files)} dirs={dirs}')
+              cfg = request[label]
+              report = json.loads((root / 'report.json').read_text())
+              if sha(root / 'checkpoint.pt') != cfg['checkpoint_sha256']:
+                  raise SystemExit(f'{label} checkpoint hash mismatch')
+              if (report['campaign'] != request['campaign'] or report['session'] != cfg['session'] or
+                  report['global_optimizer_steps'] != cfg['global_optimizer_steps'] or
+                  report['checkpoint_sha256'] != cfg['checkpoint_sha256']):
+                  raise SystemExit(f'{label} report mismatch')
+              if label == 'final' and (report['stopped'] is not True or report['completed_sessions'] != 24):
+                  raise SystemExit('Final state is not the stopped 24-session state')
+              return report
+
+          best_report = verify('best')
+          final_report = verify('final')
+          if sha(Path('frozen/best/best-adapter.safetensors')) != sha(Path('frozen/final/best-adapter.safetensors')):
+              raise SystemExit('Persisted best adapter differs between pinned best and final state')
+
+          package = Path('package')
+          (package / 'best-step-10500').mkdir(parents=True)
+          (package / 'final-step-12000').mkdir(parents=True)
+          (package / 'metadata').mkdir(parents=True)
+          for label, dest in [('best', 'best-step-10500'), ('final', 'final-step-12000')]:
+              for name in allowed:
+                  shutil.copy2(Path('frozen') / label / name, package / dest / name)
+
+          for src in [
+              request['best']['development_report'],
+              request['final']['development_report'],
+              'research/v82/v80-comparison.json',
+              'research/v82/cycle.json',
+              'research/v82/final-package.json',
+              'docs/v82-neural-month.md',
+              'docs/v82-overnight-audit.md',
+              'reports/v82-daily/2026-10-21-night-audit.md',
+          ]:
+              shutil.copy2(src, package / 'metadata' / Path(src).name)
+
+          readme = (
+              '# MailGuard v82 English neural campaign — experimental archive\\n\\n'
+              'This archive preserves the best development-selected adapters at optimizer step 10500\\n'
+              'and the final stopped continuation state at step 12000, including AdamW, scheduler,\\n'
+              'RNG and data cursor inside checkpoint.pt.\\n\\n'
+              'Status: EXPERIMENTAL. Stable v80 remains unchanged. The ~98% recall threshold was\\n'
+              'selected on the same development SELECT set; this is not an independent result.\\n'
+              'The 10 FP per million HAM target and the zero-lost-v80-TP acceptance condition were\\n'
+              'not demonstrated. No raw email messages are included.\\n'
+          )
+          (package / 'README.md').write_text(readme)
+
+          payload = []
+          for p in sorted(package.rglob('*')):
+              if p.is_file() and p.name != 'final-manifest.json':
+                  payload.append({'path': p.relative_to(package).as_posix(),
+                                  'size': p.stat().st_size, 'sha256': sha(p)})
+          manifest = {
+              'schema_version': 1,
+              'campaign': request['campaign'],
+              'status': 'experimental',
+              'created_for_campaign_end': '2026-11-18',
+              'optimizer_steps_executed_by_packaging': 0,
+              'best_global_optimizer_steps': 10500,
+              'final_global_optimizer_steps': 12000,
+              'final_stopped': True,
+              'best_development': best_report['development'],
+              'final_development': final_report['development'],
+              'best_adapter_sha256': sha(Path('frozen/best/best-adapter.safetensors')),
+              'acceptance': request['acceptance'],
+              'stable_v80_unchanged': True,
+              'raw_email_included': False,
+              'files': payload,
+          }
+          (package / 'metadata/final-manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          PY
+
+          archive=mailguard-v82-english-20261020-experimental.tar.gz
+          tar --sort=name --mtime='UTC 2026-11-18' --owner=0 --group=0 --numeric-owner -czf "$archive" package
+          sha256sum "$archive" > "$archive.sha256"
+          cp package/metadata/final-manifest.json mailguard-v82-english-20261020-experimental-manifest.json
+
+      - name: Publish durable experimental prerelease
+        run: |
+          tag=mailguard-v82-english-20261020-experimental
+          archive=mailguard-v82-english-20261020-experimental.tar.gz
+          cat > release-notes.md <<'EOF'
+          Experimental archive for the bounded English v82 campaign, 20 October–18 November 2026.
+
+          Training stopped normally after 24 completed sessions and 12,000 optimizer steps.
+          The best development-selected state was step 10,500 (9 November): 10,378/10,589 TP
+          at a threshold selected on the same SELECT set, with 880/12,201 HAM FP.
+
+          This is not an independent test and not a production release. The 10 FP/million target,
+          zero lost individual v80 detections, and transfer to new sources were not demonstrated.
+          Stable v80 remains unchanged. The archive contains no raw email.
+          EOF
+          if gh release view "$tag" >/dev/null 2>&1; then
+            echo "Release already exists; refusing to create a duplicate" >&2
+            exit 1
+          fi
+          gh release create "$tag"             "$archive" "$archive.sha256"             mailguard-v82-english-20261020-experimental-manifest.json             --target "$GITHUB_SHA" --prerelease             --title "MailGuard v82 English campaign — experimental archive"             --notes-file release-notes.md
+
+      - name: Verify release assets and record final report
+        run: |
+          tag=mailguard-v82-english-20261020-experimental
+          archive=mailguard-v82-english-20261020-experimental.tar.gz
+          release_url=$(gh release view "$tag" --json url --jq .url)
+          gh release view "$tag" --json assets --jq '.assets[].name' | sort > /tmp/assets.txt
+          printf '%s\n'             "$archive"             "$archive.sha256"             mailguard-v82-english-20261020-experimental-manifest.json | sort > /tmp/expected-assets.txt
+          diff -u /tmp/expected-assets.txt /tmp/assets.txt
+          archive_sha=$(cut -d' ' -f1 "$archive.sha256")
+          RELEASE_URL="$release_url" ARCHIVE_SHA="$archive_sha" python - <<'PY'
+          import json, os
+          from pathlib import Path
+          request = json.loads(Path('research/v82/final-package.json').read_text())
+          report = {
+              'version': 82,
+              'campaign': request['campaign'],
+              'date': '2026-11-18',
+              'status': 'experimental',
+              'optimizer_steps_executed': 0,
+              'training_stopped': True,
+              'completed_sessions': 24,
+              'global_optimizer_steps': 12000,
+              'best_global_optimizer_steps': 10500,
+              'best_session': '2026-11-09',
+              'best_checkpoint_sha256': request['best']['checkpoint_sha256'],
+              'final_checkpoint_sha256': request['final']['checkpoint_sha256'],
+              'release_tag': request['release_tag'],
+              'release_url': os.environ['RELEASE_URL'],
+              'archive_sha256': os.environ['ARCHIVE_SHA'],
+              'accepted_for_production': False,
+              'production_v80_unchanged': True,
+              'independent_test_performed': False,
+              'target_10_fp_per_million_demonstrated': False,
+              'individual_v80_tp_preservation_demonstrated': False,
+              'raw_email_included': False,
+          }
+          Path('/tmp/v82-final-report.json').write_text(json.dumps(report, indent=2) + '\n')
+          PY
+          git fetch origin "$REPORT_BRANCH"
+          git checkout -B "$REPORT_BRANCH" "origin/$REPORT_BRANCH"
+          mkdir -p reports/v82-daily
+          cp /tmp/v82-final-report.json reports/v82-daily/2026-11-18-final.json
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add -f reports/v82-daily/2026-11-18-final.json
+          git commit -m "Record v82 final experimental archive"
+          git push origin "$REPORT_BRANCH"
+
+      - name: Summarize final package
+        run: |
+          cat >> "$GITHUB_STEP_SUMMARY" <<'EOF'
+          ## MailGuard v82 final experimental archive
+
+          Optimizer steps executed by this packaging workflow: 0.
+
+          Preserved: best development-selected adapters at step 10500 and final stopped
+          checkpoint at step 12000, including optimizer/scheduler/RNG/cursor state.
+
+          Acceptance: not passed. Stable v80 remains unchanged; no production promotion.
+          EOF

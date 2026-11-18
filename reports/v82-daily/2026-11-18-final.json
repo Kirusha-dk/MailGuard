@@ -1,0 +1,23 @@
+{
+  "version": 82,
+  "campaign": "v82-english-20261020",
+  "date": "2026-11-18",
+  "status": "experimental",
+  "optimizer_steps_executed": 0,
+  "training_stopped": true,
+  "completed_sessions": 24,
+  "global_optimizer_steps": 12000,
+  "best_global_optimizer_steps": 10500,
+  "best_session": "2026-11-09",
+  "best_checkpoint_sha256": "7e737502729f15f89c2c19f48c7d8f829c99f776b2f55d8f65a26534880b38c1",
+  "final_checkpoint_sha256": "3f501d411cbde4e223bd2c93bed84c08e4173bc50d1ea122141e0808a8640db3",
+  "release_tag": "mailguard-v82-english-20261020-experimental",
+  "release_url": "https://github.com/Kirusha-dk/MailGuard/releases/tag/mailguard-v82-english-20261020-experimental",
+  "archive_sha256": "deb2895dd0b768cff57b705888b31bfcdee2618b00f1b54a3be954c75aa3c46d",
+  "accepted_for_production": false,
+  "production_v80_unchanged": true,
+  "independent_test_performed": false,
+  "target_10_fp_per_million_demonstrated": false,
+  "individual_v80_tp_preservation_demonstrated": false,
+  "raw_email_included": false
+}

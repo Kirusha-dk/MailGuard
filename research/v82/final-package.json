@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "campaign": "v82-english-20261020",
+  "start_date": "2026-10-20",
+  "end_date": "2026-11-18",
+  "status": "experimental",
+  "optimizer_steps_authorized": 0,
+  "production_promotion_authorized": false,
+  "stable_v80_unchanged": true,
+  "release_tag": "mailguard-v82-english-20261020-experimental",
+  "best": {
+    "session": "2026-11-09",
+    "global_optimizer_steps": 10500,
+    "run_id": 42567147835,
+    "artifact_id": 13653070107,
+    "artifact_name": "mailguard-v82-english-20261020-state",
+    "artifact_digest": "sha256:c2a93a140afa48becf147912e0fe83b45be126a2a59c3a6e96699c96ca3c5913",
+    "checkpoint_sha256": "7e737502729f15f89c2c19f48c7d8f829c99f776b2f55d8f65a26534880b38c1",
+    "development_report": "reports/v82-daily/2026-11-09.json"
+  },
+  "final": {
+    "session": "2026-11-12",
+    "global_optimizer_steps": 12000,
+    "run_id": 43164289500,
+    "artifact_id": 13920702012,
+    "artifact_name": "mailguard-v82-english-20261020-state",
+    "artifact_digest": "sha256:d0143a98902683b3b47335ad9261f15e3e7535e44fa75d4af1810cda08c8188b",
+    "checkpoint_sha256": "3f501d411cbde4e223bd2c93bed84c08e4173bc50d1ea122141e0808a8640db3",
+    "development_report": "reports/v82-daily/2026-11-12.json",
+    "stopped": true,
+    "completed_sessions": 24
+  },
+  "acceptance": {
+    "passed": false,
+    "reasons": [
+      "The ~98% recall threshold and FP result were selected on the same development SELECT set.",
+      "The 10 FP per million HAM target was not reached.",
+      "Zero lost individual v80 spam detections on frozen-100000 and Nazario-2024 was not demonstrated.",
+      "No new independent English sources with a sufficiently large HAM sample were evaluated."
+    ]
+  }
+}

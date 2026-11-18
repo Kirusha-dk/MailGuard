@@ -1,0 +1,12 @@
+numpy==2.3.5
+scipy==1.17.0
+scikit-learn==1.8.0
+joblib==1.5.3
+transformers==4.46.3
+safetensors==0.4.5
+fasttext-wheel==0.9.2
+pyarrow==26.0.0
+datasets==4.8.5
+huggingface_hub==0.36.2
+tokenizers==0.20.3
+fsspec[http]==2026.2.0
