@@ -26,5 +26,6 @@
   "real_parent_zero_gradient_load_verified": true,
   "cold_restart_after_training_forbidden": true,
   "raw_mail_published": false,
-  "model_accepted_for_production": false
+  "model_accepted_for_production": false,
+  "snapshot_role": "Initial activation before first confirmed optimizer milestone; see milestone-verification and daily Markdown for current status"
 }
