@@ -1,0 +1,23 @@
+{
+  "source": "https://huggingface.co/datasets/lepuer/trec06p",
+  "revision": "0c16fa9f7d6c24927a34f2dea3712152595374e8",
+  "label_map": {
+    "ham": 0,
+    "spam": 1
+  },
+  "labels_sha256": "146f8df1ef20b623b083941eef56b29eb8d7e034aa8552a19f479d71094170ac",
+  "stats": {
+    "input": 37822,
+    "input_ham": 12910,
+    "unique_ham": 10626,
+    "input_spam": 24912,
+    "non_english": 9976,
+    "unique_spam": 3506,
+    "short": 4839,
+    "duplicate_identity": 8875
+  },
+  "language_model_sha256": "8f3472cfe8738a7b6099e8e999c3cbfae0dcd15696aac7d7738a8039db603e83",
+  "old_overlap_checked": false,
+  "training_ready": false,
+  "rights": "No standard licence found in mirror. Preserve TREC original source conditions and attribution; research only; no raw redistribution."
+}

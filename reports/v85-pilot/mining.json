@@ -1,0 +1,13 @@
+{
+  "train_rows": 2637,
+  "threshold": 0.04897100105881691,
+  "errors": 521,
+  "false_positive_ham": 480,
+  "false_negative_spam": 41,
+  "planned_presentations": 1600,
+  "planned_unique_rows": 921,
+  "planned_error_presentations": 1200,
+  "planned_correct_support_presentations": 400,
+  "selected_using_only_train_labels_and_scores": true,
+  "select_or_test_errors_used_for_training": false
+}

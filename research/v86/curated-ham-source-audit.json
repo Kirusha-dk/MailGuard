@@ -1,0 +1,34 @@
+{
+  "files": [
+    {
+      "url": "https://huggingface.co/datasets/kudzaiprichard/aura-phishing-email-corpus/resolve/539567cee21d03c83bd2fb1b142c18a80904eb72/Nazario_5.csv",
+      "sha256": "afef69828165619ced6661ca14a95444a1db82c7b25ae9c2619bbbb108844a44",
+      "md5": "45db8330ea4aabbf72f5199949ae03e5",
+      "bytes": 11755517
+    },
+    {
+      "url": "https://huggingface.co/datasets/kudzaiprichard/aura-phishing-email-corpus/resolve/539567cee21d03c83bd2fb1b142c18a80904eb72/Nigerian_5.csv",
+      "sha256": "3171eeb9bf560059e7f88458efde65c056fc939b842a5edc158f2d7bb887c8b7",
+      "md5": "edfbbb89c40e7447f47867bcc82e72f9",
+      "bytes": 18253749
+    }
+  ],
+  "stats": {
+    "Nazario_5.csv:input": 3065,
+    "Nazario_5.csv:unique_english_ham": 1155,
+    "non_english": 965,
+    "short": 15,
+    "duplicate_identity": 1164,
+    "positive_not_used": 4897,
+    "Nigerian_5.csv:input": 6331,
+    "Nigerian_5.csv:unique_english_ham": 1200
+  },
+  "unique_english_ham": 2355,
+  "source": "https://doi.org/10.5281/zenodo.8339691",
+  "label_map": {
+    "0": "legitimate",
+    "1": "phishing"
+  },
+  "old_overlap_checked": false,
+  "training_ready": false
+}

@@ -1,0 +1,41 @@
+{
+  "sources": [
+    {
+      "year": 2011,
+      "url": "https://untroubled.org/spam/2011.7z",
+      "bytes": 99868817,
+      "sha256": "6fcc71c318a8c2dde649f236b5812dc2ea38bc08ac059b11b74040e633cb1bcd",
+      "member_scan_limit": 200000,
+      "selection": "First 200000 archive members, fixed before classifier scores; not a full-archive count"
+    }
+  ],
+  "stats": {
+    "archive_files": 200000,
+    "parsed": 199998,
+    "english": 78222,
+    "non_english": 108501,
+    "duplicate_identity": 44723,
+    "short": 13275,
+    "oversized": 2
+  },
+  "by_year": {
+    "2011": {
+      "english": 78222,
+      "unique_english": 33499,
+      "non_english": 108501,
+      "duplicate_identity": 44723,
+      "short": 13275
+    }
+  },
+  "canonical_unique_english": 33499,
+  "full_archives_scanned": false,
+  "fixed_prefix_member_limit": 200000,
+  "old_overlap_checked": false,
+  "training_ready": false,
+  "customer_mail_used": false,
+  "label_map": {
+    "spam_trap": 1
+  },
+  "labels_are_weak": true,
+  "source_conditions": "Publisher grants unrestricted use at https://untroubled.org/spam/; no HAM labels supplied."
+}

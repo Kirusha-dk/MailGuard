@@ -1,0 +1,239 @@
+name: MailGuard v86 bounded English monthly100k continuation
+on:
+  pull_request:
+    branches: [mailguard-v82-external-20261102]
+    paths:
+      - research/v86/**
+      - tools/v86_month.py
+      - tools/prepare_v86_month.py
+      - tools/v86_archive_audit.py
+      - tools/v86_exclude_prior.py
+      - tools/train_v86_month.py
+      - tests/python/test_v86_month.py
+      - .github/workflows/v86-english-month.yml
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: mailguard-v86-en-month-20261118
+  cancel-in-progress: false
+jobs:
+  monthly:
+    if: github.head_ref == 'mailguard-v86-english-month-20261117'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    env:
+      OMP_NUM_THREADS: '3'
+      MKL_NUM_THREADS: '3'
+      OPENBLAS_NUM_THREADS: '3'
+      TOKENIZERS_PARALLELISM: 'false'
+      HF_HUB_DISABLE_XET: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install pinned CPU environment
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y p7zip-full libarchive13t64
+          python -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r requirements-v86-audit.txt
+          python -m unittest discover -s tests/python -p test_v86_month.py -v
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            .cache/v82/backbone
+            .cache/v79/frozen
+            .cache/v80/extra
+          key: v82-pinned-english-corpus-and-minilm-1110a243-v1
+      - name: Require exact pinned reference data
+        run: |
+          test -f .cache/v79/frozen/frozen.json
+          test -f .cache/v80/extra/frozen.json
+          test -f .cache/v82/backbone/manifest.json
+          python -u tools/fetch_v82_inputs.py
+      - uses: actions/cache/restore@v4
+        id: owncorpus
+        with:
+          path: .cache/v86/corpus
+          key: v86-en-month-20261118-frozen-v1
+      - name: Restore the pinned parent from durable bootstrap or original artifact
+        if: steps.owncorpus.outputs.cache-hit != 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p .cache/v84/warmstart
+          if gh release view v84-bootstrap-20261105 >/dev/null 2>&1; then
+            gh release download v84-bootstrap-20261105 --pattern v84-parent-v82-step8500.zip --dir .cache/v84
+          else
+            gh api repos/${{ github.repository }}/actions/artifacts/13391817394/zip > .cache/v84/v84-parent-v82-step8500.zip
+          fi
+          python - <<'PY'
+          import hashlib,zipfile
+          from pathlib import Path
+          p=Path('.cache/v84/v84-parent-v82-step8500.zip')
+          if hashlib.sha256(p.read_bytes()).hexdigest()!='dd33b5c9853ab6a0abf31983adec418d365b3baff2072057d822f50894c52089':raise ValueError('Parent artifact drift')
+          with zipfile.ZipFile(p) as z:z.extractall('.cache/v84/warmstart')
+          PY
+      - uses: actions/cache/restore@v4
+        id: replay-data
+        with:
+          path: .cache/v84/corpus
+          key: v84-en-replay-frozen-20261105-v1
+      - uses: actions/download-artifact@v4
+        if: steps.owncorpus.outputs.cache-hit != 'true' && steps.replay-data.outputs.cache-hit != 'true'
+        with:
+          pattern: v64-new500k-input-*
+          run-id: '38635836571'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .cache/v84/old-tests
+          merge-multiple: true
+      - name: Freeze expanded corpus and retire consumed test sets
+        if: steps.owncorpus.outputs.cache-hit != 'true' && steps.replay-data.outputs.cache-hit != 'true'
+        timeout-minutes: 70
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p .cache/v84/errors .cache/v84/raw
+          if gh release view v84-bootstrap-20261105 >/dev/null 2>&1; then
+            gh release download v84-bootstrap-20261105 --pattern v84-consumed-audit.zip --dir .cache/v84/errors
+            mv .cache/v84/errors/v84-consumed-audit.zip .cache/v84/errors/result.zip
+          else
+            gh api repos/${{ github.repository }}/actions/artifacts/13362841375/zip > .cache/v84/errors/result.zip
+          fi
+          curl -fsSL --retry 2 --max-time 240 https://untroubled.org/spam/2012.7z -o .cache/v84/raw/2012.7z
+          python -u tools/v84_replay_data.py
+      - name: Prefer durable immutable v86 bootstrap parent when available
+        id: bootstrap
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          mkdir -p .cache/v86/parent
+          if gh release view v86-bootstrap-20261118 >/dev/null 2>&1; then
+            gh release download v86-bootstrap-20261118 --pattern v86-bootstrap.zip --dir .cache/v86
+            python - <<'PYCODE'
+          import hashlib,zipfile
+          from pathlib import Path
+          with zipfile.ZipFile('.cache/v86/v86-bootstrap.zip') as z:b=z.read('parent-v84-step46000.pt')
+          if hashlib.sha256(b).hexdigest()!='2e62947281989573c47e322e2dd372a9d0690750f4490c9238f9f962ef17e685':raise ValueError('Durable parent mismatch')
+          Path('.cache/v86/parent/checkpoint.pt').write_bytes(b)
+          PYCODE
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Restore reviewed v84 parent46000, never a newer or different campaign
+        if: steps.bootstrap.outputs.found != 'true'
+        uses: actions/download-artifact@v4
+        with:
+          name: mailguard-v84-en-20261105-state
+          run-id: '44026491168'
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: .cache/v86/parent
+      - name: Freeze exactly100000 new emails plus approved92890 inherited-budget HAM
+        if: steps.owncorpus.outputs.cache-hit != 'true'
+        timeout-minutes: 100
+        run: python -u tools/prepare_v86_month.py
+      - uses: actions/cache/save@v4
+        if: steps.owncorpus.outputs.cache-hit != 'true'
+        with:
+          path: .cache/v86/corpus
+          key: v86-en-month-20261118-frozen-v1
+      - name: Preserve immutable parent and provenance before first gradients
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PYCODE'
+          import hashlib,zipfile
+          from pathlib import Path
+          p=Path('.cache/v86/parent/checkpoint.pt')
+          if hashlib.sha256(p.read_bytes()).hexdigest()!='2e62947281989573c47e322e2dd372a9d0690750f4490c9238f9f962ef17e685':raise ValueError('Reviewed parent drift')
+          with zipfile.ZipFile('v86-bootstrap.zip','w',compression=zipfile.ZIP_DEFLATED) as z:
+              z.write(p,'parent-v84-step46000.pt')
+              for path in Path('research/v86').glob('*.json'):z.write(path,str(path))
+              for path in ('docs/v86-english-month.md','docs/v84-source-attribution.md','.cache/v82/backbone/manifest.json'):
+                  z.write(path,path)
+          PYCODE
+          if ! gh release view v86-bootstrap-20261118 >/dev/null 2>&1; then
+            gh release create v86-bootstrap-20261118 v86-bootstrap.zip --prerelease --target mailguard-v86-english-month-20261117 --title 'Experimental v86 immutable parent and provenance' --notes-file docs/v86-english-month.md
+          fi
+      - name: Find only own v86 checkpoint and forbid lost-state restarts
+        id: prior
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const names=['mailguard-v86-en-20261118-state','mailguard-v86-en-20261118-progress'];
+            const all=await github.paginate(github.rest.actions.listArtifactsForRepo,{...context.repo,per_page:100});
+            // Artifact IDs are not chronological: a later full state can have a lower ID.
+            // The trainer still verifies campaign metadata and expected_min_step before gradients.
+            const found=all.filter(a=>names.includes(a.name)&&!a.expired&&a.workflow_run?.head_branch==='mailguard-v86-english-month-20261117')
+              .sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)||Number(b.name.endsWith('-state'))-Number(a.name.endsWith('-state'))||b.id-a.id);
+            core.setOutput('run',found.length?String(found[0].workflow_run.id):'');core.setOutput('name',found.length?found[0].name:'');
+            if(!found.length){
+              const runs=await github.rest.actions.listWorkflowRuns({...context.repo,workflow_id:'v86-english-month.yml',per_page:100});
+              for(const run of runs.data.workflow_runs.filter(r=>r.id!==context.runId&&r.head_branch==='mailguard-v86-english-month-20261117')){
+                const jobs=await github.rest.actions.listJobsForWorkflowRun({...context.repo,run_id:run.id,per_page:100});
+                if(jobs.data.jobs.some(j=>j.steps.some(s=>s.name==='Execute first64 steps inside the original500-step target'&&s.started_at&&s.conclusion!=='skipped')))throw new Error('Own v86 checkpoint lost after an attempted session; cold restart forbidden');
+              }
+            }
+      - uses: actions/download-artifact@v4
+        if: steps.prior.outputs.run != ''
+        with:
+          name: ${{ steps.prior.outputs.name }}
+          run-id: ${{ steps.prior.outputs.run }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: v86-state
+      - name: Execute first64 steps inside the original500-step target
+        run: python -u tools/train_v86_month.py --allow-initial-migration --max-steps-this-invocation 64
+        timeout-minutes: 20
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v86-en-20261118-progress
+          path: v86-state/
+          retention-days: 90
+      - name: Finish same500-step session with own Adam scheduler RNG and exposures
+        run: python -u tools/train_v86_month.py
+        timeout-minutes: 100
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mailguard-v86-en-20261118-state
+          path: v86-state/
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Commit only small actual completed aggregates with a lease
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs=require('fs'),branch='mailguard-v86-english-month-20261117';
+            const r=JSON.parse(fs.readFileSync('v86-state/report.json'));
+            if(!r.session_complete)throw new Error('Session incomplete; do not claim500 optimizer steps');
+            const head=await github.rest.git.getRef({...context.repo,ref:'heads/'+branch}),expected=head.data.object.sha;
+            const base=await github.rest.git.getCommit({...context.repo,commit_sha:expected});
+            const tree=await github.rest.git.createTree({...context.repo,base_tree:base.data.tree.sha,tree:[{path:'reports/v86-daily/'+r.session+'.json',mode:'100644',type:'blob',content:JSON.stringify(r,null,2)+'\n'}]});
+            const commit=await github.rest.git.createCommit({...context.repo,message:'[skip ci] Record completed v86 monthly session '+r.session,tree:tree.data.sha,parents:[expected]});
+            const actual=await github.rest.git.getRef({...context.repo,ref:'heads/'+branch});if(actual.data.object.sha!==expected)throw new Error('Branch changed; report retained in artifact');
+            await github.rest.git.updateRef({...context.repo,ref:'heads/'+branch,sha:commit.data.sha,force:false});
+      - name: Preserve stopped weekly or final experiment without raw email
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PYCODE'
+          import json,zipfile
+          from pathlib import Path
+          r=json.loads(Path('v86-state/report.json').read_text())
+          if r.get('stopped') or r.get('completed_sessions',0)%7==0 or r['session']=='2026-12-17':
+              with zipfile.ZipFile('v86-experiment.zip','w',compression=zipfile.ZIP_DEFLATED) as z:
+                  for root in ('v86-state','research/v86'):
+                      for p in Path(root).rglob('*'):
+                          if p.is_file():z.write(p,str(p))
+                  for p in ('docs/v86-english-month.md','docs/v84-source-attribution.md','.cache/v82/backbone/manifest.json'):
+                      z.write(p,p)
+          PYCODE
+          if test -f v86-experiment.zip; then
+            session=$(python -c "import json; print(json.load(open('v86-state/report.json'))['session'])")
+            if ! gh release view "v86-experiment-$session" >/dev/null 2>&1; then
+              gh release create "v86-experiment-$session" v86-experiment.zip --prerelease --target mailguard-v86-english-month-20261117 --title "Experimental English v86 $session" --notes-file docs/v86-english-month.md
+            fi
+          fi
