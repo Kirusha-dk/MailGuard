@@ -1,0 +1,96 @@
+{
+  "messages": 3000,
+  "baseline_parse_errors": 0,
+  "candidate_parse_errors": 0,
+  "parser_status_changes": 0,
+  "parsed_output_changes": 104,
+  "feature_changes": 32,
+  "classification_comparison_available": false,
+  "prediction_comparable_messages": 0,
+  "baseline_spam_detections_lost": null,
+  "spam_detections_gained": null,
+  "false_positives_removed": null,
+  "false_positives_added": null,
+  "decision_changes": null,
+  "baseline_spam_detections_unverifiable_due_candidate_error": null,
+  "unlabelled_messages": 0,
+  "raw_content_saved": false,
+  "deployment_acceptance_established": false,
+  "deployment_acceptance_not_established_reasons": [
+    "Frozen trusted Rspamd context is absent",
+    "Receipt provenance does not establish approved deployed model or independent corpus",
+    "Matching .mg model inference is absent"
+  ],
+  "decision_transitions": {},
+  "baseline_core_assembly_sha256": "fb408faf0b4cb103cb6a9219fef391cfb98f410d4860a002e62987c13d3774dd",
+  "candidate_core_assembly_sha256": "8c537cac59320973a10097e8a4959c87363b81a6c6250a3344d390df915386f5",
+  "classification_comparison_complete": false,
+  "baseline_receipt_sha256": "01acf6836b76a250b5cce738c56c7840dcac44c4adb3811fa9d2e01a7adcfcba",
+  "candidate_receipt_sha256": "dc423d005436c378ab7e0db52d3a8b82ae311f22cc053adcc4aec41670c4e19c",
+  "corpus": {
+    "source": "SpamAssassin public corpus 2003",
+    "archives": [
+      {
+        "url": "https://spamassassin.apache.org/old/publiccorpus/20030228_easy_ham.tar.bz2",
+        "sha256": "2b7b65904bcfcc31d2b5f51946f2d261370b257402cbbd62930b46ab83367438",
+        "bytes": 1612216,
+        "label": "ham"
+      },
+      {
+        "url": "https://spamassassin.apache.org/old/publiccorpus/20030228_spam.tar.bz2",
+        "sha256": "c08debc32413804949a866be45ef78195cec2cbafd1da744ed76cdb860589743",
+        "bytes": 1183768,
+        "label": "spam"
+      }
+    ],
+    "selected_messages": 3000,
+    "ham": 2500,
+    "spam": 500,
+    "raw_duplicates_removed": 0,
+    "label_conflicting_identities_removed": 0,
+    "selection": "All regular files matching five-digit mail filenames; raw SHA256 deduplication before parsing",
+    "content_and_label_fingerprint": "f50537e707378da16995d235ea3d3f183d34d0d3b33a94e0bbaeb64a44e63e68",
+    "public_corpus": true,
+    "independent_quality_test": false,
+    "customer_mail_used": false,
+    "model_used": false
+  },
+  "field_changes": {
+    "changed_fields": {
+      "textSha256": 97,
+      "urlCount": 1,
+      "subjectSha256": 16,
+      "hasHtml": 1,
+      "fromSha256": 3
+    },
+    "changed_fields_by_class": {
+      "spam": {
+        "textSha256": 61,
+        "subjectSha256": 16,
+        "features": 22,
+        "hasHtml": 1,
+        "fromSha256": 3
+      },
+      "ham": {
+        "textSha256": 36,
+        "features": 10,
+        "urlCount": 1
+      }
+    }
+  },
+  "baseline_commit": "15e5602",
+  "candidate_base_commit": "aa06c16",
+  "candidate_includes_followup_review_fixes": true,
+  "comparison_scope": "Public corpus parser and feature differential only; no .mg or Rspamd inference",
+  "optimizer_steps_executed": 0,
+  "model_availability_evidence": {
+    "matching_mg_available": false,
+    "public_benchmark_workflow_successful_runs": 0,
+    "public_benchmark_workflow_failed_runs": 73,
+    "public_benchmark_workflow_cancelled_runs": 2,
+    "latest_failed_run": 37912690498,
+    "notes": "No verified matching C# .mg in local files or inspected GitHub artifacts/releases; Python model packages are incompatible."
+  },
+  "candidate_core_source_tree_sha256": "aad1ffceb36ad178c63aed658704de6649d94b347d872d22ce6fb44c515e8dab",
+  "artifact_policy": "Only aggregate report stored in Git; raw public messages and hash-only per-message receipts remain outside Git."
+}

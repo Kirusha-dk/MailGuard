@@ -44,7 +44,8 @@ internal static class Program
         var options = ParseOptions(args);
         var input = Require(options, "input");
         var modelPath = Require(options, "model");
-        var raw = await File.ReadAllBytesAsync(input);
+        await using var inputStream = File.OpenRead(input);
+        var raw = await MessageReader.ReadAsync(inputStream);
 
         var model = ModelSerializer.Load(modelPath);
         var rspamdUrl = Get(options, "rspamd")
@@ -58,9 +59,10 @@ internal static class Program
             http = new HttpClient
             {
                 BaseAddress = new Uri(EnsureSlash(rspamdUrl)),
-                Timeout = TimeSpan.FromSeconds(30)
+                Timeout = TimeSpan.FromSeconds(30),
+                MaxResponseContentBufferSize = 4_000_000
             };
-            scanner = new RspamdClient(http);
+            scanner = new RspamdClient(http, Environment.GetEnvironmentVariable("RSPAMD_PASSWORD"));
         }
 
         try
@@ -85,7 +87,8 @@ internal static class Program
     {
         var options = ParseOptions(args);
         var input = Require(options, "input");
-        var raw = File.ReadAllBytes(input);
+        using var inputStream = File.OpenRead(input);
+        var raw = MessageReader.ReadAsync(inputStream).GetAwaiter().GetResult();
         var parsed = new EmailParser().Parse(raw);
         Console.WriteLine(JsonSerializer.Serialize(parsed, Json));
         return 0;

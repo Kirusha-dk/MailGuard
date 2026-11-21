@@ -43,6 +43,8 @@ public sealed class MailGuardEngine
             decision = MailDecision.Spam;
         else if (probability >= _model.SpamThreshold)
             decision = MailDecision.Spam;
+        else if (rspamd?.Action.Trim().Equals("soft reject", StringComparison.OrdinalIgnoreCase) == true)
+            decision = MailDecision.Unsure;
         else if (probability <= _model.HamThreshold)
             decision = MailDecision.Normal;
         else

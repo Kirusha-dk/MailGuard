@@ -8,26 +8,31 @@ namespace MailGuard.Core.Email;
 public sealed class EmailParser
 {
     private static readonly Encoding ByteEncoding = Encoding.Latin1;
+    private static readonly Regex AttachmentNameRegex = new(
+        @"(?:^|;)\s*(?:filename|name)(?:\*\d+)?\*?\s*=",
+        RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
+
+    static EmailParser() => Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
     private static readonly Regex EncodedWordRegex = new(
         @"=\?([^?\s]+)\?([bBqQ])\?([^?]*)\?=",
-        RegexOptions.Compiled);
+        RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
     private static readonly Regex BoundaryRegex = new(
         @"boundary\s*=\s*(?:""([^""]+)""|([^;\s]+))",
-        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
     private static readonly Regex CharsetRegex = new(
         @"charset\s*=\s*(?:""([^""]+)""|([^;\s]+))",
-        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
     private static readonly Regex HtmlTagRegex = new(
         @"<[^>]+>",
-        RegexOptions.Singleline | RegexOptions.Compiled);
+        RegexOptions.Singleline | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
     private static readonly Regex UrlRegex = new(
         @"https?://[^\s<>'""]+",
-        RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        RegexOptions.IgnoreCase | RegexOptions.Compiled, TimeSpan.FromSeconds(1));
 
     public ParsedEmail Parse(byte[] rawMessage)
     {
@@ -70,14 +75,17 @@ public sealed class EmailParser
         int depth)
     {
         if (depth > 20)
-            return;
+            throw new InvalidDataException("MIME nesting exceeds the supported limit.");
 
         var contentType = Get(headers, "Content-Type");
         var disposition = Get(headers, "Content-Disposition");
         var transferEncoding = Get(headers, "Content-Transfer-Encoding");
 
         if (LooksLikeAttachment(contentType, disposition))
+        {
             attachmentCount++;
+            return; // Attachments, including .txt/.eml, are not the message body.
+        }
 
         if (contentType.StartsWith("multipart/", StringComparison.OrdinalIgnoreCase))
         {
@@ -207,24 +215,28 @@ public sealed class EmailParser
     private static IEnumerable<byte[]> SplitMultipart(byte[] body, string boundary)
     {
         var text = ByteEncoding.GetString(body);
-        var marker = "--" + boundary;
-        var chunks = text.Split(marker, StringSplitOptions.None);
-
-        foreach (var rawChunk in chunks.Skip(1))
+        // MIME boundaries are delimiter lines, not arbitrary substrings in the body.
+        var pattern = @"(?m)^--" + Regex.Escape(boundary) + @"(?<close>--)?[ \t]*\r?$";
+        var delimiters = Regex.Matches(text, pattern, RegexOptions.None, TimeSpan.FromSeconds(2));
+        int? start = null;
+        foreach (Match delimiter in delimiters)
         {
-            var chunk = rawChunk;
-
-            if (chunk.StartsWith("--", StringComparison.Ordinal))
+            if (start is not null)
+            {
+                var end = delimiter.Index;
+                if (end > start && text[end - 1] == '\n') end--;
+                if (end > start && text[end - 1] == '\r') end--;
+                if (end > start)
+                    yield return ByteEncoding.GetBytes(text[start.Value..end]);
+            }
+            if (delimiter.Groups["close"].Success)
                 yield break;
-
-            chunk = chunk.TrimStart('\r', '\n');
-            chunk = chunk.TrimEnd('\r', '\n');
-
-            if (chunk.Length == 0)
-                continue;
-
-            yield return ByteEncoding.GetBytes(chunk);
+            start = delimiter.Index + delimiter.Length;
+            if (start < text.Length && text[start.Value] == '\n') start++;
         }
+        // Recover an unterminated final part without interpreting the preamble as mail.
+        if (start is not null && start < text.Length)
+            yield return ByteEncoding.GetBytes(text[start.Value..]);
     }
 
     private static byte[] DecodeTransfer(byte[] body, string transferEncoding)
@@ -320,6 +332,8 @@ public sealed class EmailParser
         if (string.IsNullOrWhiteSpace(value))
             return string.Empty;
 
+        // RFC 2047 ignores folding whitespace between adjacent encoded words.
+        value = Regex.Replace(value, @"(?<=\?=)[ \t\r\n]+(?==\?[^?\s]+\?[bBqQ]\?)", "");
         return EncodedWordRegex.Replace(value, match =>
         {
             try
@@ -359,14 +373,7 @@ public sealed class EmailParser
                 return Encoding.UTF8.GetString(bytes);
 
             var normalized = charset.Trim().Trim('"').ToLowerInvariant();
-            return normalized switch
-            {
-                "utf-8" or "utf8" => Encoding.UTF8.GetString(bytes),
-                "us-ascii" or "ascii" => Encoding.ASCII.GetString(bytes),
-                "iso-8859-1" or "latin1" or "latin-1" => Encoding.Latin1.GetString(bytes),
-                "windows-1252" or "cp1252" => Encoding.Latin1.GetString(bytes),
-                _ => Encoding.UTF8.GetString(bytes)
-            };
+            return Encoding.GetEncoding(normalized).GetString(bytes);
         }
         catch
         {
@@ -380,7 +387,7 @@ public sealed class EmailParser
             html,
             @"<(script|style)\b[^>]*>.*?</\1>",
             " ",
-            RegexOptions.IgnoreCase | RegexOptions.Singleline);
+            RegexOptions.IgnoreCase | RegexOptions.Singleline, TimeSpan.FromSeconds(1));
 
         var withoutTags = HtmlTagRegex.Replace(withoutScripts, " ");
         return WebUtility.HtmlDecode(withoutTags);
@@ -399,8 +406,7 @@ public sealed class EmailParser
         if (disposition.Contains("attachment", StringComparison.OrdinalIgnoreCase))
             return true;
 
-        return disposition.Contains("filename=", StringComparison.OrdinalIgnoreCase)
-               || contentType.Contains("name=", StringComparison.OrdinalIgnoreCase);
+        return AttachmentNameRegex.IsMatch(disposition) || AttachmentNameRegex.IsMatch(contentType);
     }
 
     private static string GetParameter(string header, Regex regex)
