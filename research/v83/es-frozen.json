@@ -1,0 +1,71 @@
+{
+  "automatically_relabelled": false,
+  "counts": {
+    "select": {
+      "ham": 86,
+      "n": 165,
+      "spam": 79
+    },
+    "test": {
+      "ham": 105,
+      "n": 224,
+      "spam": 119
+    },
+    "train": {
+      "ham": 441,
+      "n": 851,
+      "spam": 410
+    }
+  },
+  "customer_mail_used": false,
+  "fingerprints": {
+    "select": "f42d29e09ce32f6c91e208a47a48fd787884eed9a5b10785c0fbc0ccd81d753f",
+    "test": "be98fac48526ecbce82b8da9a5680a5e53c4f3907bbce736db4ae25aa4052f56",
+    "train": "0447d074a3587073c848f81e731c621aae7fdd8c3ec1ee64b852a5200b049e70"
+  },
+  "independent_source_test": false,
+  "lang_lid": {
+    "label_blind": true,
+    "method": "caller-supplied pinned fastText detector",
+    "minimum_probability": 0.8,
+    "target_language": "es"
+  },
+  "language": "es",
+  "normalization": "v77_mail.clean; Unicode first45-word family; 30chars/10 non-placeholder word minimum",
+  "optimizer_steps_executed": 0,
+  "required_class_minimums": {
+    "select": 30,
+    "test": 30,
+    "train": 100
+  },
+  "source": {
+    "attribution": "SpaPhish authors; https://data.mendeley.com/datasets/hz2d6gz7pc/5",
+    "expert_annotations_used_as_features": false,
+    "feature_allowlist": [
+      "subject",
+      "body"
+    ],
+    "license": "CC-BY-4.0",
+    "name": "SpaPhish",
+    "negative_class": "legitimate_email",
+    "positive_class": "phishing",
+    "sha256": "656b2245d58da72d640680e5c2a168673a130b38607f2a427c773bbb167e995e",
+    "url": "https://data.mendeley.com/public-files/datasets/hz2d6gz7pc/files/f796c8e2-3768-4c2d-8b73-48f0d7771de5/file_downloaded",
+    "version": 5
+  },
+  "split_policy": {
+    "families_disjoint": true,
+    "family_hash_buckets": "train 0..69; select 70..84; test 85..99",
+    "seed": "v83-ru-es-20261030",
+    "selection_uses_outcomes": false
+  },
+  "stats": {
+    "conflicting_identities_excluded": 0,
+    "duplicates": 45,
+    "input_rows": 1395,
+    "language_excluded": 102,
+    "retained_rows": 1240,
+    "unsupported_or_short": 8
+  },
+  "training_ready": true
+}
