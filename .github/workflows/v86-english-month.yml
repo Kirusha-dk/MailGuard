@@ -165,7 +165,10 @@ jobs:
           script: |
             const names=['mailguard-v86-en-20261118-state','mailguard-v86-en-20261118-progress'];
             const all=await github.paginate(github.rest.actions.listArtifactsForRepo,{...context.repo,per_page:100});
-            const found=all.filter(a=>names.includes(a.name)&&!a.expired).sort((a,b)=>b.id-a.id);
+            // Artifact IDs are not chronological: a later full state can have a lower ID.
+            // The trainer still verifies campaign metadata and expected_min_step before gradients.
+            const found=all.filter(a=>names.includes(a.name)&&!a.expired&&a.workflow_run?.head_branch==='mailguard-v86-english-month-20261117')
+              .sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)||Number(b.name.endsWith('-state'))-Number(a.name.endsWith('-state'))||b.id-a.id);
             core.setOutput('run',found.length?String(found[0].workflow_run.id):'');core.setOutput('name',found.length?found[0].name:'');
             if(!found.length){
               const runs=await github.rest.actions.listWorkflowRuns({...context.repo,workflow_id:'v86-english-month.yml',per_page:100});

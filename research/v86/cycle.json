@@ -2,9 +2,9 @@
   "campaign": "v86-en-month-20261118",
   "start_date": "2026-11-18",
   "end_date": "2026-12-17",
-  "session_id": "2026-11-20",
+  "session_id": "2026-11-21",
   "budget_rows": 8000,
   "budget_steps": 500,
-  "expected_min_step": 47000,
+  "expected_min_step": 47500,
   "stage": "train"
 }
