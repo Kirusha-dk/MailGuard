@@ -1,0 +1,23 @@
+{
+  "campaign": "v86-en-month-20261118",
+  "session": "2026-11-24",
+  "release_url": "https://github.com/Kirusha-dk/MailGuard/releases/tag/v86-experiment-2026-11-24",
+  "published_experimental_prerelease_verified": true,
+  "global_optimizer_steps": 49500,
+  "phase_optimizer_steps": 3500,
+  "inherited_parent_steps": 46000,
+  "completed_dates": 7,
+  "downloaded_asset_sha256": "676c5134eb0c25b6ebd8bf5c0c8d91c8c480fda853824586f4b8baa2815c04ee",
+  "checkpoint_sha256": "56e8284f958dbe59bc7c90c590dbc3458d72fdaae31a4e6b78e6d67bd88a5b47",
+  "best_adapter_sha256": "f4930e41419ff7710b7b99ad0cb8bae9382841cd0145717e42561498a8fc5dee",
+  "downloaded_release_checked": true,
+  "own_checkpoint_matches": true,
+  "optimizer_scheduler_rng_order_cursor_exposures_hard_indices_present": true,
+  "best_adapter_and_metadata_preserved": true,
+  "source_attribution_and_conditions_preserved": true,
+  "frozen_manifest_unchanged": true,
+  "pinned_backbone_files_verified": true,
+  "raw_mail_included": false,
+  "verification_optimizer_steps": 0,
+  "verification_inference_rows": 0
+}
