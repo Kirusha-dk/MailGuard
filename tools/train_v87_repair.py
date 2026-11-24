@@ -78,6 +78,8 @@ def main():
         lr_scale=.5,scheduler='new 64-step linear decay; original scheduler preserved',
         source_training_date='2026-11-24',additional_trial_authorized_by_user_repair_request=True)
     mf=a.output/'manifest.json'
+    if (mf.exists() or Path('reports/v87-repair/2026-11-24/recovery.json').exists()) and not (a.output/'checkpoint.pt').is_file():
+        raise ValueError('A repair attempt is recorded but its own checkpoint is missing; no cold restart')
     if mf.exists():assert json.loads(mf.read_text())==manifest
     mf.write_text(json.dumps(manifest,indent=2)+'\n')
     tok=AutoTokenizer.from_pretrained(a.backbone,local_files_only=True)
@@ -96,9 +98,13 @@ def main():
     if cp_path.exists():
         saved=torch.load(cp_path,map_location='cpu',weights_only=True)
         assert saved['metadata']['repair']==manifest
+        assert saved['progress']['step']==49500+saved['progress']['repair_steps']
+        assert saved['progress']['cursor']==16*saved['progress']['repair_steps']
+        assert all(int(x['step'])==saved['progress']['step'] for x in saved['optimizer']['state'].values())
         load_trainable(student,saved['adapter']);opt.load_state_dict(saved['optimizer'])
         sched.load_state_dict(saved['scheduler']);torch.set_rng_state(saved['rng']);cursor=saved['progress']['repair_steps']
     invocation_start=cursor
+    invocation_before=trainable_state(student)
     def save():
         # Original ledgers and cursor stay intact. Explicit per-identity deltas
         # record the additional branch presentations; no inherited count resets.
@@ -148,6 +154,7 @@ def main():
     report=dict(campaign=CAMPAIGN,status='completed',source_global_steps=49500,
         global_optimizer_steps=49564,phase_optimizer_steps=64,invocation_optimizer_steps=64-invocation_start,
         changed_lora_matrices=sum(not torch.equal(before[k],trainable_state(student)[k]) for k in before if k.endswith(('.a','.b'))),
+        changed_lora_matrices_in_invocation=sum(not torch.equal(invocation_before[k],trainable_state(student)[k]) for k in invocation_before if k.endswith(('.a','.b'))),
         frozen_backbone_unchanged=True,optimizer_adam_rng_restored=True,source_scheduler_preserved=True,
         source_original_cursor_and_exposures_preserved=True,max_lifetime_exposures_after_repair=max(x[1]+1 for x in picked),
         original_source_checkpoint_unchanged=sha(a.source/'checkpoint.pt')==SOURCE_SHA,

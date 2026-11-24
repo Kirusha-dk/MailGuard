@@ -48,3 +48,17 @@ docs/v86-english-month.md and research/v86. Trap labels are weak; old
 Merged-public provenance is incomplete. Raw text stays in local/runner cache.
 Only code, provenance and small verified aggregates belong in Git; model state
 belongs in separate experimental artifacts/packages. No cron or new manager.
+
+The64-step trial improved fitted98 development FP806→758 but did not pass the
+retained-parent gate (548). Therefore the selected inference artifact is exactly
+the retained v86 best adapter, whose weights originate at parent step46000.
+This is a rollback of inference selection; source training49500 and the rejected
+repair state49564 remain separate and never have their exposure histories reset.
+The previous external report evaluated last working checkpoints, not this best
+adapter. Its external result must be reported separately without transfer claims.
+
+A publication-only workflow has no cron, training code or new controller. It
+retrieves SHA256-pinned durable bootstrap/weekly packages and assembles selected
+weights, both original checkpoints, full pinned backbone files, attribution,
+metadata and checksum manifests in an experimental prerelease. It re-downloads
+that release and checks the actual bytes; reruns cannot execute gradients.
