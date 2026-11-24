@@ -10,6 +10,7 @@ import transformers
 from safetensors.torch import save_file
 from transformers import AutoModel, AutoTokenizer
 
+from v86_quality_guard import should_stop, choose_recovery
 from v82_neural import NeuralMail, restore_checkpoint, save_checkpoint, text_tokenizer, trainable_state
 from v84_replay_data import fingerprint, read_rows, sha
 from v86_month import (PARENT_SHA, PARENT_STEP, CONFIG, begin_session, check_request, development, migrate, run_steps)
@@ -86,6 +87,12 @@ def main():
             indent=2)+'\n')
     if progress['step']<request['expected_min_step']: raise ValueError('Checkpoint rollback')
     save=lambda:save_checkpoint(args.state,model,optimizer,scheduler,progress,metadata)
+    if progress['active_session'] is None and should_stop(progress,CONFIG['patience']):
+        progress['stopped']=True
+        if progress.get('last_report'):
+            progress['last_report']=dict(progress['last_report'],stopped=True,
+                stop_reason='development_patience_or_epoch_limit',quality_guard_applied_without_gradients=True)
+        save()
     if not begin_session(progress,request):
         cached=progress.get('last_report')
         if not cached: raise ValueError('Completed/stopped state lacks durable report')
@@ -132,14 +139,15 @@ def main():
     if done:
         metrics=development(model,tokenizer,select,text_tokenizer,
                             score_cache=args.state.parent/'select-scores.npz');report['development']=metrics
-        improved=(metrics['fp'],metrics['log_loss'])<(progress['best_fp'],progress['best_loss'])
+        retained=json.loads((args.state.parent/'best-development.json').read_text())
+        improved=choose_recovery(retained,metrics)['repair_passed']
         if improved:
             progress.update(best_fp=metrics['fp'],best_loss=metrics['log_loss'],stalled=0)
             save_file(trainable_state(model),str(args.state.parent/'best-adapter.safetensors'))
             (args.state.parent/'best-development.json').write_text(json.dumps(metrics,indent=2)+'\n')
         else:progress['stalled']+=1
         progress['completed_sessions'].append(request['session_id'])
-        progress['stopped']=progress['epoch']>=3 or (progress['epoch']>=1 and progress['stalled']>=CONFIG['patience'])
+        progress['stopped']=should_stop(progress,CONFIG['patience'])
         progress.update(active_session=None,active_budget_rows=None,active_budget_steps=None,
                         active_start=None,active_seen=[])
         report.update(stopped=progress['stopped'],completed_sessions=len(progress['completed_sessions']),
