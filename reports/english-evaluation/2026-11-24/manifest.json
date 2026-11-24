@@ -1,0 +1,234 @@
+{
+  "date": "2026-11-24",
+  "purpose": "Evaluation only; no gradients or threshold selection",
+  "rows": 20630,
+  "classes": {
+    "1": 20065,
+    "0": 565
+  },
+  "source_class": {
+    "SpamArchive-2026-08:1": 1273,
+    "SpamArchive-2026-06:1": 5100,
+    "SpamArchive-2026-04:1": 3583,
+    "SpamArchive-2026-03:1": 2049,
+    "SpamArchive-2026-02:1": 541,
+    "SpamArchive-2026-05:1": 3606,
+    "IWSPA-AP-2018:0": 561,
+    "SpamArchive-2026-07:1": 1851,
+    "SpamArchive-2026-11:1": 354,
+    "IWSPA-AP-2018:1": 62,
+    "SpamArchive-2026-01:1": 265,
+    "SpamArchive-2026-09:1": 968,
+    "SpamArchive-2026-10:1": 410,
+    "CSDMC2010:0": 4,
+    "CSDMC2010:1": 3
+  },
+  "fingerprint": "1cbfe43c908ef49b73bbfd24bb339d2830785cb9286127a1413f177834099881",
+  "gzip_sha256": "b5e477ac470399d925f10f3bc728dcea841eb175e0221bd88a28a74253327d36",
+  "fixed_thresholds": [
+    0.04897100105881691,
+    0.5
+  ],
+  "spam_trap_labels_weak": true,
+  "independent_new_ham_source": false,
+  "ham_holdout": "Previously frozen v85 TEST; never used for gradients or threshold selection",
+  "new_test_threshold_fitting": false,
+  "selection": "All retained v85 holdout plus SHA256 seeded up to 20000 fresh 2026 trap rows, selected before any scoring",
+  "prior_exclusion": {
+    "input_files": [
+      {
+        "sha256": "8bbf1ede99e74a08e1bdc176c8c13f049ddf98e1052dd680db176c5e7bbbb285"
+      },
+      {
+        "sha256": "cc71b1b291bca1781b3e1f2676765e4060e72c2fe729cde20b4364f442ab6e6b"
+      }
+    ],
+    "stats": {
+      "input_rows": 22233
+    },
+    "unique_input_rows": 22233,
+    "excluded_rows": 1039,
+    "novel_candidate_rows": 21194,
+    "by_class": {
+      "1": 20629,
+      "0": 565
+    },
+    "by_source_class": {
+      "SpamArchive-2026-03:1": 2117,
+      "SpamArchive-2026-08:1": 1304,
+      "SpamArchive-2026-06:1": 5252,
+      "SpamArchive-2026-04:1": 3704,
+      "SpamArchive-2026-02:1": 555,
+      "SpamArchive-2026-05:1": 3689,
+      "IWSPA-AP-2018:0": 561,
+      "SpamArchive-2026-07:1": 1902,
+      "SpamArchive-2026-11:1": 359,
+      "IWSPA-AP-2018:1": 62,
+      "SpamArchive-2026-01:1": 269,
+      "SpamArchive-2026-10:1": 421,
+      "SpamArchive-2026-09:1": 992,
+      "CSDMC2010:0": 4,
+      "CSDMC2010:1": 3
+    },
+    "candidate_fingerprint": "9a74180745bcdf62ab22dc0d9db5fdcd1fc20d64387300a2821ab5c7ec9c6b17",
+    "prior_counts": {
+      "v84:train": 358657,
+      "v84:select": 22790,
+      "v86:train": 192890,
+      "v86:select": 22790,
+      "v85-other-splits:train": 2637,
+      "v85-other-splits:select": 699
+    },
+    "old_identity_family_and20word_window_exclusion_performed": true,
+    "semantic_near_duplicates_fully_excluded": false,
+    "splits_frozen": false,
+    "training_ready": false,
+    "classifier_scoring_performed": false,
+    "optimizer_steps": 0,
+    "raw_mail_published": false,
+    "customer_mail_used": false
+  },
+  "source_catalog": {
+    "sources": [
+      {
+        "year": "2026-01",
+        "url": "https://untroubled.org/spam/2026-01.7z",
+        "label": 1,
+        "sha256": "3cc7e8e3206c529c9f758d5f5f540d0a1d9412e0e457cf34a520571d321829c1",
+        "bytes": 2934205,
+        "member_scan_limit": null,
+        "conditions": "Unrestricted use granted by publisher; spam trap labels are weak; no HAM supplied"
+      },
+      {
+        "year": "2026-02",
+        "url": "https://untroubled.org/spam/2026-02.7z",
+        "label": 1,
+        "sha256": "e6c626379c902919f4f8f8e88aa77a458b43079280fa6f960de8f241093a0ef6",
+        "bytes": 3042298,
+        "member_scan_limit": null,
+        "conditions": "Unrestricted use granted by publisher; spam trap labels are weak; no HAM supplied"
+      },
+      {
+        "year": "2026-03",
+        "url": "https://untroubled.org/spam/2026-03.7z",
+        "label": 1,
+        "sha256": "2e11a746cf473bf3751ebe750cc971b86b25805481b9b3fc2a159a5bbe4569db",
+        "bytes": 4094958,
+        "member_scan_limit": null,
+        "conditions": "Unrestricted use granted by publisher; spam trap labels are weak; no HAM supplied"
+      },
+      {
+        "year": "2026-04",
+        "url": "https://untroubled.org/spam/2026-04.7z",
+        "label": 1,
+        "sha256": "85b91f9c853534f23032e310a6603bb016601acc330e1bb5546d280ccd7b2dab",
+        "bytes": 6627289,
+        "member_scan_limit": null,
+        "conditions": "Unrestricted use granted by publisher; spam trap labels are weak; no HAM supplied"
+      },
+      {
+        "year": "2026-05",
+        "url": "https://untroubled.org/spam/2026-05.7z",
+        "label": 1,
+        "sha256": "4dd591e1e76bfeed1e9ab26b68902e6dc55c351e1be00e3b45e91c7d40c74fb5",
+        "bytes": 6225607,
+        "member_scan_limit": null,
+        "conditions": "Unrestricted use granted by publisher; spam trap labels are weak; no HAM supplied"
+      },
+      {
+        "year": "2026-06",
+        "url": "https://untroubled.org/spam/2026-06.7z",
+        "label": 1,
+        "sha256": "7a41b220da0f26638f8bd2f102cfbb28a526fcca046eacf197d16cf0be97228c",
+        "bytes": 7873866,
+        "member_scan_limit": null,
+        "conditions": "Unrestricted use granted by publisher; spam trap labels are weak; no HAM supplied"
+      },
+      {
+        "year": "2026-07",
+        "url": "https://untroubled.org/spam/2026-07.7z",
+        "label": 1,
+        "sha256": "226979e7872d1b917130682a2a23dad84123139e7810df592bc9485d3045de4b",
+        "bytes": 3312247,
+        "member_scan_limit": null,
+        "conditions": "Unrestricted use granted by publisher; spam trap labels are weak; no HAM supplied"
+      },
+      {
+        "year": "2026-08",
+        "url": "https://untroubled.org/spam/2026-08.7z",
+        "label": 1,
+        "sha256": "d4f156ec5a169ceb9771e6dc0703924d69f059a13bb13e997225055e0831106c",
+        "bytes": 1982167,
+        "member_scan_limit": null,
+        "conditions": "Unrestricted use granted by publisher; spam trap labels are weak; no HAM supplied"
+      },
+      {
+        "year": "2026-09",
+        "url": "https://untroubled.org/spam/2026-09.7z",
+        "label": 1,
+        "sha256": "0e2cd6d56012d66cfc621d2775c118ecbb29754c603f70ed05d763e90616ffda",
+        "bytes": 2009979,
+        "member_scan_limit": null,
+        "conditions": "Unrestricted use granted by publisher; spam trap labels are weak; no HAM supplied"
+      },
+      {
+        "year": "2026-10",
+        "url": "https://untroubled.org/spam/2026-10.7z",
+        "label": 1,
+        "sha256": "45d0ac0ada06ed100a5707bf0bd9339e5a9ddb33a375ea8048e5fe0f68452b04",
+        "bytes": 1500797,
+        "member_scan_limit": null,
+        "conditions": "Unrestricted use granted by publisher; spam trap labels are weak; no HAM supplied"
+      },
+      {
+        "year": "2026-11",
+        "url": "https://untroubled.org/spam/2026-11.7z",
+        "label": 1,
+        "sha256": "2f54cd7fa5fdd7fda982cc858efe8a0582b81829fba99c92f504b617f22fa42b",
+        "bytes": 695690,
+        "member_scan_limit": null,
+        "conditions": "Unrestricted use granted by publisher; spam trap labels are weak; no HAM supplied"
+      }
+    ],
+    "language_model_sha256": "8f3472cfe8738a7b6099e8e999c3cbfae0dcd15696aac7d7738a8039db603e83",
+    "english_probability_min": 0.8,
+    "raw_member_limit_bytes": 2000000
+  },
+  "v85_sources": [
+    {
+      "name": "CSDMC2010-mirror-ham",
+      "filename": "csdmc-ham.zip",
+      "url": "https://raw.githubusercontent.com/zrz1996/Spam-Email-Classifier-DataSet/36b5435af66a037a5cd474874950ca38c837e953/ham.zip",
+      "sha256": "ae4e7e46387fa98ba3e4dbb2b11618fe63e0d2fd10966ac85707413372ce98c8",
+      "label": 0
+    },
+    {
+      "name": "CSDMC2010-mirror-spam",
+      "filename": "csdmc-spam.zip",
+      "url": "https://raw.githubusercontent.com/zrz1996/Spam-Email-Classifier-DataSet/36b5435af66a037a5cd474874950ca38c837e953/spam.zip",
+      "sha256": "9d2d5a4f6d85768f53cde4ae7eba365929c8818a43d5ec085cff25815f434247",
+      "label": 1
+    },
+    {
+      "name": "IWSPA-AP-2018-training",
+      "filename": "iwspa.zip",
+      "url": "https://raw.githubusercontent.com/BarathiGanesh-HB/IWSPA-AP/d854f44ec2f26d8110bed9450869ac97e19db754/data/IWSPA-AP-traindata.zip",
+      "sha256": "a1c65c95ac42d723fbebd1ee4f633824e4883c27d0973be4738b34f2e2fdd931"
+    }
+  ],
+  "source_rights": "CSDMC mirror MIT applies to repository software; upstream mail-text rights not separately established. IWSPA mirror no standard license found; research pilot only, no raw redistribution. Preserve source attribution and uncertainty.",
+  "evaluation_models": {
+    "v84": {
+      "run_id": 45334794184,
+      "artifact_id": 14897258771,
+      "artifact_zip_sha256": "b18191053f7c347343251928d01eca46fc034f7760a8e606d9dd4f88047dea81",
+      "checkpoint_sha256": "1e53983336ce3e90d650227070b0840cd7543908d8f03bec6a145efbebbc48d5"
+    },
+    "v86": {
+      "run_id": 45332932979,
+      "artifact_id": 14894106436,
+      "artifact_zip_sha256": "881b73b098152bf5c065288828ed3088f569efed0528939545987c560e1fe4a8",
+      "checkpoint_sha256": "56e8284f958dbe59bc7c90c590dbc3458d72fdaae31a4e6b78e6d67bd88a5b47"
+    }
+  }
+}
