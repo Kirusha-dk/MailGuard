@@ -8,6 +8,7 @@ on:
       - tools/v84_replay.py
       - tools/v84_replay_data.py
       - tools/train_v84_replay.py
+      - tools/verify_v84_experiment.py
       - tests/python/test_v84_replay.py
       - .github/workflows/v84-english-replay.yml
 permissions:
@@ -221,27 +222,6 @@ jobs:
           path: replay-state/
           retention-days: 90
           if-no-files-found: warn
-      - name: Commit only completed development aggregates with a fast-forward lease
-        if: steps.stage.outputs.value == 'train' && success()
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const fs=require('fs');const r=JSON.parse(fs.readFileSync('replay-state/report.json'));
-            if(!r.session_complete)throw new Error('Not a completed session');
-            const branch='mailguard-v84-english-replay-20261105';
-            const head=await github.rest.git.getRef({...context.repo,ref:'heads/'+branch});const expected=head.data.object.sha;
-            const base=await github.rest.git.getCommit({...context.repo,commit_sha:expected});
-            const blob=await github.rest.git.createBlob({...context.repo,content:JSON.stringify(r,null,2)+'\n',encoding:'utf-8'});
-            const entries=[{path:'reports/v84-daily/'+r.session+'.json',mode:'100644',type:'blob',sha:blob.data.sha}];
-            const auditPath='replay-state/historical-audits/2026-11-05-fp-budget.json';
-            if(fs.existsSync(auditPath)){
-              const audit=await github.rest.git.createBlob({...context.repo,content:fs.readFileSync(auditPath,'utf8'),encoding:'utf-8'});
-              entries.push({path:'reports/v84-audits/2026-11-05-fp-budget.json',mode:'100644',type:'blob',sha:audit.data.sha});
-            }
-            const tree=await github.rest.git.createTree({...context.repo,base_tree:base.data.tree.sha,tree:entries});
-            const commit=await github.rest.git.createCommit({...context.repo,message:'Record completed v84 replay '+r.session,tree:tree.data.sha,parents:[expected]});
-            const actual=await github.rest.git.getRef({...context.repo,ref:'heads/'+branch});if(actual.data.object.sha!==expected)throw new Error('Branch changed; report remains in artifact');
-            await github.rest.git.updateRef({...context.repo,ref:'heads/'+branch,sha:commit.data.sha,force:false});
       - name: Preserve experiment checkpoint package beyond artifact expiry
         if: steps.stage.outputs.value == 'train' && success()
         env:
@@ -266,4 +246,30 @@ jobs:
             if ! gh release view "v84-experiment-$session" >/dev/null 2>&1; then
               gh release create "v84-experiment-$session" v84-experiment-package.zip --prerelease --target mailguard-v84-english-replay-20261105 --title "Experimental v84 checkpoint $session" --notes-file docs/v84-release-notes.md
             fi
+            mkdir -p .cache/v84/verified-release
+            gh release download "v84-experiment-$session" --pattern v84-experiment-package.zip --dir .cache/v84/verified-release
+            gh api "repos/${{ github.repository }}/releases/tags/v84-experiment-$session" > .cache/v84/verified-release/release.json
+            python tools/verify_v84_experiment.py --package .cache/v84/verified-release/v84-experiment-package.zip --release-metadata .cache/v84/verified-release/release.json
           fi
+      - name: Commit only completed development aggregates with a fast-forward lease
+        if: steps.stage.outputs.value == 'train' && success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs=require('fs');const r=JSON.parse(fs.readFileSync('replay-state/report.json'));
+            if(!r.session_complete)throw new Error('Not a completed session');
+            const branch='mailguard-v84-english-replay-20261105';
+            const head=await github.rest.git.getRef({...context.repo,ref:'heads/'+branch});const expected=head.data.object.sha;
+            const base=await github.rest.git.getCommit({...context.repo,commit_sha:expected});
+            const blob=await github.rest.git.createBlob({...context.repo,content:JSON.stringify(r,null,2)+'\n',encoding:'utf-8'});
+            const entries=[{path:'reports/v84-daily/'+r.session+'.json',mode:'100644',type:'blob',sha:blob.data.sha}];
+            const auditPath='replay-state/historical-audits/2026-11-05-fp-budget.json';
+            if(fs.existsSync(auditPath)){
+              const audit=await github.rest.git.createBlob({...context.repo,content:fs.readFileSync(auditPath,'utf8'),encoding:'utf-8'});
+              entries.push({path:'reports/v84-audits/2026-11-05-fp-budget.json',mode:'100644',type:'blob',sha:audit.data.sha});
+            }
+            if(fs.existsSync('v84-archive-verification.json'))entries.push({path:'reports/v84-daily/'+r.session+'-archive-verification.json',mode:'100644',type:'blob',content:fs.readFileSync('v84-archive-verification.json','utf8')});
+            const tree=await github.rest.git.createTree({...context.repo,base_tree:base.data.tree.sha,tree:entries});
+            const commit=await github.rest.git.createCommit({...context.repo,message:'[skip ci] Record completed v84 replay '+r.session,tree:tree.data.sha,parents:[expected]});
+            const actual=await github.rest.git.getRef({...context.repo,ref:'heads/'+branch});if(actual.data.object.sha!==expected)throw new Error('Branch changed; report remains in artifact');
+            await github.rest.git.updateRef({...context.repo,ref:'heads/'+branch,sha:commit.data.sha,force:false});
