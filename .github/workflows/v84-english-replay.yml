@@ -149,7 +149,8 @@ jobs:
           script: |
             const names=['mailguard-v84-en-20261105-state','mailguard-v84-en-20261105-progress'];
             const all=await github.paginate(github.rest.actions.listArtifactsForRepo,{...context.repo,per_page:100});
-            const candidates=all.filter(a=>names.includes(a.name)&&!a.expired).sort((a,b)=>b.id-a.id);
+            const candidates=all.filter(a=>names.includes(a.name)&&!a.expired&&a.workflow_run?.head_branch==='mailguard-v84-english-replay-20261105')
+              .sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at)||Number(b.name.endsWith('-state'))-Number(a.name.endsWith('-state'))||b.id-a.id);
             if(candidates.length){core.setOutput('name',candidates[0].name);core.setOutput('run',String(candidates[0].workflow_run.id));}
             else{
               const runs=await github.rest.actions.listWorkflowRuns({...context.repo,workflow_id:'v84-english-replay.yml',per_page:100});
