@@ -1,0 +1,32 @@
+{
+  "run_url": "https://github.com/Kirusha-dk/MailGuard/actions/runs/42168514797",
+  "artifact_id": 13480559031,
+  "artifact_zip_sha256": "a1288e455cafad155ad0b92f5f0cc0d54e42f5c1ceb6e75deecb3e6ad2abb983",
+  "checkpoint_sha256": "c4bd2907aff4ad69cdbbfd8194e37c425a13213078772b39cb1869ca5092ad0a",
+  "session": "2026-11-06",
+  "confirmed_session_rows": 1024,
+  "confirmed_session_optimizer_steps": 64,
+  "confirmed_phase_optimizer_steps": 3189,
+  "confirmed_global_optimizer_steps": 11689,
+  "inherited_parent_steps": 8500,
+  "adam_all_26_step_deltas_verified": 64,
+  "scheduler_step_delta_verified": 64,
+  "rng_advanced": true,
+  "order_restored_and_unchanged": true,
+  "cursor": 51024,
+  "active_seen_matches_exact_order_slice": true,
+  "exposures_reconciled": true,
+  "max_lifetime_row_exposures": 3,
+  "remaining_possible_presentations": 888979,
+  "changed_lora_matrices": 24,
+  "trainer_backbone_hash_assertion_passed": true,
+  "metadata_unchanged": true,
+  "session_complete": false,
+  "remaining_rows_in_original_session": 48976,
+  "remaining_steps_in_original_session": 3061,
+  "completed_sessions": [
+    "2026-11-05"
+  ],
+  "stopped": false,
+  "verification_optimizer_steps": 0
+}
