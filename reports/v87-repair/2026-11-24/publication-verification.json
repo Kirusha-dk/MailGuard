@@ -1,0 +1,11 @@
+{
+  "release_url": "https://github.com/Kirusha-dk/MailGuard/releases/tag/v87-best-recovery-20261124",
+  "sha256": "8bfc48ff4b7b8777132a2f8e314252e4b536088dbd63e609a7b34a08a1b37fc6",
+  "members": 23,
+  "download_verified": true,
+  "all_inner_hashes_verified": true,
+  "full_pinned_backbone_included": true,
+  "raw_mail_included": false,
+  "publication_optimizer_steps": 0,
+  "run": "https://github.com/Kirusha-dk/MailGuard/actions/runs/45560065479"
+}

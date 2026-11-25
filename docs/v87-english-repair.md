@@ -79,3 +79,19 @@ the first-stage deltas are carried forward; the original monthly request and
 its completed dates stay unchanged. Two development populations (old SELECT,
 v85 SELECT) determine this domain-adaptation candidate; the known external
 benchmark remains regression evidence, not an independent final test.
+
+The second stage failed the predeclared two-domain gate: old SELECT fitted98
+FP718, while the additional SELECT had fixed FP93 versus76 for the parent.
+Its weights/optimizer are preserved as a rejected trial, not selected.
+
+The third stage explicitly restores the exact retained parent weights **and its
+matching Adam/RNG**, then adapts on different TRAIN rows with a new, declared
+scheduler. It is a research rollback/fork, not a continuation or reset of v86.
+Usage allowances roll forward from all rejected states and the original v86
+ledger; no canonical row exceeds3 presentations. Training on new-domain rows
+uses BCE relative to the actual0.048971 decision boundary, with unchanged hard
+labels. Old replay retains the parent's calibration through regularization.
+Model/Adam iteration46128 and accounted historical work49820 are reported
+separately:3692 discarded updates are never erased from usage accounting.
+Original v86 remains paused at49500; neither its parent nor its checkpoint is
+substituted. This128-step stage gives320 total repair steps across all trials.

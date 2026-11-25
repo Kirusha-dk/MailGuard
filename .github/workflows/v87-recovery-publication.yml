@@ -23,10 +23,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          mkdir -p recovery-input
-          gh release download v86-experiment-2026-11-24 --pattern v86-experiment.zip --dir recovery-input
-          gh release download v86-bootstrap-20261118 --pattern v86-bootstrap.zip --dir recovery-input
-          python tools/package_v87_recovery.py --source recovery-input/v86-experiment.zip --bootstrap recovery-input/v86-bootstrap.zip --output v87-recovery.zip > package-verification.json
+          if gh release view v87-best-recovery-20261124 >/dev/null 2>&1; then
+            gh release download v87-best-recovery-20261124 --pattern v87-recovery.zip --dir .
+            python tools/verify_v87_package.py --package v87-recovery.zip --recovery reports/v87-repair/2026-11-24/recovery.json > package-verification.json
+          else
+            mkdir -p recovery-input
+            gh release download v86-experiment-2026-11-24 --pattern v86-experiment.zip --dir recovery-input
+            gh release download v86-bootstrap-20261118 --pattern v86-bootstrap.zip --dir recovery-input
+            python tools/package_v87_recovery.py --source recovery-input/v86-experiment.zip --bootstrap recovery-input/v86-bootstrap.zip --output v87-recovery.zip > package-verification.json
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: mailguard-v87-recovery-20261124-package
@@ -51,3 +56,17 @@ jobs:
           assert actual==proof['package_sha256'],'Published recovery package differs'
           print('Downloaded prerelease verified:',actual,'; new optimizer steps: 0')
           PY
+      - name: Preserve backbone licence with the published backup
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PYCODE'
+          import json,subprocess
+          from pathlib import Path
+          tag='v87-best-recovery-20261124'
+          assets=json.loads(subprocess.check_output(['gh','release','view',tag,'--json','assets']))['assets']
+          names={a['name'] for a in assets}
+          for path in [Path('docs/v87-backbone-license.txt'),Path('docs/v87-backbone-model-card.md')]:
+              if path.name not in names:
+                  subprocess.run(['gh','release','upload',tag,str(path)],check=True)
+          PYCODE
