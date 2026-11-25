@@ -1,0 +1,14 @@
+{
+  "repair_steps": 64,
+  "source_global_steps": 49500,
+  "global_steps": 49564,
+  "unique_train_rows": 1024,
+  "changed_lora_matrices": 24,
+  "lora_matrix_count": 24,
+  "adam_states": 26,
+  "all_adam_steps": 49564,
+  "benchmark_overlap_rows": 0,
+  "exposure_counters_reset": false,
+  "max_lifetime_exposures": 3,
+  "original_v86_checkpoint_unchanged": true
+}

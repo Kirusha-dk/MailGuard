@@ -1,0 +1,9 @@
+{
+  "global_steps": 49500,
+  "new_optimizer_steps": 0,
+  "stopped": true,
+  "adapter_optimizer_scheduler_rng_unchanged": true,
+  "cursor_exposures_completed_dates_unchanged": true,
+  "completed_dates": 7,
+  "regression_stalled_sessions": 7
+}

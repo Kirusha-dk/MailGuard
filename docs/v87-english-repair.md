@@ -62,3 +62,20 @@ retrieves SHA256-pinned durable bootstrap/weekly packages and assembles selected
 weights, both original checkpoints, full pinned backbone files, attribution,
 metadata and checksum manifests in an experimental prerelease. It re-downloads
 that release and checks the actual bytes; reruns cannot execute gradients.
+
+The external rollback check did not resolve the new-domain failure: at fixed
+threshold it found56.64% SPAM with75/565 HAM false positives, versus55.33% and60
+for the last v86 state. It is a retained fallback, not a completed quality fix.
+
+A second bounded repair stage was authorized by the same repair request and
+started25 November, continuing its own saved step49564 (no cold restart). It
+adds128 steps/2048 unique TRAIN rows:512 old SPAM,192 v86 core SPAM,192 phishing
+from the frozen v85 TRAIN,128 weak-labeled2026 archive SPAM,256 old HAM and768
+native-English legitimate emails from v85 TRAIN. The2026 TRAIN pool has426 rows
+outside all control identities/families/20-word windows. Labels are unchanged;
+v85 source rights/provenance are in research/v85/frozen.json. No benchmark
+error example or score selected a training row. Inherited exposure counts and
+the first-stage deltas are carried forward; the original monthly request and
+its completed dates stay unchanged. Two development populations (old SELECT,
+v85 SELECT) determine this domain-adaptation candidate; the known external
+benchmark remains regression evidence, not an independent final test.

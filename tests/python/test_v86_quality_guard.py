@@ -17,6 +17,9 @@ class QualityGuardTest(unittest.TestCase):
         c=copy.deepcopy(p);c.update(fp=500,log_loss=.09);c['fixed_parent_threshold']['tp']=10000
         self.assertFalse(choose_recovery(p,c)['repair_passed'])
         c['fixed_parent_threshold']['tp']=10400
+        c['fixed_parent_threshold']['fp']=580
+        self.assertFalse(choose_recovery(p,c)['repair_passed'])
+        c['fixed_parent_threshold']['fp']=579
         self.assertTrue(choose_recovery(p,c)['repair_passed'])
         c['is_independent_test']=True
         with self.assertRaises(ValueError):choose_recovery(p,c)
