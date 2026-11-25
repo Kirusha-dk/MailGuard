@@ -1,0 +1,58 @@
+{
+  "source_run_url": "https://github.com/Kirusha-dk/MailGuard/actions/runs/45117749710",
+  "artifact_id": 14793560211,
+  "artifact_zip_sha256": "be192cf3dbb62303b423d655f0669c7dea1e9a72488d0117f3a8c453db161740",
+  "checkpoint_sha256": "bc2194f81aa73e65d6e658ffcb6678e55da584b54d1bee89f85d568a6267e375",
+  "completed_session": "2026-11-23",
+  "session_unique_rows": 8000,
+  "session_new_core_rows": 4134,
+  "session_old_ham_support_rows": 3866,
+  "session_optimizer_steps": 500,
+  "last_invocation_optimizer_steps": 436,
+  "phase_optimizer_steps": 3000,
+  "inherited_parent_steps": 46000,
+  "global_optimizer_steps": 49000,
+  "active_session": null,
+  "completed_dates": [
+    "2026-11-18",
+    "2026-11-19",
+    "2026-11-20",
+    "2026-11-21",
+    "2026-11-22",
+    "2026-11-23"
+  ],
+  "stopped": false,
+  "epoch": 0,
+  "cursor": 48000,
+  "all26_adam_and_own_scheduler_verified": true,
+  "rng_advanced": true,
+  "order_cursor_exposures_hard_indices_reconciled": true,
+  "changed_lora_matrices_vs_first64": 24,
+  "trainer_backbone_hash_assertion_passed": true,
+  "max_lifetime_exposures": 3,
+  "remaining_support_presentations": 89877,
+  "all22790_cached_select_rows_and_metrics_verified": true,
+  "development_change_vs_previous_date": {
+    "fixed_parent": {
+      "tp": -151,
+      "fp": -67
+    },
+    "fitted98": {
+      "tp": 0,
+      "fp": 26
+    }
+  },
+  "verification_optimizer_steps": 0,
+  "verification_new_inference_rows": 0,
+  "next_eligible_requested_session": "2026-11-24",
+  "weekly_archive_due": false,
+  "bootstrap_live_and_local_zip_digest_reconfirmed": true,
+  "bootstrap_parent_checkpoint_hash_reconfirmed": true,
+  "artifact_selection_fix": "Existing creation-time selector retained; verified latest own state14793560211",
+  "artifact_selection_actual_records_check_passed": true,
+  "seventh_completed_date_archive_due_after_current_session": true,
+  "archive_verification_added_to_existing_workflow": true,
+  "archive_verifier_real_checkpoint_positive_and_four_corruption_checks_passed": true,
+  "release_metadata_checks_passed": true,
+  "engineering_tests_passed": 9
+}

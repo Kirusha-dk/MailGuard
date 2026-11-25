@@ -1,0 +1,92 @@
+{
+  "run_id": 43879490125,
+  "parent_step": 42875,
+  "new_optimizer_steps": 100,
+  "global_optimizer_steps": 42975,
+  "all26_adam_step_deltas100": true,
+  "scheduler_step100": true,
+  "rng_advanced": true,
+  "changed_lora_matrices": 24,
+  "frozen_backbone_assertion_passed": true,
+  "exposures_reconciled": true,
+  "unique_train_rows": 921,
+  "max_canonical_presentations": 3,
+  "mining": {
+    "train_rows": 2637,
+    "threshold": 0.04897100105881691,
+    "errors": 521,
+    "false_positive_ham": 480,
+    "false_negative_spam": 41,
+    "planned_presentations": 1600,
+    "planned_unique_rows": 921,
+    "planned_error_presentations": 1200,
+    "planned_correct_support_presentations": 400,
+    "selected_using_only_train_labels_and_scores": true,
+    "select_or_test_errors_used_for_training": false
+  },
+  "select_development_verified_from699_cached_probabilities": {
+    "baseline": {
+      "n": 699,
+      "spam": 89,
+      "ham": 610,
+      "tp": 81,
+      "fp": 101,
+      "fn": 8,
+      "tn": 509,
+      "threshold": 0.04897100105881691,
+      "recall": 0.9101123595505618,
+      "fpr": 0.16557377049180327,
+      "fp_per_million_ham": 165573.77049180327
+    },
+    "candidate": {
+      "n": 699,
+      "spam": 89,
+      "ham": 610,
+      "tp": 44,
+      "fp": 29,
+      "fn": 45,
+      "tn": 581,
+      "threshold": 0.04897100105881691,
+      "recall": 0.4943820224719101,
+      "fpr": 0.047540983606557376,
+      "fp_per_million_ham": 47540.983606557376
+    }
+  },
+  "verification_optimizer_steps": 0,
+  "verification_inference_rows": 0,
+  "test_opened": false,
+  "accepted_for_production": false,
+  "matched81TP_thresholds_fitted_on_same_select": {
+    "baseline": {
+      "n": 699,
+      "spam": 89,
+      "ham": 610,
+      "tp": 81,
+      "fp": 96,
+      "fn": 8,
+      "tn": 514,
+      "threshold": 0.06284696608781815,
+      "recall": 0.9101123595505618,
+      "fpr": 0.15737704918032788,
+      "fp_per_million_ham": 157377.0491803279
+    },
+    "candidate": {
+      "n": 699,
+      "spam": 89,
+      "ham": 610,
+      "tp": 81,
+      "fp": 71,
+      "fn": 8,
+      "tn": 539,
+      "threshold": 0.003765869652852416,
+      "recall": 0.9101123595505618,
+      "fpr": 0.11639344262295082,
+      "fp_per_million_ham": 116393.44262295081
+    }
+  },
+  "matched81TP_is_development_not_independent": true,
+  "durable_release_url": "https://github.com/Kirusha-dk/MailGuard/releases/tag/v85-en-hard-20261116-pilot",
+  "durable_package_sha256": "1e0bd917ffaca7bafbce3b6ed4544848bb6111168f6c0e6efec8a874e1dd0052",
+  "durable_all_state_files_bitwise_verified": true,
+  "raw_mail_included": false
+}

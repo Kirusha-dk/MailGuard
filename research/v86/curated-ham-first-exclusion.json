@@ -1,0 +1,17 @@
+{
+  "input_english_ham": 2355,
+  "remaining_after_identity_family_only": 7,
+  "by_source": {
+    "Zenodo-8339691-Nazario_5.csv": 5,
+    "Zenodo-8339691-Nigerian_5.csv": 2
+  },
+  "prior_counts": {
+    "v84:train": 358657,
+    "v84:select": 22790,
+    "v85:train": 2637,
+    "v85:select": 699,
+    "v85:test": 630
+  },
+  "window_exclusion_pending": true,
+  "training_ready": false
+}

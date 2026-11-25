@@ -1,0 +1,126 @@
+{
+  "date": "2026-11-16",
+  "request": "Find1000000 additional real English emails for supervised spam/ham training, with error prioritization after blind partitioning",
+  "status": "million_scale_sources_found_but_labelled_unique_english_million_not_established",
+  "target_rows": 1000000,
+  "new_training_performed": false,
+  "optimizer_steps": 0,
+  "training_ready": false,
+  "approved_new_million_training_rows": 0,
+  "enron_ferc": {
+    "source": "Enron FERC native PST, risk-reduced research release v1",
+    "url": "https://huggingface.co/datasets/intellekthq/enron-ferc-pst/tree/1c6490b25d3a16b71a070cbbef87d8fe394c3df3",
+    "revision": "1c6490b25d3a16b71a070cbbef87d8fe394c3df3",
+    "publisher_reported_messages": 1226178,
+    "publisher_reported_language": "en",
+    "pst_files_verified_in_pinned_catalog": 171,
+    "total_download_bytes": 83083881472,
+    "all171_published_sha256_equal_huggingface_lfs_oids": true,
+    "smallest_pst_download_verified": {
+      "path": "data/zl_south-s_000.pst",
+      "bytes": 10937344,
+      "sha256": "852f2090a3a44df3294baab6d6a432cbeecf6bfa2c92944e8c89ffcca14104ab",
+      "pst_magic_valid": true
+    },
+    "message_count_independently_recounted": false,
+    "canonical_unique_email_count": null,
+    "old_training_overlap_checked": false,
+    "spam_ham_labels_available": false,
+    "may_not_label_all_as_ham": true,
+    "training_ready": false,
+    "rights": "CC BY3.0 US, source attribution ZL Technologies Inc. and Intellekt modifications; retain publisher privacy and provenance limitations",
+    "metadata_sha256": {
+      "README.md": "6e5b940620aba2ea56ec45428bc345c740a8f813eb4b3481e8def286e9f3e978",
+      "LICENSE.md": "c83d01bc34f7382a39b3109236697c3803248c77731bd8358e3b05497f14a41f",
+      "SHA256SUMS": "b1b5c398a05e85fdc0a5a61e5ae0ba3bec6c47445ede66c3d2e884a137b68612"
+    }
+  },
+  "spam_archive2017": {
+    "url": "https://untroubled.org/spam/2017.7z",
+    "compressed_bytes": 272136279,
+    "sha256": "9744cc3fb7ad3cee1cf036a13a0df313a3af8deeda294da2813755d44eb4593d",
+    "file_count": 1400401,
+    "uncompressed_bytes": 3067373260,
+    "english_filtered": false,
+    "canonical_dedup_performed": false,
+    "training_ready": false,
+    "real_archive_file_count_independently_verified": true,
+    "label": "spam1 inherited weak trap positives",
+    "ham_rows": 0,
+    "publisher_permission_url": "https://untroubled.org/spam/",
+    "publisher_permission": "Permission is hereby granted to use this archive without restriction.",
+    "sample": {
+      "sample": "First5000 archive members, chronological prefix; not representative random sample",
+      "source": "https://untroubled.org/spam/2017.7z",
+      "archive_sha256": "9744cc3fb7ad3cee1cf036a13a0df313a3af8deeda294da2813755d44eb4593d",
+      "stats": {
+        "examined": 5000,
+        "english_ge0_8": 167,
+        "non_english_or_uncertain": 4078,
+        "short": 755
+      },
+      "canonical_unique_english_in_sample": 129,
+      "unique_english_prefix_families_in_sample": 110,
+      "language_model_sha256": "8f3472cfe8738a7b6099e8e999c3cbfae0dcd15696aac7d7738a8039db603e83",
+      "full_archive_language_filter_performed": false,
+      "full_archive_canonical_dedup_performed": false,
+      "old_training_overlap_checked": false,
+      "label": "spam1 inherited from published spam-trap archive; weak positives, no individually adjudicated HAM",
+      "million_ready_for_training": false
+    }
+  },
+  "additional_sources_screened": [
+    {
+      "source": "Hieuman/gmane_dataset",
+      "revision": "5a8b8ae9646ea19b133a7ade43223d709386bef7",
+      "publisher_reported_rows": 1917151,
+      "features": [
+        "authorIDs",
+        "fullText:list"
+      ],
+      "spam_ham_labels": false,
+      "download_bytes": 4445352383,
+      "training_rows_accepted": 0,
+      "note": "Rows/grouped texts are not a validated unique-email count. No blanket HAM assignment or source-rights claim."
+    },
+    {
+      "source": "cybersectony/PhishingEmailDetectionv2.0",
+      "revision": "afba38f4a7ffbe89259ab68ae7c6426f944496cc",
+      "publisher_reported_total_rows": 200000,
+      "publisher_reported_email_rows": 22644,
+      "publisher_reported_url_rows": 177356,
+      "reason_not_million_mail": "URLs must not be counted as emails."
+    },
+    {
+      "source": "M-Arjun/SpamShield-Datasets",
+      "revision": "ccf3cdd831235a47361eca4995b82ef221ff3406",
+      "rows": 149359,
+      "reason_excluded": "SMS/multilingual source and gated access; not a million English emails."
+    },
+    {
+      "source": "haoxianc/haldonmez_spam-or-ham-a-dataset-for-email-classification",
+      "revision": "ff760d3eb375d52912ff7639521177f780922598",
+      "reason_not_new_million": "Mirror of the six Enron-Spam corpora already represented in earlier data; preprocessing copies do not establish new unique mail."
+    },
+    {
+      "source": "FredZhang7/all-scam-spam",
+      "revision": "802cef358a0a0a9f7582fb96ff262b57a398ee17",
+      "rows": 42619,
+      "reason_not_million_mail": "Mixed SMS/conversation/email in43 languages with Enron/SpamAssassin components; not a million new English emails."
+    }
+  ],
+  "required_before_training": [
+    "Parse actual messages; distinguish copies/attachments and filter English without invented content.",
+    "Verify and preserve real SPAM/HAM labels; do not label the Enron corpus HAM by default.",
+    "Deduplicate canonical messages across sources and all previously consumed train/select/test/audit cohorts.",
+    "Freeze source provenance, label map, language filter, canonical identifiers and quote/thread-separated train/select/test before scoring.",
+    "Only then mine TRAIN model errors, retaining correct support and lifetime exposure counters; never mine held-out mistakes into training."
+  ],
+  "current_workspace_available_gb_approx": 2.8,
+  "full_enron_download_performed": false,
+  "full_spam2017_download_performed": true,
+  "customer_mail_used": false,
+  "raw_mail_in_git": false,
+  "v82_v84_ru_es_tr_korean_unchanged": true,
+  "no_controller_or_cron_created": true
+}

@@ -1,0 +1,19 @@
+{
+  "train_rows": 358657,
+  "train_ham": 135107,
+  "train_spam": 223550,
+  "select_rows": 22790,
+  "known_false_negatives": 640,
+  "corpus_fingerprints_recomputed": true,
+  "train_select_identities_and_prefix_families_disjoint": true,
+  "source_counts_recomputed": true,
+  "parent_row_exposures": {
+    "0": 267995,
+    "2": 45306,
+    "1": 45356
+  },
+  "maximum_remaining_row_presentations": 940003,
+  "maximum_full_target_dates": 19,
+  "optimizer_steps_executed": 0,
+  "no_independent_test_or_quality_claim": true
+}

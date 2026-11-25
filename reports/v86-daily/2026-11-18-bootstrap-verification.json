@@ -1,0 +1,13 @@
+{
+  "release_url": "https://github.com/Kirusha-dk/MailGuard/releases/tag/v86-bootstrap-20261118",
+  "zip_sha256": "c79b946223ff66c704d72d129c8316458c41c35bf11ad7bf70cdaf1372b40355",
+  "parent_checkpoint_sha256": "2e62947281989573c47e322e2dd372a9d0690750f4490c9238f9f962ef17e685",
+  "parent_step": 46000,
+  "prerelease": true,
+  "draft": false,
+  "downloaded_bytes_match_live_release_digest": true,
+  "parent_and_frozen_corpus_and_backbone_manifest_verified": true,
+  "source_attribution_preserved": true,
+  "no_raw_mail_files_in_package": true,
+  "verified_file_count": 19
+}

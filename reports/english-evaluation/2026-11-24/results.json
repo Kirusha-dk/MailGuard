@@ -1,0 +1,714 @@
+{
+  "date": "2026-11-24",
+  "cohort_rows": 20630,
+  "cohort_fingerprint": "1cbfe43c908ef49b73bbfd24bb339d2830785cb9286127a1413f177834099881",
+  "class_counts": {
+    "1": 20065,
+    "0": 565
+  },
+  "source_counts": {
+    "SpamArchive-2026-08:1": 1273,
+    "SpamArchive-2026-06:1": 5100,
+    "SpamArchive-2026-04:1": 3583,
+    "SpamArchive-2026-03:1": 2049,
+    "SpamArchive-2026-02:1": 541,
+    "SpamArchive-2026-05:1": 3606,
+    "IWSPA-AP-2018:0": 561,
+    "SpamArchive-2026-07:1": 1851,
+    "SpamArchive-2026-11:1": 354,
+    "IWSPA-AP-2018:1": 62,
+    "SpamArchive-2026-01:1": 265,
+    "SpamArchive-2026-09:1": 968,
+    "SpamArchive-2026-10:1": 410,
+    "CSDMC2010:0": 4,
+    "CSDMC2010:1": 3
+  },
+  "optimizer_steps": 0,
+  "threshold_fitting_performed": false,
+  "training_data_modified": false,
+  "raw_mail_published": false,
+  "models": {
+    "v84": {
+      "checkpoint_sha256": "1e53983336ce3e90d650227070b0840cd7543908d8f03bec6a145efbebbc48d5",
+      "run": "https://github.com/Kirusha-dk/MailGuard/actions/runs/45334794184",
+      "global_optimizer_steps": 67068,
+      "inherited_optimizer_steps": 8500,
+      "phase_optimizer_steps": 58568,
+      "training_stopped": true,
+      "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "internal_lora_matrices": 24,
+      "attention_backend": "CPU SDPA FP32; eager verification and eager rescoring within 1e-5 of every reported threshold",
+      "eager_equivalence_max_first_batch_error": 1.1920928955078125e-06,
+      "eager_rescored_near_threshold_rows": 0,
+      "optimizer_steps_in_evaluation": 0,
+      "changed_tensors_in_evaluation": [],
+      "backbone_verified_against_checkpoint": true,
+      "checkpoint_unchanged": true,
+      "metrics": {
+        "fixed_parent": {
+          "threshold": 0.04897100105881691,
+          "n": 20630,
+          "spam": 20065,
+          "ham": 565,
+          "tp": 11457,
+          "fp": 78,
+          "fn": 8608,
+          "tn": 487,
+          "spam_recall": 0.5709942686269623,
+          "ham_specificity": 0.8619469026548673,
+          "fpr": 0.13805309734513274,
+          "precision": 0.9932379713914175,
+          "spam_recall_wilson95": [
+            0.5641331292498931,
+            0.5778282293988296
+          ],
+          "ham_specificity_wilson95": [
+            0.8310498774176289,
+            0.8879553808276599
+          ]
+        },
+        "fixed_0_5": {
+          "threshold": 0.5,
+          "n": 20630,
+          "spam": 20065,
+          "ham": 565,
+          "tp": 9791,
+          "fp": 50,
+          "fn": 10274,
+          "tn": 515,
+          "spam_recall": 0.4879641166209818,
+          "ham_specificity": 0.911504424778761,
+          "fpr": 0.08849557522123894,
+          "precision": 0.9949192155268773,
+          "spam_recall_wilson95": [
+            0.4810508007075391,
+            0.49488204020950793
+          ],
+          "ham_specificity_wilson95": [
+            0.8852210681891329,
+            0.9322298977865621
+          ]
+        },
+        "previous_SELECT_fitted98": {
+          "threshold": 0.09261494129896164,
+          "n": 20630,
+          "spam": 20065,
+          "ham": 565,
+          "tp": 11001,
+          "fp": 73,
+          "fn": 9064,
+          "tn": 492,
+          "spam_recall": 0.5482681285821082,
+          "ham_specificity": 0.8707964601769912,
+          "fpr": 0.12920353982300886,
+          "precision": 0.9934079826620914,
+          "spam_recall_wilson95": [
+            0.5413735682972315,
+            0.5551442104681515
+          ],
+          "ham_specificity_wilson95": [
+            0.8406145550650954,
+            0.8959702938463374
+          ]
+        }
+      },
+      "by_source": {
+        "CSDMC2010": {
+          "threshold": 0.04897100105881691,
+          "n": 7,
+          "spam": 3,
+          "ham": 4,
+          "tp": 2,
+          "fp": 0,
+          "fn": 1,
+          "tn": 4,
+          "spam_recall": 0.6666666666666666,
+          "ham_specificity": 1.0,
+          "fpr": 0.0,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.2076596008020477,
+            0.9385080552796037
+          ],
+          "ham_specificity_wilson95": [
+            0.5101091635454027,
+            1.0
+          ]
+        },
+        "IWSPA-AP-2018": {
+          "threshold": 0.04897100105881691,
+          "n": 623,
+          "spam": 62,
+          "ham": 561,
+          "tp": 54,
+          "fp": 78,
+          "fn": 8,
+          "tn": 483,
+          "spam_recall": 0.8709677419354839,
+          "ham_specificity": 0.8609625668449198,
+          "fpr": 0.13903743315508021,
+          "precision": 0.4090909090909091,
+          "spam_recall_wilson95": [
+            0.7655067270982637,
+            0.9331412194071697
+          ],
+          "ham_specificity_wilson95": [
+            0.8298695701977578,
+            0.8871457863689866
+          ]
+        },
+        "SpamArchive-2026-01": {
+          "threshold": 0.04897100105881691,
+          "n": 265,
+          "spam": 265,
+          "ham": 0,
+          "tp": 204,
+          "fp": 0,
+          "fn": 61,
+          "tn": 0,
+          "spam_recall": 0.769811320754717,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.715489285310919,
+            0.8164227219638777
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-02": {
+          "threshold": 0.04897100105881691,
+          "n": 541,
+          "spam": 541,
+          "ham": 0,
+          "tp": 375,
+          "fp": 0,
+          "fn": 166,
+          "tn": 0,
+          "spam_recall": 0.6931608133086876,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.6530505075707411,
+            0.7305473200475521
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-03": {
+          "threshold": 0.04897100105881691,
+          "n": 2049,
+          "spam": 2049,
+          "ham": 0,
+          "tp": 945,
+          "fp": 0,
+          "fn": 1104,
+          "tn": 0,
+          "spam_recall": 0.4612005856515373,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.4397090908978828,
+            0.4828372902087509
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-04": {
+          "threshold": 0.04897100105881691,
+          "n": 3583,
+          "spam": 3583,
+          "ham": 0,
+          "tp": 1870,
+          "fp": 0,
+          "fn": 1713,
+          "tn": 0,
+          "spam_recall": 0.5219090147920736,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.5055382847185363,
+            0.538232816346973
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-05": {
+          "threshold": 0.04897100105881691,
+          "n": 3606,
+          "spam": 3606,
+          "ham": 0,
+          "tp": 2192,
+          "fp": 0,
+          "fn": 1414,
+          "tn": 0,
+          "spam_recall": 0.6078757626178591,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.5918339437845354,
+            0.6236879867143642
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-06": {
+          "threshold": 0.04897100105881691,
+          "n": 5100,
+          "spam": 5100,
+          "ham": 0,
+          "tp": 2695,
+          "fp": 0,
+          "fn": 2405,
+          "tn": 0,
+          "spam_recall": 0.5284313725490196,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.514714823725393,
+            0.5421051230421164
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-07": {
+          "threshold": 0.04897100105881691,
+          "n": 1851,
+          "spam": 1851,
+          "ham": 0,
+          "tp": 1031,
+          "fp": 0,
+          "fn": 820,
+          "tn": 0,
+          "spam_recall": 0.5569962182603998,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.5342718261896958,
+            0.5794845269458188
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-08": {
+          "threshold": 0.04897100105881691,
+          "n": 1273,
+          "spam": 1273,
+          "ham": 0,
+          "tp": 752,
+          "fp": 0,
+          "fn": 521,
+          "tn": 0,
+          "spam_recall": 0.5907305577376276,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.5634863297497813,
+            0.6174288484066003
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-09": {
+          "threshold": 0.04897100105881691,
+          "n": 968,
+          "spam": 968,
+          "ham": 0,
+          "tp": 588,
+          "fp": 0,
+          "fn": 380,
+          "tn": 0,
+          "spam_recall": 0.6074380165289256,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.5763091930654825,
+            0.6377174859901764
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-10": {
+          "threshold": 0.04897100105881691,
+          "n": 410,
+          "spam": 410,
+          "ham": 0,
+          "tp": 397,
+          "fp": 0,
+          "fn": 13,
+          "tn": 0,
+          "spam_recall": 0.9682926829268292,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.9465134952651063,
+            0.9813780724242885
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-11": {
+          "threshold": 0.04897100105881691,
+          "n": 354,
+          "spam": 354,
+          "ham": 0,
+          "tp": 352,
+          "fp": 0,
+          "fn": 2,
+          "tn": 0,
+          "spam_recall": 0.9943502824858758,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.9796375055079122,
+            0.9984492739096086
+          ],
+          "ham_specificity_wilson95": null
+        }
+      },
+      "elapsed_seconds": 547.03
+    },
+    "v86": {
+      "checkpoint_sha256": "56e8284f958dbe59bc7c90c590dbc3458d72fdaae31a4e6b78e6d67bd88a5b47",
+      "run": "https://github.com/Kirusha-dk/MailGuard/actions/runs/45332932979",
+      "global_optimizer_steps": 49500,
+      "inherited_optimizer_steps": 46000,
+      "phase_optimizer_steps": 3500,
+      "training_stopped": false,
+      "model_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+      "internal_lora_matrices": 24,
+      "attention_backend": "CPU SDPA FP32; eager verification and eager rescoring within 1e-5 of every reported threshold",
+      "eager_equivalence_max_first_batch_error": 1.3113021850585938e-06,
+      "eager_rescored_near_threshold_rows": 6,
+      "optimizer_steps_in_evaluation": 0,
+      "changed_tensors_in_evaluation": [],
+      "backbone_verified_against_checkpoint": true,
+      "checkpoint_unchanged": true,
+      "metrics": {
+        "fixed_parent": {
+          "threshold": 0.04897100105881691,
+          "n": 20630,
+          "spam": 20065,
+          "ham": 565,
+          "tp": 11102,
+          "fp": 60,
+          "fn": 8963,
+          "tn": 505,
+          "spam_recall": 0.5533017692499377,
+          "ham_specificity": 0.8938053097345132,
+          "fpr": 0.10619469026548672,
+          "precision": 0.9946246192438631,
+          "spam_recall_wilson95": [
+            0.5464133544474886,
+            0.5601697786341603
+          ],
+          "ham_specificity_wilson95": [
+            0.8656888374306336,
+            0.9166029472127734
+          ]
+        },
+        "fixed_0_5": {
+          "threshold": 0.5,
+          "n": 20630,
+          "spam": 20065,
+          "ham": 565,
+          "tp": 9439,
+          "fp": 37,
+          "fn": 10626,
+          "tn": 528,
+          "spam_recall": 0.4704211313231996,
+          "ham_specificity": 0.9345132743362832,
+          "fpr": 0.06548672566371681,
+          "precision": 0.9960953989024905,
+          "spam_recall_wilson95": [
+            0.4635212821462819,
+            0.4773323041239765
+          ],
+          "ham_specificity_wilson95": [
+            0.9110389997658843,
+            0.9521189019417851
+          ]
+        },
+        "previous_SELECT_fitted98": {
+          "threshold": 0.00434268731623888,
+          "n": 20630,
+          "spam": 20065,
+          "ham": 565,
+          "tp": 13851,
+          "fp": 183,
+          "fn": 6214,
+          "tn": 382,
+          "spam_recall": 0.6903065038624471,
+          "ham_specificity": 0.6761061946902654,
+          "fpr": 0.3238938053097345,
+          "precision": 0.9869602394185549,
+          "spam_recall_wilson95": [
+            0.6838730079424725,
+            0.6966671450937841
+          ],
+          "ham_specificity_wilson95": [
+            0.6364427953872496,
+            0.7133910588690155
+          ]
+        }
+      },
+      "by_source": {
+        "CSDMC2010": {
+          "threshold": 0.04897100105881691,
+          "n": 7,
+          "spam": 3,
+          "ham": 4,
+          "tp": 2,
+          "fp": 0,
+          "fn": 1,
+          "tn": 4,
+          "spam_recall": 0.6666666666666666,
+          "ham_specificity": 1.0,
+          "fpr": 0.0,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.2076596008020477,
+            0.9385080552796037
+          ],
+          "ham_specificity_wilson95": [
+            0.5101091635454027,
+            1.0
+          ]
+        },
+        "IWSPA-AP-2018": {
+          "threshold": 0.04897100105881691,
+          "n": 623,
+          "spam": 62,
+          "ham": 561,
+          "tp": 54,
+          "fp": 60,
+          "fn": 8,
+          "tn": 501,
+          "spam_recall": 0.8709677419354839,
+          "ham_specificity": 0.893048128342246,
+          "fpr": 0.10695187165775401,
+          "precision": 0.47368421052631576,
+          "spam_recall_wilson95": [
+            0.7655067270982637,
+            0.9331412194071697
+          ],
+          "ham_specificity_wilson95": [
+            0.8647483654759844,
+            0.9160016894522482
+          ]
+        },
+        "SpamArchive-2026-01": {
+          "threshold": 0.04897100105881691,
+          "n": 265,
+          "spam": 265,
+          "ham": 0,
+          "tp": 210,
+          "fp": 0,
+          "fn": 55,
+          "tn": 0,
+          "spam_recall": 0.7924528301886793,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.7396161699804409,
+            0.8369318099328005
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-02": {
+          "threshold": 0.04897100105881691,
+          "n": 541,
+          "spam": 541,
+          "ham": 0,
+          "tp": 377,
+          "fp": 0,
+          "fn": 164,
+          "tn": 0,
+          "spam_recall": 0.6968576709796673,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.6568517726909051,
+            0.7340876401449632
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-03": {
+          "threshold": 0.04897100105881691,
+          "n": 2049,
+          "spam": 2049,
+          "ham": 0,
+          "tp": 940,
+          "fp": 0,
+          "fn": 1109,
+          "tn": 0,
+          "spam_recall": 0.4587603709126403,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.4372819027147797,
+            0.4803931816061077
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-04": {
+          "threshold": 0.04897100105881691,
+          "n": 3583,
+          "spam": 3583,
+          "ham": 0,
+          "tp": 1684,
+          "fp": 0,
+          "fn": 1899,
+          "tn": 0,
+          "spam_recall": 0.46999720904270165,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.45369583027396776,
+            0.48636285298027093
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-05": {
+          "threshold": 0.04897100105881691,
+          "n": 3606,
+          "spam": 3606,
+          "ham": 0,
+          "tp": 2102,
+          "fp": 0,
+          "fn": 1504,
+          "tn": 0,
+          "spam_recall": 0.5829173599556295,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.5667439724736137,
+            0.5989142723057462
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-06": {
+          "threshold": 0.04897100105881691,
+          "n": 5100,
+          "spam": 5100,
+          "ham": 0,
+          "tp": 2578,
+          "fp": 0,
+          "fn": 2522,
+          "tn": 0,
+          "spam_recall": 0.5054901960784314,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.4917695626655832,
+            0.5192025649860738
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-07": {
+          "threshold": 0.04897100105881691,
+          "n": 1851,
+          "spam": 1851,
+          "ham": 0,
+          "tp": 1100,
+          "fp": 0,
+          "fn": 751,
+          "tn": 0,
+          "spam_recall": 0.5942733657482442,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.5717310219522346,
+            0.6164252209117208
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-08": {
+          "threshold": 0.04897100105881691,
+          "n": 1273,
+          "spam": 1273,
+          "ham": 0,
+          "tp": 741,
+          "fp": 0,
+          "fn": 532,
+          "tn": 0,
+          "spam_recall": 0.582089552238806,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.5547884104929299,
+            0.6088967506961773
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-09": {
+          "threshold": 0.04897100105881691,
+          "n": 968,
+          "spam": 968,
+          "ham": 0,
+          "tp": 567,
+          "fp": 0,
+          "fn": 401,
+          "tn": 0,
+          "spam_recall": 0.5857438016528925,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.5544331981667271,
+            0.6163765553103852
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-10": {
+          "threshold": 0.04897100105881691,
+          "n": 410,
+          "spam": 410,
+          "ham": 0,
+          "tp": 394,
+          "fp": 0,
+          "fn": 16,
+          "tn": 0,
+          "spam_recall": 0.9609756097560975,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.9375546615741314,
+            0.9758386003701166
+          ],
+          "ham_specificity_wilson95": null
+        },
+        "SpamArchive-2026-11": {
+          "threshold": 0.04897100105881691,
+          "n": 354,
+          "spam": 354,
+          "ham": 0,
+          "tp": 353,
+          "fp": 0,
+          "fn": 1,
+          "tn": 0,
+          "spam_recall": 0.9971751412429378,
+          "ham_specificity": null,
+          "fpr": null,
+          "precision": 1.0,
+          "spam_recall_wilson95": [
+            0.9841746778286024,
+            0.9995011688998755
+          ],
+          "ham_specificity_wilson95": null
+        }
+      },
+      "elapsed_seconds": 571.9
+    }
+  }
+}
