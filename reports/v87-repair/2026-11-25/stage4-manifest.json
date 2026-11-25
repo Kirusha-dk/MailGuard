@@ -1,0 +1,33 @@
+{
+  "campaign": "v87-en-repair-20261124",
+  "stage": "hard-train-head-adapt-20261125",
+  "session_id": "2026-11-25",
+  "source_checkpoint_sha256": "913661431d2d74f60b217ac6d5aeb45286ba6fa652d634388b22042961597a91",
+  "source_global_step": 46128,
+  "usage_ledger_sha256": "913661431d2d74f60b217ac6d5aeb45286ba6fa652d634388b22042961597a91",
+  "minimum_accounted_work_steps": 49820,
+  "discarded_update_work_preserved": 3692,
+  "budget_steps": 96,
+  "budget_rows": 1536,
+  "train_fingerprint": "3768af64c2797b18063d5ff6fb90e6617fef4fdad43e16d77b7d71310e5aada4",
+  "sources": {
+    "old-spam": 384,
+    "fresh-2026": 128,
+    "new-phishing": 256,
+    "old-ham": 256,
+    "new-ham": 512
+  },
+  "new_v85_train_fingerprint": "a072a1d2203c55f632292a11ad294d99ea7cb48b98b585946cc5c410d34fdfe6",
+  "fresh_train_fingerprint": "088410fbbb98225bfb6cd880da8c2ff21b4a203942a16e4578197278b153ced1",
+  "primary_development": "old SELECT22790",
+  "additional_development": "v85 SELECT699",
+  "benchmark_used_for_training_or_selection": false,
+  "lora_lr": 1e-05,
+  "head_lr": 0.0005,
+  "teacher_regularization": 4.0,
+  "hard_mining_partition": "TRAIN only",
+  "threshold_aware_new_domain_loss": true,
+  "hard_labels_unchanged": true,
+  "scheduler_explicitly_replanned_once": true,
+  "lifetime_limit": 3
+}

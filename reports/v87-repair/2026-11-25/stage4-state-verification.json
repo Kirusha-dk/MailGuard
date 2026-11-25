@@ -1,0 +1,17 @@
+{
+  "stage_steps": 96,
+  "total_repair_steps": 416,
+  "model_lineage_steps": 46224,
+  "accounted_optimizer_work_steps": 49916,
+  "discarded_from_candidate_lineage": 3692,
+  "adam_groups": [
+    24,
+    2
+  ],
+  "all_adam_steps": 46224,
+  "exposure_counters_reset": false,
+  "max_lifetime_exposures": 3,
+  "quality_gate_passed": false,
+  "selected_for_inference": "retained-parent",
+  "accepted_for_production": false
+}

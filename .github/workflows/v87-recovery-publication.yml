@@ -1,0 +1,72 @@
+name: Publish verified English recovery package (no training)
+on:
+  pull_request:
+    branches: [mailguard-v86-english-month-20261117]
+    paths: [reports/v87-repair/2026-11-24/recovery.json]
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: mailguard-v87-recovery-publication-20261124
+  cancel-in-progress: false
+jobs:
+  publish:
+    if: github.head_ref == 'mailguard-v87-english-repair-20261124'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Fetch immutable state packages and assemble retained model
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view v87-best-recovery-20261124 >/dev/null 2>&1; then
+            gh release download v87-best-recovery-20261124 --pattern v87-recovery.zip --dir .
+            python tools/verify_v87_package.py --package v87-recovery.zip --recovery reports/v87-repair/2026-11-24/recovery.json > package-verification.json
+          else
+            mkdir -p recovery-input
+            gh release download v86-experiment-2026-11-24 --pattern v86-experiment.zip --dir recovery-input
+            gh release download v86-bootstrap-20261118 --pattern v86-bootstrap.zip --dir recovery-input
+            python tools/package_v87_recovery.py --source recovery-input/v86-experiment.zip --bootstrap recovery-input/v86-bootstrap.zip --output v87-recovery.zip > package-verification.json
+          fi
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v87-recovery-20261124-package
+          path: |
+            v87-recovery.zip
+            package-verification.json
+          retention-days: 90
+      - name: Publish prerelease and verify downloaded bytes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RECOVERY_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          if ! gh release view v87-best-recovery-20261124 >/dev/null 2>&1; then
+            gh release create v87-best-recovery-20261124 v87-recovery.zip --prerelease --target "$RECOVERY_SHA" --title 'Experimental English retained-best recovery — 2026-11-24' --notes-file docs/v87-english-repair.md
+          fi
+          mkdir -p downloaded
+          gh release download v87-best-recovery-20261124 --pattern v87-recovery.zip --dir downloaded
+          python - <<'PY'
+          import hashlib,json,pathlib
+          proof=json.loads(pathlib.Path('package-verification.json').read_text())
+          actual=hashlib.sha256(pathlib.Path('downloaded/v87-recovery.zip').read_bytes()).hexdigest()
+          assert actual==proof['package_sha256'],'Published recovery package differs'
+          print('Downloaded prerelease verified:',actual,'; new optimizer steps: 0')
+          PY
+      - name: Preserve backbone licence with the published backup
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python - <<'PYCODE'
+          import json,subprocess
+          from pathlib import Path
+          tag='v87-best-recovery-20261124'
+          assets=json.loads(subprocess.check_output(['gh','release','view',tag,'--json','assets']))['assets']
+          names={a['name'] for a in assets}
+          for path in [Path('docs/v87-backbone-license.txt'),Path('docs/v87-backbone-model-card.md')]:
+              if path.name not in names:
+                  subprocess.run(['gh','release','upload',tag,str(path)],check=True)
+          PYCODE

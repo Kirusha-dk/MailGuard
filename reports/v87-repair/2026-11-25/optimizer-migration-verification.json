@@ -1,0 +1,12 @@
+{
+  "verification": "zero-gradient reproduction of optimizer group migration",
+  "optimizer_steps": 0,
+  "source_model_step": 46128,
+  "parameter_group_sizes": [
+    24,
+    2
+  ],
+  "adam_states_verified": 26,
+  "all_source_moment_tensors_exactly_preserved": true,
+  "adam_counters_reset": false
+}

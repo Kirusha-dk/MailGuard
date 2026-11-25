@@ -1,0 +1,20 @@
+{
+  "campaign": "v87-en-repair-20261124",
+  "source_sha256": "56e8284f958dbe59bc7c90c590dbc3458d72fdaae31a4e6b78e6d67bd88a5b47",
+  "teacher_sha256": "2e62947281989573c47e322e2dd372a9d0690750f4490c9238f9f962ef17e685",
+  "rows": 1024,
+  "ham": 512,
+  "old_spam": 256,
+  "new_spam": 256,
+  "optimizer_steps": 64,
+  "row_fingerprint": "6457acb018b2acd87083243f0911baadbc4d4849ed6596bea837347d9cab5867",
+  "max_lifetime_exposures": 3,
+  "original_v86_date_replayed": false,
+  "training_partition": "TRAIN only",
+  "benchmark_rows_used": 0,
+  "loss": "equal-class BCE + 1.0 KL to retained parent on old replay only; T=2",
+  "lr_scale": 0.5,
+  "scheduler": "new 64-step linear decay; original scheduler preserved",
+  "source_training_date": "2026-11-24",
+  "additional_trial_authorized_by_user_repair_request": true
+}

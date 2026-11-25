@@ -1,0 +1,19 @@
+{
+  "report_date": "2026-11-25",
+  "run": "https://github.com/Kirusha-dk/MailGuard/actions/runs/45569472894",
+  "status": "completed success; no training",
+  "new_optimizer_steps": 0,
+  "new_unique_training_rows": 0,
+  "global_optimizer_steps": 49500,
+  "phase_optimizer_steps": 3500,
+  "inherited_optimizer_steps": 46000,
+  "last_training_session": "2026-11-24",
+  "completed_training_dates": 7,
+  "new_training_date_completed": false,
+  "all_adapter_adam_scheduler_rng_and_metadata_unchanged": true,
+  "all_cursor_order_exposures_hard_indices_and_completed_dates_unchanged": true,
+  "changed_lora_matrices": 0,
+  "internal_lora_matrices": 24,
+  "stopped": true,
+  "checkpoint_sha256": "2fc6179151d301c4d519e53124102b7fb0cae7dea995231ef1bfa5a8756563b1"
+}

@@ -1,0 +1,15 @@
+{
+  "session_id": "2026-11-25",
+  "stage_steps": 128,
+  "total_repair_steps": 192,
+  "global_steps": 49692,
+  "unique_stage_train_rows": 2048,
+  "unique_repair_train_rows": 3072,
+  "original_monthly_budget_replayed": false,
+  "adam_states": 26,
+  "all_adam_steps": 49692,
+  "changed_lora_matrices": 24,
+  "benchmark_overlap_rows": 0,
+  "source_and_all_prior_exposure_ledgers_preserved": true,
+  "max_lifetime_exposures": 3
+}
