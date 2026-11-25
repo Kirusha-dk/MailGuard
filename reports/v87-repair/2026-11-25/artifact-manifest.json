@@ -1,0 +1,10 @@
+{
+  "path": "/workspace/artifacts/mailguard-english-repair-experiment-20261125.zip",
+  "bytes": 98232949,
+  "sha256": "9f022a6cd2c8fccc1b3ae824cfe03004eaaaaa7f8ff22caf4af2d8b3d299dc29",
+  "members": 40,
+  "all_inner_hashes_verified": true,
+  "raw_mail_included": false,
+  "default_variant": "retained",
+  "candidate_quality_gate_passed": false
+}

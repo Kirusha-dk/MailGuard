@@ -1,0 +1,16 @@
+{
+  "archive_sha256": "9f022a6cd2c8fccc1b3ae824cfe03004eaaaaa7f8ff22caf4af2d8b3d299dc29",
+  "offline_model_load_verified": true,
+  "variants": [
+    "retained",
+    "candidate"
+  ],
+  "public_frozen_rows_checked_per_variant": 32,
+  "max_score_error": {
+    "candidate": 1.3113021850585938e-06,
+    "retained": 1.1920928955078125e-06
+  },
+  "optimizer_steps": 0,
+  "raw_mail_included_in_archive": false,
+  "accepted_for_production": false
+}

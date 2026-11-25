@@ -10,6 +10,7 @@ import torch
 from safetensors.torch import load
 
 from v86_month import CAMPAIGN, PARENT_SHA, PARENT_STEP
+from v86_quality_guard import experiment_tag
 
 
 def digest(data):
@@ -21,7 +22,7 @@ def verify(package, state, backbone, root, asset_digest=None, release=None):
     current = json.loads((state/'report.json').read_text())
     if release is not None:
         if (release['draft'] or not release['prerelease'] or
-                release['tag_name'] != 'v86-experiment-' + current['session']):
+                release['tag_name'] != experiment_tag(current)):
             raise ValueError('Expected published experimental prerelease missing')
         assets = [a for a in release['assets'] if a['name'] == 'v86-experiment.zip']
         if len(assets) != 1 or not assets[0].get('digest'):

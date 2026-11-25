@@ -1,0 +1,23 @@
+{
+  "campaign": "v86-en-month-20261118",
+  "session": "2026-11-24",
+  "release_url": "https://github.com/Kirusha-dk/MailGuard/releases/tag/v86-experiment-2026-11-24-quality-stop",
+  "published_experimental_prerelease_verified": true,
+  "global_optimizer_steps": 49500,
+  "phase_optimizer_steps": 3500,
+  "inherited_parent_steps": 46000,
+  "completed_dates": 7,
+  "downloaded_asset_sha256": "5848367d760504390fa7d6d119684143f792b286b426fdd8d46252c6a627e082",
+  "checkpoint_sha256": "2fc6179151d301c4d519e53124102b7fb0cae7dea995231ef1bfa5a8756563b1",
+  "best_adapter_sha256": "f4930e41419ff7710b7b99ad0cb8bae9382841cd0145717e42561498a8fc5dee",
+  "downloaded_release_checked": true,
+  "own_checkpoint_matches": true,
+  "optimizer_scheduler_rng_order_cursor_exposures_hard_indices_present": true,
+  "best_adapter_and_metadata_preserved": true,
+  "source_attribution_and_conditions_preserved": true,
+  "frozen_manifest_unchanged": true,
+  "pinned_backbone_files_verified": true,
+  "raw_mail_included": false,
+  "verification_optimizer_steps": 0,
+  "verification_inference_rows": 0
+}

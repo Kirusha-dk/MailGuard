@@ -9,6 +9,7 @@ on:
       - tools/v86_archive_audit.py
       - tools/v86_exclude_prior.py
       - tools/train_v86_month.py
+      - tools/v86_quality_guard.py
       - tools/verify_v86_experiment.py
       - tests/python/test_v86_month.py
       - .github/workflows/v86-english-month.yml
@@ -41,6 +42,7 @@ jobs:
           python -m pip install torch==2.14.1+cpu --index-url https://download.pytorch.org/whl/cpu
           python -m pip install -r requirements-v86-audit.txt
           python -m unittest discover -s tests/python -p test_v86_month.py -v
+          python -m unittest discover -s tests/python -p test_v86_quality_guard.py -v
       - uses: actions/cache/restore@v4
         with:
           path: |
@@ -221,12 +223,13 @@ jobs:
           PYCODE
           if test -f v86-experiment.zip; then
             session=$(python -c "import json; print(json.load(open('v86-state/report.json'))['session'])")
-            if ! gh release view "v86-experiment-$session" >/dev/null 2>&1; then
-              gh release create "v86-experiment-$session" v86-experiment.zip --prerelease --target mailguard-v86-english-month-20261117 --title "Experimental English v86 $session" --notes-file docs/v86-english-month.md
+            tag=$(python -c "import sys,json; sys.path.insert(0,'tools'); from v86_quality_guard import experiment_tag; print(experiment_tag(json.load(open('v86-state/report.json'))))")
+            if ! gh release view "$tag" >/dev/null 2>&1; then
+              gh release create "$tag" v86-experiment.zip --prerelease --target mailguard-v86-english-month-20261117 --title "Experimental English v86 $session" --notes-file docs/v86-english-month.md
             fi
             mkdir -p .cache/v86/verified-release
-            gh release download "v86-experiment-$session" --pattern v86-experiment.zip --dir .cache/v86/verified-release
-            gh api "repos/${{ github.repository }}/releases/tags/v86-experiment-$session" > .cache/v86/verified-release/release.json
+            gh release download "$tag" --pattern v86-experiment.zip --dir .cache/v86/verified-release
+            gh api "repos/${{ github.repository }}/releases/tags/$tag" > .cache/v86/verified-release/release.json
             python tools/verify_v86_experiment.py --package .cache/v86/verified-release/v86-experiment.zip --release-metadata .cache/v86/verified-release/release.json
           fi
       - name: Commit only small actual completed aggregates with a lease

@@ -28,3 +28,12 @@ def choose_recovery(parent, candidate):
                 external_benchmark_used_for_selection=False,
                 reason='non-regression gate passed' if accepted else
                        'repair has not surpassed the retained parent; retain its exact adapter')
+
+
+def experiment_tag(report):
+    suffix=''
+    if report.get('quality_guard_applied_without_gradients'):
+        if not report.get('stopped') or report.get('invocation_optimizer_steps')!=0:
+            raise ValueError('Quality-stop archive must be stopped and zero-gradient')
+        suffix='-quality-stop'
+    return 'v86-experiment-'+report['session']+suffix

@@ -5,6 +5,6 @@
   "session_id": "2026-11-24",
   "budget_rows": 8000,
   "budget_steps": 500,
-  "expected_min_step": 49000,
+  "expected_min_step": 49500,
   "stage": "train"
 }
