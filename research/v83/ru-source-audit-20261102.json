@@ -1,0 +1,53 @@
+{
+  "date_utc": "2026-11-02",
+  "language": "ru",
+  "training_ready": false,
+  "optimizer_steps_executed": 0,
+  "reason": "No sufficient native Russian email HAM established in audited public candidates.",
+  "candidates": [
+    {
+      "source": "realprogrammersusevim/email-dataset",
+      "revision": "84209612df4c55831f074a65b7c137a4b980059d",
+      "sha256": "a51c47191cb32e0f62e56e4e265a20be2393d326a003001e0830601f6f444eb7",
+      "files": 19528,
+      "procedure": "v77_mail.parse_eml, including MIME legacy charset recovery; fastText lid.176.ftz >=0.8 on first10000 normalized chars",
+      "ru_candidates": {
+        "ham": 0,
+        "spam": 0
+      }
+    },
+    {
+      "source": "JinqiangDing/seven-phishing-email-datasets",
+      "revision": "deb4cc27dc2754c14cb157aace412727f77b41dd",
+      "file": "train.parquet",
+      "sha256": "fbd955e65c2ced6181e9f3177fffd0aff32fd51a80d70eb174071037b477ec5c",
+      "ru_candidates_before_dedup": {
+        "ham": 0,
+        "spam": 58
+      },
+      "spam_source_counts": {
+        "TREC05": 52,
+        "TREC06": 6
+      }
+    },
+    {
+      "source": "haoxianc/ahmedsial_ham-spam-emails",
+      "revision": "153cda77bbe72ae82f57a213560cd9b1d8692da3",
+      "sha256": "9f9e346e957f157077c27618748e5a19d1fc4ceffb18a38831ff87dea46d17e1",
+      "physical_data_lines": 234304,
+      "cyrillic_lines": 29,
+      "ru_language_candidates": {
+        "ham": 0,
+        "spam": 8
+      },
+      "excluded": "Recognizable SMS Spam Collection examples despite email-only card; no row-level email provenance. CSV parser encounters oversized fields; physical-line scan diagnostic only."
+    }
+  ],
+  "paper_check": {
+    "url": "https://www.cs.unb.ca/~hcao3/publications/2025-pst/paper_10.pdf",
+    "finding": "Russian HAM translated from Enron, not native Russian mail."
+  },
+  "private_mail_used": false,
+  "counts_are_not_frozen_training_splits": true,
+  "es_unchanged": true
+}

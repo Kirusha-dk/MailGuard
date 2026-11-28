@@ -1,0 +1,20 @@
+{
+  "language": "ru",
+  "training_ready": false,
+  "optimizer_steps_executed": 0,
+  "blocked_reason": "A sufficiently labelled native Russian EMAIL SPAM/HAM corpus has not been established.",
+  "rejected_substitutes": [
+    "Telegram/SMS/social posts",
+    "translated or synthetic messages presented as native email",
+    "SPAM-versus-phishing data with no HAM"
+  ],
+  "customer_mail_used": false,
+  "production_acceptance": false,
+  "report_date": "2026-11-08",
+  "workflow_run_id": 42348559504,
+  "workflow_run_url": "https://github.com/Kirusha-dk/MailGuard/actions/runs/42348559504",
+  "source_audit_date": "2026-11-07",
+  "state": "blocked",
+  "new_run_triggered_today": false,
+  "new_source_approved": false
+}

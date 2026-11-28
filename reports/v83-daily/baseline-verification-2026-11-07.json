@@ -1,0 +1,41 @@
+{
+  "es": {
+    "confirmed_step": 321,
+    "epoch": 3,
+    "cursor": 0,
+    "stopped": true,
+    "checkpoint_sha256": "de136399827c1b01c32c8d0feb3c5d22d4d3f6c202ed3a30d1dff58b4f60219f",
+    "artifact_zip_sha256": "d9255a9e3d5ee073d87c35d7cd101620a1837f4c14162cf6ea869d4f6816c8ab",
+    "active_session": null,
+    "completed_sessions": [
+      "2026-11-02",
+      "2026-11-03",
+      "2026-11-04",
+      "2026-11-05"
+    ],
+    "adam_all50_and_scheduler_steps_verified": true,
+    "rng_present": true,
+    "remaining_steps_to3epochs": 0
+  },
+  "tr": {
+    "confirmed_step": 300,
+    "epoch": 2,
+    "cursor": 400,
+    "stopped": false,
+    "checkpoint_sha256": "4e1e75e0eea6fb6b8755c9a02cf7f295ad6c676c14fe8e8f31a1c526ed4559c1",
+    "artifact_zip_sha256": "c0cbb66c64bffbdfeb5dbef1277d61c09016288979cb76079838770719ffd5df",
+    "active_session": null,
+    "completed_sessions": [
+      "2026-11-04",
+      "2026-11-05",
+      "2026-11-06"
+    ],
+    "adam_all50_and_scheduler_steps_verified": true,
+    "rng_present": true,
+    "remaining_steps_to3epochs": 75
+  },
+  "ru": {
+    "training_ready": false,
+    "optimizer_steps": 0
+  }
+}

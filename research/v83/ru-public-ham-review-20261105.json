@@ -1,0 +1,145 @@
+{
+  "source_archive_sha256": "bf50c60a18dd43ce980c1dfeb7f0c4a1613054549e25b1bf422f69278d174d79",
+  "source_url": "https://lists.altlinux.org/pipermail/community/2010-January.txt.gz",
+  "label_map": {
+    "0": "legitimate",
+    "1": "spam"
+  },
+  "assistant_content_review_only": true,
+  "independent_human_review": false,
+  "training_approved": false,
+  "examples": [
+    {
+      "archive_message_index_zero_based": 600,
+      "raw_sha256": "79174f1f5037edcc1a212e2262fb89230cf5ed7923e70e28310bf22b9ed88d91",
+      "normalized_content_sha256": "706faf13fcd8db8288a6a5d2318ae756cdbab126a40ae5d6cb188a989b36bdc2",
+      "label": 0,
+      "label_meaning": "legitimate native-Russian email discussion",
+      "review_method": "Assistant read the complete normalized subject/body; no spam-classifier predictions used",
+      "reason": "Technical question about package file triggers.",
+      "training_approved": false,
+      "origin_url": "https://lists.altlinux.org/pipermail/community/2010-January/660996.html"
+    },
+    {
+      "archive_message_index_zero_based": 884,
+      "raw_sha256": "f8556058273671b9d7afb91c36ec80a8d5274810f3e355a7ebb5f9e5b01747a4",
+      "normalized_content_sha256": "cdd34ae8a011521c3d06db31f3751f170d04e4b3508e3a9edc5358afd2030858",
+      "label": 0,
+      "label_meaning": "legitimate native-Russian email discussion",
+      "review_method": "Assistant read the complete normalized subject/body; no spam-classifier predictions used",
+      "reason": "Reply describing SATA boot and disk errors.",
+      "training_approved": false,
+      "origin_url": "https://lists.altlinux.org/pipermail/community/2010-January/661282.html"
+    },
+    {
+      "archive_message_index_zero_based": 543,
+      "raw_sha256": "2c2dfb70c05d92ebe016dc15a965e6096398293d96f85dc58dc1be745fe5c4fb",
+      "normalized_content_sha256": "0e26e350c0d13d337f2c232a45b0c7ec74835c2b4a17e06462bf0a707221c8f2",
+      "label": 0,
+      "label_meaning": "legitimate native-Russian email discussion",
+      "review_method": "Assistant read the complete normalized subject/body; no spam-classifier predictions used",
+      "reason": "Question about file association settings.",
+      "training_approved": false,
+      "origin_url": "https://lists.altlinux.org/pipermail/community/2010-January/660939.html"
+    },
+    {
+      "archive_message_index_zero_based": 951,
+      "raw_sha256": "1fd6d1dbf0d749155fd396e0f8ea6a52bc71e33e75a4821681c95835ae15000e",
+      "normalized_content_sha256": "ee5a5cbde97d3cfa4b95b1bc8d57bd11a3c5447f025bba472a5aa02d8fad647b",
+      "label": 0,
+      "label_meaning": "legitimate native-Russian email discussion",
+      "review_method": "Assistant read the complete normalized subject/body; no spam-classifier predictions used",
+      "reason": "Troubleshooting answer about audio playback.",
+      "training_approved": false,
+      "origin_url": "https://lists.altlinux.org/pipermail/community/2010-January/661349.html"
+    },
+    {
+      "archive_message_index_zero_based": 820,
+      "raw_sha256": "a65afb145718f2bacdeab2538b46bc468db7165318d092ce720cabfbc06bd7c6",
+      "normalized_content_sha256": "66c210dd3e4714b79e8b4c39f40faa9c96cb1182d9a5e02142ff4a33d9bdc4da",
+      "label": 0,
+      "label_meaning": "legitimate native-Russian email discussion",
+      "review_method": "Assistant read the complete normalized subject/body; no spam-classifier predictions used",
+      "reason": "Question about proxy access for terminal clients.",
+      "training_approved": false,
+      "origin_url": "https://lists.altlinux.org/pipermail/community/2010-January/661216.html"
+    },
+    {
+      "archive_message_index_zero_based": 5,
+      "raw_sha256": "8a5233df5bab33f1c6f708cfafb7121fb99c43d8531df621df7ee59404f69b2c",
+      "normalized_content_sha256": "bd34582efc24a7dbce7956c10b3b00b182d0432a2efd0e8fb25e9282a3a3e9ba",
+      "label": 0,
+      "label_meaning": "legitimate native-Russian email discussion",
+      "review_method": "Assistant read the complete normalized subject/body; no spam-classifier predictions used",
+      "reason": "Question about video codec configuration.",
+      "training_approved": false,
+      "origin_url": "https://lists.altlinux.org/pipermail/community/2010-January/660401.html"
+    },
+    {
+      "archive_message_index_zero_based": 28,
+      "raw_sha256": "76bb3845ed63e762fa835ff002639fd810e4caf4fb14a18a00cfc9205a989f55",
+      "normalized_content_sha256": "2d01a660dc11fed9286b5f9ec84c203735b4f647890e5199f561a56cf4ebb853",
+      "label": 0,
+      "label_meaning": "legitimate native-Russian email discussion",
+      "review_method": "Assistant read the complete normalized subject/body; no spam-classifier predictions used",
+      "reason": "Reply describing audio regression after a Skype update.",
+      "training_approved": false,
+      "origin_url": "https://lists.altlinux.org/pipermail/community/2010-January/660423.html"
+    },
+    {
+      "archive_message_index_zero_based": 939,
+      "raw_sha256": "5bddd357bb1a5d91915821b51457ebe8d6b1095b8598e37c8aa03695ded45ab6",
+      "normalized_content_sha256": "ba5499185ebe03c40f3ba0d735f64cc4c1f3f21db2022e8eecc0983e80a4dd24",
+      "label": 0,
+      "label_meaning": "legitimate native-Russian email discussion",
+      "review_method": "Assistant read the complete normalized subject/body; no spam-classifier predictions used",
+      "reason": "Keyboard-layout switching bug report.",
+      "training_approved": false,
+      "origin_url": "https://lists.altlinux.org/pipermail/community/2010-January/661337.html"
+    },
+    {
+      "archive_message_index_zero_based": 876,
+      "raw_sha256": "f1a39a6b21d724c708ab8b4a1dfc3e92d93bafb5ee8b4e3b60f467e8b4690a88",
+      "normalized_content_sha256": "82721070fb1e9e546dc48e1ed6125202a0ce8babf55f1a44ee37c474f67b0033",
+      "label": 0,
+      "label_meaning": "legitimate native-Russian email discussion",
+      "review_method": "Assistant read the complete normalized subject/body; no spam-classifier predictions used",
+      "reason": "Detailed technical explanation about configuration backups.",
+      "training_approved": false,
+      "origin_url": "https://lists.altlinux.org/pipermail/community/2010-January/661274.html"
+    },
+    {
+      "archive_message_index_zero_based": 660,
+      "raw_sha256": "f3a53257260f930469f60a22dfbd78eef89fe9aad0fc378e71e893be9bfada8d",
+      "normalized_content_sha256": "55e0cbeca2890f448de81b3b350d1ab155f1185516e590388b2c1451edc122ed",
+      "label": 0,
+      "label_meaning": "legitimate native-Russian email discussion",
+      "review_method": "Assistant read the complete normalized subject/body; no spam-classifier predictions used",
+      "reason": "Question about copying files between filesystems.",
+      "training_approved": false,
+      "origin_url": "https://lists.altlinux.org/pipermail/community/2010-January/661056.html"
+    },
+    {
+      "archive_message_index_zero_based": 9,
+      "raw_sha256": "c6750237660ed0b24de0ecf55d672352444f924653c5e03d1454e979cc158ca5",
+      "normalized_content_sha256": "fc8cf728fb8b071dc0794d7334605d88dd68f0b04aba332fb44c300a591bb096",
+      "label": 0,
+      "label_meaning": "legitimate native-Russian email discussion",
+      "review_method": "Assistant read the complete normalized subject/body; no spam-classifier predictions used",
+      "reason": "Troubleshooting reply about video playback.",
+      "training_approved": false,
+      "origin_url": "https://lists.altlinux.org/pipermail/community/2010-January/660405.html"
+    },
+    {
+      "archive_message_index_zero_based": 319,
+      "raw_sha256": "b03f0bda43d83b5395f70cde97e4d577c32026690c5ee6686823980baf61a05f",
+      "normalized_content_sha256": "4d6641aca53e8562860c29eb17cfb499f386f657d2559591383958e1e25b1aaf",
+      "label": 0,
+      "label_meaning": "legitimate native-Russian email discussion",
+      "review_method": "Assistant read the complete normalized subject/body; no spam-classifier predictions used",
+      "reason": "Follow-up question about webcam driver behaviour.",
+      "training_approved": false,
+      "origin_url": "https://lists.altlinux.org/pipermail/community/2010-January/660716.html"
+    }
+  ]
+}

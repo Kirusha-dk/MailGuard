@@ -1,0 +1,61 @@
+name: MailGuard v83 archive stopped experiment without training
+on:
+  push:
+    branches: [mailguard-v83-ru-es-pilot-20261030]
+    paths: [research/v83/archive.json]
+permissions:
+  contents: write
+  actions: read
+concurrency:
+  group: mailguard-v83-experiment-archive
+  cancel-in-progress: false
+jobs:
+  archive:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read the reviewed archival request
+        id: request
+        run: |
+          python - <<'PY'
+          import json,os
+          from pathlib import Path
+          r=json.loads(Path('research/v83/archive.json').read_text())
+          with open(os.environ['GITHUB_OUTPUT'],'a') as f:
+              for key in ('source_run_id','state_artifact_name','release_tag'):
+                  f.write(key+'='+str(r[key])+'\n')
+          PY
+      - uses: actions/download-artifact@v4
+        with:
+          name: ${{ steps.request.outputs.state_artifact_name }}
+          run-id: ${{ steps.request.outputs.source_run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path: archived-state
+      - name: Build only the deterministic reviewed weights/state/metadata package
+        run: python tools/package_v83_experiment.py --request research/v83/archive.json --state archived-state --output mailguard-v83-stopped-experiment.zip
+      - name: Preserve the package as a prerelease, without production promotion
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ steps.request.outputs.release_tag }}
+        run: |
+          if gh release view "$RELEASE_TAG" >/dev/null 2>&1; then
+            gh release upload "$RELEASE_TAG" mailguard-v83-stopped-experiment.zip mailguard-v83-stopped-experiment.zip.sha256 --clobber
+            gh release edit "$RELEASE_TAG" --draft=false --prerelease --notes-file mailguard-v83-stopped-experiment.notes.md
+          else
+            gh release create "$RELEASE_TAG" mailguard-v83-stopped-experiment.zip mailguard-v83-stopped-experiment.zip.sha256 --prerelease --target "$GITHUB_SHA" --title "Stopped MailGuard v83 experiment" --notes-file mailguard-v83-stopped-experiment.notes.md
+          fi
+      - name: Verify the actual durable assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ steps.request.outputs.release_tag }}
+        run: |
+          gh release download "$RELEASE_TAG" --dir verified-release
+          cmp mailguard-v83-stopped-experiment.zip verified-release/mailguard-v83-stopped-experiment.zip
+          cmp mailguard-v83-stopped-experiment.zip.sha256 verified-release/mailguard-v83-stopped-experiment.zip.sha256
+          gh release view "$RELEASE_TAG" --json url,isPrerelease,assets > durable-release.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: mailguard-v83-durable-release-verification
+          path: durable-release.json
+          retention-days: 90

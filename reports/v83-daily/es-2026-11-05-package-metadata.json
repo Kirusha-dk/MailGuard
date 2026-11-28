@@ -1,0 +1,40 @@
+{
+  "language": "es",
+  "campaign": "v83-es-20261102",
+  "config": {
+    "version": "v83-multilingual-lora-r8-pilot-v1",
+    "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+    "rank": 8,
+    "alpha": 16,
+    "max_length": 128,
+    "seed": 83,
+    "batch_size": 8,
+    "learning_rate": 0.0002,
+    "weight_decay": 0.01,
+    "max_epochs": 3,
+    "ham_cost": 2.0
+  },
+  "start_date": "2026-11-02",
+  "end_date": "2026-12-01",
+  "backbone": {
+    "model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2",
+    "revision": "e8f8c211226b894fcb81acc59f3b34ba3efd5f42",
+    "files": {
+      "model.safetensors": "eaa086f0ffee582aeb45b36e34cdd1fe2d6de2bef61f8a559a1bbc9bd955917b",
+      "config.json": "6300193cb75e01cf80c96decef7187dfb33094d97cc1490b7ead6ff134476e4e",
+      "tokenizer.json": "2c3387be76557bd40970cec13153b3bbf80407865484b209e655e5e4729076b8",
+      "tokenizer_config.json": "5036ea374ffedd706e3bef33e2e0d6953cb868ef8a490e76e32ba0faa37a6b9b",
+      "special_tokens_map.json": "378eb3bf733eb16e65792d7e3fda5b8a4631387ca04d2015199c4d4f22ae554d"
+    }
+  },
+  "source_manifest_sha256": "203fae44c74a687b8487442f427cecb22e333891839e78eec619e811e7819b81",
+  "train": "0447d074a3587073c848f81e731c621aae7fdd8c3ec1ee64b852a5200b049e70",
+  "select": "f42d29e09ce32f6c91e208a47a48fd787884eed9a5b10785c0fbc0ccd81d753f",
+  "device_type": "cpu",
+  "cpu_threads": 3,
+  "torch_version": "2.14.1+cpu",
+  "transformers_version": "4.46.3",
+  "pilot_only": true,
+  "objective": "global_mean_normalized_HAM_cost_2_no_source_reweighting"
+}
